@@ -36,8 +36,8 @@ public:
 	ADXModel* model = nullptr;
 	ADXMaterial material{};
 	ADXImage texture{};
-	std::vector<ADXCollider> colliders{};
-	std::vector<ADXPlayer> players{};
+	std::vector<std::unique_ptr<ADXCollider>> colliders{};
+	std::vector<std::unique_ptr<ADXPlayer>> players{};
 	int renderLayer = 0;
 
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffB1 = nullptr;

@@ -315,11 +315,11 @@ void ADXObject::Update()
 
 	for (int i = 0; i < colliders.size(); i++)
 	{
-		colliders[i].Update(this);
+		colliders[i]->Update(this);
 	}
 	for (int i = 0; i < players.size(); i++)
 	{
-		players[i].Update(this);
+		players[i]->Update(this);
 	}
 
 	allObjPtr.push_back(this);
