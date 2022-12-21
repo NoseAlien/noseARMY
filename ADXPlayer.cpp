@@ -11,12 +11,10 @@ ADXPlayer::ADXPlayer(ADXObject* obj, ADXKeyBoardInput* setKeyboard, std::vector<
 	se = ADXAudio::SoundLoadWave("Resources/sound/jump.wav");
 }
 
-void ADXPlayer::Update(ADXObject* obj)
-{
-	gameObject = obj;
-	
-	velocity = obj->transform.translation_ - prevPos;
-	prevPos = obj->transform.translation_;
+void ADXPlayer::UniqueUpdate()
+{	
+	velocity = gameObject->transform.translation_ - prevPos;
+	prevPos = gameObject->transform.translation_;
 
 	velocity *= 0.8;
 	velocity.y /= 0.8;
@@ -49,6 +47,6 @@ void ADXPlayer::Update(ADXObject* obj)
 	}
 	prevJump = keyboard->KeyPress(config[4]);
 
-	obj->transform.translation_ += velocity;
-	obj->transform.UpdateMatrix();
+	gameObject->transform.translation_ += velocity;
+	gameObject->transform.UpdateMatrix();
 }

@@ -2,7 +2,7 @@
 #include "ADXModel.h"
 #include "ADXMaterial.h"
 #include "ADXImage.h"
-#include "ADXComponent.h"
+#include "ADXComponentInclude.h"
 #include <string>
 
 #pragma comment(lib, "d3dcompiler.lib")

@@ -1,4 +1,6 @@
 #pragma once
+
+#include "ADXComponent.h"
 #include "ADXVector3.h"
 #include "ADXMatrix4.h"
 #include <vector>
@@ -11,7 +13,7 @@ enum colType
     sphere,
 };
 
-class ADXCollider
+class ADXCollider : public ADXComponent
 {
 private:
     static std::vector<ADXCollider*> cols;
@@ -23,12 +25,14 @@ protected:
     ADXVector3 EdgeLocalPoint(ADXVector3 pos);
     ADXVector3 EdgeLocalPoint(ADXVector3 pos, ADXVector3 prePos);
 
+private:
+    void UniqueUpdate();
+
 public:
     bool enabled = true;
     bool isTrigger = false;
     bool pushable_ = false;
     colType colType_ = sphere;
-    ADXObject* gameObject = nullptr;
     float radius_ = 1;
     ADXVector3 pos_ = { 0,0,0 };
     ADXVector3 scale_ = { 1,1,1 };
@@ -36,7 +40,6 @@ public:
     ADXVector3 pushBackVector = { 0,0,0 };
 
     ADXCollider(ADXObject* obj);
-    void Update(ADXObject* obj);
     ADXVector3 ClosestPoint(ADXVector3 pos);
     ADXVector3 EdgePoint(ADXVector3 pos);
     ADXVector3 EdgePoint(ADXVector3 pos, ADXVector3 prePos);

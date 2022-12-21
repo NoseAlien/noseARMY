@@ -21,9 +21,8 @@ ADXCollider::ADXCollider(ADXObject* obj)
 	preMatrix = gameObject->transform.matWorld_;
 }
 
-void ADXCollider::Update(ADXObject* obj)
+void ADXCollider::UniqueUpdate()
 {
-	gameObject = obj;
 	cols.push_back(this);
 }
 

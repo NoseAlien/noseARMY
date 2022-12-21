@@ -153,6 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ADXAudio.cpp" />
+    <ClCompile Include="ADXCamera.cpp" />
     <ClCompile Include="ADXCollider.cpp" />
     <ClCompile Include="ADXCommon.cpp" />
     <ClCompile Include="ADXComponent.cpp" />
@@ -173,9 +174,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ADXAudio.h" />
+    <ClInclude Include="ADXCamera.h" />
     <ClInclude Include="ADXCollider.h" />
     <ClInclude Include="ADXCommon.h" />
     <ClInclude Include="ADXComponent.h" />
+    <ClInclude Include="ADXComponentInclude.h" />
     <ClInclude Include="ADXImage.h" />
     <ClInclude Include="ADXKeyboardInput.h" />
     <ClInclude Include="ADXMaterial.h" />

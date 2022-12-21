@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ADXComponent.h"
 #include "ADXKeyBoardInput.h"
 #include "ADXVector3.h"
 #include "ADXAudio.h"
@@ -7,14 +8,13 @@
 
 class ADXObject;
 
-class ADXPlayer
+class ADXPlayer : public ADXComponent
 {
 public:
 	ADXPlayer(ADXObject* obj, ADXKeyBoardInput* setKeyboard, std::vector<int> setConfig);
 
-	ADXObject* gameObject = nullptr;
-
-	void Update(ADXObject* obj);
+private:
+	void UniqueUpdate();
 
 private:
 	ADXAudio se{};
