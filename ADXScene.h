@@ -5,8 +5,10 @@
 #include "ADXMaterial.h"
 #include "ADXWorldTransform.h"
 #include "ADXObject.h"
+#include "Player.h"
 #include "ADXImage.h"
 #include "ADXTexAnimation.h"
+#include <typeinfo>
 
 class ADXScene
 {
@@ -47,7 +49,7 @@ public:
 	ADXMaterial lightShadeMat{};
 
 	//オブジェクト
-	ADXObject player_{};
+	Player player_{};
 	ADXObject playerMarker_{};
 	ADXObject object_{};
 	ADXObject object2_{};

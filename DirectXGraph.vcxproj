@@ -163,7 +163,7 @@
     <ClCompile Include="ADXMatrix4.cpp" />
     <ClCompile Include="ADXModel.cpp" />
     <ClCompile Include="ADXObject.cpp" />
-    <ClCompile Include="ADXPlayer.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="ADXScene.cpp" />
     <ClCompile Include="ADXTexAnimatoin.cpp" />
     <ClCompile Include="ADXUtility.cpp" />
@@ -171,6 +171,7 @@
     <ClCompile Include="ADXWindow.cpp" />
     <ClCompile Include="ADXWorldTransform.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PlayerMini.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ADXAudio.h" />
@@ -185,13 +186,14 @@
     <ClInclude Include="ADXMatrix4.h" />
     <ClInclude Include="ADXModel.h" />
     <ClInclude Include="ADXObject.h" />
-    <ClInclude Include="ADXPlayer.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="ADXScene.h" />
     <ClInclude Include="ADXTexAnimation.h" />
     <ClInclude Include="ADXUtility.h" />
     <ClInclude Include="ADXVector3.h" />
     <ClInclude Include="ADXWindow.h" />
     <ClInclude Include="ADXWorldTransform.h" />
+    <ClInclude Include="PlayerMini.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\OBJPixelShader.hlsl">

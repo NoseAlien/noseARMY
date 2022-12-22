@@ -309,18 +309,22 @@ void ADXObject::InitializeGraphicsPipeline()
 	assert(SUCCEEDED(result));
 }
 
+ADXObject ADXObject::Duplicate(ADXObject prefab)
+{
+	ADXObject ret = prefab;
+	ret.CreateConstBuffer();
+	return ret;
+}
+
 void ADXObject::Update()
 {
 	HRESULT result = S_FALSE;
 
 	for (int i = 0; i < colliders.size(); i++)
 	{
-		colliders[i]->Update(this);
+		colliders[i].Update(this);
 	}
-	for (int i = 0; i < players.size(); i++)
-	{
-		players[i]->Update(this);
-	}
+	UniqueUpdate();
 
 	allObjPtr.push_back(this);
 
@@ -332,6 +336,11 @@ void ADXObject::Update()
 	constMap1->specular = material.specular;
 	constMap1->alpha = material.alpha;
 	constBuffB1->Unmap(0, nullptr);
+}
+
+void ADXObject::UniqueUpdate()
+{
+
 }
 
 void ADXObject::StaticUpdate()

@@ -5,22 +5,30 @@
 #include "ADXVector3.h"
 #include "ADXAudio.h"
 #include <vector>
+#include <list>
+#include "ADXObject.h"
 
-class ADXObject;
+class PlayerMini;
 
-class ADXPlayer : public ADXComponent
+class Player : public ADXObject
 {
 public:
-	ADXPlayer(ADXObject* obj, ADXKeyBoardInput* setKeyboard, std::vector<int> setConfig);
+	Player();
+	void Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfig);
+
+protected:
+	void Move(float walkSpeed, float jumpPower);
+	void VelocityMove(float drag, float dropSpeed);
 
 private:
 	void UniqueUpdate();
 
-private:
+protected:
 	ADXAudio se{};
 	ADXKeyBoardInput* keyboard = nullptr;
 	std::vector<int> config{};
 	bool prevJump = false;
 	ADXVector3 prevPos{};
 	ADXVector3 velocity = { 0,0,0 };
+	std::list<ADXObject> minis{};
 };

@@ -26,18 +26,22 @@ public:
 		float alpha;
 	};
 
+public:
 	ADXObject();
 	void Initialize();
 	void CreateConstBuffer();
 	void Update();
 	void Draw(UINT64 GpuStartHandle);
 
+protected:
+	virtual void UniqueUpdate();
+
+public:
 	ADXWorldTransform transform{};
 	ADXModel* model = nullptr;
 	ADXMaterial material{};
 	ADXImage texture{};
-	std::vector<std::unique_ptr<ADXCollider>> colliders{};
-	std::vector<std::unique_ptr<ADXPlayer>> players{};
+	std::vector<ADXCollider> colliders{};
 	int renderLayer = 0;
 
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffB1 = nullptr;
@@ -64,6 +68,8 @@ public: // 静的メンバ関数
 	static void PostDraw();
 
 	static std::vector<ADXObject*> GetAllObjs();
+
+	static ADXObject Duplicate(ADXObject prefab);
 
 private: // 静的メンバ変数
 	// デバイス

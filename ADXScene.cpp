@@ -62,18 +62,17 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 
 	//オブジェクト
 
-	player_.Initialize();
+	player_.ADXObject::Initialize();
 	player_.transform.translation_ = { 0,2,0 };
 	player_.transform.rotation_ = { 0,0,0 };
 	player_.transform.scale_ = { 0.5,0.5,0.5 };
 	player_.transform.UpdateMatrix();
 	player_.model = &playerModel;
 	player_.texture = whiteDotImg;
-	player_.colliders.push_back(std::make_unique<ADXCollider>(ADXCollider(&player_)));
-	//player_.colliders.back().colType_ = box;
-	player_.colliders.back()->pushable_ = true;
-	player_.players.push_back(std::make_unique<ADXPlayer>(ADXPlayer(&player_, keyboard, { DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE })));
+	player_.colliders.push_back(ADXCollider(&player_));
+	player_.colliders.back().pushable_ = true;
 	player_.material = material;
+	player_.Initialize(keyboard, { DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C });
 
 	playerMarker_.Initialize();
 	playerMarker_.transform.translation_ = { 0,1.6,0 };
@@ -93,8 +92,8 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	object_.transform.UpdateMatrix();
 	object_.model = &cube;
 	object_.texture = whiteDotImg;
-	object_.colliders.push_back(std::make_unique<ADXCollider>(ADXCollider(&object_)));
-	object_.colliders.back()->colType_ = box;
+	object_.colliders.push_back(ADXCollider(&object_));
+	object_.colliders.back().colType_ = box;
 	//object_.colliders.back().pushable_ = true;
 	object_.material = lightShadeMat;
 
@@ -105,8 +104,8 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	object2_.transform.UpdateMatrix();
 	object2_.model = &cube;
 	object2_.texture = whiteDotImg;
-	object2_.colliders.push_back(std::make_unique<ADXCollider>(ADXCollider(&object2_)));
-	object2_.colliders.back()->colType_ = box;
+	object2_.colliders.push_back(ADXCollider(&object2_));
+	object2_.colliders.back().colType_ = box;
 	//object2_.colliders.back().pushable_ = true;
 	object2_.material = lightShadeMat;
 
@@ -117,8 +116,8 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	object3_.transform.UpdateMatrix();
 	object3_.model = &cube;
 	object3_.texture = whiteDotImg;
-	object3_.colliders.push_back(std::make_unique<ADXCollider>(ADXCollider(&object3_)));
-	object3_.colliders.back()->colType_ = box;
+	object3_.colliders.push_back(ADXCollider(&object3_));
+	object3_.colliders.back().colType_ = box;
 	//object3_.colliders.back().pushable_ = true;
 	object3_.material = lightShadeMat;
 
