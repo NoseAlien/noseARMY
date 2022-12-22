@@ -7,8 +7,7 @@
 #include <vector>
 #include <list>
 #include "ADXObject.h"
-
-class PlayerMini;
+#include "PlayerMini.h"
 
 class Player : public ADXObject
 {
@@ -16,19 +15,18 @@ public:
 	Player();
 	void Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfig);
 
-protected:
-	void Move(float walkSpeed, float jumpPower);
-	void VelocityMove(float drag, float dropSpeed);
-
 private:
 	void UniqueUpdate();
+	void Move(float walkSpeed, float jumpPower);
+	void VelocityInitialize();
+	void VelocityMove(float drag);
+	void VelocityUpdate();
 
 protected:
 	ADXAudio se{};
 	ADXKeyBoardInput* keyboard = nullptr;
 	std::vector<int> config{};
-	bool prevJump = false;
 	ADXVector3 prevPos{};
 	ADXVector3 velocity = { 0,0,0 };
-	std::list<ADXObject> minis{};
+	std::list<PlayerMini> minis{};
 };

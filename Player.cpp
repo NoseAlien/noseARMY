@@ -1,5 +1,4 @@
 #include "Player.h"
-#include "PlayerMini.h"
 
 Player::Player()
 {
@@ -10,7 +9,7 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 {
 	keyboard = setKeyboard;
 	config = setConfig;
-	prevPos = transform.translation_;
+	VelocityInitialize();
 	se = ADXAudio::SoundLoadWave("Resources/sound/jump.wav");
 }
 
@@ -33,41 +32,59 @@ void Player::Move(float walkSpeed, float jumpPower)
 		velocity.x -= walkSpeed;
 	}
 
-	if (keyboard->KeyPress(config[4]) && !prevJump)
+	if (keyboard->KeyTrigger(config[4]))
 	{
 		velocity.y = jumpPower;
 		se.SoundPlayWave();
 	}
-	if (!keyboard->KeyPress(config[4]) && velocity.y > 0 && prevJump)
+	if (keyboard->KeyRelease(config[4]) && velocity.y > 0)
 	{
 		velocity.y *= 0.2;
 	}
-	prevJump = keyboard->KeyPress(config[4]);
 }
 
-void Player::VelocityMove(float drag, float dropSpeed)
+void Player::VelocityInitialize()
+{
+	prevPos = transform.translation_;
+}
+
+void Player::VelocityMove(float drag)
 {
 	velocity = transform.translation_ - prevPos;
 	prevPos = transform.translation_;
 
 	velocity *= drag;
-	velocity.y /= drag;
-	velocity.y -= dropSpeed;
+}
+
+void Player::VelocityUpdate()
+{
+	transform.translation_ += velocity;
+	transform.UpdateMatrix();
 }
 
 void Player::UniqueUpdate()
 {	
-	VelocityMove(0.8f, 0.015f);
+	VelocityMove(0.8f);
+
+	velocity.y /= 0.8f;
+	velocity.y -= 0.015f;
+
 	Move(0.05f, 0.4f);
 
-	transform.translation_ += velocity;
-	transform.UpdateMatrix();
-
-	if (keyboard->KeyTrigger(config[5]))
+	if (keyboard->KeyPress(config[5]))
 	{
-		ADXObject mini;
+		velocity = { 0,0,0 };
+	}
+
+	VelocityUpdate();
+
+	if (keyboard->KeyRelease(config[5]) && minis.size() < 10)
+	{
+		PlayerMini mini;
 		ADXObject* miniObj = &mini;
 		*miniObj = Duplicate(*this);
+		mini.transform.scale_ *= 0.5f;
+		mini.Initialize(this);
 		minis.push_back(mini);
 	}
 
