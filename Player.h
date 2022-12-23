@@ -14,6 +14,10 @@ class Player : public ADXObject
 public:
 	Player();
 	void Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfig);
+	bool GetInputStatus(int keyIndex);
+	bool GetInputStatusTrigger(int keyIndex);
+	bool GetInputStatusRelease(int keyIndex);
+
 
 private:
 	void UniqueUpdate();

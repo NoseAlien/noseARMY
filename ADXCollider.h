@@ -26,6 +26,7 @@ protected:
     ADXVector3 EdgeLocalPoint(ADXVector3 pos, ADXVector3 prePos);
 
 private:
+    void UniqueInitialize();
     void UniqueUpdate();
 
 public:

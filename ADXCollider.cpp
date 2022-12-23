@@ -16,7 +16,11 @@ std::vector<ADXCollider*> ADXCollider::cols = {};
 
 ADXCollider::ADXCollider(ADXObject* obj)
 {
-	gameObject = obj;
+	Initialize(obj);
+}
+
+void ADXCollider::UniqueInitialize()
+{
 	preTranslation = gameObject->transform.translation_;
 	preMatrix = gameObject->transform.matWorld_;
 }
