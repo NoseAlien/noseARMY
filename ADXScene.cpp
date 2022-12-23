@@ -31,6 +31,8 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	//‰æ‘œ
 	napnoseImg = ADXImage::LoadADXImage("napnose.png");
 	MEGNOSE_Img = ADXImage::LoadADXImage("MEGNOSE.png");
+	apEGnoSE_Image = ADXImage::LoadADXImage("apEGnoSE.png");
+
 	skyDomeImg = ADXImage::LoadADXImage("skydome/Fine_Basin.jpg");
 	whiteDotImg = ADXImage::LoadADXImage("whiteDot.png");
 
@@ -71,19 +73,8 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	player_.texture = whiteDotImg;
 	player_.colliders.push_back(ADXCollider(&player_));
 	player_.colliders.back().pushable_ = true;
-	player_.material = material;
+	player_.material = unlitMat;
 	player_.Initialize(keyboard, { DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C });
-
-	playerMarker_.Initialize();
-	playerMarker_.transform.translation_ = { 0,1.6,0 };
-	playerMarker_.transform.rotation_ = { 0,0,0 };
-	playerMarker_.transform.scale_ = { 0.6,0.5,0.5 };
-	playerMarker_.transform.parent_ = &player_.transform;
-	playerMarker_.transform.UpdateMatrix();
-	playerMarker_.model = &rect;
-	playerMarker_.texture = napnoseImg;
-	playerMarker_.material = unlitMat;
-	playerMarker_.renderLayer = 1;
 
 	object_.Initialize();
 	object_.transform.translation_ = { 0,-2,0 };
@@ -135,11 +126,9 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	sprite_.renderLayer = -1;
 
 	objs.push_back(&player_);
-	objs.push_back(&playerMarker_);
 	objs.push_back(&object_);
 	objs.push_back(&object2_);
 	objs.push_back(&object3_);
-	//objs.push_back(&skyDome_);
 	objs.push_back(&sprite_);
 }
 

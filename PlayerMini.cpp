@@ -6,10 +6,15 @@ PlayerMini::PlayerMini()
 
 }
 
-void PlayerMini::Initialize(Player* setParent)
+void PlayerMini::Initialize(Player* setParent, ADXObject setNose)
 {
 	parent = setParent;
+
+	nose = Duplicate(setNose);
+	nose.transform.parent_ = &transform;
+
 	VelocityInitialize();
+
 	for (int i = 0; i < colliders.size(); i++)
 	{
 		colliders[i].Initialize(this);
@@ -74,4 +79,5 @@ void PlayerMini::UniqueUpdate()
 	Move(0.1f, 0.8f);
 
 	VelocityUpdate();
+	nose.Update();
 }

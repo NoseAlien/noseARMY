@@ -8,7 +8,7 @@ class PlayerMini : public ADXObject
 {
 public:
 	PlayerMini();
-	void Initialize(Player* setParent);
+	void Initialize(Player* setParent, ADXObject setNose);
 
 private:
 	void UniqueUpdate();
@@ -18,7 +18,9 @@ private:
 	void VelocityUpdate();
 
 private:
+	ADXObject nose{};
 	Player* parent = nullptr;
+
 	bool destroyFlag = false;
 	ADXVector3 prevPos{};
 	ADXVector3 velocity = { 0,0,0 };

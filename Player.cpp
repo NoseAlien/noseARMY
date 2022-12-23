@@ -11,6 +11,34 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 	config = setConfig;
 	VelocityInitialize();
 	se = ADXAudio::SoundLoadWave("Resources/sound/jump.wav");
+	noseImage = ADXImage::LoadADXImage("apEGnoSE.png");
+
+	rect.vertices = {
+	{{-1.0f,-1.0f,0.0f},{}, {0.0f,1.0f}},//左下
+	{{-1.0f,1.0f,0.0f},{},{0.0f,0.0f}},//左上
+	{{1.0f,-1.0f,0.0f},{},{1.0f,1.0f}},//右下
+	{{1.0f,1.0f,0.0f},{},{1.0f,0.0f}},//右上
+	};
+	//インデックスデータ
+	rect.indices =
+	{
+		0,1,2,
+		2,1,3,
+
+		1,0,2,
+		1,2,3,
+	};
+	rect.Initialize();
+
+	nose.Initialize();
+	nose.transform.translation_ = { 0,0,1.01f };
+	nose.transform.rotation_ = { 0,3.1415f,0 };
+	nose.transform.scale_ = { 0.42,0.35,0.35 };
+	nose.transform.parent_ = &transform;
+	nose.transform.UpdateMatrix();
+	nose.model = &rect;
+	nose.texture = noseImage;
+	nose.material = material;
 }
 
 bool Player::GetInputStatus(int keyIndex)
@@ -30,21 +58,25 @@ bool Player::GetInputStatusRelease(int keyIndex)
 
 void Player::Move(float walkSpeed, float jumpPower)
 {
-	if (keyboard->KeyPress(config[0]))
+	if (keyboard->KeyPress(config[0]) || keyboard->KeyPress(config[1]) || keyboard->KeyPress(config[2]) || keyboard->KeyPress(config[3]))
 	{
-		velocity.z += walkSpeed;
-	}
-	if (keyboard->KeyPress(config[1]))
-	{
-		velocity.z -= walkSpeed;
-	}
-	if (keyboard->KeyPress(config[2]))
-	{
-		velocity.x += walkSpeed;
-	}
-	if (keyboard->KeyPress(config[3]))
-	{
-		velocity.x -= walkSpeed;
+		if (keyboard->KeyPress(config[0]))
+		{
+			velocity.z += walkSpeed;
+		}
+		if (keyboard->KeyPress(config[1]))
+		{
+			velocity.z -= walkSpeed;
+		}
+		if (keyboard->KeyPress(config[2]))
+		{
+			velocity.x += walkSpeed;
+		}
+		if (keyboard->KeyPress(config[3]))
+		{
+			velocity.x -= walkSpeed;
+		}
+		transform.rotation_.y = atan2(velocity.x, velocity.z);
 	}
 
 	if (keyboard->KeyTrigger(config[4]))
@@ -94,14 +126,15 @@ void Player::UniqueUpdate()
 
 	VelocityUpdate();
 
-	if (keyboard->KeyRelease(config[5]) && minis.size() < 10)
+	if (keyboard->KeyRelease(config[5]) && minis.size() < 20)
 	{
 		PlayerMini mini;
 		ADXObject* miniObj = &mini;
 		*miniObj = Duplicate(*this);
 		mini.transform.scale_ *= 0.5f;
 		mini.transform.translation_ = ADXMatrix4::transform({ 0,0,1.6f }, transform.matWorld_);
-		mini.Initialize(this);
+
+		mini.Initialize(this, nose);
 		minis.push_back(mini);
 	}
 
@@ -112,4 +145,5 @@ void Player::UniqueUpdate()
 	{
 		itr.Update();
 	}
+	nose.Update();
 }

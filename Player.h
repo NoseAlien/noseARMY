@@ -18,7 +18,6 @@ public:
 	bool GetInputStatusTrigger(int keyIndex);
 	bool GetInputStatusRelease(int keyIndex);
 
-
 private:
 	void UniqueUpdate();
 	void Move(float walkSpeed, float jumpPower);
@@ -26,10 +25,14 @@ private:
 	void VelocityMove(float drag);
 	void VelocityUpdate();
 
-protected:
+private:
+	ADXObject nose{};
+	ADXImage noseImage{};
+	ADXModel rect;
 	ADXAudio se{};
 	ADXKeyBoardInput* keyboard = nullptr;
 	std::vector<int> config{};
+
 	ADXVector3 prevPos{};
 	ADXVector3 velocity = { 0,0,0 };
 	std::list<PlayerMini> minis{};

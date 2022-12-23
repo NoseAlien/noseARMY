@@ -34,6 +34,7 @@ public:
 	//画像
 	ADXImage napnoseImg{};
 	ADXImage MEGNOSE_Img{};
+	ADXImage apEGnoSE_Image{};
 	ADXImage skyDomeImg{};
 	ADXImage whiteDotImg{};
 
@@ -50,7 +51,6 @@ public:
 
 	//オブジェクト
 	Player player_{};
-	ADXObject playerMarker_{};
 	ADXObject object_{};
 	ADXObject object2_{};
 	ADXObject object3_{};
