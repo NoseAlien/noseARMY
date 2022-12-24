@@ -12,6 +12,7 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 	VelocityInitialize();
 	se = ADXAudio::SoundLoadWave("Resources/sound/jump.wav");
 	noseImage = ADXImage::LoadADXImage("apEGnoSE.png");
+	furImage = ADXImage::LoadADXImage("apEG_fur.png");
 
 	rect.vertices = {
 	{{-1.0f,-1.0f,0.0f},{}, {0.0f,1.0f}},//ç∂â∫
@@ -29,6 +30,8 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 		1,2,3,
 	};
 	rect.Initialize();
+
+	texture = furImage;
 
 	nose.Initialize();
 	nose.transform.translation_ = { 0,0,1.01f };

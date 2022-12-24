@@ -31,7 +31,6 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	//‰æ‘œ
 	napnoseImg = ADXImage::LoadADXImage("napnose.png");
 	MEGNOSE_Img = ADXImage::LoadADXImage("MEGNOSE.png");
-	apEGnoSE_Image = ADXImage::LoadADXImage("apEGnoSE.png");
 
 	skyDomeImg = ADXImage::LoadADXImage("skydome/Fine_Basin.jpg");
 	whiteDotImg = ADXImage::LoadADXImage("whiteDot.png");

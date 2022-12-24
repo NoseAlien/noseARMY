@@ -28,6 +28,7 @@ private:
 private:
 	ADXObject nose{};
 	ADXImage noseImage{};
+	ADXImage furImage{};
 	ADXModel rect;
 	ADXAudio se{};
 	ADXKeyBoardInput* keyboard = nullptr;
