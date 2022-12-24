@@ -23,21 +23,25 @@ void PlayerMini::Initialize(Player* setParent, ADXObject setNose)
 
 void PlayerMini::Move(float walkSpeed, float jumpPower)
 {
-	if (parent->GetInputStatus(0))
+	if (parent->GetInputStatus(0) || parent->GetInputStatus(1) || parent->GetInputStatus(2) || parent->GetInputStatus(3))
 	{
-		velocity.z += walkSpeed;
-	}
-	if (parent->GetInputStatus(1))
-	{
-		velocity.z -= walkSpeed;
-	}
-	if (parent->GetInputStatus(2))
-	{
-		velocity.x += walkSpeed;
-	}
-	if (parent->GetInputStatus(3))
-	{
-		velocity.x -= walkSpeed;
+		if (parent->GetInputStatus(0))
+		{
+			velocity.z += walkSpeed;
+		}
+		if (parent->GetInputStatus(1))
+		{
+			velocity.z -= walkSpeed;
+		}
+		if (parent->GetInputStatus(2))
+		{
+			velocity.x += walkSpeed;
+		}
+		if (parent->GetInputStatus(3))
+		{
+			velocity.x -= walkSpeed;
+		}
+		transform.rotation_.y = atan2(velocity.x, velocity.z);
 	}
 
 	if (parent->GetInputStatusTrigger(4))
@@ -79,5 +83,7 @@ void PlayerMini::UniqueUpdate()
 	Move(0.1f, 0.8f);
 
 	VelocityUpdate();
+
+	nose.transform.parent_ = &transform;
 	nose.Update();
 }

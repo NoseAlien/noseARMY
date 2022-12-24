@@ -111,6 +111,9 @@ void Player::VelocityUpdate()
 
 void Player::UniqueUpdate()
 {	
+	bool moveInput = 
+		!keyboard->KeyPress(config[0]) || keyboard->KeyPress(config[1]) || keyboard->KeyPress(config[2]) || keyboard->KeyPress(config[3]);
+
 	VelocityMove(0.8f);
 
 	if (keyboard->KeyPress(config[5]))
@@ -126,13 +129,30 @@ void Player::UniqueUpdate()
 
 	VelocityUpdate();
 
+		minis.remove_if([=](auto& itr)
+			{
+				for (auto& colItr : colliders)
+				{
+					for (auto& colListItr : colItr.collideList)
+					{
+						for (auto& colItr2 : itr.colliders)
+						{
+							if (colListItr == &colItr2)
+							{
+								return true;
+							}
+						}
+					}
+				}
+		return false; });
+
 	if (keyboard->KeyRelease(config[5]) && minis.size() < 20)
 	{
 		PlayerMini mini;
 		ADXObject* miniObj = &mini;
 		*miniObj = Duplicate(*this);
-		mini.transform.scale_ *= 0.5f;
-		mini.transform.translation_ = ADXMatrix4::transform({ 0,0,1.6f }, transform.matWorld_);
+		mini.transform.scale_ *= 0.7f;
+		mini.transform.translation_ = ADXMatrix4::transform({ 0,0,1.8f }, transform.matWorld_);
 
 		mini.Initialize(this, nose);
 		minis.push_back(mini);
