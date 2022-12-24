@@ -132,6 +132,8 @@ void Player::UniqueUpdate()
 
 	VelocityUpdate();
 
+	if (splitInterval <= -20)
+	{
 		minis.remove_if([=](auto& itr)
 			{
 				for (auto& colItr : colliders)
@@ -148,17 +150,32 @@ void Player::UniqueUpdate()
 					}
 				}
 		return false; });
+	}
 
-	if (keyboard->KeyRelease(config[5]) && minis.size() < 20)
+	nose.transform.scale_ = ADXVector3{ 0.42,0.35,0.35 } * max(1,1 + pow(max(0, splitInterval),2) * 0.02);
+
+	nose.transform.rotation_.z *= 0.9f;
+
+	splitInterval--;
+	splitInterval = max(-20, splitInterval);
+
+	if (keyboard->KeyRelease(config[5]) && splitInterval <= 0)
 	{
-		PlayerMini mini;
-		ADXObject* miniObj = &mini;
-		*miniObj = Duplicate(*this);
-		mini.transform.scale_ *= 0.7f;
-		mini.transform.translation_ = ADXMatrix4::transform({ 0,0,1.8f }, transform.matWorld_);
+		nose.transform.scale_ = { 0.42,0.35,0.35 };
+		nose.transform.rotation_ = { 0,3.1415f,0 };
+		if (minis.size() < 20)
+		{
+			PlayerMini mini;
+			ADXObject* miniObj = &mini;
+			*miniObj = Duplicate(*this);
+			mini.transform.scale_ *= 0.7f;
+			mini.transform.translation_ = ADXMatrix4::transform({ 0,0,1.8f }, transform.matWorld_);
 
-		mini.Initialize(this, nose);
-		minis.push_back(mini);
+			mini.Initialize(this, nose);
+			minis.push_back(mini);
+		}
+		nose.transform.rotation_.z = 10;
+		splitInterval = 7;
 	}
 
 	minis.remove_if([=](auto& itr) 

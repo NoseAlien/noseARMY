@@ -37,4 +37,5 @@ private:
 	ADXVector3 prevPos{};
 	ADXVector3 velocity = { 0,0,0 };
 	std::list<PlayerMini> minis{};
+	int splitInterval = 0;
 };
