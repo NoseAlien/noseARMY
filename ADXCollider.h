@@ -29,6 +29,7 @@ public:
     float radius_ = 1;
     ADXVector3 pos_ = { 0,0,0 };
     ADXVector3 scale_ = { 1,1,1 };
+    float pushBackPriority = 0;
 
 private:
     ADXVector3 preTranslation;

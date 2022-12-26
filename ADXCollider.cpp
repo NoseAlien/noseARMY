@@ -279,19 +279,53 @@ void ADXCollider::Collide(ADXCollider* col)
 			ADXVector3 myPushBack = CollideVector(*col);
 			ADXVector3 targetPushBack = col->CollideVector(*this);
 
+			int conditionState[4][3] = { {0,0,0},{1,1,1},{2,2,2},{3,1,2} };
+
+			int pushableCondition = 0;
+			int priorityCondition = 0;
+
 			if (pushable_ && col->pushable_)
 			{
-				myPushBack = myPushBack * 0.5f;
-				targetPushBack = targetPushBack * 0.5f;
+				pushableCondition = 3;
+			}
+			else if (pushable_)
+			{
+				pushableCondition = 1;
+			}
+			else if (col->pushable_)
+			{
+				pushableCondition = 2;
 			}
 
-			if (pushable_)
+			if (pushBackPriority == col->pushBackPriority)
 			{
-				pushBackVector += myPushBack;
+				priorityCondition = 0;
 			}
-			if (col->pushable_)
+			else if (pushBackPriority < col->pushBackPriority)
 			{
+				priorityCondition = 1;
+			}
+			else if (pushBackPriority > col->pushBackPriority)
+			{
+				priorityCondition = 2;
+			}
+
+			int ConditionStateResult = conditionState[pushableCondition][priorityCondition];
+
+			switch (ConditionStateResult)
+			{
+			case 1:
+				pushBackVector += myPushBack;
+				break;
+			case 2:
 				col->pushBackVector += targetPushBack;
+				break;
+			case 3:
+				pushBackVector += myPushBack * 0.5f;
+				col->pushBackVector += targetPushBack * 0.5f;
+				break;
+			default:
+				break;
 			}
 		}
 

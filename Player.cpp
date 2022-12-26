@@ -114,6 +114,8 @@ void Player::VelocityUpdate()
 
 void Player::UniqueUpdate()
 {	
+	colliders.back().pushBackPriority = -1;
+
 	bool moveInput = 
 		!keyboard->KeyPress(config[0]) || keyboard->KeyPress(config[1]) || keyboard->KeyPress(config[2]) || keyboard->KeyPress(config[3]);
 
