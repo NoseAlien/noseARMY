@@ -24,8 +24,6 @@ void ADXCamera::Initialize()
 	up = XMFLOAT3(0, 1, 0);
 	matView = ADXMatrix4::ConvertToADXMatrix(
 		XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up)));
-
-	ADXWorldTransform::StaticInitialize(&matView, &matProjection);
 }
 
 void ADXCamera::UniqueUpdate()
@@ -38,4 +36,6 @@ void ADXCamera::UniqueUpdate()
 	
 	matView = ADXMatrix4::ConvertToADXMatrix(
 		XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up)));
+
+	ADXWorldTransform::SetViewProjection(&matView, &matProjection);
 }

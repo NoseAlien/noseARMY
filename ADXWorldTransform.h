@@ -14,13 +14,14 @@ struct ConstBufferDataTransform {
 /// ワールド変換データ
 /// </summary>
 class ADXWorldTransform {
-public:
+private:
 	// ビュー変換行列
 	static ADXMatrix4* matView_;
 	// 射影変換行列（透視投影）
 	static ADXMatrix4* matProjection_;
 
-	static void StaticInitialize(ADXMatrix4* matView, ADXMatrix4* matProjection);
+public:
+	static void SetViewProjection(ADXMatrix4* matView, ADXMatrix4* matProjection);
 
 public:
 	// 定数バッファ
@@ -43,12 +44,19 @@ public:
 	// スプライトを描画する時など、カメラの位置や奥行きを無視する場合はこれをtrueにする
 	bool rectTransform = false;
 
+public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	void Initialize();
+
 	/// <summary>
 	/// 行列を更新する
 	/// </summary>
 	void UpdateMatrix();
+
+	/// <summary>
+	///定数バッファを更新する
+	/// </summary>
+	void UpdateConstBuffer();
 };

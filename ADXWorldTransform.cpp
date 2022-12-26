@@ -4,7 +4,7 @@
 ADXMatrix4* ADXWorldTransform::matView_ = nullptr;
 ADXMatrix4* ADXWorldTransform::matProjection_ = nullptr;
 
-void ADXWorldTransform::StaticInitialize(ADXMatrix4* matView, ADXMatrix4* matProjection)
+void ADXWorldTransform::SetViewProjection(ADXMatrix4* matView, ADXMatrix4* matProjection)
 {
 	matView_ = matView;
 	matProjection_ = matProjection;
@@ -75,7 +75,10 @@ void ADXWorldTransform::UpdateMatrix()
 		matRot_ *= parent_->matRot_;//e‚Ì‰ñ“]s—ñ‚àŠ|‚¯ŽZ‚·‚é
 		matTrans_ *= parent_->matTrans_;//e‚Ì•½sˆÚ“®s—ñ‚àŠ|‚¯ŽZ‚·‚é
 	}
+}
 
+void ADXWorldTransform::UpdateConstBuffer()
+{
 	//’è”ƒoƒbƒtƒ@‚É“]‘—
 	constMapTransform->matWorld = matWorld_;
 	if (!rectTransform)

@@ -465,6 +465,8 @@ void ADXObject::Draw(UINT64 GpuStartHandle)
 
 	if (model != nullptr)
 	{
+		transform.UpdateConstBuffer();
+
 		gpuDescHandleSRV.ptr = GpuStartHandle + texture.GetGHandle();
 		cmdList->SetGraphicsRootDescriptorTable(1, gpuDescHandleSRV);
 
