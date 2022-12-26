@@ -46,6 +46,8 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	//オブジェクト
 
 	camera_.ADXObject::Initialize();
+	camera_.transform.translation_ = { 0,5,-20 };
+	camera_.transform.rotation_ = { 0.3,0,0 };
 	camera_.Initialize();
 
 	player_.ADXObject::Initialize();
@@ -109,6 +111,7 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	sprite_.material = unlitMat;
 	sprite_.renderLayer = -1;
 
+	objs.push_back(&camera_);
 	objs.push_back(&player_);
 	objs.push_back(&object_);
 	objs.push_back(&object2_);
