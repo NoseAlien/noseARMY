@@ -5,28 +5,10 @@ ADXScene::ADXScene()
 
 }
 
-void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice, const int* set_window_width, const int* set_window_height)
+void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice)
 {
 	keyboard = setKeyboard;
 	device = setDevice;
-	window_width = set_window_width;
-	window_height = set_window_height;
-
-	//射影変換行列（透視投影）
-	matProjection = ADXMatrix4::ConvertToADXMatrix(
-		XMMatrixPerspectiveFovLH(
-			XMConvertToRadians(45.0f),//画角
-			(float)*window_width / *window_height,//アスペクト比
-			0.1f, 1000.0f));//ニア、ファークリップ
-
-	//ビュー変換行列
-	eye = XMFLOAT3(0, 0, -20);
-	target = XMFLOAT3(0, 0, 0);
-	up = XMFLOAT3(0, 1, 0);
-	matView = ADXMatrix4::ConvertToADXMatrix(
-		XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up)));
-
-	ADXWorldTransform::StaticInitialize(&matView, &matProjection);
 
 	//画像
 	napnoseImg = ADXImage::LoadADXImage("napnose.png");
@@ -62,6 +44,9 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	skyDomeModel = ADXModel::LoadModel("skydome/skydome.obj");
 
 	//オブジェクト
+
+	camera_.ADXObject::Initialize();
+	camera_.Initialize();
 
 	player_.ADXObject::Initialize();
 	player_.transform.translation_ = { 0,2,0 };
@@ -137,7 +122,4 @@ void ADXScene::Update()
 	{
 		objs[i]->Update();
 	}
-
-	matView = matView.ConvertToADXMatrix(
-		XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up)));
 }

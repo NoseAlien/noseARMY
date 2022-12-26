@@ -30,10 +30,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		ADXImage::StaticInitialize(adxcommon.GetDevice());
 		ADXModel::StaticInitialize(adxcommon.GetDevice());
 		ADXObject::StaticInitialize(adxcommon.GetDevice(), adxcommon.GetDsvHandle());
+		ADXCamera::StaticInitialize(&ADXWindow::window_width, &ADXWindow::window_height);
 
 		//ゲームシーンの作成
 		ADXScene scene{};
-		scene.Initialize(&keyboard, adxcommon.GetDevice(), &ADXWindow::window_width, &ADXWindow::window_height);
+		scene.Initialize(&keyboard, adxcommon.GetDevice());
 
 
 		//ゲームループ

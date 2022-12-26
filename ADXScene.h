@@ -5,6 +5,7 @@
 #include "ADXMaterial.h"
 #include "ADXWorldTransform.h"
 #include "ADXObject.h"
+#include "ADXCamera.h"
 #include "Player.h"
 #include "ADXImage.h"
 #include "ADXTexAnimation.h"
@@ -18,18 +19,6 @@ public:
 	D3D12_CPU_DESCRIPTOR_HANDLE* srvHandle = nullptr;
 	UINT64* CpuStartHandle = nullptr;
 	UINT* incrementSize = nullptr;
-
-	const int* window_width = nullptr;
-	const int* window_height = nullptr;
-
-	//射影変換行列
-	ADXMatrix4 matProjection{};
-
-	//ビュー変換行列
-	ADXMatrix4 matView{};
-	XMFLOAT3 eye{};
-	XMFLOAT3 target{};
-	XMFLOAT3 up{};
 
 	//画像
 	ADXImage napnoseImg{};
@@ -49,6 +38,9 @@ public:
 	ADXMaterial unlitMat{};
 	ADXMaterial lightShadeMat{};
 
+	//カメラ
+	ADXCamera camera_{};
+
 	//オブジェクト
 	Player player_{};
 	ADXObject object_{};
@@ -59,8 +51,7 @@ public:
 
 public:
 	ADXScene();
-	void Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice,
-		const int* set_window_width, const int* set_window_height);
+	void Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice);
 	void Update();
 
 private:
