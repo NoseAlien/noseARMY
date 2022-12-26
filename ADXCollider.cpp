@@ -12,7 +12,7 @@
 ・互いのオブジェクトの衝突点の座標の差が押し戻しの方向と強さが入ったベクトルになる
 */
 
-std::vector<ADXCollider*> ADXCollider::cols = {};
+std::list<ADXCollider*> ADXCollider::cols = {};
 
 ADXCollider::ADXCollider(ADXObject* obj)
 {
@@ -323,21 +323,21 @@ void ADXCollider::CollidersUpdate()
 
 	//すべてのコライダーで移動距離÷(最小絶対半径×0.95)を求め、最も大きい値をtranslateDivNumFに入れる
 	float translateDivNumF = 1;
-	for (int i = 0; i < cols.size(); i++)
+	for (auto& colItr : cols)
 	{
 		//ついでにcollideListもこのタイミングでリセット
-		cols[i]->collideList.clear();
+		colItr->collideList.clear();
 
 
-		ADXVector3 move = cols[i]->gameObject->transform.translation_ - cols[i]->preTranslation;
+		ADXVector3 move = colItr->gameObject->transform.translation_ - colItr->preTranslation;
 
-		ADXVector3 scaleX1 = { cols[i]->scale_.x,0,0 };
-		ADXVector3 scaleY1 = { 0,cols[i]->scale_.y,0 };
-		ADXVector3 scaleZ1 = { 0,0,cols[i]->scale_.z };
+		ADXVector3 scaleX1 = { colItr->scale_.x,0,0 };
+		ADXVector3 scaleY1 = { 0,colItr->scale_.y,0 };
+		ADXVector3 scaleZ1 = { 0,0,colItr->scale_.z };
 
-		float worldScaleX1 = ADXMatrix4::transform(scaleX1, cols[i]->gameObject->transform.matScale_ * cols[i]->gameObject->transform.matRot_).length();
-		float worldScaleY1 = ADXMatrix4::transform(scaleY1, cols[i]->gameObject->transform.matScale_ * cols[i]->gameObject->transform.matRot_).length();
-		float worldScaleZ1 = ADXMatrix4::transform(scaleZ1, cols[i]->gameObject->transform.matScale_ * cols[i]->gameObject->transform.matRot_).length();
+		float worldScaleX1 = ADXMatrix4::transform(scaleX1, colItr->gameObject->transform.matScale_ * colItr->gameObject->transform.matRot_).length();
+		float worldScaleY1 = ADXMatrix4::transform(scaleY1, colItr->gameObject->transform.matScale_ * colItr->gameObject->transform.matRot_).length();
+		float worldScaleZ1 = ADXMatrix4::transform(scaleZ1, colItr->gameObject->transform.matScale_ * colItr->gameObject->transform.matRot_).length();
 
 		float minimumWorldRadius1 = 1;
 
@@ -363,17 +363,17 @@ void ADXCollider::CollidersUpdate()
 	translateDivNumF = ceilf(translateDivNumF);
 
 	//全てのオブジェクトを移動する前の座標へ移動させる
-	for (int i = 0; i < cols.size(); i++)
+	for (auto& colItr : cols)
 	{
-		cols[i]->gameObject->transform.translation_ = cols[i]->preTranslation;
+		colItr->gameObject->transform.translation_ = colItr->preTranslation;
 	}
 
 	//行列更新のついでに移動する前の座標を保存
 	std::vector<ADXVector3> objsPreTranslation = {};
-	for (int i = 0; i < ADXObject::GetAllObjs().size(); i++)
+	for (auto& objItr : ADXObject::GetAllObjs())
 	{
-		objsPreTranslation.push_back(ADXObject::GetAllObjs()[i]->transform.translation_);
-		ADXObject::GetAllObjs()[i]->transform.UpdateMatrix();
+		objsPreTranslation.push_back(objItr->transform.translation_);
+		objItr->transform.UpdateMatrix();
 	}
 
 	//少しづつ移動させながら当たり判定と押し戻し処理を行う
@@ -389,21 +389,21 @@ void ADXCollider::CollidersUpdate()
 		}
 
 		//当たり判定と押し戻しベクトルの算出
-		for (int j = 0; j < cols.size(); j++)
+		for (auto& colItr1 : cols)
 		{
-			for (int k = j + 1; k < cols.size(); k++)
+			for (auto& colItr2 : cols)
 			{
-				cols[j]->Collide(cols[k]);
-				cols[j]->SendPushBack();
-				cols[k]->SendPushBack();
+				colItr1->Collide(colItr2);
+				colItr1->SendPushBack();
+				colItr2->SendPushBack();
 			}
 		}
 
 		//押し戻し
 		/*
-		for (int j = 0; j < cols.size(); j++)
+		for (auto& colItr : cols)
 		{
-			cols[j]->SendPushBack();
+			colItr->SendPushBack();
 		}
 		*/
 	}

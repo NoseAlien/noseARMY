@@ -138,7 +138,7 @@ void Player::UniqueUpdate()
 			{
 				for (auto& colItr : colliders)
 				{
-					for (auto& colListItr : colItr.collideList)
+					for (auto& colListItr : colItr.GetCollideList())
 					{
 						for (auto& colItr2 : itr.colliders)
 						{
