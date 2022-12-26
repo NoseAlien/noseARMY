@@ -1,6 +1,5 @@
 #pragma once
 
-#include <DirectXMath.h>
 #include "ADXVector3.h"
 
 using namespace DirectX;

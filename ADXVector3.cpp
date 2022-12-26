@@ -15,6 +15,20 @@ ADXVector3::ADXVector3(float x, float y, float z)
 	ADXVector3::z = z;
 }
 
+XMFLOAT3 ADXVector3::ConvertToXMFloat3()
+{
+	XMFLOAT3 ret;
+	ret = { x,y,z };
+	return ret;
+}
+
+ADXVector3 ADXVector3::ConvertToADXVector3(XMFLOAT3 xf3)
+{
+	ADXVector3 ret;
+	ret = { xf3.x,xf3.y,xf3.z };
+	return ret;
+}
+
 float ADXVector3::length() const
 {
 	return sqrt(x * x + y * y + z * z);

@@ -1,5 +1,9 @@
 #pragma once
 
+#include <DirectXMath.h>
+
+using namespace DirectX;
+
 class ADXVector3
 {
 public:
@@ -10,6 +14,8 @@ public:
 public:
 	ADXVector3();
 	ADXVector3(float x, float y, float z);
+
+	XMFLOAT3 ConvertToXMFloat3();
 
 	float length() const;
 	ADXVector3& normalize();
@@ -24,6 +30,9 @@ public:
 	ADXVector3& operator-=(const ADXVector3& v);
 	ADXVector3& operator*=(float s);
 	ADXVector3& operator/=(float s);
+
+public:
+	static ADXVector3 ConvertToADXVector3(XMFLOAT3 xf3);
 };
 
 const ADXVector3 operator+(const ADXVector3& v1, const ADXVector3& v2);

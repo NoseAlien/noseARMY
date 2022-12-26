@@ -30,6 +30,7 @@ void ADXCamera::Initialize()
 
 void ADXCamera::UniqueUpdate()
 {
-	matView = matView.ConvertToADXMatrix(
+
+	matView = ADXMatrix4::ConvertToADXMatrix(
 		XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up)));
 }
