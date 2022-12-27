@@ -163,6 +163,7 @@
     <ClCompile Include="ADXMatrix4.cpp" />
     <ClCompile Include="ADXModel.cpp" />
     <ClCompile Include="ADXObject.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ADXScene.cpp" />
     <ClCompile Include="ADXTexAnimatoin.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="ADXMatrix4.h" />
     <ClInclude Include="ADXModel.h" />
     <ClInclude Include="ADXObject.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ADXScene.h" />
     <ClInclude Include="ADXTexAnimation.h" />
