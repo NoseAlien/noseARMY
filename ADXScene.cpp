@@ -11,11 +11,9 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	device = setDevice;
 
 	//‰æ‘œ
-	napnoseImg = ADXImage::LoadADXImage("napnose.png");
-	MEGNOSE_Img = ADXImage::LoadADXImage("MEGNOSE.png");
-
 	skyDomeImg = ADXImage::LoadADXImage("skydome/Fine_Basin.jpg");
-	whiteDotImg = ADXImage::LoadADXImage("whiteDot.png");
+	MEGNOSE_Img = ADXImage::LoadADXImage("MEGNOSE.png");
+	groundImg = ADXImage::LoadADXImage("GroundBlock.png");
 
 	//ƒ}ƒeƒŠƒAƒ‹
 	material = ADXMaterial::LoadMaterial("material/shade.mtl");
@@ -40,6 +38,7 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	rect.Initialize();
 
 	cube = ADXModel::LoadModel("model/cube.obj");
+	ground = ADXModel::LoadModel("model/groundBlock.obj");
 	playerModel = ADXModel::LoadModel("model/sphere.obj");
 	skyDomeModel = ADXModel::LoadModel("skydome/skydome.obj");
 
@@ -56,7 +55,6 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	player_.transform.scale_ = { 0.5,0.5,0.5 };
 	player_.transform.UpdateMatrix();
 	player_.model = &playerModel;
-	player_.texture = whiteDotImg;
 	player_.colliders.push_back(ADXCollider(&player_));
 	player_.colliders.back().pushable_ = true;
 	player_.material = unlitMat;
@@ -67,36 +65,21 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	object_.transform.rotation_ = { 0,-0.4,0 };
 	object_.transform.scale_ = { 8,0.3,8 };
 	object_.transform.UpdateMatrix();
-	object_.model = &cube;
-	object_.texture = whiteDotImg;
+	object_.model = &ground;
+	object_.texture = groundImg;
 	object_.colliders.push_back(ADXCollider(&object_));
 	object_.colliders.back().colType_ = box;
-	//object_.colliders.back().pushable_ = true;
 	object_.material = lightShadeMat;
 
-	object2_.Initialize();
+	object2_ = ADXObject::Duplicate(object_);
 	object2_.transform.translation_ = { 0,-2,0 };
 	object2_.transform.rotation_ = { 0,0.4,0 };
 	object2_.transform.scale_ = { 8,0.3,8 };
-	object2_.transform.UpdateMatrix();
-	object2_.model = &cube;
-	object2_.texture = whiteDotImg;
-	object2_.colliders.push_back(ADXCollider(&object2_));
-	object2_.colliders.back().colType_ = box;
-	//object2_.colliders.back().pushable_ = true;
-	object2_.material = lightShadeMat;
 
-	object3_.Initialize();
+	object3_ = ADXObject::Duplicate(object_);
 	object3_.transform.translation_ = { 0,-1,0 };
 	object3_.transform.rotation_ = { 0,0,0.3 };
 	object3_.transform.scale_ = { 2,2,2 };
-	object3_.transform.UpdateMatrix();
-	object3_.model = &cube;
-	object3_.texture = whiteDotImg;
-	object3_.colliders.push_back(ADXCollider(&object3_));
-	object3_.colliders.back().colType_ = box;
-	//object3_.colliders.back().pushable_ = true;
-	object3_.material = lightShadeMat;
 
 	skyDome_.Initialize();
 	skyDome_.model = &skyDomeModel;

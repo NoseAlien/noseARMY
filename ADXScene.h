@@ -21,14 +21,14 @@ public:
 	UINT* incrementSize = nullptr;
 
 	//‰æ‘œ
-	ADXImage napnoseImg{};
 	ADXImage MEGNOSE_Img{};
 	ADXImage apEGnoSE_Image{};
 	ADXImage skyDomeImg{};
-	ADXImage whiteDotImg{};
+	ADXImage groundImg{};
 
 	//3Dƒ‚ƒfƒ‹
 	ADXModel cube{};
+	ADXModel ground{};
 	ADXModel rect{};
 	ADXModel playerModel{};
 	ADXModel skyDomeModel{};
