@@ -69,7 +69,7 @@ public: // 静的メンバ関数
 
 	static std::vector<ADXObject*> GetAllObjs();
 
-	static ADXObject Duplicate(ADXObject prefab);
+	static ADXObject Duplicate(ADXObject prefab, bool initCols = false);
 
 private: // 静的メンバ変数
 	// デバイス

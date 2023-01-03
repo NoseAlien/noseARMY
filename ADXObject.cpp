@@ -309,13 +309,16 @@ void ADXObject::InitializeGraphicsPipeline()
 	assert(SUCCEEDED(result));
 }
 
-ADXObject ADXObject::Duplicate(ADXObject prefab)
+ADXObject ADXObject::Duplicate(ADXObject prefab, bool initCols)
 {
 	ADXObject ret = prefab;
 	ret.CreateConstBuffer();
-	for (int i = 0; i < ret.colliders.size(); i++)
+	if (initCols)
 	{
-		ret.colliders[i].Initialize(&ret);
+		for (int i = 0; i < ret.colliders.size(); i++)
+		{
+			ret.colliders[i].Initialize(&ret);
+		}
 	}
 	return ret;
 }

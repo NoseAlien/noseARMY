@@ -72,19 +72,19 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	object_.back().colliders.back().colType_ = box;
 	object_.back().material = lightShadeMat;
 
-	object_.push_back(ADXObject::Duplicate(object_.back()));
+	object_.push_back(ADXObject::Duplicate(object_.back(),true));
 	object_.back().transform.translation_ = { 0,-2,0 };
 	object_.back().transform.rotation_ = { 0,0,0 };
 	object_.back().transform.scale_ = { 10,1,10 };
 	object_.back().transform.UpdateMatrix();
 
-	object_.push_back(ADXObject::Duplicate(object_.back()));
+	object_.push_back(ADXObject::Duplicate(object_.back(), true));
 	object_.back().transform.translation_ = { 0,-1,15 };
 	object_.back().transform.rotation_ = { 0,0,0 };
 	object_.back().transform.scale_ = { 10,1,5 };
 	object_.back().transform.UpdateMatrix();
 
-	object_.push_back(ADXObject::Duplicate(object_.back()));
+	object_.push_back(ADXObject::Duplicate(object_.back(), true));
 	object_.back().transform.translation_ = { 0,10,25 };
 	object_.back().transform.rotation_ = { 0,0,0 };
 	object_.back().transform.scale_ = { 10,10,5 };
