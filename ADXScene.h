@@ -43,9 +43,7 @@ public:
 
 	//オブジェクト
 	Player player_{};
-	ADXObject object_{};
-	ADXObject object2_{};
-	ADXObject object3_{};
+	std::vector<ADXObject> object_{};
 	ADXObject skyDome_{};
 	ADXObject sprite_{};
 

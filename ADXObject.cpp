@@ -313,6 +313,10 @@ ADXObject ADXObject::Duplicate(ADXObject prefab)
 {
 	ADXObject ret = prefab;
 	ret.CreateConstBuffer();
+	for (int i = 0; i < ret.colliders.size(); i++)
+	{
+		ret.colliders[i].Initialize(&ret);
+	}
 	return ret;
 }
 

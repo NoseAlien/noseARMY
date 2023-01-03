@@ -8,12 +8,13 @@
 #include <list>
 #include "ADXObject.h"
 #include "PlayerMini.h"
+#include "ADXCamera.h"
 
 class Player : public ADXObject
 {
 public:
 	Player();
-	void Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfig);
+	void Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfig, ADXCamera* setCamera);
 	bool GetInputStatus(int keyIndex);
 	bool GetInputStatusTrigger(int keyIndex);
 	bool GetInputStatusRelease(int keyIndex);
@@ -33,6 +34,7 @@ private:
 	ADXAudio se{};
 	ADXKeyBoardInput* keyboard = nullptr;
 	std::vector<int> config{};
+	ADXCamera* camera = nullptr;
 
 	ADXVector3 prevPos{};
 	ADXVector3 velocity = { 0,0,0 };

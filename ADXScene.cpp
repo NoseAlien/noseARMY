@@ -58,28 +58,37 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	player_.colliders.push_back(ADXCollider(&player_));
 	player_.colliders.back().pushable_ = true;
 	player_.material = unlitMat;
-	player_.Initialize(keyboard, { DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C });
+	player_.Initialize(keyboard, { DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C },&camera_);
 
-	object_.Initialize();
-	object_.transform.translation_ = { 0,-2,0 };
-	object_.transform.rotation_ = { 0,-0.4,0 };
-	object_.transform.scale_ = { 8,0.3,8 };
-	object_.transform.UpdateMatrix();
-	object_.model = &ground;
-	object_.texture = groundImg;
-	object_.colliders.push_back(ADXCollider(&object_));
-	object_.colliders.back().colType_ = box;
-	object_.material = lightShadeMat;
+	object_.push_back(ADXObject());
+	object_.back().Initialize();
+	object_.back().transform.translation_ = { 0,-1,0 };
+	object_.back().transform.rotation_ = { 0,0,0 };
+	object_.back().transform.scale_ = { 2,2,2 };
+	object_.back().transform.UpdateMatrix();
+	object_.back().model = &ground;
+	object_.back().texture = groundImg;
+	object_.back().colliders.push_back(ADXCollider(&object_.back()));
+	object_.back().colliders.back().colType_ = box;
+	object_.back().material = lightShadeMat;
 
-	object2_ = ADXObject::Duplicate(object_);
-	object2_.transform.translation_ = { 0,-2,0 };
-	object2_.transform.rotation_ = { 0,0.4,0 };
-	object2_.transform.scale_ = { 8,0.3,8 };
+	object_.push_back(ADXObject::Duplicate(object_.back()));
+	object_.back().transform.translation_ = { 0,-2,0 };
+	object_.back().transform.rotation_ = { 0,0,0 };
+	object_.back().transform.scale_ = { 10,1,10 };
+	object_.back().transform.UpdateMatrix();
 
-	object3_ = ADXObject::Duplicate(object_);
-	object3_.transform.translation_ = { 0,-1,0 };
-	object3_.transform.rotation_ = { 0,0,0.3 };
-	object3_.transform.scale_ = { 2,2,2 };
+	object_.push_back(ADXObject::Duplicate(object_.back()));
+	object_.back().transform.translation_ = { 0,-1,15 };
+	object_.back().transform.rotation_ = { 0,0,0 };
+	object_.back().transform.scale_ = { 10,1,5 };
+	object_.back().transform.UpdateMatrix();
+
+	object_.push_back(ADXObject::Duplicate(object_.back()));
+	object_.back().transform.translation_ = { 0,10,25 };
+	object_.back().transform.rotation_ = { 0,0,0 };
+	object_.back().transform.scale_ = { 10,10,5 };
+	object_.back().transform.UpdateMatrix();
 
 	skyDome_.Initialize();
 	skyDome_.model = &skyDomeModel;
@@ -96,16 +105,17 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 
 	objs.push_back(&camera_);
 	objs.push_back(&player_);
-	objs.push_back(&object_);
-	objs.push_back(&object2_);
-	objs.push_back(&object3_);
+	for (auto& itr : object_)
+	{
+		objs.push_back(&itr);
+	}
 	objs.push_back(&sprite_);
 }
 
 void ADXScene::Update()
 {
-	for (int i = 0; i < objs.size(); i++)
+	for (auto& itr : objs)
 	{
-		objs[i]->Update();
+		itr->Update();
 	}
 }

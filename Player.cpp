@@ -5,7 +5,7 @@ Player::Player()
 
 }
 
-void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfig)
+void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfig, ADXCamera* setCamera)
 {
 	keyboard = setKeyboard;
 	config = setConfig;
@@ -42,6 +42,8 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 	nose.model = &rect;
 	nose.texture = noseImage;
 	nose.material = material;
+
+	camera = setCamera;
 }
 
 bool Player::GetInputStatus(int keyIndex)
@@ -116,6 +118,8 @@ void Player::UniqueUpdate()
 {	
 	colliders.back().pushBackPriority = 1;
 
+	camera->transform.translation_ = transform.translation_ + ADXVector3{ 0,5,-20 };
+
 	bool moveInput = 
 		!keyboard->KeyPress(config[0]) || keyboard->KeyPress(config[1]) || keyboard->KeyPress(config[2]) || keyboard->KeyPress(config[3]);
 
@@ -188,4 +192,5 @@ void Player::UniqueUpdate()
 		itr.Update();
 	}
 	nose.Update();
+
 }
