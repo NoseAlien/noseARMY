@@ -16,7 +16,7 @@ void ADXCamera::Initialize()
 		XMMatrixPerspectiveFovLH(
 			XMConvertToRadians(45.0f),//画角
 			(float)*window_width / *window_height,//アスペクト比
-			0.1f, 1000.0f));//ニア、ファークリップ
+			1.0f, 1000.0f));//ニア、ファークリップ
 
 	//ビュー変換行列
 	eye = XMFLOAT3(0, 0, -20);

@@ -28,19 +28,19 @@ void PlayerMini::Move(float walkSpeed, float jumpPower)
 	{
 		if (parent->GetInputStatus(0))
 		{
-			velocity.z += walkSpeed;
+			velocity += parent->GetCameraForward() * walkSpeed;
 		}
 		if (parent->GetInputStatus(1))
 		{
-			velocity.z -= walkSpeed;
+			velocity -= parent->GetCameraForward() * walkSpeed;
 		}
 		if (parent->GetInputStatus(2))
 		{
-			velocity.x += walkSpeed;
+			velocity += parent->GetCameraRight() * walkSpeed;
 		}
 		if (parent->GetInputStatus(3))
 		{
-			velocity.x -= walkSpeed;
+			velocity -= parent->GetCameraRight() * walkSpeed;
 		}
 		transform.rotation_.y = atan2(velocity.x, velocity.z);
 	}

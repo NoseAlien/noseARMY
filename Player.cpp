@@ -67,19 +67,19 @@ void Player::Move(float walkSpeed, float jumpPower)
 	{
 		if (keyboard->KeyPress(config[0]))
 		{
-			velocity.z += walkSpeed;
+			velocity += cameraForward * walkSpeed;
 		}
 		if (keyboard->KeyPress(config[1]))
 		{
-			velocity.z -= walkSpeed;
+			velocity -= cameraForward * walkSpeed;
 		}
 		if (keyboard->KeyPress(config[2]))
 		{
-			velocity.x += walkSpeed;
+			velocity += cameraRight * walkSpeed;
 		}
 		if (keyboard->KeyPress(config[3]))
 		{
-			velocity.x -= walkSpeed;
+			velocity -= cameraRight * walkSpeed;
 		}
 		transform.rotation_.y = atan2(velocity.x, velocity.z);
 	}
@@ -122,6 +122,11 @@ void Player::UniqueUpdate()
 	camera->transform.translation_ = transform.translation_ + cameraVec * 20;
 	camera->transform.translation_.y += 5;
 	camera->transform.rotation_.y = atan2(-cameraVec.x, -cameraVec.z);
+
+	cameraRight = ADXMatrix4::transform({ 1,0,0 }, camera->transform.matRot_);
+	cameraForward = ADXMatrix4::transform({ 0,0,1 }, camera->transform.matRot_);
+	cameraForward.y = 0;
+	cameraForward = ADXVector3::normalized(cameraForward);
 
 
 	colliders.back().pushBackPriority = 1;
