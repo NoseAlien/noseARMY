@@ -116,9 +116,15 @@ void Player::VelocityUpdate()
 
 void Player::UniqueUpdate()
 {	
-	colliders.back().pushBackPriority = 1;
+	ADXVector3 cameraVec = camera->transform.translation_ - transform.translation_;
+	cameraVec.y = 0;
+	cameraVec = ADXVector3::normalized(cameraVec);
+	camera->transform.translation_ = transform.translation_ + cameraVec * 20;
+	camera->transform.translation_.y += 5;
+	camera->transform.rotation_.y = atan2(-cameraVec.x, -cameraVec.z);
 
-	camera->transform.translation_ = transform.translation_ + ADXVector3{ 0,5,-20 };
+
+	colliders.back().pushBackPriority = 1;
 
 	bool moveInput = 
 		!keyboard->KeyPress(config[0]) || keyboard->KeyPress(config[1]) || keyboard->KeyPress(config[2]) || keyboard->KeyPress(config[3]);
