@@ -90,6 +90,30 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	object_.back().transform.scale_ = { 10,10,5 };
 	object_.back().transform.UpdateMatrix();
 
+	object_.push_back(ADXObject::Duplicate(object_.back(), true));
+	object_.back().transform.translation_ = { 0,9,40 };
+	object_.back().transform.rotation_ = { 0,0,0 };
+	object_.back().transform.scale_ = { 9,10,9.9 };
+	object_.back().transform.UpdateMatrix();
+
+	object_.push_back(ADXObject::Duplicate(object_.back(), true));
+	object_.back().transform.translation_ = { 9.5,19.5,40 };
+	object_.back().transform.rotation_ = { 0,0,0 };
+	object_.back().transform.scale_ = { 0.5,0.5,9.9 };
+	object_.back().transform.UpdateMatrix();
+
+	object_.push_back(ADXObject::Duplicate(object_.back(), true));
+	object_.back().transform.translation_ = { -9.5,19.5,40 };
+	object_.back().transform.rotation_ = { 0,0,0 };
+	object_.back().transform.scale_ = { 0.5,0.5,9.9 };
+	object_.back().transform.UpdateMatrix();
+
+	object_.push_back(ADXObject::Duplicate(object_.back(), true));
+	object_.back().transform.translation_ = { 0,19,60 };
+	object_.back().transform.rotation_ = { 0,0,0 };
+	object_.back().transform.scale_ = { 10,1,10 };
+	object_.back().transform.UpdateMatrix();
+
 	skyDome_.Initialize();
 	skyDome_.model = &skyDomeModel;
 	skyDome_.texture = skyDomeImg;
