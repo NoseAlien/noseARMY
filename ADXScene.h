@@ -43,9 +43,8 @@ public:
 
 	//オブジェクト
 	Player player_{};
-	std::vector<ADXObject> object_{};
-	ADXObject skyDome_{};
-	ADXObject sprite_{};
+	std::vector<ADXObject> floors_{};
+	ADXObject backGround_{};
 
 public:
 	ADXScene();

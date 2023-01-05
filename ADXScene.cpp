@@ -60,80 +60,87 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	player_.material = unlitMat;
 	player_.Initialize(keyboard, { DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C },&camera_);
 
-	object_.push_back(ADXObject());
-	object_.back().Initialize();
-	object_.back().transform.translation_ = { 0,-1,0 };
-	object_.back().transform.rotation_ = { 0,0,0 };
-	object_.back().transform.scale_ = { 2,2,2 };
-	object_.back().transform.UpdateMatrix();
-	object_.back().model = &ground;
-	object_.back().texture = groundImg;
-	object_.back().colliders.push_back(ADXCollider(&object_.back()));
-	object_.back().colliders.back().colType_ = box;
-	object_.back().material = lightShadeMat;
+	floors_.push_back(ADXObject());
+	floors_.back().Initialize();
+	floors_.back().transform.translation_ = { 0,-1,0 };
+	floors_.back().transform.rotation_ = { 0,0,0 };
+	floors_.back().transform.scale_ = { 2,2,2 };
+	floors_.back().transform.UpdateMatrix();
+	floors_.back().model = &ground;
+	floors_.back().texture = groundImg;
+	floors_.back().colliders.push_back(ADXCollider(&floors_.back()));
+	floors_.back().colliders.back().colType_ = box;
+	floors_.back().material = lightShadeMat;
 
-	object_.push_back(ADXObject::Duplicate(object_.back(),true));
-	object_.back().transform.translation_ = { 0,-2,0 };
-	object_.back().transform.rotation_ = { 0,0,0 };
-	object_.back().transform.scale_ = { 10,1,10 };
-	object_.back().transform.UpdateMatrix();
+	floors_.push_back(ADXObject::Duplicate(floors_.back(),true));
+	floors_.back().transform.translation_ = { 0,-2,0 };
+	floors_.back().transform.rotation_ = { 0,0,0 };
+	floors_.back().transform.scale_ = { 10,1,10 };
+	floors_.back().transform.UpdateMatrix();
 
-	object_.push_back(ADXObject::Duplicate(object_.back(), true));
-	object_.back().transform.translation_ = { 0,-1,15 };
-	object_.back().transform.rotation_ = { 0,0,0 };
-	object_.back().transform.scale_ = { 10,1,5 };
-	object_.back().transform.UpdateMatrix();
+	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
+	floors_.back().transform.translation_ = { 0,-1,15 };
+	floors_.back().transform.rotation_ = { 0,0,0 };
+	floors_.back().transform.scale_ = { 10,1,5 };
+	floors_.back().transform.UpdateMatrix();
 
-	object_.push_back(ADXObject::Duplicate(object_.back(), true));
-	object_.back().transform.translation_ = { 0,10,25 };
-	object_.back().transform.rotation_ = { 0,0,0 };
-	object_.back().transform.scale_ = { 10,10,5 };
-	object_.back().transform.UpdateMatrix();
+	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
+	floors_.back().transform.translation_ = { 0,10,25 };
+	floors_.back().transform.rotation_ = { 0,0,0 };
+	floors_.back().transform.scale_ = { 10,10,5 };
+	floors_.back().transform.UpdateMatrix();
 
-	object_.push_back(ADXObject::Duplicate(object_.back(), true));
-	object_.back().transform.translation_ = { 0,9,40 };
-	object_.back().transform.rotation_ = { 0,0,0 };
-	object_.back().transform.scale_ = { 9,10,9.9 };
-	object_.back().transform.UpdateMatrix();
+	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
+	floors_.back().transform.translation_ = { 0,9,40 };
+	floors_.back().transform.rotation_ = { 0,0,0 };
+	floors_.back().transform.scale_ = { 10,10,9.9 };
+	floors_.back().transform.UpdateMatrix();
 
-	object_.push_back(ADXObject::Duplicate(object_.back(), true));
-	object_.back().transform.translation_ = { 9.5,19.5,40 };
-	object_.back().transform.rotation_ = { 0,0,0 };
-	object_.back().transform.scale_ = { 0.5,0.5,9.9 };
-	object_.back().transform.UpdateMatrix();
+	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
+	floors_.back().transform.translation_ = { 9.5,19.5,40 };
+	floors_.back().transform.rotation_ = { 0,0,0 };
+	floors_.back().transform.scale_ = { 0.5,0.5,9.9 };
+	floors_.back().transform.UpdateMatrix();
 
-	object_.push_back(ADXObject::Duplicate(object_.back(), true));
-	object_.back().transform.translation_ = { -9.5,19.5,40 };
-	object_.back().transform.rotation_ = { 0,0,0 };
-	object_.back().transform.scale_ = { 0.5,0.5,9.9 };
-	object_.back().transform.UpdateMatrix();
+	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
+	floors_.back().transform.translation_ = { -9.5,19.5,40 };
+	floors_.back().transform.rotation_ = { 0,0,0 };
+	floors_.back().transform.scale_ = { 0.5,0.5,9.9 };
+	floors_.back().transform.UpdateMatrix();
 
-	object_.push_back(ADXObject::Duplicate(object_.back(), true));
-	object_.back().transform.translation_ = { 0,19,60 };
-	object_.back().transform.rotation_ = { 0,0,0 };
-	object_.back().transform.scale_ = { 10,1,10 };
-	object_.back().transform.UpdateMatrix();
+	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
+	floors_.back().transform.translation_ = { 0,19,60 };
+	floors_.back().transform.rotation_ = { 0,0,0 };
+	floors_.back().transform.scale_ = { 10,1,10 };
+	floors_.back().transform.UpdateMatrix();
 
-	skyDome_.Initialize();
-	skyDome_.model = &skyDomeModel;
-	skyDome_.texture = skyDomeImg;
-	skyDome_.material = material;
+	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
+	floors_.back().transform.translation_ = { 0,18,77 };
+	floors_.back().transform.rotation_ = { 0.5,0,0 };
+	floors_.back().transform.scale_ = { 10,9,1 };
+	floors_.back().transform.UpdateMatrix();
 
-	sprite_.Initialize();
-	sprite_.transform.rectTransform = true;
-	sprite_.transform.UpdateMatrix();
-	sprite_.model = &rect;
-	sprite_.texture = MEGNOSE_Img;
-	sprite_.material = unlitMat;
-	sprite_.renderLayer = -1;
+	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
+	floors_.back().transform.translation_ = { 0,10,61 };
+	floors_.back().transform.rotation_ = { 0,0,0 };
+	floors_.back().transform.scale_ = { 10,1,11 };
+	floors_.back().transform.UpdateMatrix();
+
+	backGround_.Initialize();
+	backGround_.transform.rectTransform = true;
+	backGround_.transform.UpdateMatrix();
+	backGround_.model = &rect;
+	backGround_.texture = MEGNOSE_Img;
+	backGround_.material = unlitMat;
+	backGround_.renderLayer = -1;
 
 	objs.push_back(&camera_);
 	objs.push_back(&player_);
-	for (auto& itr : object_)
+	for (auto& itr : floors_)
 	{
 		objs.push_back(&itr);
 	}
-	objs.push_back(&sprite_);
+	objs.push_back(&backGround_);
 }
 
 void ADXScene::Update()
