@@ -121,9 +121,45 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.translation_ = { 0,10,61 };
+	floors_.back().transform.translation_ = { 4,10,61 };
 	floors_.back().transform.rotation_ = { 0,0,0 };
-	floors_.back().transform.scale_ = { 10,1,11 };
+	floors_.back().transform.scale_ = { 14,1,11 };
+	floors_.back().transform.UpdateMatrix();
+
+	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
+	floors_.back().transform.translation_ = { 13.5,10,93 };
+	floors_.back().transform.rotation_ = { 0,0,0 };
+	floors_.back().transform.scale_ = { 4.5,1,21 };
+	floors_.back().transform.UpdateMatrix();
+
+	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
+	floors_.back().transform.translation_ = { 10,11.5,85 };
+	floors_.back().transform.rotation_ = { 0,0,0 };
+	floors_.back().transform.scale_ = { 1,0.5,11 };
+	floors_.back().transform.UpdateMatrix();
+	
+	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
+	floors_.back().transform.translation_ = { 11,11.8,114 };
+	floors_.back().transform.rotation_ = { 0,0,0 };
+	floors_.back().transform.scale_ = { 6,0.1,0.1 };
+	floors_.back().transform.UpdateMatrix();
+
+	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
+	floors_.back().transform.translation_ = { 5,10.75,112 };
+	floors_.back().transform.rotation_ = { 0,0,0 };
+	floors_.back().transform.scale_ = { 4,0.25,2 };
+	floors_.back().transform.UpdateMatrix();
+
+	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
+	floors_.back().transform.translation_ = { 1,11.8,112 };
+	floors_.back().transform.rotation_ = { 0,0,0 };
+	floors_.back().transform.scale_ = { 0.1,0.1,2 };
+	floors_.back().transform.UpdateMatrix();
+
+	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
+	floors_.back().transform.translation_ = { 3,8,112 };
+	floors_.back().transform.rotation_ = { 0,0,0 };
+	floors_.back().transform.scale_ = { 6,1,6 };
 	floors_.back().transform.UpdateMatrix();
 
 	backGround_.Initialize();
