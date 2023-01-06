@@ -337,8 +337,11 @@ void ADXCollider::Collide(ADXCollider* col)
 //先のCollidersUpdateで別のコライダーにぶつかっていたらオブジェクトを押し戻す
 void ADXCollider::SendPushBack()
 {
-	gameObject->transform.translation_ += pushBackVector;
-	gameObject->transform.UpdateMatrix();
+	if (pushable_)
+	{
+		gameObject->transform.translation_ += pushBackVector;
+		gameObject->transform.UpdateMatrix();
+	}
 	preTranslation = gameObject->transform.translation_;
 	preMatrix = gameObject->transform.matWorld_;
 	pushBackVector = { 0,0,0 };
@@ -427,9 +430,12 @@ void ADXCollider::CollidersUpdate()
 		{
 			for (auto& colItr2 : cols)
 			{
-				colItr1->Collide(colItr2);
-				colItr1->SendPushBack();
-				colItr2->SendPushBack();
+				if (&colItr1 != &colItr2)
+				{
+					colItr1->Collide(colItr2);
+					colItr1->SendPushBack();
+					colItr2->SendPushBack();
+				}
 			}
 		}
 

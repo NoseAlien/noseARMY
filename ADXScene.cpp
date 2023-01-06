@@ -93,19 +93,19 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
 	floors_.back().transform.translation_ = { 0,9,40 };
 	floors_.back().transform.rotation_ = { 0,0,0 };
-	floors_.back().transform.scale_ = { 10,10,9.9 };
+	floors_.back().transform.scale_ = { 10,10,10 };
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
 	floors_.back().transform.translation_ = { 9.5,19.5,40 };
 	floors_.back().transform.rotation_ = { 0,0,0 };
-	floors_.back().transform.scale_ = { 0.5,0.5,9.9 };
+	floors_.back().transform.scale_ = { 0.5,0.5,10 };
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
 	floors_.back().transform.translation_ = { -9.5,19.5,40 };
 	floors_.back().transform.rotation_ = { 0,0,0 };
-	floors_.back().transform.scale_ = { 0.5,0.5,9.9 };
+	floors_.back().transform.scale_ = { 0.5,0.5,10 };
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
@@ -154,6 +154,12 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	floors_.back().transform.translation_ = { 1,11.8,112 };
 	floors_.back().transform.rotation_ = { 0,0,0 };
 	floors_.back().transform.scale_ = { 0.1,0.1,2 };
+	floors_.back().transform.UpdateMatrix();
+
+	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
+	floors_.back().transform.translation_ = { 3,6,112 };
+	floors_.back().transform.rotation_ = { 0,0,0 };
+	floors_.back().transform.scale_ = { 6,1,6 };
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
