@@ -9,7 +9,6 @@
 #include "Player.h"
 #include "ADXImage.h"
 #include "ADXTexAnimation.h"
-#include <typeinfo>
 
 class ADXScene
 {
@@ -43,7 +42,8 @@ public:
 
 	//オブジェクト
 	Player player_{};
-	std::vector<ADXObject> floors_{};
+	std::list<ADXObject> floors_{};
+	std::list<TutorialArea> tutorialAreas_{};
 	ADXObject backGround_{};
 
 public:
@@ -53,5 +53,5 @@ public:
 
 private:
 	//全てのオブジェクト
-	std::vector<ADXObject*> objs{};
+	std::list<ADXObject*> objs{};
 };

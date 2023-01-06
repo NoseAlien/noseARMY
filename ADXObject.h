@@ -67,7 +67,7 @@ public: // Ã“Iƒƒ“ƒoŠÖ”
 	// •`‰æŒãˆ—
 	static void PostDraw();
 
-	static std::vector<ADXObject*> GetAllObjs();
+	static std::vector<ADXObject*> GetObjs() { return objs; };
 
 	static ADXObject Duplicate(ADXObject prefab, bool initCols = false);
 

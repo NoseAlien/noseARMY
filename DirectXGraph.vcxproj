@@ -173,6 +173,7 @@
     <ClCompile Include="ADXWorldTransform.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PlayerMini.cpp" />
+    <ClCompile Include="TutorialArea.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ADXAudio.h" />
@@ -196,6 +197,7 @@
     <ClInclude Include="ADXWindow.h" />
     <ClInclude Include="ADXWorldTransform.h" />
     <ClInclude Include="PlayerMini.h" />
+    <ClInclude Include="TutorialArea.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\OBJPixelShader.hlsl">

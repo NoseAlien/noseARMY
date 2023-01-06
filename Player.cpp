@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "ADXUtility.h"
 
 Player::Player()
 {
@@ -42,6 +43,16 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 	nose.model = &rect;
 	nose.texture = noseImage;
 	nose.material = material;
+
+	tutorialWindow.Initialize();
+	tutorialWindow.transform.translation_ = { 0.65,-0.65,0 };
+	tutorialWindow.transform.scale_ = { 0,0,0 };
+	tutorialWindow.transform.rectTransform = true;
+	tutorialWindow.transform.UpdateMatrix();
+	tutorialWindow.model = &rect;
+	tutorialWindow.texture = ADXImage::LoadADXImage("WhiteDot.png");
+	tutorialWindow.material = material;
+	tutorialWindow.renderLayer = 1;
 
 	camera = setCamera;
 }
@@ -204,4 +215,33 @@ void Player::UniqueUpdate()
 	}
 	nose.Update();
 
+	bool windowExtend = false;
+	for (auto& objItr : TutorialArea::GetAreas())
+	{
+		for (auto& colItr : colliders)
+		{
+			for (auto& colItr2 : colItr.GetCollideList())
+			{
+				if (colItr2->GetGameObject() == objItr)
+				{
+					tutorialWindow.texture = objItr->GetTutorialImg();
+					windowExtend = true;
+				}
+			}
+		}
+	}
+
+	if (windowExtend)
+	{
+		tutorialWindowExAmount += 0.1;
+	}
+	else
+	{
+		tutorialWindowExAmount -= 0.1;
+	}
+	tutorialWindowExAmount = max(0,min(tutorialWindowExAmount,1));
+
+	tutorialWindow.transform.scale_ = ADXUtility::Lerp({ 0,0.3,0 }, { 0.3,0.3,0 },tutorialWindowExAmount);
+
+	tutorialWindow.Update();
 }

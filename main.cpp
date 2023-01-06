@@ -48,6 +48,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			keyboard.Update();
 			scene.Update();
 			ADXObject::StaticUpdate();
+			//この下にあるゲーム専用の更新部分は後でまとめる
+			TutorialArea::StaticUpdate();
 			ADXCollider::CollidersUpdate();
 
 			adxcommon.PreDraw();

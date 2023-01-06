@@ -8,6 +8,7 @@
 #include <list>
 #include "ADXObject.h"
 #include "PlayerMini.h"
+#include "TutorialArea.h"
 #include "ADXCamera.h"
 
 class Player : public ADXObject
@@ -36,6 +37,7 @@ private:
 	ADXAudio se{};
 	ADXKeyBoardInput* keyboard = nullptr;
 	std::vector<int> config{};
+	ADXObject tutorialWindow{};
 	ADXCamera* camera = nullptr;
 
 	ADXVector3 prevPos{};
@@ -44,4 +46,5 @@ private:
 	ADXVector3 cameraForward{};
 	std::list<PlayerMini> minis{};
 	int splitInterval = 0;
+	float tutorialWindowExAmount = 0;
 };

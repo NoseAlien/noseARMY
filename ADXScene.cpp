@@ -70,7 +70,7 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	floors_.back().texture = groundImg;
 	floors_.back().colliders.push_back(ADXCollider(&floors_.back()));
 	floors_.back().colliders.back().colType_ = box;
-	floors_.back().material = lightShadeMat;
+	floors_.back().material = unlitMat;
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(),true));
 	floors_.back().transform.translation_ = { 0,-2,0 };
@@ -137,36 +137,71 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	floors_.back().transform.rotation_ = { 0,0,0 };
 	floors_.back().transform.scale_ = { 1,0.5,11 };
 	floors_.back().transform.UpdateMatrix();
-	
+
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.translation_ = { 11,11.8,114 };
+	floors_.back().transform.translation_ = { 3,10.75,112 };
 	floors_.back().transform.rotation_ = { 0,0,0 };
-	floors_.back().transform.scale_ = { 6,0.1,0.1 };
+	floors_.back().transform.scale_ = { 6,0.25,2 };
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.translation_ = { 5,10.75,112 };
-	floors_.back().transform.rotation_ = { 0,0,0 };
-	floors_.back().transform.scale_ = { 4,0.25,2 };
-	floors_.back().transform.UpdateMatrix();
-
-	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.translation_ = { 1,11.8,112 };
-	floors_.back().transform.rotation_ = { 0,0,0 };
-	floors_.back().transform.scale_ = { 0.1,0.1,2 };
-	floors_.back().transform.UpdateMatrix();
-
-	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.translation_ = { 3,6,112 };
+	floors_.back().transform.translation_ = { 3,9.5,112 };
 	floors_.back().transform.rotation_ = { 0,0,0 };
 	floors_.back().transform.scale_ = { 6,1,6 };
 	floors_.back().transform.UpdateMatrix();
 
-	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.translation_ = { 3,8,112 };
-	floors_.back().transform.rotation_ = { 0,0,0 };
-	floors_.back().transform.scale_ = { 6,1,6 };
-	floors_.back().transform.UpdateMatrix();
+	TutorialArea newArea;
+	ADXObject* newAreaObj;
+
+	tutorialAreas_.push_back(TutorialArea());
+	tutorialAreas_.back().ADXObject::Initialize();
+	tutorialAreas_.back().transform.translation_ = { 0,3,0 };
+	tutorialAreas_.back().transform.rotation_ = { 0,0,0 };
+	tutorialAreas_.back().transform.scale_ = { 4,4,4 };
+	tutorialAreas_.back().transform.UpdateMatrix();
+	//tutorialAreas_.back().model = &ground;
+	//tutorialAreas_.back().texture = groundImg;
+	tutorialAreas_.back().colliders.push_back(ADXCollider(&tutorialAreas_.back()));
+	tutorialAreas_.back().colliders.back().isTrigger = true;
+	tutorialAreas_.back().colliders.back().colType_ = box;
+	tutorialAreas_.back().Initialize(ADXImage::LoadADXImage("tutorial_move.png"));
+
+	newAreaObj = &newArea;
+	*newAreaObj = ADXObject::Duplicate(tutorialAreas_.back(), true);
+	tutorialAreas_.push_back(newArea);
+	tutorialAreas_.back().transform.translation_ = { 0,0,8 };
+	tutorialAreas_.back().transform.rotation_ = { 0,0,0 };
+	tutorialAreas_.back().transform.scale_ = { 10,1,2 };
+	tutorialAreas_.back().transform.UpdateMatrix();
+	tutorialAreas_.back().Initialize(ADXImage::LoadADXImage("tutorial_jump.png"));
+
+	newAreaObj = &newArea;
+	*newAreaObj = ADXObject::Duplicate(tutorialAreas_.back(), true);
+	tutorialAreas_.push_back(newArea);
+	tutorialAreas_.back().transform.translation_ = { 0,10,15 };
+	tutorialAreas_.back().transform.rotation_ = { 0,0,0 };
+	tutorialAreas_.back().transform.scale_ = { 10,10,5 };
+	tutorialAreas_.back().transform.UpdateMatrix();
+	tutorialAreas_.back().Initialize(ADXImage::LoadADXImage("tutorial_jump_2.png"));
+
+	newAreaObj = &newArea;
+	*newAreaObj = ADXObject::Duplicate(tutorialAreas_.back(), true);
+	tutorialAreas_.push_back(newArea);
+	tutorialAreas_.back().transform.translation_ = { 0,22,38 };
+	tutorialAreas_.back().transform.rotation_ = { 0,0,0 };
+	tutorialAreas_.back().transform.scale_ = { 10,3,15 };
+	tutorialAreas_.back().transform.UpdateMatrix();
+	tutorialAreas_.back().Initialize(ADXImage::LoadADXImage("tutorial_army.png"));
+
+	newAreaObj = &newArea;
+	*newAreaObj = ADXObject::Duplicate(tutorialAreas_.back(), true);
+	tutorialAreas_.push_back(newArea);
+	tutorialAreas_.back().transform.translation_ = { 3,15.5,112 };
+	tutorialAreas_.back().transform.rotation_ = { 0,0,0 };
+	tutorialAreas_.back().transform.scale_ = { 6,5,6 };
+	tutorialAreas_.back().transform.UpdateMatrix();
+	tutorialAreas_.back().Initialize(ADXImage::LoadADXImage("tutorial_army_2.png"));
+
 
 	backGround_.Initialize();
 	backGround_.transform.rectTransform = true;
@@ -179,6 +214,10 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	objs.push_back(&camera_);
 	objs.push_back(&player_);
 	for (auto& itr : floors_)
+	{
+		objs.push_back(&itr);
+	}
+	for (auto& itr : tutorialAreas_)
 	{
 		objs.push_back(&itr);
 	}

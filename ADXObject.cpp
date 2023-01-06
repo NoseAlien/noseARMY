@@ -47,11 +47,6 @@ void ADXObject::Initialize()
 	CreateConstBuffer();
 }
 
-std::vector<ADXObject*> ADXObject::GetAllObjs()
-{
-	return objs;
-}
-
 void ADXObject::CreateConstBuffer()
 {
 	if (device != nullptr)
