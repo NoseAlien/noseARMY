@@ -150,6 +150,18 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	floors_.back().transform.scale_ = { 6,1,6 };
 	floors_.back().transform.UpdateMatrix();
 
+	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
+	floors_.back().transform.translation_ = { -18.5,-14.8,112 };
+	floors_.back().transform.rotation_ = { 0,0,1 };
+	floors_.back().transform.scale_ = { 30,1,2 };
+	floors_.back().transform.UpdateMatrix();
+
+	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
+	floors_.back().transform.translation_ = { -40,-60,112 };
+	floors_.back().transform.rotation_ = { 0,0,0 };
+	floors_.back().transform.scale_ = { 6,1,6 };
+	floors_.back().transform.UpdateMatrix();
+
 	TutorialArea newArea;
 	ADXObject* newAreaObj;
 
