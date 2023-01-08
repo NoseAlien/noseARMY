@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "ADXUtility.h"
+#include <time.h>
 
 Player::Player()
 {
@@ -241,7 +242,8 @@ void Player::UniqueUpdate()
 	}
 	tutorialWindowExAmount = max(0,min(tutorialWindowExAmount,1));
 
-	tutorialWindow.transform.scale_ = ADXUtility::Lerp({ 0,0.3,0 }, { 0.3,0.3,0 },tutorialWindowExAmount);
+	tutorialWindow.transform.scale_ = ADXUtility::Lerp({ 0,0.3,0 }, { 0.3,0.3,0 },ADXUtility::EaseOut(tutorialWindowExAmount,4));
+	tutorialWindow.transform.translation_ = { 0.65,-0.65f + sin(clock() * 0.002f) * 0.01f,0};
 
 	tutorialWindow.Update();
 }

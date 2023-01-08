@@ -1,19 +1,40 @@
 #include "ADXUtility.h"
 #include <math.h>
 
+
+
 ADXVector3 ADXUtility::Lerp(ADXVector3 nowPos, ADXVector3 newPos, float progress)
 {
 	ADXVector3 ret;
-	if (progress > 1)
-	{
-		progress = 1;
-	}
-	if (progress < 0)
-	{
-		progress = 0;
-	}
+	progress = fmax(0, fmin(progress, 1));
+
 	ret = nowPos + ((newPos - nowPos) * progress);
 	return ret;
+}
+
+float ADXUtility::Lerp(float nowPos, float newPos, float progress)
+{
+	float ret;
+	progress = fmax(0, fmin(progress, 1));
+
+	ret = nowPos + ((newPos - nowPos) * progress);
+	return ret;
+}
+
+float ADXUtility::EaseIn(float progress, float powNum)
+{
+	progress = fmax(0, fmin(progress, 1));
+
+	progress = pow(progress, powNum);
+	return progress;
+}
+
+float ADXUtility::EaseOut(float progress, float powNum)
+{
+	progress = fmax(0, fmin(progress, 1));
+
+	progress = 1 - pow(1 - progress, powNum);
+	return progress;
 }
 
 //角度の差を求める　目的の角度へゆっくり向ける時に使ってみよう
