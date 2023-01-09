@@ -39,6 +39,7 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 
 	cube = ADXModel::LoadModel("model/cube.obj");
 	ground = ADXModel::LoadModel("model/groundBlock.obj");
+	battleBox = ADXModel::LoadModel("model/battleBox.obj");
 	playerModel = ADXModel::LoadModel("model/sphere.obj");
 	skyDomeModel = ADXModel::LoadModel("skydome/skydome.obj");
 
@@ -171,7 +172,7 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	tutorialAreas_.back().transform.rotation_ = { 0,0,0 };
 	tutorialAreas_.back().transform.scale_ = { 4,4,4 };
 	tutorialAreas_.back().transform.UpdateMatrix();
-	tutorialAreas_.back().model = &ground;
+	tutorialAreas_.back().model = &battleBox;
 	tutorialAreas_.back().texture = battleFieldImg;
 	tutorialAreas_.back().colliders.push_back(ADXCollider(&tutorialAreas_.back()));
 	tutorialAreas_.back().colliders.back().isTrigger = true;
