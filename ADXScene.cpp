@@ -14,11 +14,11 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	skyDomeImg = ADXImage::LoadADXImage("skydome/Fine_Basin.jpg");
 	MEGNOSE_Img = ADXImage::LoadADXImage("MEGNOSE.png");
 	groundImg = ADXImage::LoadADXImage("GroundBlock.png");
+	battleFieldImg = ADXImage::LoadADXImage("battleField.png");
 
 	//É}ÉeÉäÉAÉã
 	material = ADXMaterial::LoadMaterial("material/shade.mtl");
 	unlitMat = ADXMaterial::LoadMaterial("material/unlit.mtl");
-	lightShadeMat = ADXMaterial::LoadMaterial("material/lightShade.mtl");
 
 	rect.vertices = {
 		{{-1.0f,-1.0f,0.0f},{}, {0.0f,1.0f}},//ç∂â∫
@@ -171,8 +171,8 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	tutorialAreas_.back().transform.rotation_ = { 0,0,0 };
 	tutorialAreas_.back().transform.scale_ = { 4,4,4 };
 	tutorialAreas_.back().transform.UpdateMatrix();
-	//tutorialAreas_.back().model = &ground;
-	//tutorialAreas_.back().texture = groundImg;
+	tutorialAreas_.back().model = &ground;
+	tutorialAreas_.back().texture = battleFieldImg;
 	tutorialAreas_.back().colliders.push_back(ADXCollider(&tutorialAreas_.back()));
 	tutorialAreas_.back().colliders.back().isTrigger = true;
 	tutorialAreas_.back().colliders.back().colType_ = box;

@@ -24,6 +24,7 @@ public:
 	ADXImage apEGnoSE_Image{};
 	ADXImage skyDomeImg{};
 	ADXImage groundImg{};
+	ADXImage battleFieldImg{};
 
 	//3Dモデル
 	ADXModel cube{};
@@ -35,7 +36,6 @@ public:
 	//マテリアル
 	ADXMaterial material{};
 	ADXMaterial unlitMat{};
-	ADXMaterial lightShadeMat{};
 
 	//カメラ
 	ADXCamera camera_{};
