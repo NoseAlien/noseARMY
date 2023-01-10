@@ -42,7 +42,7 @@ void PlayerMini::Move(float walkSpeed, float jumpPower)
 		{
 			velocity -= parent->GetCameraRight() * walkSpeed;
 		}
-		transform.rotation_.y = atan2(velocity.x, velocity.z);
+		transform.localEulerAngles_.y = atan2(velocity.x, velocity.z);
 	}
 
 	if (parent->GetInputStatusTrigger(4))
@@ -57,20 +57,20 @@ void PlayerMini::Move(float walkSpeed, float jumpPower)
 
 void PlayerMini::VelocityInitialize()
 {
-	prevPos = transform.translation_;
+	prevPos = transform.localPosition_;
 }
 
 void PlayerMini::VelocityMove(float drag)
 {
-	velocity = transform.translation_ - prevPos;
-	prevPos = transform.translation_;
+	velocity = transform.localPosition_ - prevPos;
+	prevPos = transform.localPosition_;
 
 	velocity *= drag;
 }
 
 void PlayerMini::VelocityUpdate()
 {
-	transform.translation_ += velocity;
+	transform.localPosition_ += velocity;
 	transform.UpdateMatrix();
 }
 

@@ -46,14 +46,14 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	//オブジェクト
 
 	camera_.ADXObject::Initialize();
-	camera_.transform.translation_ = { 0,5,-20 };
-	camera_.transform.rotation_ = { 0.3,0,0 };
+	camera_.transform.localPosition_ = { 0,5,-20 };
+	camera_.transform.localEulerAngles_ = { 0.3,0,0 };
 	camera_.Initialize();
 
 	player_.ADXObject::Initialize();
-	player_.transform.translation_ = { 0,2,0 };
-	player_.transform.rotation_ = { 0,0,0 };
-	player_.transform.scale_ = { 0.5,0.5,0.5 };
+	player_.transform.localPosition_ = { 0,2,0 };
+	player_.transform.localEulerAngles_ = { 0,0,0 };
+	player_.transform.localScale_ = { 0.5,0.5,0.5 };
 	player_.transform.UpdateMatrix();
 	player_.model = &playerModel;
 	player_.colliders.push_back(ADXCollider(&player_));
@@ -63,9 +63,9 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 
 	floors_.push_back(ADXObject());
 	floors_.back().Initialize();
-	floors_.back().transform.translation_ = { 0,-1,0 };
-	floors_.back().transform.rotation_ = { 0,0,0 };
-	floors_.back().transform.scale_ = { 2,2,2 };
+	floors_.back().transform.localPosition_ = { 0,-1,0 };
+	floors_.back().transform.localEulerAngles_ = { 0,0,0 };
+	floors_.back().transform.localScale_ = { 2,2,2 };
 	floors_.back().transform.UpdateMatrix();
 	floors_.back().model = &ground;
 	floors_.back().texture = groundImg;
@@ -74,93 +74,93 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	floors_.back().material = unlitMat;
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(),true));
-	floors_.back().transform.translation_ = { 0,-2,0 };
-	floors_.back().transform.rotation_ = { 0,0,0 };
-	floors_.back().transform.scale_ = { 10,1,10 };
+	floors_.back().transform.localPosition_ = { 0,-2,0 };
+	floors_.back().transform.localEulerAngles_ = { 0,0,0 };
+	floors_.back().transform.localScale_ = { 10,1,10 };
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.translation_ = { 0,-1,15 };
-	floors_.back().transform.rotation_ = { 0,0,0 };
-	floors_.back().transform.scale_ = { 10,1,5 };
+	floors_.back().transform.localPosition_ = { 0,-1,15 };
+	floors_.back().transform.localEulerAngles_ = { 0,0,0 };
+	floors_.back().transform.localScale_ = { 10,1,5 };
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.translation_ = { 0,10,25 };
-	floors_.back().transform.rotation_ = { 0,0,0 };
-	floors_.back().transform.scale_ = { 10,10,5 };
+	floors_.back().transform.localPosition_ = { 0,10,25 };
+	floors_.back().transform.localEulerAngles_ = { 0,0,0 };
+	floors_.back().transform.localScale_ = { 10,10,5 };
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.translation_ = { 0,9,40 };
-	floors_.back().transform.rotation_ = { 0,0,0 };
-	floors_.back().transform.scale_ = { 10,10,10 };
+	floors_.back().transform.localPosition_ = { 0,9,40 };
+	floors_.back().transform.localEulerAngles_ = { 0,0,0 };
+	floors_.back().transform.localScale_ = { 10,10,10 };
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.translation_ = { 9.5,19.5,40 };
-	floors_.back().transform.rotation_ = { 0,0,0 };
-	floors_.back().transform.scale_ = { 0.5,0.5,10 };
+	floors_.back().transform.localPosition_ = { 9.5,19.5,40 };
+	floors_.back().transform.localEulerAngles_ = { 0,0,0 };
+	floors_.back().transform.localScale_ = { 0.5,0.5,10 };
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.translation_ = { -9.5,19.5,40 };
-	floors_.back().transform.rotation_ = { 0,0,0 };
-	floors_.back().transform.scale_ = { 0.5,0.5,10 };
+	floors_.back().transform.localPosition_ = { -9.5,19.5,40 };
+	floors_.back().transform.localEulerAngles_ = { 0,0,0 };
+	floors_.back().transform.localScale_ = { 0.5,0.5,10 };
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.translation_ = { 0,19,60 };
-	floors_.back().transform.rotation_ = { 0,0,0 };
-	floors_.back().transform.scale_ = { 10,1,10 };
+	floors_.back().transform.localPosition_ = { 0,19,60 };
+	floors_.back().transform.localEulerAngles_ = { 0,0,0 };
+	floors_.back().transform.localScale_ = { 10,1,10 };
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.translation_ = { 0,18,77 };
-	floors_.back().transform.rotation_ = { 0.5,0,0 };
-	floors_.back().transform.scale_ = { 10,9,1 };
+	floors_.back().transform.localPosition_ = { 0,18,77 };
+	floors_.back().transform.localEulerAngles_ = { 0.5,0,0 };
+	floors_.back().transform.localScale_ = { 10,9,1 };
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.translation_ = { 4,10,61 };
-	floors_.back().transform.rotation_ = { 0,0,0 };
-	floors_.back().transform.scale_ = { 14,1,11 };
+	floors_.back().transform.localPosition_ = { 4,10,61 };
+	floors_.back().transform.localEulerAngles_ = { 0,0,0 };
+	floors_.back().transform.localScale_ = { 14,1,11 };
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.translation_ = { 13.5,10,93 };
-	floors_.back().transform.rotation_ = { 0,0,0 };
-	floors_.back().transform.scale_ = { 4.5,1,21 };
+	floors_.back().transform.localPosition_ = { 13.5,10,93 };
+	floors_.back().transform.localEulerAngles_ = { 0,0,0 };
+	floors_.back().transform.localScale_ = { 4.5,1,21 };
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.translation_ = { 10,11.5,85 };
-	floors_.back().transform.rotation_ = { 0,0,0 };
-	floors_.back().transform.scale_ = { 1,0.5,11 };
+	floors_.back().transform.localPosition_ = { 10,11.5,85 };
+	floors_.back().transform.localEulerAngles_ = { 0,0,0 };
+	floors_.back().transform.localScale_ = { 1,0.5,11 };
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.translation_ = { 3,10.75,112 };
-	floors_.back().transform.rotation_ = { 0,0,0 };
-	floors_.back().transform.scale_ = { 6,0.25,2 };
+	floors_.back().transform.localPosition_ = { 3,10.75,112 };
+	floors_.back().transform.localEulerAngles_ = { 0,0,0 };
+	floors_.back().transform.localScale_ = { 6,0.25,2 };
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.translation_ = { 3,9.5,112 };
-	floors_.back().transform.rotation_ = { 0,0,0 };
-	floors_.back().transform.scale_ = { 6,1,6 };
+	floors_.back().transform.localPosition_ = { 3,9.5,112 };
+	floors_.back().transform.localEulerAngles_ = { 0,0,0 };
+	floors_.back().transform.localScale_ = { 6,1,6 };
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.translation_ = { -18.5,-14.8,112 };
-	floors_.back().transform.rotation_ = { 0,0,1 };
-	floors_.back().transform.scale_ = { 30,1,2 };
+	floors_.back().transform.localPosition_ = { -18.5,-14.8,112 };
+	floors_.back().transform.localEulerAngles_ = { 0,0,1 };
+	floors_.back().transform.localScale_ = { 30,1,2 };
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.translation_ = { -40,-60,112 };
-	floors_.back().transform.rotation_ = { 0,0,0 };
-	floors_.back().transform.scale_ = { 6,1,6 };
+	floors_.back().transform.localPosition_ = { -40,-60,112 };
+	floors_.back().transform.localEulerAngles_ = { 0,0,0 };
+	floors_.back().transform.localScale_ = { 6,1,6 };
 	floors_.back().transform.UpdateMatrix();
 
 	TutorialArea newArea;
@@ -168,9 +168,9 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 
 	tutorialAreas_.push_back(TutorialArea());
 	tutorialAreas_.back().ADXObject::Initialize();
-	tutorialAreas_.back().transform.translation_ = { 0,3,0 };
-	tutorialAreas_.back().transform.rotation_ = { 0,0,0 };
-	tutorialAreas_.back().transform.scale_ = { 4,4,4 };
+	tutorialAreas_.back().transform.localPosition_ = { 0,3,0 };
+	tutorialAreas_.back().transform.localEulerAngles_ = { 0,0,0 };
+	tutorialAreas_.back().transform.localScale_ = { 4,4,4 };
 	tutorialAreas_.back().transform.UpdateMatrix();
 	tutorialAreas_.back().model = &battleBox;
 	tutorialAreas_.back().texture = battleFieldImg;
@@ -182,36 +182,36 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	newAreaObj = &newArea;
 	*newAreaObj = ADXObject::Duplicate(tutorialAreas_.back(), true);
 	tutorialAreas_.push_back(newArea);
-	tutorialAreas_.back().transform.translation_ = { 0,0,8 };
-	tutorialAreas_.back().transform.rotation_ = { 0,0,0 };
-	tutorialAreas_.back().transform.scale_ = { 10,1,2 };
+	tutorialAreas_.back().transform.localPosition_ = { 0,0,8 };
+	tutorialAreas_.back().transform.localEulerAngles_ = { 0,0,0 };
+	tutorialAreas_.back().transform.localScale_ = { 10,1,2 };
 	tutorialAreas_.back().transform.UpdateMatrix();
 	tutorialAreas_.back().Initialize(ADXImage::LoadADXImage("tutorial_jump.png"));
 
 	newAreaObj = &newArea;
 	*newAreaObj = ADXObject::Duplicate(tutorialAreas_.back(), true);
 	tutorialAreas_.push_back(newArea);
-	tutorialAreas_.back().transform.translation_ = { 0,10,15 };
-	tutorialAreas_.back().transform.rotation_ = { 0,0,0 };
-	tutorialAreas_.back().transform.scale_ = { 10,10,5 };
+	tutorialAreas_.back().transform.localPosition_ = { 0,10,15 };
+	tutorialAreas_.back().transform.localEulerAngles_ = { 0,0,0 };
+	tutorialAreas_.back().transform.localScale_ = { 10,10,5 };
 	tutorialAreas_.back().transform.UpdateMatrix();
 	tutorialAreas_.back().Initialize(ADXImage::LoadADXImage("tutorial_jump_2.png"));
 
 	newAreaObj = &newArea;
 	*newAreaObj = ADXObject::Duplicate(tutorialAreas_.back(), true);
 	tutorialAreas_.push_back(newArea);
-	tutorialAreas_.back().transform.translation_ = { 0,22,38 };
-	tutorialAreas_.back().transform.rotation_ = { 0,0,0 };
-	tutorialAreas_.back().transform.scale_ = { 10,3,15 };
+	tutorialAreas_.back().transform.localPosition_ = { 0,22,38 };
+	tutorialAreas_.back().transform.localEulerAngles_ = { 0,0,0 };
+	tutorialAreas_.back().transform.localScale_ = { 10,3,15 };
 	tutorialAreas_.back().transform.UpdateMatrix();
 	tutorialAreas_.back().Initialize(ADXImage::LoadADXImage("tutorial_army.png"));
 
 	newAreaObj = &newArea;
 	*newAreaObj = ADXObject::Duplicate(tutorialAreas_.back(), true);
 	tutorialAreas_.push_back(newArea);
-	tutorialAreas_.back().transform.translation_ = { 3,15.5,112 };
-	tutorialAreas_.back().transform.rotation_ = { 0,0,0 };
-	tutorialAreas_.back().transform.scale_ = { 6,5,6 };
+	tutorialAreas_.back().transform.localPosition_ = { 3,15.5,112 };
+	tutorialAreas_.back().transform.localEulerAngles_ = { 0,0,0 };
+	tutorialAreas_.back().transform.localScale_ = { 6,5,6 };
 	tutorialAreas_.back().transform.UpdateMatrix();
 	tutorialAreas_.back().Initialize(ADXImage::LoadADXImage("tutorial_army_2.png"));
 

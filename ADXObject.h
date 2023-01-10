@@ -43,6 +43,7 @@ public:
 	ADXImage texture{};
 	std::vector<ADXCollider> colliders{};
 	int renderLayer = 0;
+	bool alphaTex = false;
 
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffB1 = nullptr;
 
@@ -80,8 +81,10 @@ private: // 静的メンバ変数
 	static ID3D12GraphicsCommandList* cmdList;
 	// ルートシグネチャ
 	static Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature;
-	// パイプラインステートオブジェクト
+	// パイプラインステートオブジェクト（不透明オブジェクト用）
 	static Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState;
+	// パイプラインステートオブジェクト（半透明オブジェクト用）
+	static Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineStateAlpha;
 	// デスクリプタヒープ
 	static Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descHeap;
 	// 頂点バッファ

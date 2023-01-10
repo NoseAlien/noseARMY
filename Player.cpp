@@ -36,9 +36,9 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 	texture = furImage;
 
 	nose.Initialize();
-	nose.transform.translation_ = { 0,0,1.01f };
-	nose.transform.rotation_ = { 0,3.1415f,0 };
-	nose.transform.scale_ = { 0.42,0.35,0.35 };
+	nose.transform.localPosition_ = { 0,0,1.01f };
+	nose.transform.localEulerAngles_ = { 0,3.1415f,0 };
+	nose.transform.localScale_ = { 0.42,0.35,0.35 };
 	nose.transform.parent_ = &transform;
 	nose.transform.UpdateMatrix();
 	nose.model = &rect;
@@ -46,8 +46,8 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 	nose.material = material;
 
 	tutorialWindow.Initialize();
-	tutorialWindow.transform.translation_ = { 0.65,-0.65,0 };
-	tutorialWindow.transform.scale_ = { 0,0,0 };
+	tutorialWindow.transform.localPosition_ = { 0.65,-0.65,0 };
+	tutorialWindow.transform.localScale_ = { 0,0,0 };
 	tutorialWindow.transform.rectTransform = true;
 	tutorialWindow.transform.UpdateMatrix();
 	tutorialWindow.model = &rect;
@@ -93,7 +93,7 @@ void Player::Move(float walkSpeed, float jumpPower)
 		{
 			velocity -= cameraRight * walkSpeed;
 		}
-		transform.rotation_.y = atan2(velocity.x, velocity.z);
+		transform.localEulerAngles_.y = atan2(velocity.x, velocity.z);
 	}
 
 	if (keyboard->KeyTrigger(config[4]))
@@ -109,31 +109,31 @@ void Player::Move(float walkSpeed, float jumpPower)
 
 void Player::VelocityInitialize()
 {
-	prevPos = transform.translation_;
+	prevPos = transform.localPosition_;
 }
 
 void Player::VelocityMove(float drag)
 {
-	velocity = transform.translation_ - prevPos;
-	prevPos = transform.translation_;
+	velocity = transform.localPosition_ - prevPos;
+	prevPos = transform.localPosition_;
 
 	velocity *= drag;
 }
 
 void Player::VelocityUpdate()
 {
-	transform.translation_ += velocity;
+	transform.localPosition_ += velocity;
 	transform.UpdateMatrix();
 }
 
 void Player::UniqueUpdate()
 {	
-	ADXVector3 cameraVec = camera->transform.translation_ - transform.translation_;
+	ADXVector3 cameraVec = camera->transform.localPosition_ - transform.localPosition_;
 	cameraVec.y = 0;
 	cameraVec = ADXVector3::normalized(cameraVec);
-	camera->transform.translation_ = transform.translation_ + cameraVec * 20;
-	camera->transform.translation_.y += 5;
-	camera->transform.rotation_.y = atan2(-cameraVec.x, -cameraVec.z);
+	camera->transform.localPosition_ = transform.localPosition_ + cameraVec * 20;
+	camera->transform.localPosition_.y += 5;
+	camera->transform.localEulerAngles_.y = atan2(-cameraVec.x, -cameraVec.z);
 
 	cameraRight = ADXMatrix4::transform({ 1,0,0 }, camera->transform.matRot_);
 	cameraForward = ADXMatrix4::transform({ 0,0,1 }, camera->transform.matRot_);
@@ -181,34 +181,34 @@ void Player::UniqueUpdate()
 		return false; });
 	}
 
-	nose.transform.scale_ = ADXVector3{ 0.42,0.35,0.35 } * max(1,1 + pow(max(0, splitInterval),2) * 0.02);
+	nose.transform.localScale_ = ADXVector3{ 0.42,0.35,0.35 } * max(1,1 + pow(max(0, splitInterval),2) * 0.02);
 
-	nose.transform.rotation_.z *= 0.9f;
+	nose.transform.localEulerAngles_.z *= 0.9f;
 
 	splitInterval--;
 	splitInterval = max(-20, splitInterval);
 
 	if (keyboard->KeyRelease(config[5]) && splitInterval <= 0)
 	{
-		nose.transform.scale_ = { 0.42,0.35,0.35 };
-		nose.transform.rotation_ = { 0,3.1415f,0 };
+		nose.transform.localScale_ = { 0.42,0.35,0.35 };
+		nose.transform.localEulerAngles_ = { 0,3.1415f,0 };
 		if (minis.size() < 20)
 		{
 			PlayerMini mini;
 			ADXObject* miniObj = &mini;
 			*miniObj = Duplicate(*this);
-			mini.transform.scale_ *= 0.7f;
-			mini.transform.translation_ = ADXMatrix4::transform({ 0,0,1.8f }, transform.matWorld_);
+			mini.transform.localScale_ *= 0.7f;
+			mini.transform.localPosition_ = ADXMatrix4::transform({ 0,0,1.8f }, transform.matWorld_);
 
 			mini.Initialize(this, nose);
 			minis.push_back(mini);
 		}
-		nose.transform.rotation_.z = 10;
+		nose.transform.localEulerAngles_.z = 10;
 		splitInterval = 7;
 	}
 
 	minis.remove_if([=](auto& itr) 
-		{ return ADXMatrix4::transform(itr.transform.translation_, transform.matWorld_.Inverse()).length() > 60; });
+		{ return ADXMatrix4::transform(itr.transform.localPosition_, transform.matWorld_.Inverse()).length() > 60; });
 
 	for (auto& itr : minis)
 	{
@@ -242,8 +242,8 @@ void Player::UniqueUpdate()
 	}
 	tutorialWindowExAmount = max(0,min(tutorialWindowExAmount,1));
 
-	tutorialWindow.transform.scale_ = ADXUtility::Lerp({ 0,0.3,0 }, { 0.3,0.3,0 },ADXUtility::EaseOut(tutorialWindowExAmount,4));
-	tutorialWindow.transform.translation_ = { 0.65,-0.65f + sin(clock() * 0.002f) * 0.01f,0};
+	tutorialWindow.transform.localScale_ = ADXUtility::Lerp({ 0,0.3,0 }, { 0.3,0.3,0 },ADXUtility::EaseOut(tutorialWindowExAmount,4));
+	tutorialWindow.transform.localPosition_ = { 0.65,-0.65f + sin(clock() * 0.002f) * 0.01f,0};
 
 	tutorialWindow.Update();
 }

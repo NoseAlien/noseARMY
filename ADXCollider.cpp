@@ -21,7 +21,7 @@ ADXCollider::ADXCollider(ADXObject* obj)
 
 void ADXCollider::UniqueInitialize()
 {
-	preTranslation = gameObject->transform.translation_;
+	preTranslation = gameObject->transform.localPosition_;
 	preMatrix = gameObject->transform.matWorld_;
 }
 
@@ -339,10 +339,10 @@ void ADXCollider::SendPushBack()
 {
 	if (pushable_)
 	{
-		gameObject->transform.translation_ += pushBackVector;
+		gameObject->transform.localPosition_ += pushBackVector;
 		gameObject->transform.UpdateMatrix();
 	}
-	preTranslation = gameObject->transform.translation_;
+	preTranslation = gameObject->transform.localPosition_;
 	preMatrix = gameObject->transform.matWorld_;
 	pushBackVector = { 0,0,0 };
 }
@@ -355,7 +355,7 @@ void ADXCollider::CollidersUpdate()
 	std::vector<ADXVector3> objsTranslation = {};
 	for (int i = 0; i < ADXObject::GetObjs().size(); i++)
 	{
-		objsTranslation.push_back(ADXObject::GetObjs()[i]->transform.translation_);
+		objsTranslation.push_back(ADXObject::GetObjs()[i]->transform.localPosition_);
 	}
 
 	//すべてのコライダーで移動距離÷(最小絶対半径×0.95)を求め、最も大きい値をtranslateDivNumFに入れる
@@ -366,7 +366,7 @@ void ADXCollider::CollidersUpdate()
 		colItr->collideList.clear();
 
 
-		ADXVector3 move = colItr->gameObject->transform.translation_ - colItr->preTranslation;
+		ADXVector3 move = colItr->gameObject->transform.localPosition_ - colItr->preTranslation;
 
 		ADXVector3 scaleX1 = { colItr->scale_.x,0,0 };
 		ADXVector3 scaleY1 = { 0,colItr->scale_.y,0 };
@@ -402,14 +402,14 @@ void ADXCollider::CollidersUpdate()
 	//全てのオブジェクトを移動する前の座標へ移動させる
 	for (auto& colItr : cols)
 	{
-		colItr->gameObject->transform.translation_ = colItr->preTranslation;
+		colItr->gameObject->transform.localPosition_ = colItr->preTranslation;
 	}
 
 	//行列更新のついでに移動する前の座標を保存
 	std::vector<ADXVector3> objsPreTranslation = {};
 	for (auto& objItr : ADXObject::GetObjs())
 	{
-		objsPreTranslation.push_back(objItr->transform.translation_);
+		objsPreTranslation.push_back(objItr->transform.localPosition_);
 		objItr->transform.UpdateMatrix();
 	}
 
@@ -421,7 +421,7 @@ void ADXCollider::CollidersUpdate()
 		{
 			ADXVector3 move = objsTranslation[j] - objsPreTranslation[j];
 
-			ADXObject::GetObjs()[j]->transform.translation_ += move / translateDivNumF;
+			ADXObject::GetObjs()[j]->transform.localPosition_ += move / translateDivNumF;
 			ADXObject::GetObjs()[j]->transform.UpdateMatrix();
 		}
 

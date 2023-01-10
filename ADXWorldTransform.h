@@ -29,11 +29,11 @@ public:
 	// マッピング済みアドレス
 	ConstBufferDataTransform* constMapTransform = nullptr;
 	// ローカルスケール
-	ADXVector3 scale_ = { 1, 1, 1 };
-	// X,Y,Z軸回りのローカル回転角
-	ADXVector3 rotation_ = { 0, 0, 0 };
+	ADXVector3 localScale_ = { 1, 1, 1 };
+	// X,Y,Z軸回りのローカルオイラー角
+	ADXVector3 localEulerAngles_ = { 0, 0, 0 };
 	// ローカル座標
-	ADXVector3 translation_ = { 0, 0, 0 };
+	ADXVector3 localPosition_ = { 0, 0, 0 };
 	// ローカル → ワールド変換行列
 	ADXMatrix4 matTrans_;
 	ADXMatrix4 matRot_;
@@ -59,4 +59,9 @@ public:
 	///定数バッファを更新する
 	/// </summary>
 	void UpdateConstBuffer();
+
+	/// <summary>
+	///ワールド座標を取得する
+	/// </summary>
+	ADXVector3 GetWorldPosition();
 };

@@ -7,6 +7,7 @@ UINT ADXObject::descriptorHandleIncrementSize = 0;
 ID3D12GraphicsCommandList* ADXObject::cmdList = nullptr;
 Microsoft::WRL::ComPtr<ID3D12RootSignature> ADXObject::rootSignature;
 Microsoft::WRL::ComPtr<ID3D12PipelineState> ADXObject::pipelineState;
+Microsoft::WRL::ComPtr<ID3D12PipelineState> ADXObject::pipelineStateAlpha;
 Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> ADXObject::descHeap;
 Microsoft::WRL::ComPtr<ID3D12Resource> ADXObject::vertBuff;
 Microsoft::WRL::ComPtr<ID3D12Resource> ADXObject::indexBuff;
@@ -302,6 +303,13 @@ void ADXObject::InitializeGraphicsPipeline()
 	// パイプラインステートの生成
 	result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
 	assert(SUCCEEDED(result));
+
+	//デプスステンシルステートの設定
+	pipelineDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO; //書き込み不可
+
+	// パイプラインステートの生成
+	result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineStateAlpha));
+	assert(SUCCEEDED(result));
 }
 
 ADXObject ADXObject::Duplicate(ADXObject prefab, bool initCols)
@@ -380,8 +388,7 @@ void ADXObject::StaticDraw(ID3D12DescriptorHeap* srvHeap)
 	cmdList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 	UINT64 GpuStartHandle = srvGpuHandle.ptr;
 
-	// パイプラインステートとルートシグネチャの設定コマンド
-	cmdList->SetPipelineState(pipelineState.Get());
+	// ルートシグネチャの設定コマンド
 	cmdList->SetGraphicsRootSignature(rootSignature.Get());
 
 	int minLayer = 0;
@@ -410,12 +417,14 @@ void ADXObject::StaticDraw(ID3D12DescriptorHeap* srvHeap)
 	{
 		std::vector<ADXObject*> thisLayerObjPtr;
 
+		// パイプラインステートの設定コマンド
+		cmdList->SetPipelineState(pipelineState.Get());
 		//全ピクセルの深度バッファ値を最奥の1.0にする
 		cmdList->ClearDepthStencilView(*dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 		for (int i = 0; i < allObjPtr.size(); i++)
 		{
-			if (allObjPtr[i]->renderLayer  == nowLayer)
+			if (allObjPtr[i]->renderLayer == nowLayer)
 			{
 				thisLayerObjPtr.push_back(allObjPtr[i]);
 			}
@@ -430,16 +439,9 @@ void ADXObject::StaticDraw(ID3D12DescriptorHeap* srvHeap)
 			{
 				thisLayerObjPtr[j]->transform.UpdateMatrix();
 				float zDepth;
-				if (thisLayerObjPtr[j]->transform.parent_ == nullptr)
-				{
-					zDepth = ADXMatrix4::transform(thisLayerObjPtr[j]->transform.translation_, matView).z;
-				}
-				else
-				{
-					zDepth = ADXMatrix4::transform(ADXMatrix4::transform(thisLayerObjPtr[j]->transform.translation_, thisLayerObjPtr[j]->transform.parent_->matWorld_), matView).z;
-				}
+				zDepth = ADXMatrix4::transform(thisLayerObjPtr[j]->transform.GetWorldPosition(), matView).length();
 
-				if (zDepth >= dist)
+				if (zDepth <= dist)
 				{
 					dist = zDepth;
 					target = j;

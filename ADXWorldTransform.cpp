@@ -20,29 +20,29 @@ void ADXWorldTransform::UpdateMatrix()
 	//////Šgk//////
 	//ƒXƒP[ƒŠƒ“ƒO”{—¦‚ðs—ñ‚ÉÝ’è‚·‚é
 	matScale_ =
-	{ scale_.x,0,0,0,
-	0,scale_.y,0,0,
-	0,0,scale_.z,0,
+	{ localScale_.x,0,0,0,
+	0,localScale_.y,0,0,
+	0,0,localScale_.z,0,
 	0,0,0,1 };
 
 	//////‰ñ“]//////
 	//ZŽ²‰ñ“]s—ñ‚ðéŒ¾
 	ADXMatrix4 matRotZ =
-	{ (float)cos(rotation_.z),(float)sin(rotation_.z),0,0,
-	(float)-sin(rotation_.z),(float)cos(rotation_.z),0,0,
+	{ (float)cos(localEulerAngles_.z),(float)sin(localEulerAngles_.z),0,0,
+	(float)-sin(localEulerAngles_.z),(float)cos(localEulerAngles_.z),0,0,
 	0,0,1,0,
 	0,0,0,1 };
 	//XŽ²‰ñ“]s—ñ‚ðéŒ¾
 	ADXMatrix4 matRotX =
 	{ 1,0,0,0,
-	0,(float)cos(rotation_.x),(float)sin(rotation_.x),0,
-	0,(float)-sin(rotation_.x),(float)cos(rotation_.x),0,
+	0,(float)cos(localEulerAngles_.x),(float)sin(localEulerAngles_.x),0,
+	0,(float)-sin(localEulerAngles_.x),(float)cos(localEulerAngles_.x),0,
 	0,0,0,1 };
 	//YŽ²‰ñ“]s—ñ‚ðéŒ¾
 	ADXMatrix4 matRotY =
-	{ (float)cos(rotation_.y),0,(float)-sin(rotation_.y),0,
+	{ (float)cos(localEulerAngles_.y),0,(float)-sin(localEulerAngles_.y),0,
 	0,1,0,0,
-	(float)sin(rotation_.y),0,(float)cos(rotation_.y),0,
+	(float)sin(localEulerAngles_.y),0,(float)cos(localEulerAngles_.y),0,
 	0,0,0,1 };
 
 	//‡¬—p‰ñ“]s—ñ‚ðéŒ¾‚µAZXY‚Ì‡‚É‡¬
@@ -56,7 +56,7 @@ void ADXWorldTransform::UpdateMatrix()
 	{ 1,0,0,0,
 	0,1,0,0,
 	0,0,1,0,
-	translation_.x,translation_.y,translation_.z,1 };
+	localPosition_.x,localPosition_.y,localPosition_.z,1 };
 
 
 	//’PˆÊs—ñ‚ð‘ã“ü
@@ -86,4 +86,10 @@ void ADXWorldTransform::UpdateConstBuffer()
 		constMapTransform->matWorld *= *matView_;
 		constMapTransform->matWorld *= *matProjection_;
 	}
+}
+
+ADXVector3 ADXWorldTransform::GetWorldPosition()
+{
+	UpdateMatrix();
+	return ADXMatrix4::transform({0,0,0}, matWorld_);
 }
