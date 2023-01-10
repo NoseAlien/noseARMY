@@ -13,8 +13,8 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 	config = setConfig;
 	VelocityInitialize();
 	jumpSE = ADXAudio::SoundLoadWave("Resources/sound/jump.wav");
+	damageSE = ADXAudio::SoundLoadWave("Resources/sound/damage.wav");
 	windowOpenSE = ADXAudio::SoundLoadWave("Resources/sound/windowOpen.wav");
-	windowCloseSE = ADXAudio::SoundLoadWave("Resources/sound/windowClose.wav");
 
 	noseImage = ADXImage::LoadADXImage("apEGnoSE.png");
 	furImage = ADXImage::LoadADXImage("apEG_fur.png");
@@ -273,10 +273,6 @@ void Player::UniqueUpdate()
 	if (windowOpening && !prevwindowOpening)
 	{
 		windowOpenSE.SoundPlayWave();
-	}
-	if (windowClosing && !prevwindowClosing)
-	{
-		windowCloseSE.SoundPlayWave();
 	}
 
 	if (!windowClosing)

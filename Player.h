@@ -37,7 +37,6 @@ private:
 	ADXAudio jumpSE{};
 	ADXAudio damageSE{};
 	ADXAudio windowOpenSE{};
-	ADXAudio windowCloseSE{};
 
 	ADXKeyBoardInput* keyboard = nullptr;
 	std::vector<int> config{};
