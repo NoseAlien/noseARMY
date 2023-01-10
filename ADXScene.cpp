@@ -163,6 +163,7 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	floors_.back().transform.localScale_ = { 6,1,6 };
 	floors_.back().transform.UpdateMatrix();
 
+
 	TutorialArea newArea;
 	ADXObject* newAreaObj;
 
@@ -200,9 +201,9 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	newAreaObj = &newArea;
 	*newAreaObj = ADXObject::Duplicate(tutorialAreas_.back(), true);
 	tutorialAreas_.push_back(newArea);
-	tutorialAreas_.back().transform.localPosition_ = { 0,22,38 };
+	tutorialAreas_.back().transform.localPosition_ = { 0,23,38 };
 	tutorialAreas_.back().transform.localEulerAngles_ = { 0,0,0 };
-	tutorialAreas_.back().transform.localScale_ = { 10,3,15 };
+	tutorialAreas_.back().transform.localScale_ = { 10,4,15 };
 	tutorialAreas_.back().transform.UpdateMatrix();
 	tutorialAreas_.back().Initialize(ADXImage::LoadADXImage("tutorial_army.png"));
 
@@ -214,6 +215,20 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	tutorialAreas_.back().transform.localScale_ = { 6,5,6 };
 	tutorialAreas_.back().transform.UpdateMatrix();
 	tutorialAreas_.back().Initialize(ADXImage::LoadADXImage("tutorial_army_2.png"));
+
+
+	FieldBox newField;
+	ADXObject* newFieldObj;
+
+	fields_.push_back(FieldBox());
+	fields_.back().ADXObject::Initialize();
+	fields_.back().transform.localPosition_ = { 0,13,35 };
+	fields_.back().transform.localEulerAngles_ = { 0,0,0 };
+	fields_.back().transform.localScale_ = { 10,14,45 };
+	fields_.back().transform.UpdateMatrix();
+	fields_.back().colliders.push_back(ADXCollider(&fields_.back()));
+	fields_.back().colliders.back().isTrigger = true;
+	fields_.back().colliders.back().colType_ = box;
 
 
 	backGround_.Initialize();
@@ -231,6 +246,10 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 		objs.push_back(&itr);
 	}
 	for (auto& itr : tutorialAreas_)
+	{
+		objs.push_back(&itr);
+	}
+	for (auto& itr : fields_)
 	{
 		objs.push_back(&itr);
 	}

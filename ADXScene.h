@@ -7,6 +7,7 @@
 #include "ADXObject.h"
 #include "ADXCamera.h"
 #include "Player.h"
+#include "FieldBox.h"
 #include "ADXImage.h"
 #include "ADXTexAnimation.h"
 
@@ -45,6 +46,8 @@ public:
 	Player player_{};
 	std::list<ADXObject> floors_{};
 	std::list<TutorialArea> tutorialAreas_{};
+	std::list<FieldBox> fields_{};
+
 	ADXObject backGround_{};
 
 public:

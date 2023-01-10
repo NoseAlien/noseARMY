@@ -93,3 +93,15 @@ ADXVector3 ADXWorldTransform::GetWorldPosition()
 	UpdateMatrix();
 	return ADXMatrix4::transform({0,0,0}, matWorld_);
 }
+
+void ADXWorldTransform::SetWorldPosition(ADXVector3 worldPos)
+{
+	if (parent_ == nullptr)
+	{
+		localPosition_ = worldPos;
+	}
+	else
+	{
+		localPosition_ = ADXMatrix4::transform(worldPos, parent_->matWorld_.Inverse());
+	}
+}

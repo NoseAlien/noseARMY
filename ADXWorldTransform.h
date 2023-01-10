@@ -64,4 +64,9 @@ public:
 	///ワールド座標を取得する
 	/// </summary>
 	ADXVector3 GetWorldPosition();
+
+	/// <summary>
+///ワールド座標を代入する
+/// </summary>
+	void SetWorldPosition(ADXVector3 worldPos);
 };
