@@ -173,8 +173,6 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	tutorialAreas_.back().transform.localEulerAngles_ = { 0,0,0 };
 	tutorialAreas_.back().transform.localScale_ = { 4,4,4 };
 	tutorialAreas_.back().transform.UpdateMatrix();
-	tutorialAreas_.back().model = &battleBox;
-	tutorialAreas_.back().texture = battleFieldImg;
 	tutorialAreas_.back().colliders.push_back(ADXCollider(&tutorialAreas_.back()));
 	tutorialAreas_.back().colliders.back().isTrigger = true;
 	tutorialAreas_.back().colliders.back().colType_ = box;
@@ -222,6 +220,8 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 
 	fields_.push_back(FieldBox());
 	fields_.back().ADXObject::Initialize();
+	fields_.back().model = &battleBox;
+	fields_.back().texture = battleFieldImg;
 	fields_.back().transform.localPosition_ = { 0,13,35 };
 	fields_.back().transform.localEulerAngles_ = { 0,0,0 };
 	fields_.back().transform.localScale_ = { 10,14,45 };
@@ -229,6 +229,14 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	fields_.back().colliders.push_back(ADXCollider(&fields_.back()));
 	fields_.back().colliders.back().isTrigger = true;
 	fields_.back().colliders.back().colType_ = box;
+
+	newFieldObj = &newField;
+	*newFieldObj = ADXObject::Duplicate(fields_.back(), true);
+	fields_.push_back(newField);
+	fields_.back().transform.localPosition_ = { 13.5,15,82 };
+	fields_.back().transform.localEulerAngles_ = { 0,0,0 };
+	fields_.back().transform.localScale_ = { 4.5,5,32 };
+	fields_.back().transform.UpdateMatrix();
 
 
 	backGround_.Initialize();

@@ -50,6 +50,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			ADXObject::StaticUpdate();
 			//この下にあるゲーム専用の更新部分は後でまとめる
 			TutorialArea::StaticUpdate();
+			FieldBox::StaticUpdate();
 			ADXCollider::CollidersUpdate();
 
 			adxcommon.PreDraw();

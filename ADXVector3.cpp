@@ -103,6 +103,11 @@ ADXVector3& ADXVector3::operator/=(float s)
 	return *this;
 }
 
+bool ADXVector3::operator==(const ADXVector3& v)const
+{
+	return this->x == v.x && this->y == v.y && this->z == v.z;
+}
+
 const ADXVector3 operator+(const ADXVector3& v1, const ADXVector3& v2)
 {
 	ADXVector3 temp(v1);

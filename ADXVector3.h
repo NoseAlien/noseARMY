@@ -31,6 +31,8 @@ public:
 	ADXVector3& operator*=(float s);
 	ADXVector3& operator/=(float s);
 
+	bool operator==(const ADXVector3& v) const;
+
 public:
 	static ADXVector3 ConvertToADXVector3(XMFLOAT3 xf3);
 };
