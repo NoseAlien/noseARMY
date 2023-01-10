@@ -12,7 +12,10 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 	keyboard = setKeyboard;
 	config = setConfig;
 	VelocityInitialize();
-	se = ADXAudio::SoundLoadWave("Resources/sound/jump.wav");
+	jumpSE = ADXAudio::SoundLoadWave("Resources/sound/jump.wav");
+	windowOpenSE = ADXAudio::SoundLoadWave("Resources/sound/windowOpen.wav");
+	windowCloseSE = ADXAudio::SoundLoadWave("Resources/sound/windowClose.wav");
+
 	noseImage = ADXImage::LoadADXImage("apEGnoSE.png");
 	furImage = ADXImage::LoadADXImage("apEG_fur.png");
 
@@ -99,7 +102,7 @@ void Player::Move(float walkSpeed, float jumpPower)
 	if (keyboard->KeyTrigger(config[4]))
 	{
 		velocity.y = jumpPower;
-		se.SoundPlayWave();
+		jumpSE.SoundPlayWave();
 	}
 	if (keyboard->KeyRelease(config[4]) && velocity.y > 0)
 	{
@@ -216,6 +219,8 @@ void Player::UniqueUpdate()
 	}
 	nose.Update();
 
+	ADXImage prevTutorialImg = tutorialWindow.texture;
+	ADXImage setTutorialImg = prevTutorialImg;
 	bool windowExtend = false;
 	for (auto& objItr : TutorialArea::GetAreas())
 	{
@@ -225,22 +230,59 @@ void Player::UniqueUpdate()
 			{
 				if (colItr2->GetGameObject() == objItr)
 				{
-					tutorialWindow.texture = objItr->GetTutorialImg();
-					windowExtend = true;
+					if (!windowClosing)
+					{
+						windowExtend = true;
+						setTutorialImg = objItr->GetTutorialImg();
+					}
 				}
 			}
 		}
 	}
+	if (prevTutorialImg.GetGHandle() != setTutorialImg.GetGHandle())
+	{
+		windowExtend = false;
+	}
+	if (windowOpening)
+	{
+		windowExtend = true;
+	}
 
+
+	bool prevwindowOpening = windowOpening;
+	bool prevwindowClosing = windowClosing;
 	if (windowExtend)
 	{
 		tutorialWindowExAmount += 0.1;
+		windowOpening = true;
 	}
 	else
 	{
 		tutorialWindowExAmount -= 0.1;
+		windowClosing = true;
 	}
 	tutorialWindowExAmount = max(0,min(tutorialWindowExAmount,1));
+
+	if (tutorialWindowExAmount >= 1 || tutorialWindowExAmount <= 0)
+	{
+		windowOpening = false;
+		windowClosing = false;
+	}
+
+
+	if (windowOpening && !prevwindowOpening)
+	{
+		windowOpenSE.SoundPlayWave();
+	}
+	if (windowClosing && !prevwindowClosing)
+	{
+		windowCloseSE.SoundPlayWave();
+	}
+
+	if (!windowClosing)
+	{
+		tutorialWindow.texture = setTutorialImg;
+	}
 
 	tutorialWindow.transform.localScale_ = ADXUtility::Lerp({ 0,0.3,0 }, { 0.3,0.3,0 },ADXUtility::EaseOut(tutorialWindowExAmount,4));
 	tutorialWindow.transform.localPosition_ = { 0.65,-0.65f + sin(clock() * 0.002f) * 0.01f,0};

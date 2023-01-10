@@ -34,7 +34,11 @@ private:
 	ADXImage noseImage{};
 	ADXImage furImage{};
 	ADXModel rect;
-	ADXAudio se{};
+	ADXAudio jumpSE{};
+	ADXAudio damageSE{};
+	ADXAudio windowOpenSE{};
+	ADXAudio windowCloseSE{};
+
 	ADXKeyBoardInput* keyboard = nullptr;
 	std::vector<int> config{};
 	ADXObject tutorialWindow{};
@@ -47,4 +51,6 @@ private:
 	std::list<PlayerMini> minis{};
 	int splitInterval = 0;
 	float tutorialWindowExAmount = 0;
+	bool windowOpening = false;
+	bool windowClosing = false;
 };
