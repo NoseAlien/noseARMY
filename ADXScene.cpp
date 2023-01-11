@@ -246,6 +246,22 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	fields_.back().transform.localScale_ = { 6,5,6 };
 	fields_.back().transform.UpdateMatrix();
 
+	newFieldObj = &newField;
+	*newFieldObj = ADXObject::Duplicate(fields_.back(), true);
+	fields_.push_back(newField);
+	fields_.back().transform.localPosition_ = { -22,-14,112 };
+	fields_.back().transform.localEulerAngles_ = { 0,0,1 };
+	fields_.back().transform.localScale_ = { 38,4,2 };
+	fields_.back().transform.UpdateMatrix();
+
+	newFieldObj = &newField;
+	*newFieldObj = ADXObject::Duplicate(fields_.back(), true);
+	fields_.push_back(newField);
+	fields_.back().transform.localPosition_ = { -40,-50,112 };
+	fields_.back().transform.localEulerAngles_ = { 0,0,0 };
+	fields_.back().transform.localScale_ = { 6,10,6 };
+	fields_.back().transform.UpdateMatrix();
+
 
 	backGround_.Initialize();
 	backGround_.transform.rectTransform = true;
