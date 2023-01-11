@@ -5,13 +5,14 @@ std::list<FieldBox*> FieldBox::fields{};
 
 void FieldBox::UniqueUpdate()
 {
+	adjacentFields.clear();
 	for (auto& objItr : GetFields())
 	{
 		for (auto& colItr : colliders)
 		{
 			for (auto& colItr2 : colItr.GetCollideList())
 			{
-				if (colItr2->GetGameObject() == objItr)
+				if (colItr2->GetGameObject() == objItr && colItr2->GetGameObject() != this)
 				{
 					adjacentFields.push_back(objItr);
 				}
@@ -36,7 +37,7 @@ void FieldBox::UniqueUpdate()
 							break;
 						}
 					}
-					if (pullBack)
+					if (!pullBack)
 					{
 						break;
 					}
