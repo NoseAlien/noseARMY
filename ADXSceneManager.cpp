@@ -2,6 +2,7 @@
 #include <typeinfo>
 
 ADXKeyBoardInput* ADXSceneManager::keyboard = nullptr;
+std::unique_ptr<TitleScene> ADXSceneManager::titleScene_{};
 std::unique_ptr<GameScene> ADXSceneManager::gameScene_{};
 int ADXSceneManager::prevSceneNum = 0;
 int ADXSceneManager::sceneNum = 0;
@@ -13,13 +14,33 @@ void ADXSceneManager::Update()
 	switch (sceneNum)
 	{
 	case 0:
+		if (titleScene_ == nullptr)
+		{
+			titleScene_ = std::make_unique<TitleScene>();
+			titleScene_->Initialize();
+		}
+		nowScene = titleScene_.get();
+
+		if (ADXSceneManager::GetKeyboardInput()->KeyTrigger(DIK_SPACE))
+		{
+			sceneNum = 1;
+		}
+		break;
+	case 1:
 		if (gameScene_ == nullptr)
 		{
 			gameScene_ = std::make_unique<GameScene>();
 			gameScene_->Initialize();
 		}
 		nowScene = gameScene_.get();
+
+		if (ADXSceneManager::GetKeyboardInput()->KeyTrigger(DIK_Q))
+		{
+			sceneNum = 0;
+		}
 		break;
+	default:
+		sceneNum = 0;
 	}
 
 	if (nowScene != nullptr)
@@ -35,9 +56,4 @@ void ADXSceneManager::Update()
 		}
 	}
 	prevSceneNum = sceneNum;
-
-	if (ADXSceneManager::GetKeyboardInput()->KeyTrigger(DIK_Q))
-	{
-		reload = true;
-	}
 }

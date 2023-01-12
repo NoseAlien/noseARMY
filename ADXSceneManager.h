@@ -3,12 +3,14 @@
 #include "ADXKeyBoardInput.h"
 #include "ADXScene.h"
 
+#include "TitleScene.h"
 #include "GameScene.h"
 
 class ADXSceneManager
 {
 private:
 	static ADXKeyBoardInput* keyboard;
+	static std::unique_ptr<TitleScene> titleScene_;
 	static std::unique_ptr<GameScene> gameScene_;
 
 	static int sceneNum;
