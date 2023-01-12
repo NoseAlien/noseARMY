@@ -1,27 +1,43 @@
 #include "ADXSceneManager.h"
+#include <typeinfo>
 
 ADXKeyBoardInput* ADXSceneManager::keyboard = nullptr;
-GameScene ADXSceneManager::gameScene_{};
-std::list<ADXScene*> ADXSceneManager::scenes{&gameScene_};
-ADXScene* ADXSceneManager::prevScene = nullptr;
+std::unique_ptr<GameScene> ADXSceneManager::gameScene_{};
+int ADXSceneManager::prevSceneNum = 0;
+int ADXSceneManager::sceneNum = 0;
 ADXScene* ADXSceneManager::nowScene = nullptr;
+bool ADXSceneManager::reload = true;
 
 void ADXSceneManager::Update()
 {
+	switch (sceneNum)
+	{
+	case 0:
+		if (gameScene_ == nullptr)
+		{
+			gameScene_ = std::make_unique<GameScene>();
+			gameScene_->Initialize();
+		}
+		nowScene = gameScene_.get();
+		break;
+	}
+
 	if (nowScene != nullptr)
 	{
-		if (nowScene == prevScene)
+		if (sceneNum == prevSceneNum && !reload)
 		{
 			nowScene->Update();
 		}
 		else
 		{
-			nowScene->Initialize();
+			gameScene_.release();
+			reload = false;
 		}
 	}
-	prevScene = nowScene;
-	if (nowScene == nullptr)
+	prevSceneNum = sceneNum;
+
+	if (ADXSceneManager::GetKeyboardInput()->KeyTrigger(DIK_Q))
 	{
-		nowScene = *scenes.begin();
+		reload = true;
 	}
 }

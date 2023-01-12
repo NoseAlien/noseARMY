@@ -50,6 +50,7 @@ private:
 	std::list<ADXObject*> objs{};
 
 public:
+	GameScene();
 	void Initialize();
 	void Update();
 };

@@ -1,6 +1,10 @@
 #include "GameScene.h"
 #include "ADXSceneManager.h"
 
+GameScene::GameScene()
+{
+}
+
 void GameScene::Initialize()
 {
 	//‰æ‘œ
@@ -301,11 +305,6 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
-	if (ADXSceneManager::GetKeyboardInput()->KeyTrigger(DIK_Q))
-	{
-		Initialize();
-		return;
-	}
 	for (auto& itr : objs)
 	{
 		itr->Update();

@@ -9,11 +9,12 @@ class ADXSceneManager
 {
 private:
 	static ADXKeyBoardInput* keyboard;
-	static GameScene gameScene_;
+	static std::unique_ptr<GameScene> gameScene_;
 
-	static std::list<ADXScene*> scenes;
-	static ADXScene* prevScene;
+	static int sceneNum;
+	static int prevSceneNum;
 	static ADXScene* nowScene;
+	static bool reload;
 
 public:
 	static void Update();
