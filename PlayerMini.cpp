@@ -8,7 +8,7 @@ PlayerMini::PlayerMini()
 
 void PlayerMini::Initialize(Player* setParent, ADXObject setNose)
 {
-	colliders.back().pushBackPriority = 0;
+	colliders.back().pushBackPriority = -1;
 	parent = setParent;
 
 	nose = Duplicate(setNose);

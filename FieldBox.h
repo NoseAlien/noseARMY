@@ -4,6 +4,9 @@
 
 class FieldBox : public ADXObject
 {
+public:
+	int fieldLayer = 0;
+
 private:
 	std::list<FieldBox*> adjacentFields{};
 

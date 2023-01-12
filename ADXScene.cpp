@@ -220,8 +220,6 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 
 	fields_.push_back(FieldBox());
 	fields_.back().ADXObject::Initialize();
-	fields_.back().model = &battleBox;
-	fields_.back().texture = battleFieldImg;
 	fields_.back().transform.localPosition_ = { 0,13,35 };
 	fields_.back().transform.localEulerAngles_ = { 0,0,0 };
 	fields_.back().transform.localScale_ = { 10,14,45 };
@@ -263,6 +261,22 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	fields_.back().transform.UpdateMatrix();
 
 
+	Enemy newEnemy;
+	ADXObject* newEnemyObj;
+
+	enemies_.push_back(Enemy());
+	enemies_.back().ADXObject::Initialize();
+	enemies_.back().transform.localPosition_ = { 0,40,40 };
+	enemies_.back().transform.localEulerAngles_ = { 0,0,0 };
+	enemies_.back().transform.localScale_ = { 1,1,1 };
+	enemies_.back().transform.UpdateMatrix();
+	enemies_.back().model = &ground;
+	enemies_.back().texture = battleFieldImg;
+	enemies_.back().colliders.push_back(ADXCollider(&enemies_.back()));
+	enemies_.back().colliders.back().pushable_ = true;
+	enemies_.back().colliders.back().colType_ = box;
+	enemies_.back().Initialize();
+
 	backGround_.Initialize();
 	backGround_.transform.rectTransform = true;
 	backGround_.transform.UpdateMatrix();
@@ -285,11 +299,20 @@ void ADXScene::Initialize(ADXKeyBoardInput* setKeyboard, ID3D12Device* setDevice
 	{
 		objs.push_back(&itr);
 	}
+	for (auto& itr : enemies_)
+	{
+		objs.push_back(&itr);
+	}
 	objs.push_back(&backGround_);
 }
 
 void ADXScene::Update()
 {
+	if (keyboard->KeyTrigger(DIK_Q))
+	{
+		Initialize(keyboard, device);
+		return;
+	}
 	for (auto& itr : objs)
 	{
 		itr->Update();

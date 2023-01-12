@@ -12,7 +12,8 @@ void FieldBox::UniqueUpdate()
 		{
 			for (auto& colItr2 : colItr.GetCollideList())
 			{
-				if (colItr2->GetGameObject() == objItr && colItr2->GetGameObject() != this)
+				if (colItr2->GetGameObject() == objItr && colItr2->GetGameObject() != this
+					&& objItr->fieldLayer == fieldLayer)
 				{
 					adjacentFields.push_back(objItr);
 				}

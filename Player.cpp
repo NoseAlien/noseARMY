@@ -49,8 +49,6 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 	nose.material = material;
 
 	tutorialWindow.Initialize();
-	tutorialWindow.transform.localPosition_ = { 0.65,-0.65,0 };
-	tutorialWindow.transform.localScale_ = { 0,0,0 };
 	tutorialWindow.transform.rectTransform = true;
 	tutorialWindow.transform.UpdateMatrix();
 	tutorialWindow.model = &rect;
@@ -143,8 +141,6 @@ void Player::UniqueUpdate()
 	cameraForward.y = 0;
 	cameraForward = ADXVector3::normalized(cameraForward);
 
-
-	colliders.back().pushBackPriority = 1;
 
 	bool moveInput = 
 		!keyboard->KeyPress(config[0]) || keyboard->KeyPress(config[1]) || keyboard->KeyPress(config[2]) || keyboard->KeyPress(config[3]);
