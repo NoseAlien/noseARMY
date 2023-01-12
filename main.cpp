@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include "ADXCommon.h"
 #include "ADXWindow.h"
+#include "ADXSceneManager.h"
 #include "ADXScene.h"
 #include "ADXAudio.h"
 
@@ -33,20 +34,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		ADXCamera::StaticInitialize(&ADXWindow::window_width, &ADXWindow::window_height);
 
 		//ゲームシーンの作成
-		ADXScene scene{};
-		scene.Initialize(&keyboard, adxcommon.GetDevice());
-
+		ADXSceneManager::SetKeyboardInput(&keyboard);
 
 		//ゲームループ
 		while (true)
 		{
-			if (adxwindow.ProcessMessage())
+			if (adxwindow.ProcessMessage() || keyboard.KeyTrigger(DIK_ESCAPE))
 			{
 				break;
 			}
 
 			keyboard.Update();
-			scene.Update();
+			ADXSceneManager::Update();
 			ADXObject::StaticUpdate();
 			//この下にあるゲーム専用の更新部分は後でまとめる
 			TutorialArea::StaticUpdate();
