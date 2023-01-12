@@ -8,6 +8,7 @@ GameScene::GameScene()
 void GameScene::Initialize()
 {
 	//‰æ‘œ
+	keyImg = ADXImage::LoadADXImage("QUIT_TITLE.png");
 	skyDomeImg = ADXImage::LoadADXImage("skydome/Fine_Basin.jpg");
 	MEGNOSE_Img = ADXImage::LoadADXImage("MEGNOSE.png");
 	groundImg = ADXImage::LoadADXImage("GroundBlock.png");
@@ -282,6 +283,13 @@ void GameScene::Initialize()
 	backGround_.material = unlitMat;
 	backGround_.renderLayer = -1;
 
+	key = ADXObject::Duplicate(backGround_);
+	key.transform.localPosition_ = { -0.65,0.85,0 };
+	key.transform.localScale_ = { 0.3,0.45,1 };
+	key.transform.UpdateMatrix();
+	key.texture = keyImg;
+	key.renderLayer = 1;
+
 	objs.push_back(&camera_);
 	objs.push_back(&player_);
 	for (auto& itr : floors_)
@@ -301,10 +309,14 @@ void GameScene::Initialize()
 		objs.push_back(&itr);
 	}
 	objs.push_back(&backGround_);
+	objs.push_back(&key);
 }
 
 void GameScene::Update()
 {
+	key.transform.localPosition_ = { -0.65,0.85,0 };
+	key.transform.localPosition_.y += sin(clock() * 0.001) * 0.01;
+
 	for (auto& itr : objs)
 	{
 		itr->Update();

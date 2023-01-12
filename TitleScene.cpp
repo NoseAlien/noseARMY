@@ -9,6 +9,7 @@ void TitleScene::Initialize()
 	
 	//‰æ‘œ
 	titleImg = ADXImage::LoadADXImage("noseARMY_logo.png");
+	keyImg = ADXImage::LoadADXImage("PRESS_SPACE.png");
 
 	//ƒ}ƒeƒŠƒAƒ‹
 	unlitMat = ADXMaterial::LoadMaterial("material/unlit.mtl");
@@ -43,13 +44,20 @@ void TitleScene::Initialize()
 	title.model = &rect;
 	title.material = unlitMat;
 
+	key = ADXObject::Duplicate(title);
+	key.transform.localScale_ = { 0.5,0.5,0.5 };
+	key.texture = keyImg;
+
+
 	objs.push_back(&camera_);
 	objs.push_back(&title);
+	objs.push_back(&key);
 }
 
 void TitleScene::Update()
 {
 	title.transform.localPosition_.y = sin(clock() * 0.001) * 0.01 + 0.2;
+	key.transform.localPosition_.y = sin(clock() * 0.001 - 1) * 0.01 - 0.4;
 
 	for (auto& itr : objs)
 	{

@@ -16,8 +16,8 @@ class GameScene : public ADXScene
 {
 private:
 	//画像
+	ADXImage keyImg{};
 	ADXImage MEGNOSE_Img{};
-	ADXImage apEGnoSE_Image{};
 	ADXImage skyDomeImg{};
 	ADXImage groundImg{};
 	ADXImage battleFieldImg{};
@@ -38,6 +38,7 @@ private:
 	ADXCamera camera_{};
 
 	//オブジェクト
+	ADXObject key{};
 	Player player_{};
 	std::list<ADXObject> floors_{};
 	std::list<TutorialArea> tutorialAreas_{};

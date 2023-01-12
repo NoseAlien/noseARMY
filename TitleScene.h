@@ -17,6 +17,7 @@ class TitleScene : public ADXScene
 private:
 	//画像
 	ADXImage titleImg{};
+	ADXImage keyImg{};
 
 	//3Dモデル
 	ADXModel rect{};
@@ -29,6 +30,7 @@ private:
 
 	//オブジェクト
 	ADXObject title{};
+	ADXObject key{};
 
 	//全てのオブジェクト
 	std::list<ADXObject*> objs{};
