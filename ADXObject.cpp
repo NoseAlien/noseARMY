@@ -24,6 +24,8 @@ D3D12_VERTEX_BUFFER_VIEW ADXObject::vbView{};
 D3D12_INDEX_BUFFER_VIEW ADXObject::ibView{};
 std::vector<ADXObject*> ADXObject::allObjPtr{};
 std::vector<ADXObject*> ADXObject::objs{};
+ADXVector3 ADXObject::limitPos1 = { -300,-300,-100 };
+ADXVector3 ADXObject::limitPos2 = { 100,100,150 };
 
 ADXObject::ADXObject()
 {
@@ -356,6 +358,22 @@ void ADXObject::UniqueUpdate()
 void ADXObject::StaticUpdate()
 {
 	objs = allObjPtr;
+
+	ADXVector3 limitMinPos = { min(limitPos1.x,limitPos2.x),min(limitPos1.y,limitPos2.y) ,min(limitPos1.z,limitPos2.z) };
+	ADXVector3 limitMaxPos = { max(limitPos1.x,limitPos2.x),max(limitPos1.y,limitPos2.y) ,max(limitPos1.z,limitPos2.z) };
+
+	for (auto& itr : GetObjs())
+	{
+		if (itr->transform.parent_ == nullptr && !itr->transform.rectTransform)
+		{
+			ADXVector3 itrWorldPos = itr->transform.GetWorldPosition();
+			itr->transform.SetWorldPosition({
+				max(limitMinPos.x, min(itrWorldPos.x, limitMaxPos.x)),
+				max(limitMinPos.y, min(itrWorldPos.y, limitMaxPos.y)),
+				max(limitMinPos.z, min(itrWorldPos.z, limitMaxPos.z))
+				});
+		}
+	}
 }
 
 void ADXObject::PreDraw(ID3D12GraphicsCommandList* cmdList)

@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "ADXUtility.h"
+#include "FieldBox.h"
 #include <time.h>
 
 Player::Player()
@@ -55,6 +56,14 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 	tutorialWindow.texture = ADXImage::LoadADXImage("WhiteDot.png");
 	tutorialWindow.material = material;
 	tutorialWindow.renderLayer = 1;
+
+	outOfField.Initialize();
+	outOfField.transform.rectTransform = true;
+	outOfField.transform.UpdateMatrix();
+	outOfField.model = &rect;
+	outOfField.texture = ADXImage::LoadADXImage("outOfField.png");
+	outOfField.material = material;
+	outOfField.renderLayer = 1;
 
 	camera = setCamera;
 }
@@ -218,11 +227,13 @@ void Player::UniqueUpdate()
 	ADXImage prevTutorialImg = tutorialWindow.texture;
 	ADXImage setTutorialImg = prevTutorialImg;
 	bool windowExtend = false;
-	for (auto& objItr : TutorialArea::GetAreas())
+	bool isOutOfField = true;
+	
+	for (auto& colItr : colliders)
 	{
-		for (auto& colItr : colliders)
+		for (auto& colItr2 : colItr.GetCollideList())
 		{
-			for (auto& colItr2 : colItr.GetCollideList())
+			for (auto& objItr : TutorialArea::GetAreas())
 			{
 				if (colItr2->GetGameObject() == objItr)
 				{
@@ -231,6 +242,14 @@ void Player::UniqueUpdate()
 						windowExtend = true;
 						setTutorialImg = objItr->GetTutorialImg();
 					}
+				}
+			}
+			for (auto& objItr : FieldBox::GetFields())
+			{
+				if (colItr2->GetGameObject() == objItr 
+					&& (transform.GetWorldPosition() - colItr2->ClosestPoint(transform.GetWorldPosition())).length() < 0.1)
+				{
+					isOutOfField = false;
 				}
 			}
 		}
@@ -280,4 +299,17 @@ void Player::UniqueUpdate()
 	tutorialWindow.transform.localPosition_ = { 0.65,-0.65f + sin(clock() * 0.002f) * 0.01f,0};
 
 	tutorialWindow.Update();
+
+	if (isOutOfField)
+	{
+		outOfField.transform.localScale_ = { 0.4,0.7,0 };
+	}
+	else
+	{
+		outOfField.transform.localScale_ = { 0,0,0 };
+	}
+
+	outOfField.transform.localPosition_ = { -0.6,0.65f + sin(clock() * 0.003f) * 0.01f,0 };
+
+	outOfField.Update();
 }

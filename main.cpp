@@ -17,7 +17,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//WinAPI初期化処理
 
 		//ウィンドウ生成
-		ADXWindow adxwindow(L"ADXEngine");
+		ADXWindow adxwindow(L"noseARMY");
 
 		HRESULT result;
 

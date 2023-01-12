@@ -30,18 +30,24 @@ private:
 	void VelocityUpdate();
 
 private:
+	ADXCamera* camera = nullptr;
+
 	ADXObject nose{};
+	ADXObject outOfField{};
+	ADXObject tutorialWindow{};
+
 	ADXImage noseImage{};
 	ADXImage furImage{};
+	ADXImage outOfFieldImage{};
+
 	ADXModel rect;
+
 	ADXAudio jumpSE{};
 	ADXAudio damageSE{};
 	ADXAudio windowOpenSE{};
 
 	ADXKeyBoardInput* keyboard = nullptr;
 	std::vector<int> config{};
-	ADXObject tutorialWindow{};
-	ADXCamera* camera = nullptr;
 
 	ADXVector3 prevPos{};
 	ADXVector3 velocity = { 0,0,0 };

@@ -117,4 +117,7 @@ private: // 静的メンバ変数
 	static std::vector<ADXObject*> allObjPtr;
 	// 全てのオブジェクトが入った配列
 	static std::vector<ADXObject*> objs;
+	// オブジェクトが存在できる領域を制限するための変数
+	static ADXVector3 limitPos1;
+	static ADXVector3 limitPos2;
 };
