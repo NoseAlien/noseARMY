@@ -176,6 +176,7 @@
     <ClCompile Include="ADXWorldTransform.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PlayerMini.cpp" />
+    <ClCompile Include="Species.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="TutorialArea.cpp" />
   </ItemGroup>
@@ -204,6 +205,7 @@
     <ClInclude Include="ADXWindow.h" />
     <ClInclude Include="ADXWorldTransform.h" />
     <ClInclude Include="PlayerMini.h" />
+    <ClInclude Include="Species.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="TutorialArea.h" />
   </ItemGroup>

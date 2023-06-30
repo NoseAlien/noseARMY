@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ADXObject.h"
+#include "Species.h"
 
-class Enemy : public ADXObject
+class Enemy : public Species
 {
 protected:
 	ADXVector3 prevPos{};
@@ -12,7 +12,7 @@ public:
 	void Initialize();
 
 private:
-	void UniqueUpdate();
+	void SpeciesUpdate();
 	void VelocityInitialize();
 	void VelocityMove(float drag);
 	void VelocityUpdate();

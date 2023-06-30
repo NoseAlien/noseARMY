@@ -5,7 +5,7 @@ void Enemy::Initialize()
 	VelocityInitialize();
 }
 
-void Enemy::UniqueUpdate()
+void Enemy::SpeciesUpdate()
 {
 	VelocityMove(0.8f);
 

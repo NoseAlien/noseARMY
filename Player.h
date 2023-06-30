@@ -6,12 +6,12 @@
 #include "ADXAudio.h"
 #include <vector>
 #include <list>
-#include "ADXObject.h"
+#include "Species.h"
 #include "PlayerMini.h"
 #include "TutorialArea.h"
 #include "ADXCamera.h"
 
-class Player : public ADXObject
+class Player : public Species
 {
 public:
 	Player();
@@ -23,7 +23,7 @@ public:
 	ADXVector3 GetCameraForward() { return cameraForward; };
 
 private:
-	void UniqueUpdate();
+	void SpeciesUpdate();
 	void Move(float walkSpeed, float jumpPower);
 	void VelocityInitialize();
 	void VelocityMove(float drag);

@@ -136,7 +136,7 @@ void Player::VelocityUpdate()
 	transform.UpdateMatrix();
 }
 
-void Player::UniqueUpdate()
+void Player::SpeciesUpdate()
 {	
 	ADXVector3 cameraVec = camera->transform.localPosition_ - transform.localPosition_;
 	cameraVec.y = 0;
