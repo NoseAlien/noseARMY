@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "FieldBox.h"
+#include "Goal.h"
 #include "ADXImage.h"
 #include "ADXTexAnimation.h"
 
@@ -44,6 +45,7 @@ private:
 	std::list<TutorialArea> tutorialAreas_{};
 	std::list<FieldBox> fields_{};
 	std::list<Enemy> enemies_{};
+	Goal goal_{};
 
 	ADXObject backGround_{};
 

@@ -167,6 +167,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FieldBox.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="Goal.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ADXScene.cpp" />
     <ClCompile Include="ADXTexAnimatoin.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="FieldBox.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="Goal.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ADXScene.h" />
     <ClInclude Include="ADXTexAnimation.h" />
