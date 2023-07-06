@@ -25,7 +25,14 @@ void Species::UniqueUpdate()
 	hpGauge.transform.localScale_ = { hpAmount,0,0 };
 	hpGaugeBG.transform.UpdateMatrix();
 	hpGauge.transform.UpdateMatrix();
-	SpeciesUpdate();
+	if (IsArrive())
+	{
+		SpeciesUpdate();
+	}
+	else
+	{
+		DeadUpdate();
+	}
 }
 
 void Species::Damage(float damage)
@@ -34,5 +41,9 @@ void Species::Damage(float damage)
 }
 
 void Species::SpeciesUpdate()
+{
+}
+
+void Species::DeadUpdate()
 {
 }

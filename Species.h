@@ -19,7 +19,11 @@ public:
 	void Initialize(std::string setTeam);
 	void UniqueUpdate();
 
+	bool IsArrive() { return hpAmount > 0; };
+
 protected:
 	void Damage(float damage);
 	virtual void SpeciesUpdate();
+	virtual void DeadUpdate();
+
 };
