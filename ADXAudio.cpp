@@ -13,7 +13,6 @@ void ADXAudio::StaticInitialize()
 
 ADXAudio ADXAudio::SoundLoadWave(const char* filename)
 {
-	HRESULT result;
 
 	//ファイル入力ストリームのインスタンス
 	std::ifstream file;

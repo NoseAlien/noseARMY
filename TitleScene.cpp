@@ -56,8 +56,8 @@ void TitleScene::Initialize()
 
 void TitleScene::Update()
 {
-	title.transform.localPosition_.y = sin(clock() * 0.001) * 0.01 + 0.2;
-	key.transform.localPosition_.y = sin(clock() * 0.001 - 1) * 0.01 - 0.4;
+	title.transform.localPosition_.y = sinf(clock() * 0.001f) * 0.01f + 0.2f;
+	key.transform.localPosition_.y = sinf(clock() * 0.001f - 1) * 0.01f - 0.4f;
 
 	for (auto& itr : objs)
 	{

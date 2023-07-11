@@ -45,13 +45,13 @@ void GameScene::Initialize()
 
 	camera_.ADXObject::Initialize();
 	camera_.transform.localPosition_ = { 0,5,-20 };
-	camera_.transform.localEulerAngles_ = { 0.3,0,0 };
+	camera_.transform.localEulerAngles_ = { 0.3f,0,0 };
 	camera_.Initialize();
 
 	player_.ADXObject::Initialize();
 	player_.transform.localPosition_ = { 0,2,0 };
 	player_.transform.localEulerAngles_ = { 0,0,0 };
-	player_.transform.localScale_ = { 0.5,0.5,0.5 };
+	player_.transform.localScale_ = { 0.5f,0.5f,0.5f };
 	player_.transform.UpdateMatrix();
 	player_.model = &playerModel;
 	player_.colliders.push_back(ADXCollider(&player_));
@@ -126,31 +126,31 @@ void GameScene::Initialize()
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.localPosition_ = { 13.5,10,93 };
+	floors_.back().transform.localPosition_ = { 13.5f,10,93 };
 	floors_.back().transform.localEulerAngles_ = { 0,0,0 };
-	floors_.back().transform.localScale_ = { 4.5,1,21 };
+	floors_.back().transform.localScale_ = { 4.5f,1,21 };
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.localPosition_ = { 10,11.5,85 };
+	floors_.back().transform.localPosition_ = { 10,11.5f,85 };
 	floors_.back().transform.localEulerAngles_ = { 0,0,0 };
-	floors_.back().transform.localScale_ = { 1,0.5,11 };
+	floors_.back().transform.localScale_ = { 1,0.5f,11 };
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.localPosition_ = { 3,10.75,112 };
+	floors_.back().transform.localPosition_ = { 3,10.75f,112 };
 	floors_.back().transform.localEulerAngles_ = { 0,0,0 };
 	floors_.back().transform.localScale_ = { 6,0.25,2 };
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.localPosition_ = { 3,9.5,112 };
+	floors_.back().transform.localPosition_ = { 3,9.5f,112 };
 	floors_.back().transform.localEulerAngles_ = { 0,0,0 };
 	floors_.back().transform.localScale_ = { 6,1,6 };
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.localPosition_ = { -18.5,-14.8,112 };
+	floors_.back().transform.localPosition_ = { -18.5f,-14.8f,112 };
 	floors_.back().transform.localEulerAngles_ = { 0,0,1 };
 	floors_.back().transform.localScale_ = { 30,1,2 };
 	floors_.back().transform.UpdateMatrix();
@@ -260,7 +260,6 @@ void GameScene::Initialize()
 
 
 	Enemy newEnemy;
-	ADXObject* newEnemyObj;
 
 	enemies_.push_back(Enemy());
 	enemies_.back().ADXObject::Initialize();
@@ -284,8 +283,8 @@ void GameScene::Initialize()
 	backGround_.renderLayer = -1;
 
 	key = ADXObject::Duplicate(backGround_);
-	key.transform.localPosition_ = { -0.65,0.85,0 };
-	key.transform.localScale_ = { 0.3,0.45,1 };
+	key.transform.localPosition_ = { -0.65f,0.85f,0 };
+	key.transform.localScale_ = { 0.3f,0.45f,1 };
 	key.transform.UpdateMatrix();
 	key.texture = keyImg;
 	key.renderLayer = 1;
@@ -314,8 +313,8 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
-	key.transform.localPosition_ = { -0.65,0.85,0 };
-	key.transform.localPosition_.y += sin(clock() * 0.001) * 0.01;
+	key.transform.localPosition_ = { -0.65f,0.85f,0 };
+	key.transform.localPosition_.y += sinf(clock() * 0.001f) * 0.01f;
 
 	for (auto& itr : objs)
 	{

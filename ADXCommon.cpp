@@ -54,8 +54,6 @@ void ADXCommon::UpdateFixFPS()
 
 void ADXCommon::Initialize(ADXWindow* setWindow)
 {
-	HRESULT result;
-
 	assert(setWindow);
 
 	adxwindow = setWindow;

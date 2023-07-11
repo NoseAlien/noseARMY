@@ -110,7 +110,7 @@ ADXMatrix4 ADXMatrix4::Inverse() {
 	/* sweep‚Ì‰E”¼•ª‚ªmat‚Ì‹ts—ñ */
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N; j++) {
-			inv.m[i][j] = sweep[i][N + j];
+			inv.m[i][j] = (float)sweep[i][N + j];
 		}
 	}
 

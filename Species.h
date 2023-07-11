@@ -3,6 +3,12 @@
 #include "ADXObject.h"
 #include <string>
 
+struct AttackObject
+{
+	ADXCollider* col = nullptr;
+	float power = 0;
+};
+
 class Species : public ADXObject
 {
 protected:
@@ -27,7 +33,17 @@ protected:
 	virtual void SpeciesUpdate();
 	virtual void DeadUpdate();
 
+public:
+	static void StaticUpdate();
+
 private:
 	static std::vector<Species*> S_species;
 	static std::vector<Species*> S_allSpeciesPtr;
+	static std::vector<AttackObject> S_attackObjs;
+	static std::vector<AttackObject> S_allAttackObj;
+
+public:
+	static void SetAttackObj(AttackObject attackObj);
+	static std::vector<AttackObject> GetAttackObj() { return S_attackObjs; };
+	static std::vector<Species*> GetSpecies() { return S_species; };
 };

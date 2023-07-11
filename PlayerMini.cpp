@@ -51,7 +51,7 @@ void PlayerMini::Move(float walkSpeed, float jumpPower)
 	}
 	if (parent->GetInputStatusRelease(4) && velocity.y > 0)
 	{
-		velocity.y *= 0.2;
+		velocity.y *= 0.2f;
 	}
 }
 

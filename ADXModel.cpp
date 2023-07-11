@@ -19,8 +19,6 @@ void ADXModel::StaticInitialize(ID3D12Device* setDevice)
 
 ADXModel ADXModel::LoadModel(const std::string filePath)
 {
-	HRESULT result;
-
 	ADXModel model;
 
 	std::ifstream file;
@@ -275,5 +273,5 @@ void ADXModel::Draw(ID3D12GraphicsCommandList* commandList, ADXWorldTransform wt
 	commandList->SetGraphicsRootConstantBufferView(0, wtf_.constBuffTransform->GetGPUVirtualAddress());
 
 	// 描画コマンド
-	commandList->DrawIndexedInstanced(indices.size(), 1, 0, 0, 0); // 全ての頂点を使って描画	
+	commandList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0); // 全ての頂点を使って描画	
 }

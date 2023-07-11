@@ -1,6 +1,12 @@
 #include "Species.h"
 #include "ADXCamera.h"
 
+std::vector<Species*> Species::S_species = {};
+std::vector<Species*> Species::S_allSpeciesPtr = {};
+std::vector<AttackObject> Species::S_attackObjs = {};
+std::vector<AttackObject> Species::S_allAttackObj = {};
+
+
 void Species::Initialize(const std::string& setTeam)
 {
 	team = setTeam;
@@ -33,6 +39,7 @@ void Species::UniqueUpdate()
 	{
 		DeadUpdate();
 	}
+	S_allSpeciesPtr.push_back(this);
 }
 
 void Species::Damage(float damage)
@@ -46,4 +53,17 @@ void Species::SpeciesUpdate()
 
 void Species::DeadUpdate()
 {
+}
+
+void Species::StaticUpdate()
+{
+	S_species = S_allSpeciesPtr;
+	S_allSpeciesPtr.clear();
+	S_attackObjs = S_allAttackObj;
+	S_allAttackObj.clear();
+}
+
+void Species::SetAttackObj(AttackObject attackObj)
+{
+	S_allAttackObj.push_back(attackObj);
 }

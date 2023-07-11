@@ -42,7 +42,7 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 	nose.Initialize();
 	nose.transform.localPosition_ = { 0,0,1.01f };
 	nose.transform.localEulerAngles_ = { 0,3.1415f,0 };
-	nose.transform.localScale_ = { 0.42,0.35,0.35 };
+	nose.transform.localScale_ = { 0.42f,0.35f,0.35f };
 	nose.transform.parent_ = &transform;
 	nose.transform.UpdateMatrix();
 	nose.model = &rect;
@@ -113,7 +113,7 @@ void Player::Move(float walkSpeed, float jumpPower)
 	}
 	if (keyboard->KeyRelease(config[4]) && velocity.y > 0)
 	{
-		velocity.y *= 0.2;
+		velocity.y *= 0.2f;
 	}
 }
 
@@ -189,7 +189,7 @@ void Player::SpeciesUpdate()
 		return false; });
 	}
 
-	nose.transform.localScale_ = ADXVector3{ 0.42,0.35,0.35 } * max(1,1 + pow(max(0, splitInterval),2) * 0.02);
+	nose.transform.localScale_ = ADXVector3{ 0.42f,0.35f,0.35f } * (float)fmax(1,1 + pow(fmax(0, splitInterval),2) * 0.02f);
 
 	nose.transform.localEulerAngles_.z *= 0.9f;
 
@@ -198,7 +198,7 @@ void Player::SpeciesUpdate()
 
 	if (keyboard->KeyRelease(config[5]) && splitInterval <= 0)
 	{
-		nose.transform.localScale_ = { 0.42,0.35,0.35 };
+		nose.transform.localScale_ = { 0.42f,0.35f,0.35f };
 		nose.transform.localEulerAngles_ = { 0,3.1415f,0 };
 		if (minis.size() < 20)
 		{
@@ -221,6 +221,7 @@ void Player::SpeciesUpdate()
 	for (auto& itr : minis)
 	{
 		itr.Update();
+		SetAttackObj({&itr.colliders.back(), (float)minis.size() });
 	}
 	nose.Update();
 
@@ -268,12 +269,12 @@ void Player::SpeciesUpdate()
 	bool prevwindowClosing = windowClosing;
 	if (windowExtend)
 	{
-		tutorialWindowExAmount += 0.1;
+		tutorialWindowExAmount += 0.1f;
 		windowOpening = true;
 	}
 	else
 	{
-		tutorialWindowExAmount -= 0.1;
+		tutorialWindowExAmount -= 0.1f;
 		windowClosing = true;
 	}
 	tutorialWindowExAmount = max(0,min(tutorialWindowExAmount,1));
@@ -295,21 +296,21 @@ void Player::SpeciesUpdate()
 		tutorialWindow.texture = setTutorialImg;
 	}
 
-	tutorialWindow.transform.localScale_ = ADXUtility::Lerp({ 0,0.3,0 }, { 0.3,0.3,0 },ADXUtility::EaseOut(tutorialWindowExAmount,4));
-	tutorialWindow.transform.localPosition_ = { 0.65,-0.65f + sin(clock() * 0.002f) * 0.01f,0};
+	tutorialWindow.transform.localScale_ = ADXUtility::Lerp({ 0,0.3f,0 }, { 0.3f,0.3f,0 },ADXUtility::EaseOut(tutorialWindowExAmount,4));
+	tutorialWindow.transform.localPosition_ = { 0.65f,-0.65f + sin(clock() * 0.002f) * 0.01f,0};
 
 	tutorialWindow.Update();
 
 	if (isOutOfField)
 	{
-		outOfField.transform.localScale_ = { 0.4,0.7,0 };
+		outOfField.transform.localScale_ = { 0.4f,0.7f,0 };
 	}
 	else
 	{
 		outOfField.transform.localScale_ = { 0,0,0 };
 	}
 
-	outOfField.transform.localPosition_ = { -0.6,0.65f + sin(clock() * 0.003f) * 0.01f,0 };
+	outOfField.transform.localPosition_ = { -0.6f,0.65f + sin(clock() * 0.003f) * 0.01f,0 };
 
 	outOfField.Update();
 }

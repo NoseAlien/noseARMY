@@ -19,8 +19,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//ウィンドウ生成
 		ADXWindow adxwindow(L"noseARMY");
 
-		HRESULT result;
-
 		ADXCommon adxcommon;
 		adxcommon.Initialize(&adxwindow);
 
