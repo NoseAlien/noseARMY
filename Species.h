@@ -16,14 +16,18 @@ private:
 	std::string team;
 
 public:
-	void Initialize(std::string setTeam);
+	void Initialize(const std::string& setTeam);
 	void UniqueUpdate();
 
 	bool IsArrive() { return hpAmount > 0; };
+	std::string GetTeam() { return team; };
 
 protected:
 	void Damage(float damage);
 	virtual void SpeciesUpdate();
 	virtual void DeadUpdate();
 
+private:
+	static std::vector<Species*> S_species;
+	static std::vector<Species*> S_allSpeciesPtr;
 };

@@ -1,7 +1,7 @@
 #include "Species.h"
 #include "ADXCamera.h"
 
-void Species::Initialize(std::string setTeam)
+void Species::Initialize(const std::string& setTeam)
 {
 	team = setTeam;
 

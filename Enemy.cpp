@@ -17,6 +17,7 @@ void Enemy::SpeciesUpdate()
 
 void Enemy::DeadUpdate()
 {
+	colliders.back().pushBackPriority = -2;
 }
 
 void Enemy::VelocityInitialize()
