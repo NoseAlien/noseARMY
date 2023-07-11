@@ -13,6 +13,7 @@ public:
 
 private:
 	void SpeciesUpdate();
+	void DeadUpdate();
 	void VelocityInitialize();
 	void VelocityMove(float drag);
 	void VelocityUpdate();

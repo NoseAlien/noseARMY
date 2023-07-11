@@ -15,6 +15,10 @@ void Enemy::SpeciesUpdate()
 	VelocityUpdate();
 }
 
+void Enemy::DeadUpdate()
+{
+}
+
 void Enemy::VelocityInitialize()
 {
 	prevPos = transform.localPosition_;
