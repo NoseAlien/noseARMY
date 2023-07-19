@@ -55,6 +55,10 @@ void Species::DeadUpdate()
 {
 }
 
+void Species::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
+{
+}
+
 void Species::StaticUpdate()
 {
 	S_species = S_allSpeciesPtr;

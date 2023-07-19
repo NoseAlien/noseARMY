@@ -499,3 +499,7 @@ void ADXObject::Draw(UINT64 GpuStartHandle)
 		model->Draw(cmdList, transform);
 	}
 }
+
+void ADXObject::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
+{
+}

@@ -32,6 +32,7 @@ public:
 	void CreateConstBuffer();
 	void Update();
 	void Draw(UINT64 GpuStartHandle);
+	virtual void OnCollisionHit(ADXCollider* col, ADXCollider* myCol);
 
 protected:
 	virtual void UniqueUpdate();

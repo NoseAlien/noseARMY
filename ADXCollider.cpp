@@ -329,8 +329,16 @@ void ADXCollider::Collide(ADXCollider* col)
 			}
 		}
 
-		collideList.push_back(col);
-		col->collideList.push_back(this);
+		if (collideList.back() != col)
+		{
+			collideList.push_back(col);
+			gameObject->OnCollisionHit(col, this);
+		}
+		if (col->collideList.back() != this)
+		{
+			col->collideList.push_back(this);
+			gameObject->OnCollisionHit(this, col);
+		}
 	}
 }
 
@@ -391,7 +399,7 @@ void ADXCollider::CollidersUpdate()
 			minimumWorldRadius1 = worldScaleZ1;
 		}
 
-		float moveDivnum1 = move.length() / (minimumWorldRadius1 * 0.95);
+		float moveDivnum1 = move.length() / (minimumWorldRadius1 * 0.95f);
 		if (moveDivnum1 >= translateDivNumF)
 		{
 			translateDivNumF = moveDivnum1;

@@ -32,6 +32,7 @@ protected:
 	void Damage(float damage);
 	virtual void SpeciesUpdate();
 	virtual void DeadUpdate();
+	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol) final;
 
 public:
 	static void StaticUpdate();
