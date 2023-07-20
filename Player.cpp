@@ -221,7 +221,7 @@ void Player::SpeciesUpdate()
 	for (auto& itr : minis)
 	{
 		itr.Update();
-		SetAttackObj({&itr.colliders.back(), (float)minis.size() });
+		SetAttackObj({&itr.colliders.back(), this, (float)minis.size() });
 	}
 	nose.Update();
 

@@ -58,6 +58,7 @@ void GameScene::Initialize()
 	player_.colliders.back().pushable_ = true;
 	player_.material = unlitMat;
 	player_.Initialize(ADXSceneManager::GetKeyboardInput(), { DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C }, &camera_);
+	player_.Species::Initialize("player");
 
 	floors_.push_back(ADXObject());
 	floors_.back().Initialize();

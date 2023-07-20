@@ -31,6 +31,9 @@ void Species::UniqueUpdate()
 	hpGauge.transform.localScale_ = { hpAmount,0,0 };
 	hpGaugeBG.transform.UpdateMatrix();
 	hpGauge.transform.UpdateMatrix();
+
+	material.ambient = { 1,1,1 };
+
 	if (IsArrive())
 	{
 		SpeciesUpdate();
@@ -39,12 +42,24 @@ void Species::UniqueUpdate()
 	{
 		DeadUpdate();
 	}
+
+	if (attackHitted)
+	{
+		material.ambient = { 1,0,0 };
+		attackHitted = false;
+	}
+
+
 	S_allSpeciesPtr.push_back(this);
 }
 
 void Species::Damage(float damage)
 {
-	hpAmount -= damage / maxHP;
+	if (IsArrive())
+	{
+		hpAmount -= damage / maxHP;
+		attackHitted = true;
+	}
 }
 
 void Species::SpeciesUpdate()
@@ -57,6 +72,13 @@ void Species::DeadUpdate()
 
 void Species::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
+	for (auto& objItr : GetAttackObj())
+	{
+		if (col == objItr.col && objItr.attacker->team != team)
+		{
+			Damage(objItr.power);
+		}
+	}
 }
 
 void Species::StaticUpdate()

@@ -17,7 +17,16 @@ void Enemy::SpeciesUpdate()
 
 void Enemy::DeadUpdate()
 {
+	material.ambient = { 0,0,0 };
+
 	colliders.back().pushBackPriority = -2;
+
+	VelocityMove(0.8f);
+
+	velocity.y /= 0.8f;
+	velocity.y -= 0.015f;
+
+	VelocityUpdate();
 }
 
 void Enemy::VelocityInitialize()

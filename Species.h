@@ -3,16 +3,12 @@
 #include "ADXObject.h"
 #include <string>
 
-struct AttackObject
-{
-	ADXCollider* col = nullptr;
-	float power = 0;
-};
+struct AttackObject;
 
 class Species : public ADXObject
 {
 protected:
-	float maxHP = 1;
+	float maxHP = 999;
 	float hpAmount = 1;
 
 private:
@@ -20,6 +16,7 @@ private:
 	ADXObject hpGauge;
 	ADXObject hpGaugeBG;
 	std::string team;
+	bool attackHitted;
 
 public:
 	void Initialize(const std::string& setTeam);
@@ -47,4 +44,11 @@ public:
 	static void SetAttackObj(AttackObject attackObj);
 	static std::vector<AttackObject> GetAttackObj() { return S_attackObjs; };
 	static std::vector<Species*> GetSpecies() { return S_species; };
+};
+
+struct AttackObject
+{
+	ADXCollider* col = nullptr;
+	Species* attacker = nullptr;
+	float power = 0;
 };

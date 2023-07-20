@@ -49,6 +49,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			TutorialArea::StaticUpdate();
 			FieldBox::StaticUpdate();
 			ADXCollider::CollidersUpdate();
+			Species::StaticUpdate();
 
 			adxcommon.PreDraw();
 			ADXObject::PreDraw(adxcommon.GetCommandList());
