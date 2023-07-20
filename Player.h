@@ -55,6 +55,7 @@ private:
 	ADXVector3 cameraForward{};
 	std::list<PlayerMini> minis{};
 	int splitInterval = 0;
+	bool splitable = true;
 	float tutorialWindowExAmount = 0;
 	bool windowOpening = false;
 	bool windowClosing = false;

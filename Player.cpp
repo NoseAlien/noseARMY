@@ -138,6 +138,9 @@ void Player::VelocityUpdate()
 
 void Player::SpeciesUpdate()
 {	
+	float scale = ADXUtility::ValueMapping((float)minis.size(), 0, 20, 1, 0.25f);
+	transform.localScale_ = { scale,scale,scale };
+
 	ADXVector3 cameraVec = camera->transform.localPosition_ - transform.localPosition_;
 	cameraVec.y = 0;
 	cameraVec = ADXVector3::normalized(cameraVec);
@@ -181,6 +184,7 @@ void Player::SpeciesUpdate()
 						{
 							if (colListItr == &colItr2)
 							{
+								splitable = false;
 								return true;
 							}
 						}
@@ -196,7 +200,7 @@ void Player::SpeciesUpdate()
 	splitInterval--;
 	splitInterval = max(-20, splitInterval);
 
-	if (keyboard->KeyRelease(config[5]) && splitInterval <= 0)
+	if (splitable && keyboard->KeyRelease(config[5]) && splitInterval <= 0)
 	{
 		nose.transform.localScale_ = { 0.42f,0.35f,0.35f };
 		nose.transform.localEulerAngles_ = { 0,3.1415f,0 };
@@ -205,8 +209,8 @@ void Player::SpeciesUpdate()
 			PlayerMini mini;
 			ADXObject* miniObj = &mini;
 			*miniObj = Duplicate(*this);
-			mini.transform.localScale_ *= 0.7f;
-			mini.transform.localPosition_ = ADXMatrix4::transform({ 0,0,1.8f }, transform.matWorld_);
+			mini.transform.localScale_ = { 0.5f,0.5f,0.5f };
+			mini.transform.localPosition_ = ADXMatrix4::transform({ 0,0,1 }, transform.matWorld_);
 
 			mini.Initialize(this, nose);
 			minis.push_back(mini);
@@ -215,8 +219,13 @@ void Player::SpeciesUpdate()
 		splitInterval = 7;
 	}
 
+	if (!keyboard->KeyPress(config[5]))
+	{
+		splitable = true;
+	}
+
 	minis.remove_if([=](auto& itr) 
-		{ return ADXMatrix4::transform(itr.transform.localPosition_, transform.matWorld_.Inverse()).length() > 60; });
+		{ return ADXMatrix4::transform(itr.transform.localPosition_, transform.matWorld_.Inverse()).length() > 30 / scale; });
 
 	for (auto& itr : minis)
 	{
