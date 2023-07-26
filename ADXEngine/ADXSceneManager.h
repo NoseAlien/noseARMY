@@ -2,24 +2,27 @@
 
 #include "ADXKeyBoardInput.h"
 #include "ADXScene.h"
-
-#include "TitleScene.h"
 #include "GameScene.h"
 
 class ADXSceneManager
 {
 private:
-	static ADXKeyBoardInput* keyboard;
-	static std::unique_ptr<TitleScene> titleScene_;
-	static std::unique_ptr<GameScene> gameScene_;
+	static ADXKeyBoardInput* S_keyboard;
+	static ADXScene* S_prevScene;
+	static ADXScene* S_currentScene;
 
-	static int sceneNum;
-	static int prevSceneNum;
-	static ADXScene* nowScene;
-	static bool reload;
+	static ADXScene S_scene;
+	static GameScene S_gameScene;
+
+	static int32_t S_prevSceneNum;
+	static int32_t S_sceneNum;
+	static bool S_reload;
 
 public:
-	static void Update();
-	static void SetKeyboardInput(ADXKeyBoardInput* setKeyboard) { keyboard = setKeyboard; };
-	static ADXKeyBoardInput* GetKeyboardInput() { return keyboard; };
+	static void StaticInitialize(ADXKeyBoardInput* setKeyboard);
+	static void StaticUpdate();
+	static ADXKeyBoardInput* GetKeyboardInput() { return S_keyboard; };
+
+	static int32_t GetSceneNum() { return S_sceneNum; };
+	static void SetSceneNum(int32_t setSceneNum) { S_sceneNum = setSceneNum; };
 };

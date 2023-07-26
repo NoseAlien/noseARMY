@@ -16,10 +16,12 @@ public:
 	void PreDraw();
 	void PostDraw();
 
+	void ReturnRenderTarget();
+
 	ID3D12Device* GetDevice() const { return device.Get(); }
 	ID3D12GraphicsCommandList* GetCommandList() const { return commandList.Get(); }
 	D3D12_CPU_DESCRIPTOR_HANDLE* GetDsvHandle() { return &dsvHandle; }
-
+	size_t GetBackBufferCount() const { return backBuffers.size(); }
 
 private:
 	void InitializeFixFPS();
@@ -48,7 +50,15 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> dsvHeap = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12Resource> depthBuff = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12Fence> fence = nullptr;
-	UINT64 fenceVal = 0;
+	uint64_t fenceVal = 0;
 	std::chrono::steady_clock::time_point reference_;
 
+private:
+	static ADXCommon* S_currentInstance;
+
+public:
+	static const float S_clearColor[4];
+
+public:
+	static ADXCommon* GetCurrentInstance() { return S_currentInstance; };
 };

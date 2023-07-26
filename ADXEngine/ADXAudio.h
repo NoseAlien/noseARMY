@@ -4,8 +4,6 @@
 #include <fstream>
 #include <wrl.h>
 
-#pragma comment(lib,"xaudio2.lib")
-
 struct ChunkHeader // チャンクヘッダ
 {
 	char id[4]; // チャンク毎のID
@@ -28,22 +26,30 @@ struct SoundData // 音声データ
 {
 	WAVEFORMATEX wfex; // 波形フォーマット
 	std::unique_ptr<BYTE> pBuffer; // バッファの先頭アドレス
-	unsigned int bufferSize; // バッファのサイズ
+	uint32_t bufferSize; // バッファのサイズ
 };
 
 class ADXAudio
 {
-public:
-	static Microsoft::WRL::ComPtr<IXAudio2> xAudio2;
-	static IXAudio2MasteringVoice* masterVoice;
+private:
+	static Microsoft::WRL::ComPtr<IXAudio2> S_xAudio2;
+	static IXAudio2MasteringVoice* S_masterVoice;
 
-public:
+private:
 	SoundData data{};
+	XAUDIO2_BUFFER buf{};
+	float volume = 1.0f;
+	IXAudio2SourceVoice* pSourceVoice = nullptr;
 
 public:
 	static void StaticInitialize();
+	static void Finalize();
 	static ADXAudio SoundLoadWave(const char* filename);
 
 public:
-	void SoundPlayWave();
+	void SoundPlayWave(bool loop = false);
+	void SoundStopWave(bool pause = false);
+	bool IsPlaying();
+	void SetVolume(float setVolume);
+	float GetVolume();
 };

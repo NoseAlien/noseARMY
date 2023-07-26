@@ -4,8 +4,7 @@
 class ADXCamera : public ADXObject
 {
 private:
-	static const int* window_width;
-	static const int* window_height;
+	static ADXCamera* S_current;
 
 private:
 	//射影変換行列
@@ -13,9 +12,12 @@ private:
 
 	//ビュー変換行列
 	ADXMatrix4 matView{};
-	XMFLOAT3 eye{};
-	XMFLOAT3 target{};
-	XMFLOAT3 up{};
+	DirectX::XMFLOAT3 eye{};
+	DirectX::XMFLOAT3 target{};
+	DirectX::XMFLOAT3 up{};
+
+private:
+	static ADXVector3 S_cameraWorldPos;
 
 public:
 	void Initialize();
@@ -24,5 +26,6 @@ private:
 	void UniqueUpdate();
 
 public:
-	static void StaticInitialize(const int* set_window_width, const int* set_window_height);
+	static ADXVector3 GetCameraWorldPos() { return S_cameraWorldPos; };
+	static ADXCamera* GetCurrentCamera() { return S_current; };
 };

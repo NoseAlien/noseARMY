@@ -13,184 +13,247 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="シェーダー ファイル">
+      <UniqueIdentifier>{8130f106-0632-4eb2-b9fc-6d2d126fc07e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\HanaBehaviour">
+      <UniqueIdentifier>{e2a5c4c1-acd0-4aa7-8b59-aab9da9f02fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\HanaBehaviour">
+      <UniqueIdentifier>{0bacb6f0-cd8b-44f4-9243-eaa11159dd3d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ADXImage.cpp">
+    <ClCompile Include="ADXEngine\ADXAudio.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXCamera.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXCollider.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXCommon.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXComponent.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXDataPool.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXImage.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXImGuiManager.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXKeyboardInput.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXLevelData.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXMaterial.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXMatrix4.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXModel.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXObject.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXPostEffectLens.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXQuaternion.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXRigidbody.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXScene.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXSceneManager.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXSprite.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXTexAnimation.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXUtility.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXVector3.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXWindow.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXWorldTransform.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Enemy.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="ADXKeyboardInput.cpp">
+    <ClCompile Include="Scripts\FieldBox.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="ADXMatrix4.cpp">
+    <ClCompile Include="Scripts\GameScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="ADXModel.cpp">
+    <ClCompile Include="Scripts\Goal.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="ADXObject.cpp">
+    <ClCompile Include="Scripts\main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="ADXScene.cpp">
+    <ClCompile Include="Scripts\Player.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="ADXTexAnimatoin.cpp">
+    <ClCompile Include="Scripts\PlayerMini.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="ADXUtility.cpp">
+    <ClCompile Include="Scripts\Species.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="ADXVector3.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="ADXWindow.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="ADXWorldTransform.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="ADXCollider.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="ADXMaterial.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="ADXCommon.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="ADXComponent.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="ADXAudio.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="ADXCamera.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerMini.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="TutorialArea.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="FieldBox.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="ADXSceneManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameScene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="TitleScene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Species.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Goal.cpp">
+    <ClCompile Include="Scripts\TutorialArea.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ADXImage.h">
+    <ClInclude Include="ADXEngine\ADXAudio.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXCamera.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXCollider.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXCommon.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXComponent.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXComponentInclude.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXDataPool.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXImage.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXImGuiManager.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXKeyboardInput.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXLevelData.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXMaterial.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXMatrix4.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXModel.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXObject.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXPostEffectLens.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXQuaternion.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXRigidbody.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXScene.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXSceneManager.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXSprite.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXTexAnimation.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXUtility.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXVector3.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXWindow.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXWorldTransform.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Enemy.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="ADXKeyboardInput.h">
+    <ClInclude Include="Scripts\FieldBox.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="ADXMatrix4.h">
+    <ClInclude Include="Scripts\GameScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="ADXModel.h">
+    <ClInclude Include="Scripts\Goal.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="ADXObject.h">
+    <ClInclude Include="Scripts\json.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="ADXScene.h">
+    <ClInclude Include="Scripts\Player.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="ADXTexAnimation.h">
+    <ClInclude Include="Scripts\PlayerMini.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="ADXUtility.h">
+    <ClInclude Include="Scripts\Species.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="ADXVector3.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="ADXWindow.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="ADXWorldTransform.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="ADXCollider.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="ADXMaterial.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="ADXCommon.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="ADXComponent.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="ADXAudio.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="ADXCamera.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="ADXComponentInclude.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerMini.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="TutorialArea.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="FieldBox.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="ADXSceneManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameScene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="TitleScene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Species.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Goal.h">
+    <ClInclude Include="Scripts\TutorialArea.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\shader\OBJVertexShader.hlsl" />
-    <FxCompile Include="Resources\shader\OBJPixelShader.hlsl" />
+    <FxCompile Include="Resources\shader\OBJPixelShader.hlsl">
+      <Filter>シェーダー ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shader\OBJVertexShader.hlsl">
+      <Filter>シェーダー ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shader\PostEffectTestVS.hlsl">
+      <Filter>シェーダー ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shader\PostEffectTestPS.hlsl">
+      <Filter>シェーダー ファイル</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\shader\OBJShaderHeader.hlsli" />
+    <None Include="Resources\shader\OBJShaderHeader.hlsli">
+      <Filter>シェーダー ファイル</Filter>
+    </None>
+    <None Include="Resources\shader\PostEffectTest.hlsli">
+      <Filter>シェーダー ファイル</Filter>
+    </None>
   </ItemGroup>
 </Project>

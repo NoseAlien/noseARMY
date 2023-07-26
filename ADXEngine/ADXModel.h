@@ -6,24 +6,18 @@
 #include <wrl.h>
 #include <string>
 
-using namespace DirectX;
-
 class ADXModel
 {
-private:
-	static ID3D12Device* device;
-
 public:
-	static void StaticInitialize(ID3D12Device* setDevice);
-	static ADXModel LoadModel(const std::string filePath);
+	static ADXModel LoadModel(const std::string& filePath);
 
 public:
 	//頂点データ構造体
 	struct Vertex
 	{
-		XMFLOAT3 pos;
-		XMFLOAT3 normal;
-		XMFLOAT2 uv;
+		DirectX::XMFLOAT3 pos;
+		DirectX::XMFLOAT3 normal;
+		DirectX::XMFLOAT2 uv;
 	};
 
 	std::vector<Vertex> vertices{};
@@ -35,6 +29,7 @@ public:
 	Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12Resource> indexBuff = nullptr;
 
+public:
 	ADXModel();
 
 	void SetNormal();
@@ -44,5 +39,11 @@ public:
 
 	void Initialize();
 
-	void Draw(ID3D12GraphicsCommandList* commandList, ADXWorldTransform wtf_);
+	void Draw(ID3D12GraphicsCommandList* commandList, const ADXWorldTransform& wtf_);
+
+private:
+	void Update();
+
+public:
+	static ADXModel CreateRect();
 };

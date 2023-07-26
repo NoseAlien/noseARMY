@@ -1,4 +1,7 @@
 #include "ADXMatrix4.h"
+#include <cassert>
+
+using namespace DirectX;
 
 ADXMatrix4::ADXMatrix4()
 {
@@ -32,9 +35,9 @@ ADXMatrix4::ADXMatrix4(
 XMMATRIX ADXMatrix4::ConvertToXMMatrix()
 {
 	XMMATRIX outPutXMM;
-	for (int i = 0; i < 4; i++)
+	for (int32_t i = 0; i < 4; i++)
 	{
-		for (int j = 0; j < 4; j++)
+		for (int32_t j = 0; j < 4; j++)
 		{
 			outPutXMM.r[i].m128_f32[j] = m[i][j];
 		}
@@ -42,12 +45,12 @@ XMMATRIX ADXMatrix4::ConvertToXMMatrix()
 	return outPutXMM;
 }
 
-ADXMatrix4 ADXMatrix4::ConvertToADXMatrix(XMMATRIX mat)
+ADXMatrix4 ADXMatrix4::ConvertToADXMatrix(const XMMATRIX& mat)
 {
 	ADXMatrix4 outPutADXM;
-	for (int i = 0; i < 4; i++)
+	for (int32_t i = 0; i < 4; i++)
 	{
-		for (int j = 0; j < 4; j++)
+		for (int32_t j = 0; j < 4; j++)
 		{
 			outPutADXM.m[i][j] = mat.r[i].m128_f32[j];
 		}
@@ -56,9 +59,9 @@ ADXMatrix4 ADXMatrix4::ConvertToADXMatrix(XMMATRIX mat)
 }
 
 //逆行列
-ADXMatrix4 ADXMatrix4::Inverse() {
-
-	const int N = 4;
+ADXMatrix4 ADXMatrix4::Inverse() const
+{
+	const int32_t N = 4;
 
 	ADXMatrix4 inv;
 
@@ -66,8 +69,8 @@ ADXMatrix4 ADXMatrix4::Inverse() {
 
 	double a; /* 定数倍用 */
 
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < N; j++) {
+	for (int32_t i = 0; i < N; i++) {
+		for (int32_t j = 0; j < N; j++) {
 			/* sweepの左側に逆行列を求める行列をセット */
 			sweep[i][j] = m[i][j];
 
@@ -78,19 +81,19 @@ ADXMatrix4 ADXMatrix4::Inverse() {
 
 
 	/* 全ての列の対角成分に対する繰り返し */
-	for (int k = 0; k < N; k++) {
+	for (int32_t k = 0; k < N; k++) {
 
 		/* sweep[k][k]に掛けると1になる値を求める */
 		a = 1 / sweep[k][k];
 
 		/* 操作（２）：k行目をa倍する */
-		for (int j = 0; j < N * 2; j++) {
+		for (int32_t j = 0; j < N * 2; j++) {
 			/* これによりsweep[k][k]が1になる */
 			sweep[k][j] *= a;
 		}
 
 		/* 操作（３）によりk行目以外の行のk列目を0にする */
-		for (int i = 0; i < N; i++) {
+		for (int32_t i = 0; i < N; i++) {
 			if (i == k) {
 				/* k行目はそのまま */
 				continue;
@@ -99,7 +102,7 @@ ADXMatrix4 ADXMatrix4::Inverse() {
 			/* k行目に掛ける値を求める */
 			a = -sweep[i][k];
 
-			for (int j = 0; j < N * 2; j++) {
+			for (int32_t j = 0; j < N * 2; j++) {
 				/* i行目にk行目をa倍した行を足す */
 				/* これによりsweep[i][k]が0になる */
 				sweep[i][j] += sweep[k][j] * a;
@@ -108,30 +111,45 @@ ADXMatrix4 ADXMatrix4::Inverse() {
 	}
 
 	/* sweepの右半分がmatの逆行列 */
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < N; j++) {
-			inv.m[i][j] = sweep[i][N + j];
+	for (int32_t i = 0; i < N; i++) {
+		for (int32_t j = 0; j < N; j++) {
+			inv.m[i][j] = (float)sweep[i][N + j];
 		}
 	}
 
 	return inv;
 }
 
+ADXMatrix4 ADXMatrix4::Transpose() const
+{
+	const int32_t N = 4;
+
+	ADXMatrix4 ret;
+
+	for (int32_t i = 0; i < N; i++) {
+		for (int32_t j = 0; j < N; j++) {
+			ret.m[i][j] = m[j][i];
+		}
+	}
+
+	return ret;
+}
+
 // 代入演算子オーバーロード
 ADXMatrix4& ADXMatrix4::operator*=(const ADXMatrix4& m2)
 {
 	ADXMatrix4 m1;
-	for (int i = 0; i < 4; i++)
+	for (int32_t i = 0; i < 4; i++)
 	{
-		for (int j = 0; j < 4; j++)
+		for (int32_t j = 0; j < 4; j++)
 		{
 			m1.m[i][j] = m[i][j];
 		}
 	}
 
-	for (int i = 0; i < 4; i++)
+	for (int32_t i = 0; i < 4; i++)
 	{
-		for (int j = 0; j < 4; j++)
+		for (int32_t j = 0; j < 4; j++)
 		{
 			m[i][j] = m1.m[i][0] * m2.m[0][j] + m1.m[i][1] * m2.m[1][j]
 				+ m1.m[i][2] * m2.m[2][j] + m1.m[i][3] * m2.m[3][j];
@@ -151,12 +169,11 @@ ADXVector3 ADXMatrix4::transform(const ADXVector3& v, const ADXMatrix4& m)
 		(v.x * m.m[0][1] + v.y * m.m[1][1] + v.z * m.m[2][1] + m.m[3][1]) / w,
 		(v.x * m.m[0][2] + v.y * m.m[1][2] + v.z * m.m[2][2] + m.m[3][2]) / w
 	};
-
 	return result;
 }
 
 // 2項演算子オーバーロード
-ADXMatrix4 operator*(ADXMatrix4& m1, ADXMatrix4& m2)
+ADXMatrix4 operator*(const ADXMatrix4& m1, const ADXMatrix4& m2)
 {
 	ADXMatrix4 result = m1;
 

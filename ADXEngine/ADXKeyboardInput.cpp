@@ -1,5 +1,8 @@
 #include "ADXKeyboardInput.h"
 
+#pragma comment(lib,"dinput8.lib")
+#pragma comment(lib,"dxguid.lib")
+
 ADXKeyBoardInput::ADXKeyBoardInput(ADXWindow* setWindow)
 {
 	adxwindow = setWindow;
@@ -28,7 +31,7 @@ void ADXKeyBoardInput::Update()
 	keyboard->Acquire();
 
 	//‘O‚ÌƒtƒŒ[ƒ€‚Ì“ü—Íó‘Ô‚ğæ“¾‚·‚é
-	for (int i = 0; i < sizeof(key) / sizeof(*key); i++)
+	for (int32_t i = 0; i < sizeof(key) / sizeof(*key); i++)
 	{
 		prevKey[i] = key[i];
 	}
@@ -37,17 +40,17 @@ void ADXKeyBoardInput::Update()
 	keyboard->GetDeviceState(sizeof(key), key);
 }
 
-bool ADXKeyBoardInput::KeyPress(BYTE keyNum)
+bool ADXKeyBoardInput::KeyPress(const BYTE& keyNum)
 {
 	return key[keyNum];
 }
 
-bool ADXKeyBoardInput::KeyTrigger(BYTE keyNum)
+bool ADXKeyBoardInput::KeyTrigger(const BYTE& keyNum)
 {
 	return key[keyNum] && !prevKey[keyNum];
 }
 
-bool ADXKeyBoardInput::KeyRelease(BYTE keyNum)
+bool ADXKeyBoardInput::KeyRelease(const BYTE& keyNum)
 {
 	return !key[keyNum] && prevKey[keyNum];
 }

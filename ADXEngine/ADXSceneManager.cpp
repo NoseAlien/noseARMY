@@ -1,59 +1,50 @@
 #include "ADXSceneManager.h"
 #include <typeinfo>
 
-ADXKeyBoardInput* ADXSceneManager::keyboard = nullptr;
-std::unique_ptr<TitleScene> ADXSceneManager::titleScene_{};
-std::unique_ptr<GameScene> ADXSceneManager::gameScene_{};
-int ADXSceneManager::prevSceneNum = 0;
-int ADXSceneManager::sceneNum = 0;
-ADXScene* ADXSceneManager::nowScene = nullptr;
-bool ADXSceneManager::reload = true;
+ADXKeyBoardInput* ADXSceneManager::S_keyboard = nullptr;
+ADXScene* ADXSceneManager::S_prevScene = nullptr;
+ADXScene* ADXSceneManager::S_currentScene = nullptr;
 
-void ADXSceneManager::Update()
+ADXScene ADXSceneManager::S_scene;
+GameScene ADXSceneManager::S_gameScene;
+
+int32_t ADXSceneManager::S_prevSceneNum = -1;
+int32_t ADXSceneManager::S_sceneNum = 0;
+bool ADXSceneManager::S_reload = true;
+
+
+void ADXSceneManager::StaticInitialize(ADXKeyBoardInput* setKeyboard)
 {
-	switch (sceneNum)
+	S_keyboard = setKeyboard;
+}
+
+void ADXSceneManager::StaticUpdate()
+{
+	switch (S_sceneNum)
 	{
 	case 0:
-		if (titleScene_ == nullptr)
-		{
-			titleScene_ = std::make_unique<TitleScene>();
-			titleScene_->Initialize();
-		}
-		nowScene = titleScene_.get();
-
-		if (ADXSceneManager::GetKeyboardInput()->KeyTrigger(DIK_SPACE))
-		{
-			sceneNum = 1;
-		}
+		S_currentScene = &S_scene;
 		break;
 	case 1:
-		if (gameScene_ == nullptr)
-		{
-			gameScene_ = std::make_unique<GameScene>();
-			gameScene_->Initialize();
-		}
-		nowScene = gameScene_.get();
-
-		if (ADXSceneManager::GetKeyboardInput()->KeyTrigger(DIK_Q))
-		{
-			sceneNum = 0;
-		}
+		S_currentScene = &S_scene;
 		break;
-	default:
-		sceneNum = 0;
+	case 2:
+		S_currentScene = &S_gameScene;
+		break;
 	}
 
-	if (nowScene != nullptr)
+
+	if (S_currentScene != S_prevScene || S_sceneNum != S_prevSceneNum || S_reload)
 	{
-		if (sceneNum == prevSceneNum && !reload)
-		{
-			nowScene->Update();
-		}
-		else
-		{
-			gameScene_.release();
-			reload = false;
-		}
+		*S_currentScene = {};
+		S_currentScene->Initialize();
+
+		S_reload = false;
+		S_prevSceneNum = S_sceneNum;
+		S_prevScene = S_currentScene;
 	}
-	prevSceneNum = sceneNum;
+	else
+	{
+		S_currentScene->Update();
+	}
 }

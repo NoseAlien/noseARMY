@@ -5,8 +5,6 @@
 #include "ADXComponentInclude.h"
 #include <string>
 
-#pragma comment(lib, "d3dcompiler.lib")
-
 class ADXObject
 {
 public:
@@ -14,15 +12,15 @@ public:
 	//定数バッファ用データ構造体（マテリアル）
 
 	struct ConstBufferDataB0 {
-		XMMATRIX mat;
+		DirectX::XMMATRIX mat;
 	};
 
 	struct ConstBufferDataB1 {
-		XMFLOAT3 ambient;
+		DirectX::XMFLOAT3 ambient;
 		float pad1;
-		XMFLOAT3 diffuse;
+		DirectX::XMFLOAT3 diffuse;
 		float pad2;
-		XMFLOAT3 specular;
+		DirectX::XMFLOAT3 specular;
 		float alpha;
 	};
 
@@ -31,27 +29,35 @@ public:
 	void Initialize();
 	void CreateConstBuffer();
 	void Update();
-	void Draw(UINT64 GpuStartHandle);
+	void Draw();
+	void InitCols();
+	virtual void OnCollisionHit(ADXCollider* col, ADXCollider* myCol);
 
 protected:
 	virtual void UniqueUpdate();
+	virtual void OnPreRender();
+	virtual void OnWillRenderObject();
+	virtual void Rendered();
 
 public:
 	ADXWorldTransform transform{};
 	ADXModel* model = nullptr;
 	ADXMaterial material{};
-	ADXImage texture{};
+	uint32_t texture = 0;
 	std::vector<ADXCollider> colliders{};
-	int renderLayer = 0;
+	int32_t renderLayer = 0;
+	int32_t sortingOrder = 0;
 	bool alphaTex = false;
+	bool isVisible = true;
+	bool useDefaultDraw = true;
 
+protected:
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffB1 = nullptr;
-
 	ConstBufferDataB0* constMapMaterial = nullptr;
 
 public: // 静的メンバ関数
 	//静的初期化
-	static void StaticInitialize(ID3D12Device* device, D3D12_CPU_DESCRIPTOR_HANDLE* dsvHandle);
+	static void StaticInitialize();
 
 	//静的更新処理
 	static void StaticUpdate();
@@ -60,64 +66,40 @@ public: // 静的メンバ関数
 	static void InitializeGraphicsPipeline();
 
 	// 描画前処理
-	static void PreDraw(ID3D12GraphicsCommandList* cmdList);
+	static void PreDraw();
 
 	// 描画処理
-	static void StaticDraw(ID3D12DescriptorHeap* srvHeap);
+	static void StaticDraw();
 
 	// 描画後処理
 	static void PostDraw();
 
-	static std::vector<ADXObject*> GetObjs() { return objs; };
+	static std::vector<ADXObject*> GetObjs() { return S_objs; };
 
-	static ADXObject Duplicate(ADXObject prefab, bool initCols = false);
+	static ADXObject Duplicate(const ADXObject& prefab, bool initCols = false);
 
 private: // 静的メンバ変数
-	// デバイス
-	static ID3D12Device* device;
-	// デスクリプタサイズ
-	static UINT descriptorHandleIncrementSize;
-	// コマンドリスト
-	static ID3D12GraphicsCommandList* cmdList;
 	// ルートシグネチャ
-	static Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature;
+	static Microsoft::WRL::ComPtr<ID3D12RootSignature> S_rootSignature;
 	// パイプラインステートオブジェクト（不透明オブジェクト用）
-	static Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState;
+	static Microsoft::WRL::ComPtr<ID3D12PipelineState> S_pipelineState;
 	// パイプラインステートオブジェクト（半透明オブジェクト用）
-	static Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineStateAlpha;
-	// デスクリプタヒープ
-	static Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descHeap;
-	// 頂点バッファ
-	static Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff;
-	// インデックスバッファ
-	static Microsoft::WRL::ComPtr<ID3D12Resource> indexBuff;
-	// テクスチャバッファ
-	static Microsoft::WRL::ComPtr<ID3D12Resource> texbuff;
+	static Microsoft::WRL::ComPtr<ID3D12PipelineState> S_pipelineStateAlpha;
+	// デスクリプタサイズ
+	static uint64_t S_descriptorHandleIncrementSize;
+	// コマンドリスト
+	static ID3D12GraphicsCommandList* S_cmdList;
 	// シェーダリソースビューのハンドル(CPU)
-	static D3D12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV;
+	static D3D12_CPU_DESCRIPTOR_HANDLE S_cpuDescHandleSRV;
 	// シェーダリソースビューのハンドル(CPU)
-	static D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV;
+	static D3D12_GPU_DESCRIPTOR_HANDLE S_gpuDescHandleSRV;
 
-	static D3D12_CPU_DESCRIPTOR_HANDLE* dsvHandle;
-	// ビュー行列
-	static ADXMatrix4 matView;
-	// 射影行列
-	static ADXMatrix4 matProjection;
-	// 視点座標
-	static XMFLOAT3 eye;
-	// 注視点座標
-	static XMFLOAT3 target;
-	// 上方向ベクトル
-	static XMFLOAT3 up;
-	// 頂点バッファビュー
-	static D3D12_VERTEX_BUFFER_VIEW vbView;
-	// インデックスバッファビュー
-	static D3D12_INDEX_BUFFER_VIEW ibView;
+	static uint64_t S_GpuStartHandle;
 	// 全てのオブジェクトを入れる配列
-	static std::vector<ADXObject*> allObjPtr;
+	static std::vector<ADXObject*> S_allObjPtr;
 	// 全てのオブジェクトが入った配列
-	static std::vector<ADXObject*> objs;
+	static std::vector<ADXObject*> S_objs;
 	// オブジェクトが存在できる領域を制限するための変数
-	static ADXVector3 limitPos1;
-	static ADXVector3 limitPos2;
+	static ADXVector3 S_limitPos1;
+	static ADXVector3 S_limitPos2;
 };

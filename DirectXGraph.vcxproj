@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
@@ -26,19 +18,6 @@
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -57,12 +36,6 @@
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
@@ -70,52 +43,16 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolusionDir)DirectXTex;$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolusionDir)DirectXTex;$(IncludePath)</IncludePath>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolusionDir)DirectXTex;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolusionDir)DirectXTex;$(SolutionDir)\assimp\include;$(SolutionDir)imgui;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\assimp\lib\Debug\assimp-vc143-mtd.lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolusionDir)DirectXTex;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolusionDir)DirectXTex;$(SolutionDir)\assimp\include;$(SolutionDir)imgui;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\assimp\lib\Release\assimp-vc143-mt.lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -124,10 +61,13 @@
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\ADXEngine;$(SolutionDir)\Scripts;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(SolutionDir)\assimp\lib\Debug\assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -140,103 +80,127 @@
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\ADXEngine;$(SolutionDir)\Scripts;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(SolutionDir)\assimp\lib\Release\assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProjectReference Include="DirectXTex\DirectXTex_Desktop_2022.vcxproj">
-      <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
-    </ProjectReference>
+    <ClCompile Include="ADXEngine\ADXAudio.cpp" />
+    <ClCompile Include="ADXEngine\ADXCamera.cpp" />
+    <ClCompile Include="ADXEngine\ADXCollider.cpp" />
+    <ClCompile Include="ADXEngine\ADXCommon.cpp" />
+    <ClCompile Include="ADXEngine\ADXComponent.cpp" />
+    <ClCompile Include="ADXEngine\ADXDataPool.cpp" />
+    <ClCompile Include="ADXEngine\ADXImage.cpp" />
+    <ClCompile Include="ADXEngine\ADXImGuiManager.cpp" />
+    <ClCompile Include="ADXEngine\ADXKeyboardInput.cpp" />
+    <ClCompile Include="ADXEngine\ADXLevelData.cpp" />
+    <ClCompile Include="ADXEngine\ADXMaterial.cpp" />
+    <ClCompile Include="ADXEngine\ADXMatrix4.cpp" />
+    <ClCompile Include="ADXEngine\ADXModel.cpp" />
+    <ClCompile Include="ADXEngine\ADXObject.cpp" />
+    <ClCompile Include="ADXEngine\ADXPostEffectLens.cpp" />
+    <ClCompile Include="ADXEngine\ADXQuaternion.cpp" />
+    <ClCompile Include="ADXEngine\ADXRigidbody.cpp" />
+    <ClCompile Include="ADXEngine\ADXScene.cpp" />
+    <ClCompile Include="ADXEngine\ADXSceneManager.cpp" />
+    <ClCompile Include="ADXEngine\ADXSprite.cpp" />
+    <ClCompile Include="ADXEngine\ADXTexAnimation.cpp" />
+    <ClCompile Include="ADXEngine\ADXUtility.cpp" />
+    <ClCompile Include="ADXEngine\ADXVector3.cpp" />
+    <ClCompile Include="ADXEngine\ADXWindow.cpp" />
+    <ClCompile Include="ADXEngine\ADXWorldTransform.cpp" />
+    <ClCompile Include="Scripts\Enemy.cpp" />
+    <ClCompile Include="Scripts\FieldBox.cpp" />
+    <ClCompile Include="Scripts\GameScene.cpp" />
+    <ClCompile Include="Scripts\Goal.cpp" />
+    <ClCompile Include="Scripts\main.cpp" />
+    <ClCompile Include="Scripts\Player.cpp" />
+    <ClCompile Include="Scripts\PlayerMini.cpp" />
+    <ClCompile Include="Scripts\Species.cpp" />
+    <ClCompile Include="Scripts\TutorialArea.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ADXAudio.cpp" />
-    <ClCompile Include="ADXCamera.cpp" />
-    <ClCompile Include="ADXCollider.cpp" />
-    <ClCompile Include="ADXCommon.cpp" />
-    <ClCompile Include="ADXComponent.cpp" />
-    <ClCompile Include="ADXImage.cpp" />
-    <ClCompile Include="ADXKeyboardInput.cpp" />
-    <ClCompile Include="ADXMaterial.cpp" />
-    <ClCompile Include="ADXMatrix4.cpp" />
-    <ClCompile Include="ADXModel.cpp" />
-    <ClCompile Include="ADXObject.cpp" />
-    <ClCompile Include="ADXSceneManager.cpp" />
-    <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="FieldBox.cpp" />
-    <ClCompile Include="GameScene.cpp" />
-    <ClCompile Include="Goal.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="ADXScene.cpp" />
-    <ClCompile Include="ADXTexAnimatoin.cpp" />
-    <ClCompile Include="ADXUtility.cpp" />
-    <ClCompile Include="ADXVector3.cpp" />
-    <ClCompile Include="ADXWindow.cpp" />
-    <ClCompile Include="ADXWorldTransform.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="PlayerMini.cpp" />
-    <ClCompile Include="Species.cpp" />
-    <ClCompile Include="TitleScene.cpp" />
-    <ClCompile Include="TutorialArea.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="ADXAudio.h" />
-    <ClInclude Include="ADXCamera.h" />
-    <ClInclude Include="ADXCollider.h" />
-    <ClInclude Include="ADXCommon.h" />
-    <ClInclude Include="ADXComponent.h" />
-    <ClInclude Include="ADXComponentInclude.h" />
-    <ClInclude Include="ADXImage.h" />
-    <ClInclude Include="ADXKeyboardInput.h" />
-    <ClInclude Include="ADXMaterial.h" />
-    <ClInclude Include="ADXMatrix4.h" />
-    <ClInclude Include="ADXModel.h" />
-    <ClInclude Include="ADXObject.h" />
-    <ClInclude Include="ADXSceneManager.h" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="FieldBox.h" />
-    <ClInclude Include="GameScene.h" />
-    <ClInclude Include="Goal.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="ADXScene.h" />
-    <ClInclude Include="ADXTexAnimation.h" />
-    <ClInclude Include="ADXUtility.h" />
-    <ClInclude Include="ADXVector3.h" />
-    <ClInclude Include="ADXWindow.h" />
-    <ClInclude Include="ADXWorldTransform.h" />
-    <ClInclude Include="PlayerMini.h" />
-    <ClInclude Include="Species.h" />
-    <ClInclude Include="TitleScene.h" />
-    <ClInclude Include="TutorialArea.h" />
+    <ClInclude Include="ADXEngine\ADXAudio.h" />
+    <ClInclude Include="ADXEngine\ADXCamera.h" />
+    <ClInclude Include="ADXEngine\ADXCollider.h" />
+    <ClInclude Include="ADXEngine\ADXCommon.h" />
+    <ClInclude Include="ADXEngine\ADXComponent.h" />
+    <ClInclude Include="ADXEngine\ADXComponentInclude.h" />
+    <ClInclude Include="ADXEngine\ADXDataPool.h" />
+    <ClInclude Include="ADXEngine\ADXImage.h" />
+    <ClInclude Include="ADXEngine\ADXImGuiManager.h" />
+    <ClInclude Include="ADXEngine\ADXKeyboardInput.h" />
+    <ClInclude Include="ADXEngine\ADXLevelData.h" />
+    <ClInclude Include="ADXEngine\ADXMaterial.h" />
+    <ClInclude Include="ADXEngine\ADXMatrix4.h" />
+    <ClInclude Include="ADXEngine\ADXModel.h" />
+    <ClInclude Include="ADXEngine\ADXObject.h" />
+    <ClInclude Include="ADXEngine\ADXPostEffectLens.h" />
+    <ClInclude Include="ADXEngine\ADXQuaternion.h" />
+    <ClInclude Include="ADXEngine\ADXRigidbody.h" />
+    <ClInclude Include="ADXEngine\ADXScene.h" />
+    <ClInclude Include="ADXEngine\ADXSceneManager.h" />
+    <ClInclude Include="ADXEngine\ADXSprite.h" />
+    <ClInclude Include="ADXEngine\ADXTexAnimation.h" />
+    <ClInclude Include="ADXEngine\ADXUtility.h" />
+    <ClInclude Include="ADXEngine\ADXVector3.h" />
+    <ClInclude Include="ADXEngine\ADXWindow.h" />
+    <ClInclude Include="ADXEngine\ADXWorldTransform.h" />
+    <ClInclude Include="Scripts\Enemy.h" />
+    <ClInclude Include="Scripts\FieldBox.h" />
+    <ClInclude Include="Scripts\GameScene.h" />
+    <ClInclude Include="Scripts\Goal.h" />
+    <ClInclude Include="Scripts\json.hpp" />
+    <ClInclude Include="Scripts\Player.h" />
+    <ClInclude Include="Scripts\PlayerMini.h" />
+    <ClInclude Include="Scripts\Species.h" />
+    <ClInclude Include="Scripts\TutorialArea.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\OBJPixelShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="Resources\shader\OBJVertexShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Resources\shader\PostEffectTestPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Resources\shader\PostEffectTestVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shader\OBJShaderHeader.hlsli" />
+    <None Include="Resources\shader\PostEffectTest.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
+      <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
+    </ProjectReference>
+    <ProjectReference Include="imgui\imgui.vcxproj">
+      <Project>{0c96a0e6-423c-469a-957c-b1e758968c2b}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -8,6 +8,9 @@
 
 using namespace Microsoft::WRL;
 
+ADXCommon* ADXCommon::S_currentInstance = nullptr;
+const float ADXCommon::S_clearColor[4] = { 0.1f,0.8f,1.0f,0.0f };
+
 //対応レベルの配列
 D3D_FEATURE_LEVEL levels[] =
 {
@@ -54,8 +57,6 @@ void ADXCommon::UpdateFixFPS()
 
 void ADXCommon::Initialize(ADXWindow* setWindow)
 {
-	HRESULT result;
-
 	assert(setWindow);
 
 	adxwindow = setWindow;
@@ -68,6 +69,8 @@ void ADXCommon::Initialize(ADXWindow* setWindow)
 	InitializeRenderTargetView();
 	InitializeDepthBuffer();
 	InitializeFence();
+
+	S_currentInstance = this;
 }
 
 void ADXCommon::InitializeDevice()
@@ -91,7 +94,7 @@ void ADXCommon::InitializeDevice()
 	std::vector<ComPtr<IDXGIAdapter4>> adapters;
 	ComPtr<IDXGIAdapter4> tmpAdapter = nullptr;
 
-	for (UINT i = 0;
+	for (uint32_t i = 0;
 		dxgiFactory->EnumAdapterByGpuPreference(i,
 			DXGI_GPU_PREFERENCE_HIGH_PERFORMANCE,
 			IID_PPV_ARGS(&tmpAdapter)) != DXGI_ERROR_NOT_FOUND;
@@ -101,7 +104,7 @@ void ADXCommon::InitializeDevice()
 	}
 
 	//アダプタの選別
-	for (size_t i = 0; i < adapters.size(); i++)
+	for (uint32_t i = 0; i < adapters.size(); i++)
 	{
 		DXGI_ADAPTER_DESC3 adapterDesk;
 		adapters[i]->GetDesc3(&adapterDesk);
@@ -116,7 +119,7 @@ void ADXCommon::InitializeDevice()
 	//デバイスの生成
 	D3D_FEATURE_LEVEL featureLevel;
 
-	for (size_t i = 0; i < _countof(levels); i++)
+	for (uint32_t i = 0; i < _countof(levels); i++)
 	{
 		result = D3D12CreateDevice(tmpAdapter.Get(), levels[i],
 			IID_PPV_ARGS(&device));
@@ -131,8 +134,22 @@ void ADXCommon::InitializeDevice()
 	ComPtr<ID3D12InfoQueue> infoQueue;
 	if (SUCCEEDED(device->QueryInterface(IID_PPV_ARGS(&infoQueue))))
 	{
+		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_WARNING, true);
 		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);
 		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);
+		D3D12_MESSAGE_ID denyIds[] =
+		{
+			D3D12_MESSAGE_ID_CLEARRENDERTARGETVIEW_MISMATCHINGCLEARVALUE
+		};
+
+		D3D12_MESSAGE_SEVERITY severities[] = { D3D12_MESSAGE_SEVERITY_INFO };
+		D3D12_INFO_QUEUE_FILTER filter{};
+		filter.DenyList.NumIDs = _countof(denyIds);
+		filter.DenyList.pIDList = denyIds;
+		filter.DenyList.NumSeverities = _countof(severities);
+		filter.DenyList.pSeverityList = severities;
+
+		infoQueue->PushStorageFilter(&filter);
 	}
 #endif
 }
@@ -198,9 +215,9 @@ void ADXCommon::InitializeRenderTargetView()
 	backBuffers.resize(swapChainDesc.BufferCount);
 
 	//スワップチェーンの全てのバッファについて処理する
-	for (size_t i = 0; i < backBuffers.size(); i++)
+	for (uint32_t i = 0; i < backBuffers.size(); i++)
 	{
-		swapChain->GetBuffer((UINT)i, IID_PPV_ARGS(&backBuffers[i]));
+		swapChain->GetBuffer((uint32_t)i, IID_PPV_ARGS(&backBuffers[i]));
 		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = rtvHeap->GetCPUDescriptorHandleForHeapStart();
 		rtvHandle.ptr += i * device->GetDescriptorHandleIncrementSize(rtvHeapDesc.Type);
 		D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
@@ -218,8 +235,8 @@ void ADXCommon::InitializeDepthBuffer()
 	//リソース設定
 	D3D12_RESOURCE_DESC depthResourceDesc{};
 	depthResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	depthResourceDesc.Width = ADXWindow::window_width; //レンダーターゲットに合わせる
-	depthResourceDesc.Height = ADXWindow::window_height; //レンダーターゲットに合わせる
+	depthResourceDesc.Width = ADXWindow::S_window_width; //レンダーターゲットに合わせる
+	depthResourceDesc.Height = ADXWindow::S_window_height; //レンダーターゲットに合わせる
 	depthResourceDesc.DepthOrArraySize = 1;
 	depthResourceDesc.Format = DXGI_FORMAT_D32_FLOAT; //深度値フォーマット
 	depthResourceDesc.SampleDesc.Count = 1;
@@ -266,14 +283,22 @@ void ADXCommon::InitializeFence()
 	result = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
 }
 
+void ADXCommon::ReturnRenderTarget()
+{
+	uint32_t bbIndex = swapChain->GetCurrentBackBufferIndex();
+
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = rtvHeap->GetCPUDescriptorHandleForHeapStart();
+	rtvHandle.ptr += bbIndex * device->GetDescriptorHandleIncrementSize(rtvHeapDesc.Type);
+	dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
+	commandList->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
+}
+
 void ADXCommon::PreDraw()
 {
 	//DXの画面更新処理
 
-	FLOAT clearColor[] = { 0.1f,0.8f,1.0f,0.0f };
-
 	//バックバッファの番号取得
-	UINT bbIndex = swapChain->GetCurrentBackBufferIndex();
+	uint32_t bbIndex = swapChain->GetCurrentBackBufferIndex();
 
 	//リソースバリアで書き込み可能に変更
 	D3D12_RESOURCE_BARRIER barrierDesc{};
@@ -283,18 +308,18 @@ void ADXCommon::PreDraw()
 	commandList->ResourceBarrier(1, &barrierDesc);
 
 	//描画先の変更
+	ReturnRenderTarget();
+	
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = rtvHeap->GetCPUDescriptorHandleForHeapStart();
 	rtvHandle.ptr += bbIndex * device->GetDescriptorHandleIncrementSize(rtvHeapDesc.Type);
-	dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
-	commandList->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
 
 	//まず画面を背景色で塗り潰す
-	commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+	commandList->ClearRenderTargetView(rtvHandle, S_clearColor, 0, nullptr);
 
 	// ビューポート設定コマンド
 	D3D12_VIEWPORT viewport{};
-	viewport.Width = ADXWindow::window_width;
-	viewport.Height = ADXWindow::window_height;
+	viewport.Width = (FLOAT)ADXWindow::S_window_width;
+	viewport.Height = (FLOAT)ADXWindow::S_window_height;
 	viewport.TopLeftX = 0;
 	viewport.TopLeftY = 0;
 	viewport.MinDepth = 0.0f;
@@ -306,19 +331,23 @@ void ADXCommon::PreDraw()
 	// シザー矩形
 	D3D12_RECT scissorRect{};
 	scissorRect.left = 0; // 切り抜き座標左
-	scissorRect.right = scissorRect.left + ADXWindow::window_width; // 切り抜き座標右
+	scissorRect.right = scissorRect.left + (LONG)ADXWindow::S_window_width; // 切り抜き座標右
 	scissorRect.top = 0; // 切り抜き座標上
-	scissorRect.bottom = scissorRect.top + ADXWindow::window_height; // 切り抜き座標下
+	scissorRect.bottom = scissorRect.top + (LONG)ADXWindow::S_window_height; // 切り抜き座標下
 	// シザー矩形設定コマンドを、コマンドリストに積む
 	commandList->RSSetScissorRects(1, &scissorRect);
+
+	S_currentInstance = this;
 }
 
 void ADXCommon::PostDraw()
 {
 	HRESULT result;
+	
+	ReturnRenderTarget();
 
 	//バックバッファの番号取得
-	UINT bbIndex = swapChain->GetCurrentBackBufferIndex();
+	uint32_t bbIndex = swapChain->GetCurrentBackBufferIndex();
 
 	//リソースバッファを戻す
 	D3D12_RESOURCE_BARRIER barrierDesc{};

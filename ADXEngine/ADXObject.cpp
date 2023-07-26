@@ -1,57 +1,46 @@
 #include "ADXObject.h"
-#include "ADXCommon.h"
 #include <d3dcompiler.h>
+#include "ADXCommon.h"
+#include "ADXSceneManager.h"
 
-ID3D12Device* ADXObject::device = nullptr;
-UINT ADXObject::descriptorHandleIncrementSize = 0;
-ID3D12GraphicsCommandList* ADXObject::cmdList = nullptr;
-Microsoft::WRL::ComPtr<ID3D12RootSignature> ADXObject::rootSignature;
-Microsoft::WRL::ComPtr<ID3D12PipelineState> ADXObject::pipelineState;
-Microsoft::WRL::ComPtr<ID3D12PipelineState> ADXObject::pipelineStateAlpha;
-Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> ADXObject::descHeap;
-Microsoft::WRL::ComPtr<ID3D12Resource> ADXObject::vertBuff;
-Microsoft::WRL::ComPtr<ID3D12Resource> ADXObject::indexBuff;
-Microsoft::WRL::ComPtr<ID3D12Resource> ADXObject::texbuff;
-D3D12_CPU_DESCRIPTOR_HANDLE ADXObject::cpuDescHandleSRV;
-D3D12_GPU_DESCRIPTOR_HANDLE ADXObject::gpuDescHandleSRV;
-D3D12_CPU_DESCRIPTOR_HANDLE* ADXObject::dsvHandle = nullptr;
-ADXMatrix4 ADXObject::matView = IdentityMatrix();
-ADXMatrix4 ADXObject::matProjection = IdentityMatrix();
-XMFLOAT3 ADXObject::eye = { 0, 0, -50.0f };
-XMFLOAT3 ADXObject::target = { 0, 0, 0 };
-XMFLOAT3 ADXObject::up = { 0, 1, 0 };
-D3D12_VERTEX_BUFFER_VIEW ADXObject::vbView{};
-D3D12_INDEX_BUFFER_VIEW ADXObject::ibView{};
-std::vector<ADXObject*> ADXObject::allObjPtr{};
-std::vector<ADXObject*> ADXObject::objs{};
-ADXVector3 ADXObject::limitPos1 = { -300,-300,-100 };
-ADXVector3 ADXObject::limitPos2 = { 100,100,150 };
+#pragma comment(lib, "d3dcompiler.lib")
+
+uint64_t ADXObject::S_descriptorHandleIncrementSize = 0;
+ID3D12GraphicsCommandList* ADXObject::S_cmdList = nullptr;
+Microsoft::WRL::ComPtr<ID3D12RootSignature> ADXObject::S_rootSignature;
+Microsoft::WRL::ComPtr<ID3D12PipelineState> ADXObject::S_pipelineState;
+Microsoft::WRL::ComPtr<ID3D12PipelineState> ADXObject::S_pipelineStateAlpha;
+
+uint64_t ADXObject::S_GpuStartHandle = 0;
+D3D12_CPU_DESCRIPTOR_HANDLE ADXObject::S_cpuDescHandleSRV;
+D3D12_GPU_DESCRIPTOR_HANDLE ADXObject::S_gpuDescHandleSRV;
+std::vector<ADXObject*> ADXObject::S_allObjPtr{};
+std::vector<ADXObject*> ADXObject::S_objs{};
+ADXVector3 ADXObject::S_limitPos1 = { -300,-300,-100 };
+ADXVector3 ADXObject::S_limitPos2 = { 100,100,150 };
 
 ADXObject::ADXObject()
 {
 
 }
 
-void ADXObject::StaticInitialize(ID3D12Device* device, D3D12_CPU_DESCRIPTOR_HANDLE* dsvHandle)
+void ADXObject::StaticInitialize()
 {
-	// nullptrチェック
-	assert(device);
-
-	ADXObject::device = device;
-	ADXObject::dsvHandle = dsvHandle;
-
 	// パイプライン初期化
 	InitializeGraphicsPipeline();
 }
 
 void ADXObject::Initialize()
 {
+	*this = {};
 	transform.Initialize();
 	CreateConstBuffer();
 }
 
 void ADXObject::CreateConstBuffer()
 {
+	ID3D12Device* device = ADXCommon::GetCurrentInstance()->GetDevice();
+
 	if (device != nullptr)
 	{
 		HRESULT result = S_FALSE;
@@ -80,7 +69,7 @@ void ADXObject::CreateConstBuffer()
 		//定数バッファのマッピング
 		result = transform.constBuffTransform->Map(0, nullptr, (void**)&transform.constMapTransform);//マッピング
 		assert(SUCCEEDED(result));
-		
+
 
 		cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
 
@@ -291,6 +280,8 @@ void ADXObject::InitializeGraphicsPipeline()
 	rootSignatureDesc.pStaticSamplers = &samplerDesc;
 	rootSignatureDesc.NumStaticSamplers = 1;
 
+	ID3D12Device* device = ADXCommon::GetCurrentInstance()->GetDevice();
+
 	//ルートシグネチャのシリアライズ
 	Microsoft::WRL::ComPtr<ID3DBlob> rootSigBlob = nullptr;
 	result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
@@ -298,56 +289,42 @@ void ADXObject::InitializeGraphicsPipeline()
 	assert(SUCCEEDED(result));
 	//ルートシグネチャの生成
 	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
-		IID_PPV_ARGS(&rootSignature));
+		IID_PPV_ARGS(&S_rootSignature));
 	assert(SUCCEEDED(result));
 	//パイプラインにルートシグネチャをセット
-	pipelineDesc.pRootSignature = rootSignature.Get();
+	pipelineDesc.pRootSignature = S_rootSignature.Get();
 	// パイプラインステートの生成
-	result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
+	result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&S_pipelineState));
 	assert(SUCCEEDED(result));
 
 	//デプスステンシルステートの設定
 	pipelineDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO; //書き込み不可
 
 	// パイプラインステートの生成
-	result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineStateAlpha));
+	result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&S_pipelineStateAlpha));
 	assert(SUCCEEDED(result));
 }
 
-ADXObject ADXObject::Duplicate(ADXObject prefab, bool initCols)
+ADXObject ADXObject::Duplicate(const ADXObject& prefab, bool initCols)
 {
 	ADXObject ret = prefab;
 	ret.CreateConstBuffer();
 	if (initCols)
 	{
-		for (int i = 0; i < ret.colliders.size(); i++)
-		{
-			ret.colliders[i].Initialize(&ret);
-		}
+		ret.InitCols();
 	}
 	return ret;
 }
 
 void ADXObject::Update()
 {
-	HRESULT result = S_FALSE;
-
-	for (int i = 0; i < colliders.size(); i++)
+	for (int32_t i = 0; i < colliders.size(); i++)
 	{
 		colliders[i].Update(this);
 	}
 	UniqueUpdate();
 
-	allObjPtr.push_back(this);
-
-	//定数バッファへデータ転送
-	ConstBufferDataB1* constMap1 = nullptr;
-	result = constBuffB1->Map(0, nullptr, (void**)&constMap1);
-	constMap1->ambient = material.ambient;
-	constMap1->diffuse = material.diffuse;
-	constMap1->specular = material.specular;
-	constMap1->alpha = material.alpha;
-	constBuffB1->Unmap(0, nullptr);
+	S_allObjPtr.push_back(this);
 }
 
 void ADXObject::UniqueUpdate()
@@ -355,12 +332,16 @@ void ADXObject::UniqueUpdate()
 
 }
 
+void ADXObject::OnPreRender()
+{
+}
+
 void ADXObject::StaticUpdate()
 {
-	objs = allObjPtr;
+	S_objs = S_allObjPtr;
 
-	ADXVector3 limitMinPos = { min(limitPos1.x,limitPos2.x),min(limitPos1.y,limitPos2.y) ,min(limitPos1.z,limitPos2.z) };
-	ADXVector3 limitMaxPos = { max(limitPos1.x,limitPos2.x),max(limitPos1.y,limitPos2.y) ,max(limitPos1.z,limitPos2.z) };
+	ADXVector3 limitMinPos = { min(S_limitPos1.x,S_limitPos2.x),min(S_limitPos1.y,S_limitPos2.y) ,min(S_limitPos1.z,S_limitPos2.z) };
+	ADXVector3 limitMaxPos = { max(S_limitPos1.x,S_limitPos2.x),max(S_limitPos1.y,S_limitPos2.y) ,max(S_limitPos1.z,S_limitPos2.z) };
 
 	for (auto& itr : GetObjs())
 	{
@@ -376,96 +357,137 @@ void ADXObject::StaticUpdate()
 	}
 }
 
-void ADXObject::PreDraw(ID3D12GraphicsCommandList* cmdList)
+void ADXObject::PreDraw()
 {
 	// PreDrawとPostDrawがペアで呼ばれていなければエラー
-	assert(ADXObject::cmdList == nullptr);
+	assert(ADXObject::S_cmdList == nullptr);
 
 	// コマンドリストをセット
-	ADXObject::cmdList = cmdList;
+	ADXObject::S_cmdList = ADXCommon::GetCurrentInstance()->GetCommandList();
 
 	// パイプラインステートの設定
-	cmdList->SetPipelineState(pipelineState.Get());
+	ADXObject::S_cmdList->SetPipelineState(S_pipelineState.Get());
 	// ルートシグネチャの設定
-	cmdList->SetGraphicsRootSignature(rootSignature.Get());
+	ADXObject::S_cmdList->SetGraphicsRootSignature(S_rootSignature.Get());
 	// プリミティブ形状を設定
-	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST); // 三角形リスト
-}
+	ADXObject::S_cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST); // 三角形リスト
 
-void ADXObject::StaticDraw(ID3D12DescriptorHeap* srvHeap)
-{
-	// プリミティブ形状の設定コマンド
-	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST); // 三角形リスト
+
+	ID3D12DescriptorHeap* srvHeap = ADXImage::GetSrvHeap();
 
 	//SRVヒープの設定コマンド
 	ID3D12DescriptorHeap* ppHeaps[] = { srvHeap };
-	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	ADXObject::S_cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	//SRVヒープの先頭ハンドルを取得(SRVを指しているはず)
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
 	//SRVヒープの先頭にあるSRVをルートパラメーター1番に設定
-	cmdList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
-	UINT64 GpuStartHandle = srvGpuHandle.ptr;
+	ADXObject::S_cmdList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+	S_GpuStartHandle = srvGpuHandle.ptr;
 
 	// ルートシグネチャの設定コマンド
-	cmdList->SetGraphicsRootSignature(rootSignature.Get());
+	ADXObject::S_cmdList->SetGraphicsRootSignature(S_rootSignature.Get());
 
-	int minLayer = 0;
-	int maxLayer = 0;
-
-	if (allObjPtr.size() > 0)
+	for (int32_t i = 0; i < S_allObjPtr.size(); i++)
 	{
-		minLayer = allObjPtr[0]->renderLayer;
-		maxLayer = allObjPtr[0]->renderLayer;
+		S_allObjPtr[i]->OnPreRender();
+	}
+}
+
+void ADXObject::StaticDraw()
+{
+
+	int32_t minLayer = 0;
+	int32_t maxLayer = 0;
+	int32_t minSortingOrder = 0;
+	int32_t maxSortingOrder = 0;
+
+	if (S_allObjPtr.size() > 0)
+	{
+		minLayer = S_allObjPtr[0]->renderLayer;
+		maxLayer = S_allObjPtr[0]->renderLayer;
+		minSortingOrder = S_allObjPtr[0]->sortingOrder;
+		maxSortingOrder = S_allObjPtr[0]->sortingOrder;
 	}
 
 	//RenderLayerの範囲を読み取る
-	for (int i = 0; i < allObjPtr.size(); i++)
+	for (int32_t i = 0; i < S_allObjPtr.size(); i++)
 	{
-		if (allObjPtr[i]->renderLayer < minLayer)
+		if (S_allObjPtr[i]->renderLayer < minLayer)
 		{
-			minLayer = allObjPtr[i]->renderLayer;
+			minLayer = S_allObjPtr[i]->renderLayer;
 		}
-		if (allObjPtr[i]->renderLayer > maxLayer)
+		if (S_allObjPtr[i]->renderLayer > maxLayer)
 		{
-			maxLayer = allObjPtr[i]->renderLayer;
+			maxLayer = S_allObjPtr[i]->renderLayer;
+		}
+
+		if (S_allObjPtr[i]->sortingOrder < minSortingOrder)
+		{
+			minSortingOrder = S_allObjPtr[i]->sortingOrder;
+		}
+		if (S_allObjPtr[i]->sortingOrder > maxSortingOrder)
+		{
+			maxSortingOrder = S_allObjPtr[i]->sortingOrder;
 		}
 	}
 
-	for (int nowLayer = minLayer; nowLayer <= maxLayer; nowLayer++)
+	for (int32_t nowLayer = minLayer; nowLayer <= maxLayer; nowLayer++)
 	{
 		std::vector<ADXObject*> thisLayerObjPtr;
 
 		// パイプラインステートの設定コマンド
-		cmdList->SetPipelineState(pipelineState.Get());
+		S_cmdList->SetPipelineState(S_pipelineState.Get());
 		//全ピクセルの深度バッファ値を最奥の1.0にする
-		cmdList->ClearDepthStencilView(*dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+		S_cmdList->ClearDepthStencilView(*ADXCommon::GetCurrentInstance()->GetDsvHandle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
-		for (int i = 0; i < allObjPtr.size(); i++)
+		for (int32_t i = 0; i < S_allObjPtr.size(); i++)
 		{
-			if (allObjPtr[i]->renderLayer == nowLayer)
+			if (S_allObjPtr[i]->renderLayer == nowLayer)
 			{
-				thisLayerObjPtr.push_back(allObjPtr[i]);
+				thisLayerObjPtr.push_back(S_allObjPtr[i]);
 			}
 		}
 
 		//ためたオブジェクトを深度の深い順に取り出しながら描画
-		for (int i = 0; thisLayerObjPtr.size() > 0; i++)
+		for (int32_t i = 0; thisLayerObjPtr.size() > 0; i++)
 		{
+			int32_t lowestSortingOrder = minSortingOrder;
 			float dist = 0;
-			int target = 0;
-			for (int j = 0; j < thisLayerObjPtr.size(); j++)
+			int32_t target = 0;
+			for (int32_t j = 0; j < thisLayerObjPtr.size(); j++)
 			{
 				thisLayerObjPtr[j]->transform.UpdateMatrix();
 				float zDepth;
-				zDepth = ADXMatrix4::transform(thisLayerObjPtr[j]->transform.GetWorldPosition(), matView).length();
+				float nearestVertDepth = 999;
 
-				if (zDepth <= dist)
+				if (thisLayerObjPtr[j]->model != nullptr)
+				{
+					for (int32_t k = 0; k < thisLayerObjPtr[j]->model->vertices.size(); k++)
+					{
+						float VertDepth;
+						ADXVector3 vertLocalPos = { thisLayerObjPtr[j]->model->vertices[k].pos.x,thisLayerObjPtr[j]->model->vertices[k].pos.y,thisLayerObjPtr[j]->model->vertices[k].pos.z };
+						VertDepth = ADXMatrix4::transform(ADXMatrix4::transform(vertLocalPos, thisLayerObjPtr[j]->transform.GetMatWorld()), ADXWorldTransform::GetViewProjection()).Length();
+
+						if (VertDepth <= nearestVertDepth)
+						{
+							nearestVertDepth = VertDepth;
+						}
+					}
+				}
+
+				zDepth = nearestVertDepth;
+
+				if (thisLayerObjPtr[j]->sortingOrder < lowestSortingOrder || thisLayerObjPtr[j]->sortingOrder == lowestSortingOrder && zDepth >= dist)
 				{
 					dist = zDepth;
 					target = j;
+					lowestSortingOrder = thisLayerObjPtr[j]->sortingOrder;
 				}
 			}
-			thisLayerObjPtr[target]->Draw(GpuStartHandle);
+			if (thisLayerObjPtr[target]->isVisible)
+			{
+				thisLayerObjPtr[target]->Draw();
+			}
 			thisLayerObjPtr.erase(thisLayerObjPtr.begin() + target);
 		}
 	}
@@ -474,28 +496,65 @@ void ADXObject::StaticDraw(ID3D12DescriptorHeap* srvHeap)
 void ADXObject::PostDraw()
 {
 	// コマンドリストを解除
-	ADXObject::cmdList = nullptr;
+	ADXObject::S_cmdList = nullptr;
 	//ソート用配列を空にする
-	allObjPtr.clear();
+	S_allObjPtr.clear();
 }
 
-void ADXObject::Draw(UINT64 GpuStartHandle)
+void ADXObject::Draw()
 {
+	OnWillRenderObject();
+
 	// nullptrチェック
+	ID3D12Device* device = ADXCommon::GetCurrentInstance()->GetDevice();
 	assert(device);
-	assert(cmdList);
+	assert(S_cmdList);
 
-	if (model != nullptr)
+	if (useDefaultDraw && model != nullptr)
 	{
-		transform.UpdateConstBuffer();
+		HRESULT result = S_FALSE;
+		//定数バッファへデータ転送
+		ConstBufferDataB1* constMap1 = nullptr;
+		result = constBuffB1->Map(0, nullptr, (void**)&constMap1);
+		constMap1->ambient = material.ambient;
+		constMap1->diffuse = material.diffuse;
+		constMap1->specular = material.specular;
+		constMap1->alpha = material.alpha;
+		constBuffB1->Unmap(0, nullptr);
 
-		gpuDescHandleSRV.ptr = GpuStartHandle + texture.GetGHandle();
-		cmdList->SetGraphicsRootDescriptorTable(1, gpuDescHandleSRV);
+		S_gpuDescHandleSRV.ptr = S_GpuStartHandle + texture;
+		S_cmdList->SetGraphicsRootDescriptorTable(1, S_gpuDescHandleSRV);
 
 		//定数バッファビュー(CBV)の設定コマンド
-		cmdList->SetGraphicsRootConstantBufferView(2, constBuffB1->GetGPUVirtualAddress());
+		S_cmdList->SetGraphicsRootConstantBufferView(2, constBuffB1->GetGPUVirtualAddress());
+		
+		transform.UpdateConstBuffer();
 
 		// 描画コマンド
-		model->Draw(cmdList, transform);
+		model->Draw(S_cmdList, transform);
 	}
+
+	Rendered();
+}
+
+void ADXObject::OnWillRenderObject()
+{
+
+}
+
+void ADXObject::Rendered()
+{
+
+}
+
+void ADXObject::InitCols()
+{
+	for (int32_t i = 0; i < colliders.size(); i++)
+	{
+		colliders[i].Initialize(this);
+	}
+}
+
+void ADXObject::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
+{
 }

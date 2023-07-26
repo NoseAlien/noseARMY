@@ -1,21 +1,22 @@
 #pragma once
 
 #include <windows.h>
+#include <string>
 
 class ADXWindow
 {
 public:
-	static	LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
+	static	LRESULT WindowProc(HWND hwnd, uint32_t msg, WPARAM wparam, LPARAM lparam);
 
 
 public:
-	static const int window_width = 1280;
-	static const int window_height = 720;
+	static uint32_t S_window_width;
+	static uint32_t S_window_height;
 
 	RECT wrc{};
 
 	ADXWindow(
-		LPCTSTR window_title);
+		const LPCTSTR& window_title);
 
 	HWND GetHwnd() const { return hwnd; }
 	HINSTANCE GetHInstance() const { return w.hInstance; }

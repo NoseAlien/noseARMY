@@ -1256,8 +1256,9 @@ namespace
         }
 
         size_t pixelSize, nimages;
-        if (!DetermineImageArray(metadata, cpFlags, nimages, pixelSize))
-            return HRESULT_E_ARITHMETIC_OVERFLOW;
+        HRESULT hr = DetermineImageArray(metadata, cpFlags, nimages, pixelSize);
+        if (FAILED(hr))
+            return hr;
 
         if ((nimages == 0) || (nimages != image.GetImageCount()))
         {
@@ -1944,7 +1945,7 @@ HRESULT DirectX::LoadFromDDSFile(
         }
 
     #ifdef _WIN32
-        auto pixelBytes = static_cast<DWORD>(image.GetPixelsSize());
+        auto const pixelBytes = static_cast<DWORD>(image.GetPixelsSize());
         if (!ReadFile(hFile.get(), image.GetPixels(), pixelBytes, &bytesRead, nullptr))
         {
             image.Release();

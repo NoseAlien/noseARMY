@@ -1,6 +1,12 @@
 #include "ADXWindow.h"
+#include <imgui_impl_win32.h>
 
-ADXWindow::ADXWindow(LPCTSTR window_title)
+uint32_t ADXWindow::S_window_width = 1280;
+uint32_t ADXWindow::S_window_height = 720;
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+ADXWindow::ADXWindow(const LPCTSTR& window_title)
 {
 	w.cbSize = sizeof(WNDCLASSEX);
 	w.lpfnWndProc = (WNDPROC)WindowProc;
@@ -10,7 +16,7 @@ ADXWindow::ADXWindow(LPCTSTR window_title)
 
 	RegisterClassEx(&w);
 
-	wrc = { 0,0,window_width,window_height };
+	wrc = { 0,0,(LONG)S_window_width,(LONG)S_window_height };
 
 	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
 
@@ -29,8 +35,13 @@ ADXWindow::ADXWindow(LPCTSTR window_title)
 	ShowWindow(hwnd, SW_SHOW);
 }
 
-LRESULT ADXWindow::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
+LRESULT ADXWindow::WindowProc(HWND hwnd, uint32_t msg, WPARAM wparam, LPARAM lparam)
 {
+	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam))
+	{
+		return true;
+	}
+
 	switch (msg)
 	{
 	case WM_DESTROY:

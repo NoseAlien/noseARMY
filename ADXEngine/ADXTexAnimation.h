@@ -5,17 +5,17 @@
 class ADXTexAnimation
 {
 public:
-	ADXTexAnimation Initialize(std::vector<ADXImage> setTextures, int setDelayFrame, bool setLoop);
-	ADXImage GetNowTex();
-	void SetIndex(int index);
-	int GetIndex();
-	int GetLength();
+	ADXTexAnimation Initialize(const std::vector<uint32_t>& setTextures, const uint32_t& setDelayFrame, bool setLoop);
+	uint32_t GetNowTex();
+	void SetIndex(const uint32_t& index);
+	uint32_t GetIndex();
+	uint32_t GetLength();
 	void Update();
 	bool AnimEnd();
 private:
-	std::vector<ADXImage> textures{};
+	std::vector<uint32_t> textures{};
 	bool loop = true;
-	int delayFrame = 0;
-	int nowDelayFrame = 0;
-	int nowTexIndex = 0;
+	uint32_t delayFrame = 0;
+	uint32_t nowDelayFrame = 0;
+	uint32_t nowTexIndex = 0;
 };

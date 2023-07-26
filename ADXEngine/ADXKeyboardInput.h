@@ -7,9 +7,6 @@
 #include <wrl.h>
 #include "ADXWindow.h"
 
-#pragma comment(lib,"dinput8.lib")
-#pragma comment(lib,"dxguid.lib")
-
 class ADXKeyBoardInput
 {
 private:
@@ -26,7 +23,7 @@ private:
 public:
 	ADXKeyBoardInput(ADXWindow* setWindow);
 	void Update();
-	bool KeyPress(BYTE keyNum);
-	bool KeyTrigger(BYTE keyNum);
-	bool KeyRelease(BYTE keyNum);
+	bool KeyPress(const BYTE& keyNum);
+	bool KeyTrigger(const BYTE& keyNum);
+	bool KeyRelease(const BYTE& keyNum);
 };

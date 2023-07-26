@@ -1,6 +1,8 @@
 #include "ADXVector3.h"
 #include <cmath>
 
+using namespace DirectX;
+
 ADXVector3::ADXVector3()
 {
 	x = 0;
@@ -29,34 +31,28 @@ ADXVector3 ADXVector3::ConvertToADXVector3(XMFLOAT3 xf3)
 	return ret;
 }
 
-float ADXVector3::length() const
+float ADXVector3::Length() const
 {
 	return sqrt(x * x + y * y + z * z);
 }
 
-ADXVector3& ADXVector3::normalize()
+ADXVector3 ADXVector3::Normalize() const
 {
-	float len = length();
+	ADXVector3 ret = *this;
+	float len = ret.Length();
 	if (len != 0)
 	{
-		return *this /= len;
+		return ret /= len;
 	}
-	return *this;
-}
-
-ADXVector3 ADXVector3::normalized(const ADXVector3& v)
-{
-	ADXVector3 ret = v;
-	ret.normalize();
 	return ret;
 }
 
-float ADXVector3::dot(const ADXVector3& v) const
+float ADXVector3::Dot(const ADXVector3& v) const
 {
 	return x * v.x + y * v.y + z * v.z;
 }
 
-ADXVector3 ADXVector3::cross(const ADXVector3& v) const
+ADXVector3 ADXVector3::Cross(const ADXVector3& v) const
 {
 	return ADXVector3(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
 }
