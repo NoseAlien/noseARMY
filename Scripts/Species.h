@@ -31,6 +31,7 @@ protected:
 	virtual void SpeciesUpdate();
 	virtual void DeadUpdate();
 	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol);
+	void OnPreRender();
 
 public:
 	static void StaticUpdate();

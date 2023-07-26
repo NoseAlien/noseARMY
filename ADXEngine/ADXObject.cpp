@@ -2,6 +2,7 @@
 #include <d3dcompiler.h>
 #include "ADXCommon.h"
 #include "ADXSceneManager.h"
+#include "ADXCamera.h"
 
 #pragma comment(lib, "d3dcompiler.lib")
 
@@ -16,6 +17,7 @@ D3D12_CPU_DESCRIPTOR_HANDLE ADXObject::S_cpuDescHandleSRV;
 D3D12_GPU_DESCRIPTOR_HANDLE ADXObject::S_gpuDescHandleSRV;
 std::vector<ADXObject*> ADXObject::S_allObjPtr{};
 std::vector<ADXObject*> ADXObject::S_objs{};
+std::vector<ADXCamera*> ADXObject::S_allCameraPtr{};
 ADXVector3 ADXObject::S_limitPos1 = { -300,-300,-100 };
 ADXVector3 ADXObject::S_limitPos2 = { 100,100,150 };
 
@@ -305,6 +307,11 @@ void ADXObject::InitializeGraphicsPipeline()
 	assert(SUCCEEDED(result));
 }
 
+void ADXObject::SetAllCameraPtr(ADXCamera* camPtr)
+{
+	S_allCameraPtr.push_back(camPtr);
+}
+
 ADXObject ADXObject::Duplicate(const ADXObject& prefab, bool initCols)
 {
 	ADXObject ret = prefab;
@@ -386,15 +393,19 @@ void ADXObject::PreDraw()
 
 	// ルートシグネチャの設定コマンド
 	ADXObject::S_cmdList->SetGraphicsRootSignature(S_rootSignature.Get());
+}
+
+void ADXObject::StaticDraw()
+{
+	for (int32_t i = 0; i < S_allCameraPtr.size(); i++)
+	{
+		S_allCameraPtr[i]->PrepareToRandering();
+	}
 
 	for (int32_t i = 0; i < S_allObjPtr.size(); i++)
 	{
 		S_allObjPtr[i]->OnPreRender();
 	}
-}
-
-void ADXObject::StaticDraw()
-{
 
 	int32_t minLayer = 0;
 	int32_t maxLayer = 0;
@@ -499,6 +510,7 @@ void ADXObject::PostDraw()
 	ADXObject::S_cmdList = nullptr;
 	//ソート用配列を空にする
 	S_allObjPtr.clear();
+	S_allCameraPtr.clear();
 }
 
 void ADXObject::Draw()

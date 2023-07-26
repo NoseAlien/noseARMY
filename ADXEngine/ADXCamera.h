@@ -3,8 +3,6 @@
 
 class ADXCamera : public ADXObject
 {
-private:
-	static ADXCamera* S_current;
 
 private:
 	//Ë‰e•ÏŠ·s—ñ
@@ -17,10 +15,12 @@ private:
 	DirectX::XMFLOAT3 up{};
 
 private:
+	static ADXCamera* S_current;
 	static ADXVector3 S_cameraWorldPos;
 
 public:
 	void Initialize();
+	void PrepareToRandering();
 
 private:
 	void UniqueUpdate();

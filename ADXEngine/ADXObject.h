@@ -5,6 +5,8 @@
 #include "ADXComponentInclude.h"
 #include <string>
 
+class ADXCamera;
+
 class ADXObject
 {
 public:
@@ -76,6 +78,8 @@ public: // 静的メンバ関数
 
 	static std::vector<ADXObject*> GetObjs() { return S_objs; };
 
+	static void SetAllCameraPtr(ADXCamera* camPtr);
+
 	static ADXObject Duplicate(const ADXObject& prefab, bool initCols = false);
 
 private: // 静的メンバ変数
@@ -99,6 +103,8 @@ private: // 静的メンバ変数
 	static std::vector<ADXObject*> S_allObjPtr;
 	// 全てのオブジェクトが入った配列
 	static std::vector<ADXObject*> S_objs;
+	// 全てのカメラを入れる配列
+	static std::vector<ADXCamera*> S_allCameraPtr;
 	// オブジェクトが存在できる領域を制限するための変数
 	static ADXVector3 S_limitPos1;
 	static ADXVector3 S_limitPos2;

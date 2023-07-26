@@ -4,6 +4,7 @@
 using namespace DirectX;
 
 ADXVector3 ADXCamera::S_cameraWorldPos = {};
+ADXCamera* ADXCamera::S_current = nullptr;
 
 void ADXCamera::Initialize()
 {
@@ -24,14 +25,20 @@ void ADXCamera::Initialize()
 
 void ADXCamera::UniqueUpdate()
 {
+	ADXObject::SetAllCameraPtr(this);
+}
+
+void ADXCamera::PrepareToRandering()
+{
 	transform.UpdateMatrix();
 
 	eye = ADXMatrix4::transform({ 0,0,0 }, transform.GetMatWorld()).ConvertToXMFloat3();
 	target = ADXMatrix4::transform({ 0,0,1 }, transform.GetMatWorld()).ConvertToXMFloat3();
 	up = ADXMatrix4::transform({ 0,1,0 }, transform.GetMatRot()).ConvertToXMFloat3();
-	
+
 	matView = ADXMatrix4::ConvertToADXMatrix(
 		XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up)));
 
 	ADXWorldTransform::SetViewProjection(&matView, &matProjection);
+	S_current = this;
 }

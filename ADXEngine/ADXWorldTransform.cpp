@@ -151,6 +151,30 @@ void ADXWorldTransform::SetWorldPosition(const ADXVector3& worldPos)
 	}
 }
 
+ADXVector3 ADXWorldTransform::TransformPointWithoutTranslation(const ADXVector3& pos) const
+{
+	ADXVector3 ret = ADXMatrix4::transform(pos, matScale_ * matRot_);
+	return ret;
+}
+
+ADXVector3 ADXWorldTransform::InverseTransformPointWithoutTranslation(const ADXVector3& pos) const
+{
+	ADXVector3 ret = ADXMatrix4::transform(pos, matRot_.Transpose() * matScale_.Inverse());
+	return ret;
+}
+
+ADXVector3 ADXWorldTransform::TransformPointOnlyRotation(const ADXVector3& pos) const
+{
+	ADXVector3 ret = ADXMatrix4::transform(pos, matRot_);
+	return ret;
+}
+
+ADXVector3 ADXWorldTransform::InverseTransformPointOnlyRotation(const ADXVector3& pos) const
+{
+	ADXVector3 ret = ADXMatrix4::transform(pos, matRot_.Transpose());
+	return ret;
+}
+
 ADXMatrix4 ADXWorldTransform::GetMatWorldInverse()
 {
 	ADXMatrix4 ret = matWorld_.Inverse();
