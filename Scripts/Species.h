@@ -13,6 +13,7 @@ protected:
 
 private:
 	ADXModel rect{};
+	uint32_t gaugeTex = 0;
 	ADXObject hpGauge{};
 	ADXObject hpGaugeBG{};
 	std::string team = "";

@@ -279,6 +279,7 @@ void GameScene::Initialize()
 	enemies_.back().colliders.back().pushable_ = true;
 	enemies_.back().colliders.back().colType_ = box;
 	enemies_.back().Initialize();
+	enemies_.back().Species::Initialize("enemy");
 
 	backGround_.Initialize();
 	backGround_.transform.rectTransform = true;
