@@ -11,6 +11,8 @@ void Species::Initialize(const std::string& setTeam)
 {
 	team = setTeam;
 
+	rect = ADXModel::CreateRect();
+
 	hpGaugeBG.Initialize();
 	hpGaugeBG.transform.rectTransform = true;
 	hpGaugeBG.transform.UpdateMatrix();
@@ -29,8 +31,8 @@ void Species::UniqueUpdate()
 	//hpGaugeBG.transform.localPosition_ = ADXMatrix::transform(transform.GetWorldPosition(), ADXCamera::GetMatView());
 	hpGauge.transform.localPosition_ = { (1 - hpAmount) / 2,0,0 };
 	hpGauge.transform.localScale_ = { hpAmount,0,0 };
-	hpGaugeBG.transform.UpdateMatrix();
-	hpGauge.transform.UpdateMatrix();
+	hpGaugeBG.Update();
+	hpGauge.Update();
 
 	material.ambient = { 1,1,1 };
 
