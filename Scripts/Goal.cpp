@@ -16,7 +16,7 @@ void Goal::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
 	for (auto& objItr : Species::GetSpecies())
 	{
-		if (!objItr->colliders.empty() && col == &objItr->colliders[0] && objItr->GetTeam() != team)
+		if (!objItr->colliders.empty() && col == &objItr->colliders[0] && objItr->GetTeam() == team)
 		{
 			ADXSceneManager::SetSceneNum(1);
 		}

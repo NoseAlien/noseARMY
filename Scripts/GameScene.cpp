@@ -281,6 +281,18 @@ void GameScene::Initialize()
 	enemies_.back().Initialize();
 	enemies_.back().Species::Initialize("enemy");
 
+	goal_.ADXObject::Initialize();
+	goal_.transform.localPosition_ = { -40,-50,112 };
+	goal_.transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
+	goal_.transform.localScale_ = { 6,10,6 };
+	goal_.transform.UpdateMatrix();
+	goal_.model = &cube;
+	goal_.colliders.push_back(ADXCollider(&goal_));
+	goal_.colliders.back().isTrigger = true;
+	goal_.colliders.back().colType_ = box;
+	goal_.material = unlitMat;
+	goal_.Initialize("player");
+
 	backGround_.Initialize();
 	backGround_.transform.rectTransform = true;
 	backGround_.transform.UpdateMatrix();
@@ -314,6 +326,7 @@ void GameScene::Initialize()
 	{
 		objs.push_back(&itr);
 	}
+	objs.push_back(&goal_);
 	objs.push_back(&backGround_);
 	objs.push_back(&key);
 }
