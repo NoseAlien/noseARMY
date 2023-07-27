@@ -81,6 +81,10 @@ public:
 
 	ADXVector3 InverseTransformPointOnlyRotation(const ADXVector3& pos) const;
 
+	ADXQuaternion TransformRotation(const ADXQuaternion& rot) const;
+
+	ADXQuaternion InverseTransformRotation(const ADXQuaternion& rot) const;
+
 	/// <summary>
 	///ƒ[ƒ‹ƒh•ÏŠ·s—ñ‚ğæ“¾‚·‚é
 	/// </summary>

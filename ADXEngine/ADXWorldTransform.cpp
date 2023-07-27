@@ -175,6 +175,46 @@ ADXVector3 ADXWorldTransform::InverseTransformPointOnlyRotation(const ADXVector3
 	return ret;
 }
 
+ADXQuaternion ADXWorldTransform::TransformRotation(const ADXQuaternion& rot) const
+{
+	ADXWorldTransform* parentPtr = parent_;
+	ADXQuaternion quatWorld = localRotation_;
+	while (true)
+	{
+		if (parentPtr == nullptr)
+		{
+			break;
+		}
+		else
+		{
+			quatWorld = ADXQuaternion::Multiply(quatWorld, parentPtr->localRotation_);
+			parentPtr = parentPtr->parent_;
+		}
+	}
+	ADXQuaternion ret = ADXQuaternion::Multiply(rot, quatWorld);
+	return ret;
+}
+
+ADXQuaternion ADXWorldTransform::InverseTransformRotation(const ADXQuaternion& rot) const
+{
+	ADXWorldTransform* parentPtr = parent_;
+	ADXQuaternion quatWorld = localRotation_.Inverse();
+	while (true)
+	{
+		if (parentPtr == nullptr)
+		{
+			break;
+		}
+		else
+		{
+			quatWorld = ADXQuaternion::Multiply(parentPtr->localRotation_.Inverse(), quatWorld);
+			parentPtr = parentPtr->parent_;
+		}
+	}
+	ADXQuaternion ret = ADXQuaternion::Multiply(quatWorld, rot);
+	return ret;
+}
+
 ADXMatrix4 ADXWorldTransform::GetMatWorldInverse()
 {
 	ADXMatrix4 ret = matWorld_.Inverse();

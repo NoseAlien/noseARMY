@@ -16,7 +16,7 @@ float ADXQuaternion::Length()
 	return sqrt(v.x * v.x + v.y * v.y + v.z * v.z + w * w);
 }
 
-ADXQuaternion ADXQuaternion::Normalized()
+ADXQuaternion ADXQuaternion::Normalized() const
 {
 	ADXQuaternion ret = *this;
 
@@ -26,7 +26,7 @@ ADXQuaternion ADXQuaternion::Normalized()
 	return ret;
 }
 
-ADXQuaternion ADXQuaternion::Inverse()
+ADXQuaternion ADXQuaternion::Inverse() const
 {
 	ADXQuaternion ret = *this;
 
@@ -146,20 +146,6 @@ ADXVector3 ADXQuaternion::QuaternionToEuler(const ADXQuaternion& quaternion)
 				2 * powf(quaternion.w, 2) + 2 * powf(quaternion.v.y, 2) - 1
 				)));
 	}
-
-	//double q0q0 = quaternion.w * quaternion.w;
-	//double q0q1 = quaternion.w * quaternion.v.x;
-	//double q0q2 = quaternion.w * quaternion.v.y;
-	//double q0q3 = quaternion.w * quaternion.v.z;
-	//double q1q1 = quaternion.v.x * quaternion.v.x;
-	//double q1q2 = quaternion.v.x * quaternion.v.y;
-	//double q1q3 = quaternion.v.x * quaternion.v.z;
-	//double q2q2 = quaternion.v.y * quaternion.v.y;
-	//double q2q3 = quaternion.v.y * quaternion.v.z;
-	//double q3q3 = quaternion.v.z * quaternion.v.z;
-	//ret.x = (float)atan2(2.0 * (q2q3 + q0q1), q0q0 - q1q1 - q2q2 + q3q3);
-	//ret.y = (float)asin(2.0 * (q0q2 - q1q3));
-	//ret.z = (float)atan2(2.0 * (q1q2 + q0q3), q0q0 + q1q1 - q2q2 - q3q3);
 
 	return ret;
 }

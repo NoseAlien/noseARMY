@@ -15,9 +15,9 @@ public:
 	//ADXQuaternion‚Ìnorm‚ğ•Ô‚·
 	float Length();
 	//³‹K‰»‚µ‚½ADXQuaternion‚ğ•Ô‚·
-	ADXQuaternion Normalized();
+	ADXQuaternion Normalized() const;
 	//‹tADXQuaternion‚ğ•Ô‚·
-	ADXQuaternion Inverse();
+	ADXQuaternion Inverse() const;
 	//ADXQuaternion‚©‚ç‰ñ“]s—ñ‚ğ‹‚ß‚é
 	ADXMatrix4 RotateMatrix() const;
 
