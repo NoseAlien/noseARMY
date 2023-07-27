@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ADXObject.h"
+#include "ADXTexAnimation.h"
 #include <string>
 
 struct AttackObject;
@@ -14,10 +15,13 @@ protected:
 private:
 	ADXModel rect{};
 	uint32_t gaugeTex = 0;
+	ADXTexAnimation particleAnim{};
 	ADXObject hpGauge{};
 	ADXObject hpGaugeBG{};
+	ADXObject particlePrefab{};
 	std::string team = "";
 	bool attackHitted = false;
+	std::list<ADXObject> particles{};
 
 public:
 	void Initialize(const std::string& setTeam);

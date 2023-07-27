@@ -28,6 +28,20 @@ void Species::Initialize(const std::string& setTeam)
 	hpGauge.model = &rect;
 	hpGauge.texture = gaugeTex;
 	hpGauge.renderLayer = 2;
+
+	particlePrefab.Initialize();
+	particlePrefab.transform.parent_ = &transform;
+	particlePrefab.transform.UpdateMatrix();
+	particlePrefab.model = &rect;
+	particlePrefab.renderLayer = 1;
+
+	particleAnim.Initialize({ 
+		ADXImage::LoadADXImage("particle_defeat/000.png"), ADXImage::LoadADXImage("particle_defeat/001.png"),
+		ADXImage::LoadADXImage("particle_defeat/002.png"), ADXImage::LoadADXImage("particle_defeat/003.png"),
+		ADXImage::LoadADXImage("particle_defeat/004.png"), ADXImage::LoadADXImage("particle_defeat/005.png"), 
+		ADXImage::LoadADXImage("particle_defeat/006.png"), ADXImage::LoadADXImage("particle_defeat/007.png"), 
+		ADXImage::LoadADXImage("particle_defeat/008.png"), ADXImage::LoadADXImage("particle_defeat/009.png"), 
+		ADXImage::LoadADXImage("particle_defeat/010.png"), }, 1, false);
 }
 
 void Species::UniqueUpdate()
@@ -41,7 +55,7 @@ void Species::UniqueUpdate()
 
 	material.ambient = { 1,1,1 };
 
-	transform.modelPosition_ = { 0,0,0 };
+	transform.modelPosition_ *= 0.8f;
 
 	if (IsArrive())
 	{
@@ -52,12 +66,48 @@ void Species::UniqueUpdate()
 	{
 		DeadUpdate();
 		hpGaugeBG.transform.localScale_ = { 0.5,max(0,hpGaugeBG.transform.localScale_.y - 0.03f),1};
+
+		if (attackHitted)
+		{
+			particleAnim.SetIndex(0);
+			for (int i = 0; i < 10; i++)
+			{
+				particles.push_back(ADXObject::Duplicate(particlePrefab));
+				particles.back().transform.localPosition_ = ADXVector3{(float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5)}.Normalize();
+				float particleScale = 0.7f + (float)(rand() % 4) * 0.1f;
+				particles.back().transform.localScale_ = { particleScale ,particleScale ,particleScale };
+				particles.back().transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
+			}
+			for (int i = 0; i < 20; i++)
+			{
+				particles.push_back(ADXObject::Duplicate(particlePrefab));
+				particles.back().transform.localPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize();
+				float particleScale = 0.1f + (float)(rand() % 3) * 0.1f;
+				particles.back().transform.localScale_ = { particleScale ,particleScale ,particleScale };
+				particles.back().transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
+			}
+		}
+		particleAnim.Update();
+
+		if (particleAnim.AnimEnd())
+		{
+			particles.clear();
+		}
+
+		for (auto& itr : particles)
+		{
+			itr.transform.localPosition_ += itr.transform.localPosition_.Normalize() * 0.02f * (float)(particleAnim.GetLength() - particleAnim.GetIndex());
+			itr.transform.modelRotation_ = ADXQuaternion::Multiply(itr.transform.modelRotation_, ADXQuaternion::EulerToQuaternion({ 0,0,0.01f }));
+			itr.Update();
+			itr.transform.UpdateMatrix();
+			itr.texture = particleAnim.GetNowTex();
+		}
 	}
 
 	if (attackHitted)
 	{
 		material.ambient = { 1,0,0 };
-		transform.modelPosition_ = { (rand() % 11 - 5) * 0.02f ,(rand() % 11 - 5) * 0.02f,(rand() % 11 - 5) * 0.02f};
+		transform.modelPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5)}.Normalize() * 0.3f;
 		hpGaugeBG.transform.localPosition_ = { 0,-1.5f + (float)sin(clock()) * 0.05f,0};
 		attackHitted = false;
 	}
@@ -99,6 +149,10 @@ void Species::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 void Species::OnPreRender()
 {
 	hpGaugeBG.transform.SetWorldRotation(ADXCamera::GetCurrentCamera()->transform.GetWorldRotation());
+	for (auto& itr : particles)
+	{
+		itr.transform.SetWorldRotation(ADXCamera::GetCurrentCamera()->transform.GetWorldRotation());
+	}
 }
 
 void Species::StaticUpdate()
