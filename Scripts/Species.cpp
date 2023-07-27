@@ -98,7 +98,7 @@ void Species::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 
 void Species::OnPreRender()
 {
-	hpGaugeBG.transform.localRotation_ = transform.InverseTransformRotation(ADXCamera::GetCurrentCamera()->transform.TransformRotation(ADXQuaternion::IdentityQuaternion()));
+	hpGaugeBG.transform.SetWorldRotation(ADXCamera::GetCurrentCamera()->transform.GetWorldRotation());
 }
 
 void Species::StaticUpdate()

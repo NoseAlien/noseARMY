@@ -151,6 +151,23 @@ void ADXWorldTransform::SetWorldPosition(const ADXVector3& worldPos)
 	}
 }
 
+ADXQuaternion ADXWorldTransform::GetWorldRotation() const
+{
+	return TransformRotation(ADXQuaternion::IdentityQuaternion());
+}
+
+void ADXWorldTransform::SetWorldRotation(const ADXQuaternion& worldRot)
+{
+	if (parent_ == nullptr)
+	{
+		localRotation_ = worldRot;
+	}
+	else
+	{
+		localRotation_ = parent_->InverseTransformRotation(worldRot);
+	}
+}
+
 ADXVector3 ADXWorldTransform::TransformPointWithoutTranslation(const ADXVector3& pos) const
 {
 	ADXVector3 ret = ADXMatrix4::transform(pos, matScale_ * matRot_);

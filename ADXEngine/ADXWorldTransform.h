@@ -73,6 +73,16 @@ public:
 	/// </summary>
 	void SetWorldPosition(const ADXVector3& worldPos);
 
+	/// <summary>
+	///ƒ[ƒ‹ƒh‰ñ“]Šp‚ğæ“¾‚·‚é
+	/// </summary>
+	ADXQuaternion GetWorldRotation() const;
+
+	/// <summary>
+	///ƒ[ƒ‹ƒh‰ñ“]Šp‚ğ‘ã“ü‚·‚é
+	/// </summary>
+	void SetWorldRotation(const ADXQuaternion& worldRot);
+
 	ADXVector3 TransformPointWithoutTranslation(const ADXVector3& pos) const;
 
 	ADXVector3 InverseTransformPointWithoutTranslation(const ADXVector3& pos) const;
