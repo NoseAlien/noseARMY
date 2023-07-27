@@ -22,6 +22,7 @@ private:
 	uint32_t skyDomeImg{};
 	uint32_t groundImg{};
 	uint32_t battleFieldImg{};
+	uint32_t goalImg{};
 
 	//3Dƒ‚ƒfƒ‹
 	ADXModel cube{};

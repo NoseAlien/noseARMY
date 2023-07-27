@@ -5,20 +5,32 @@
 void Goal::Initialize(std::string setTeam)
 {
 	team = setTeam;
+	sceneTransitionCount = MaxSceneTransitionCount;
 }
 
 void Goal::UniqueUpdate()
 {
-
+	if (sceneTransitionCount != MaxSceneTransitionCount)
+	{
+		sceneTransitionCount--;
+		if (sceneTransitionCount <= 0)
+		{
+			ADXSceneManager::SetSceneNum(1);
+		}
+	}
 }
 
 void Goal::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
-	for (auto& objItr : Species::GetSpecies())
+	if (sceneTransitionCount == MaxSceneTransitionCount)
 	{
-		if (!objItr->colliders.empty() && col == &objItr->colliders[0] && objItr->GetTeam() == team)
+		for (auto& objItr : Species::GetSpecies())
 		{
-			ADXSceneManager::SetSceneNum(1);
+			if (!objItr->colliders.empty() && col == &objItr->colliders[0] && objItr->GetTeam() == team)
+			{
+				sceneTransitionCount--;
+				return;
+			}
 		}
 	}
 }

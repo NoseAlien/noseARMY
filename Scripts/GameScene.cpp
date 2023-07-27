@@ -18,6 +18,7 @@ void GameScene::Initialize()
 	MEGNOSE_Img = ADXImage::LoadADXImage("MEGNOSE.png");
 	groundImg = ADXImage::LoadADXImage("GroundBlock.png");
 	battleFieldImg = ADXImage::LoadADXImage("battleField.png");
+	goalImg = ADXImage::LoadADXImage("goalField.png");
 
 	//ƒ}ƒeƒŠƒAƒ‹
 	material = ADXMaterial::LoadMaterial("material/shade.mtl");
@@ -286,7 +287,8 @@ void GameScene::Initialize()
 	goal_.transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
 	goal_.transform.localScale_ = { 6,10,6 };
 	goal_.transform.UpdateMatrix();
-	goal_.model = &cube;
+	goal_.model = &battleBox;
+	goal_.texture = goalImg;
 	goal_.colliders.push_back(ADXCollider(&goal_));
 	goal_.colliders.back().isTrigger = true;
 	goal_.colliders.back().colType_ = box;
