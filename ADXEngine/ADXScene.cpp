@@ -3,6 +3,8 @@
 #include "ADXUtility.h"
 #include <time.h>
 
+#include "SceneTransition.h"
+
 ADXScene::ADXScene()
 {
 
@@ -135,7 +137,7 @@ void ADXScene::Update()
 		key.transform.localPosition_.y = sin(clock() * 0.001f - 1) * 0.01f - 0.4f;
 		if (ADXSceneManager::GetKeyboardInput()->KeyTrigger(DIK_SPACE))
 		{
-			ADXSceneManager::SetSceneNum(2);
+			SceneTransition::ChangeScene(2);
 		}
 		break;
 	}

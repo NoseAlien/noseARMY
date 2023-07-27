@@ -1,6 +1,6 @@
 #include "Goal.h"
 #include "Species.h"
-#include "ADXSceneManager.h"
+#include "SceneTransition.h"
 
 void Goal::Initialize(std::string setTeam)
 {
@@ -15,7 +15,7 @@ void Goal::UniqueUpdate()
 		sceneTransitionCount--;
 		if (sceneTransitionCount <= 0)
 		{
-			ADXSceneManager::SetSceneNum(1);
+			SceneTransition::ChangeScene(1);
 		}
 	}
 }

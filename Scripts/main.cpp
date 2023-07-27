@@ -7,6 +7,7 @@
 #include "ADXScene.h"
 #include "ADXAudio.h"
 #include "ADXImGuiManager.h"
+#include "SceneTransition.h"
 //#include <assimp/scene.h>
 
 using namespace DirectX;
@@ -33,6 +34,7 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 		ADXAudio::StaticInitialize();
 		ADXImage::StaticInitialize();
 		ADXObject::StaticInitialize();
+		SceneTransition::StaticInitialize();
 
 		//ゲームシーンの作成
 		ADXSceneManager::StaticInitialize(&keyboard);
@@ -50,6 +52,7 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 			ADXSceneManager::StaticUpdate();
 			ADXObject::StaticUpdate();
 			//この下にあるゲーム専用の更新部分は後でまとめる
+			SceneTransition::StaticUpdate();
 			FieldBox::StaticUpdate();
 			Species::StaticUpdate();
 			ADXCollider::StaticUpdate();

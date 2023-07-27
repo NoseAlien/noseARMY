@@ -1,5 +1,5 @@
 #include "GameScene.h"
-#include "ADXSceneManager.h"
+#include "SceneTransition.h"
 
 GameScene::GameScene()
 {
@@ -345,6 +345,6 @@ void GameScene::Update()
 
 	if (ADXSceneManager::GetKeyboardInput()->KeyTrigger(DIK_Q))
 	{
-		ADXSceneManager::SetSceneNum(1);
+		SceneTransition::ChangeScene(1);
 	}
 }
