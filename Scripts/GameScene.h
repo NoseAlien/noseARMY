@@ -18,7 +18,7 @@ class GameScene : public ADXScene
 private:
 	//‰æ‘œ
 	uint32_t keyImg{};
-	uint32_t MEGNOSE_Img{};
+	uint32_t backGroundTex{};
 	uint32_t skyDomeImg{};
 	uint32_t groundImg{};
 	uint32_t battleFieldImg{};

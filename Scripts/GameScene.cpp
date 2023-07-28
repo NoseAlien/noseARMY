@@ -16,7 +16,7 @@ void GameScene::Initialize()
 	//‰æ‘œ
 	keyImg = ADXImage::LoadADXImage("QUIT_TITLE.png");
 	skyDomeImg = ADXImage::LoadADXImage("skydome/Fine_Basin.jpg");
-	MEGNOSE_Img = ADXImage::LoadADXImage("MEGNOSE.png");
+	backGroundTex = ADXImage::LoadADXImage("skyBG.png");
 	groundImg = ADXImage::LoadADXImage("GroundBlock.png");
 	battleFieldImg = ADXImage::LoadADXImage("battleField.png");
 	goalImg = ADXImage::LoadADXImage("goalField.png");
@@ -284,7 +284,7 @@ void GameScene::Initialize()
 	backGround_.transform.rectTransform = true;
 	backGround_.transform.UpdateMatrix();
 	backGround_.model = &rect;
-	backGround_.texture = MEGNOSE_Img;
+	backGround_.texture = backGroundTex;
 	backGround_.material = unlitMat;
 	backGround_.renderLayer = -1;
 
