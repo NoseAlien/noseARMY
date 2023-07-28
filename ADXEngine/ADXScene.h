@@ -4,6 +4,7 @@
 #include "ADXObject.h"
 #include "ADXCamera.h"
 #include "ADXImage.h"
+#include "ADXAudio.h"
 
 class ADXScene
 {
@@ -16,6 +17,9 @@ private:
 	uint32_t logoImg_Engine = 0;
 	uint32_t titleImg = 0;
 	uint32_t keyImg = 0;
+
+	//音声データ
+	ADXAudio logoJingle{};
 
 	//3Dモデル
 	ADXModel rect{};

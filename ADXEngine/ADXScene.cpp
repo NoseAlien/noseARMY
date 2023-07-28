@@ -24,6 +24,8 @@ void ADXScene::Initialize()
 		logoImg_X = ADXImage::LoadADXImage("logo_X.png");
 		logoImg_Engine = ADXImage::LoadADXImage("logo_Engine.png");
 
+		logoJingle = ADXAudio::SoundLoadWave("Resources/sound/ADXJingle.wav");
+
 		//ƒ}ƒeƒŠƒAƒ‹
 		unlitMat = ADXMaterial::LoadMaterial("material/unlit.mtl");
 
@@ -66,6 +68,8 @@ void ADXScene::Initialize()
 		objs.push_back(&logo_Engine);
 
 		startTime = clock();
+
+		logoJingle.SoundPlayWave();
 
 		break;
 
@@ -110,25 +114,26 @@ void ADXScene::Update()
 	case 0:
 		title.material.alpha = (float)(clock() - startTime) * 0.0004f;
 
-		logo_A.material.alpha = ADXUtility::ValueMapping((float)(clock() - startTime),2600,3400,0,1);
-		logo_A.transform.localPosition_.y = (float)pow(max(ADXUtility::ValueMapping((float)(clock() - startTime), 2600, 3400, 0.2f, 0), 0), 2);
+		logo_A.material.alpha = ADXUtility::ValueMapping((float)(clock() - startTime), 2900, 3700, 0, 1);
+		logo_A.transform.localPosition_.y = (float)pow(max(ADXUtility::ValueMapping((float)(clock() - startTime), 2900, 3700, 0.2f, 0), 0), 2);
 
-		logo_D.material.alpha = ADXUtility::ValueMapping((float)(clock() - startTime), 2900, 3700, 0, 1);
-		logo_D.transform.localPosition_.y = (float)pow(max(ADXUtility::ValueMapping((float)(clock() - startTime), 2900, 3700, 0.2f, 0), 0), 2);
+		logo_D.material.alpha = ADXUtility::ValueMapping((float)(clock() - startTime), 3200, 4000, 0, 1);
+		logo_D.transform.localPosition_.y = (float)pow(max(ADXUtility::ValueMapping((float)(clock() - startTime), 3200, 4000, 0.2f, 0), 0), 2);
 
-		logo_X.material.alpha = ADXUtility::ValueMapping((float)(clock() - startTime), 3200, 4000, 0, 1);
-		logo_X.transform.localPosition_.y = (float)pow(max(ADXUtility::ValueMapping((float)(clock() - startTime), 3200, 4000, 0.2f, 0), 0), 2);
+		logo_X.material.alpha = ADXUtility::ValueMapping((float)(clock() - startTime), 3500, 4300, 0, 1);
+		logo_X.transform.localPosition_.y = (float)pow(max(ADXUtility::ValueMapping((float)(clock() - startTime), 3500, 4300, 0.2f, 0), 0), 2);
 
-		logo_Engine.material.alpha = ADXUtility::ValueMapping((float)(clock() - startTime), 3500, 4300, 0, 1);
-		logo_Engine.transform.localPosition_.y = (float)pow(max(ADXUtility::ValueMapping((float)(clock() - startTime), 3500, 4300, 0.2f, 0), 0), 2);
+		logo_Engine.material.alpha = ADXUtility::ValueMapping((float)(clock() - startTime), 3800, 4600, 0, 1);
+		logo_Engine.transform.localPosition_.y = (float)pow(max(ADXUtility::ValueMapping((float)(clock() - startTime), 3800, 4600, 0.2f, 0), 0), 2);
 
 		{
-			float rotAngle = (float)abs(pow(abs(min(clock() - startTime - 4800, 0)) * 0.001f, 3.5f));
+			float rotAngle = (float)abs(pow(abs(min(clock() - startTime - 5200, 0)) * 0.001f, 3.5f));
 			title.transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0, 0, rotAngle });
 		}
 
-		if (ADXSceneManager::GetKeyboardInput()->KeyTrigger(DIK_SPACE) || (clock() - startTime >=6500))
+		if (ADXSceneManager::GetKeyboardInput()->KeyTrigger(DIK_SPACE) || (clock() - startTime >=7000))
 		{
+			logoJingle.SoundStopWave();
 			ADXSceneManager::SetSceneNum(1);
 		}
 		break;
