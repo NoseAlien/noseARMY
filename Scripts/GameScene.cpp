@@ -11,6 +11,7 @@ void GameScene::Initialize()
 	floors_ = {};
 	fields_ = {};
 	enemies_ = {};
+	tutorialAreas_ = {};
 
 	//画像
 	keyImg = ADXImage::LoadADXImage("QUIT_TITLE.png");
@@ -21,25 +22,9 @@ void GameScene::Initialize()
 	goalImg = ADXImage::LoadADXImage("goalField.png");
 
 	//マテリアル
-	material = ADXMaterial::LoadMaterial("material/shade.mtl");
 	unlitMat = ADXMaterial::LoadMaterial("material/unlit.mtl");
 
-	rect.vertices = {
-		{{-1.0f,-1.0f,0.0f},{}, {0.0f,1.0f}},//左下
-		{{-1.0f,1.0f,0.0f},{},{0.0f,0.0f}},//左上
-		{{1.0f,-1.0f,0.0f},{},{1.0f,1.0f}},//右下
-		{{1.0f,1.0f,0.0f},{},{1.0f,0.0f}},//右上
-	};
-	//インデックスデータ
-	rect.indices =
-	{
-		0,1,2,
-		2,1,3,
-
-		1,0,2,
-		1,2,3,
-	};
-	rect.Initialize();
+	rect = ADXModel::CreateRect();
 
 	cube = ADXModel::LoadModel("model/cube.obj");
 	ground = ADXModel::LoadModel("model/groundBlock.obj");

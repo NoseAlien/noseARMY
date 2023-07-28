@@ -20,6 +20,7 @@ std::vector<ADXObject*> ADXObject::S_objs{};
 std::vector<ADXCamera*> ADXObject::S_allCameraPtr{};
 ADXVector3 ADXObject::S_limitPos1 = { -300,-300,-100 };
 ADXVector3 ADXObject::S_limitPos2 = { 100,100,150 };
+bool ADXObject::S_highQualityZSort = false;
 
 ADXObject::ADXObject()
 {
@@ -469,24 +470,32 @@ void ADXObject::StaticDraw()
 			{
 				thisLayerObjPtr[j]->transform.UpdateMatrix();
 				float zDepth;
-				float nearestVertDepth = 999;
 
-				if (thisLayerObjPtr[j]->model != nullptr)
+				if (S_highQualityZSort)
 				{
-					for (int32_t k = 0; k < thisLayerObjPtr[j]->model->vertices.size(); k++)
-					{
-						float VertDepth;
-						ADXVector3 vertLocalPos = { thisLayerObjPtr[j]->model->vertices[k].pos.x,thisLayerObjPtr[j]->model->vertices[k].pos.y,thisLayerObjPtr[j]->model->vertices[k].pos.z };
-						VertDepth = ADXMatrix4::transform(ADXMatrix4::transform(vertLocalPos, thisLayerObjPtr[j]->transform.GetMatWorld()), ADXWorldTransform::GetViewProjection()).Length();
+					float nearestVertDepth = 999;
 
-						if (VertDepth <= nearestVertDepth)
+					if (thisLayerObjPtr[j]->model != nullptr)
+					{
+						for (int32_t k = 0; k < thisLayerObjPtr[j]->model->vertices.size(); k++)
 						{
-							nearestVertDepth = VertDepth;
+							float VertDepth;
+							ADXVector3 vertLocalPos = { thisLayerObjPtr[j]->model->vertices[k].pos.x,thisLayerObjPtr[j]->model->vertices[k].pos.y,thisLayerObjPtr[j]->model->vertices[k].pos.z };
+							VertDepth = ADXMatrix4::transform(ADXMatrix4::transform(vertLocalPos, thisLayerObjPtr[j]->transform.GetMatWorld()), ADXWorldTransform::GetViewProjection()).Length();
+
+							if (VertDepth <= nearestVertDepth)
+							{
+								nearestVertDepth = VertDepth;
+							}
 						}
 					}
-				}
 
-				zDepth = nearestVertDepth;
+					zDepth = nearestVertDepth;
+				}
+				else
+				{
+					zDepth = ADXMatrix4::transform(thisLayerObjPtr[j]->transform.GetWorldPosition(), ADXWorldTransform::GetViewProjection()).Length();
+				}
 
 				if (thisLayerObjPtr[j]->sortingOrder < lowestSortingOrder || thisLayerObjPtr[j]->sortingOrder == lowestSortingOrder && zDepth >= dist)
 				{

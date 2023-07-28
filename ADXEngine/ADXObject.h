@@ -108,4 +108,5 @@ private: // 静的メンバ変数
 	// オブジェクトが存在できる領域を制限するための変数
 	static ADXVector3 S_limitPos1;
 	static ADXVector3 S_limitPos2;
+	static bool S_highQualityZSort;
 };

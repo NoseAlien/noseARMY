@@ -33,7 +33,6 @@ private:
 	ADXModel skyDomeModel{};
 
 	//マテリアル
-	ADXMaterial material{};
 	ADXMaterial unlitMat{};
 
 	//カメラ
