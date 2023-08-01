@@ -3,11 +3,16 @@
 #include <cstdlib>
 #include "ADXCommon.h"
 #include "ADXWindow.h"
-#include "ADXSceneManager.h"
 #include "ADXScene.h"
 #include "ADXAudio.h"
 #include "ADXImGuiManager.h"
+
+#include "SceneManager.h"
 #include "SceneTransition.h"
+#include "FieldBox.h"
+#include "TutorialArea.h"
+#include "Species.h"
+
 //#include <assimp/scene.h>
 
 using namespace DirectX;
@@ -37,7 +42,8 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 		SceneTransition::StaticInitialize();
 
 		//ゲームシーンの作成
-		ADXSceneManager::StaticInitialize(&keyboard);
+		SceneManager sceneMan{};
+		sceneMan.Initialize();
 
 		//ゲームループ
 		while (true)
@@ -49,7 +55,7 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 
 			adximgui.Begin();
 			keyboard.Update();
-			ADXSceneManager::StaticUpdate();
+			sceneMan.Update();
 			ADXObject::StaticUpdate();
 			//この下にあるゲーム専用の更新部分は後でまとめる
 			SceneTransition::StaticUpdate();

@@ -16,7 +16,6 @@ private:
 	uint32_t logoImg_X = 0;
 	uint32_t logoImg_Engine = 0;
 	uint32_t titleImg = 0;
-	uint32_t keyImg = 0;
 
 	//âπê∫ÉfÅ[É^
 	ADXAudio logoJingle{};
@@ -37,7 +36,6 @@ private:
 	ADXObject logo_X{};
 	ADXObject logo_Engine{};
 	ADXObject title{};
-	ADXObject key{};
 
 	int32_t startTime = 0;
 

@@ -1,7 +1,9 @@
-#include "ADXKeyboardInput.h"
+#include "ADXKeyBoardInput.h"
 
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
+
+ADXKeyBoardInput* ADXKeyBoardInput::S_current = nullptr;
 
 ADXKeyBoardInput::ADXKeyBoardInput(ADXWindow* setWindow)
 {
@@ -23,6 +25,8 @@ ADXKeyBoardInput::ADXKeyBoardInput(ADXWindow* setWindow)
 	result = keyboard->SetCooperativeLevel(
 		adxwindow->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	assert(SUCCEEDED(result));
+
+	S_current = this;
 }
 
 void ADXKeyBoardInput::Update()
@@ -38,6 +42,8 @@ void ADXKeyBoardInput::Update()
 
 	//‘SƒL[‚Ì“ü—Íó‘Ô‚ðŽæ“¾‚·‚é
 	keyboard->GetDeviceState(sizeof(key), key);
+
+	S_current = this;
 }
 
 bool ADXKeyBoardInput::KeyPress(const BYTE& keyNum)

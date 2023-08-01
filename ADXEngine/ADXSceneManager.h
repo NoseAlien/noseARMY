@@ -2,27 +2,33 @@
 
 #include "ADXKeyBoardInput.h"
 #include "ADXScene.h"
-#include "GameScene.h"
 
 class ADXSceneManager
 {
 private:
-	static ADXKeyBoardInput* S_keyboard;
-	static ADXScene* S_prevScene;
-	static ADXScene* S_currentScene;
+	ADXScene* prevScene;
+	ADXScene* currentScene;
 
-	static ADXScene S_scene;
-	static GameScene S_gameScene;
+	std::vector<ADXScene*> scenes{};
 
-	static int32_t S_prevSceneNum;
-	static int32_t S_sceneNum;
-	static bool S_reload;
+	int32_t prevSceneIndex = -1;
+	int32_t sceneIndex = 0;
+	bool reload = true;
+	bool initializable = true;
+
+	static ADXSceneManager* S_current;
 
 public:
-	static void StaticInitialize(ADXKeyBoardInput* setKeyboard);
-	static void StaticUpdate();
-	static ADXKeyBoardInput* GetKeyboardInput() { return S_keyboard; };
+	void Initialize();
+	void Update();
 
-	static int32_t GetSceneNum() { return S_sceneNum; };
-	static void SetSceneNum(int32_t setSceneNum) { S_sceneNum = setSceneNum; };
+	int32_t GetSceneNum() { return sceneIndex; };
+	void SetSceneNum(int32_t setSceneNum) { sceneIndex = setSceneNum; };
+
+	static ADXSceneManager* GetCurrentInstance() { return S_current; };
+
+protected:
+	virtual void UniqueInitialize();
+
+	void SetScenes(std::vector<ADXScene*> setScenes);
 };

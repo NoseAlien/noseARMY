@@ -100,7 +100,7 @@
     <ClCompile Include="ADXEngine\ADXDataPool.cpp" />
     <ClCompile Include="ADXEngine\ADXImage.cpp" />
     <ClCompile Include="ADXEngine\ADXImGuiManager.cpp" />
-    <ClCompile Include="ADXEngine\ADXKeyboardInput.cpp" />
+    <ClCompile Include="ADXEngine\ADXKeyBoardInput.cpp" />
     <ClCompile Include="ADXEngine\ADXLevelData.cpp" />
     <ClCompile Include="ADXEngine\ADXMaterial.cpp" />
     <ClCompile Include="ADXEngine\ADXMatrix4.cpp" />
@@ -117,7 +117,6 @@
     <ClCompile Include="ADXEngine\ADXVector3.cpp" />
     <ClCompile Include="ADXEngine\ADXWindow.cpp" />
     <ClCompile Include="ADXEngine\ADXWorldTransform.cpp" />
-    <ClCompile Include="SceneTransition.cpp" />
     <ClCompile Include="Scripts\Enemy.cpp" />
     <ClCompile Include="Scripts\FieldBox.cpp" />
     <ClCompile Include="Scripts\GameScene.cpp" />
@@ -125,7 +124,10 @@
     <ClCompile Include="Scripts\main.cpp" />
     <ClCompile Include="Scripts\Player.cpp" />
     <ClCompile Include="Scripts\PlayerMini.cpp" />
+    <ClCompile Include="Scripts\SceneManager.cpp" />
+    <ClCompile Include="Scripts\SceneTransition.cpp" />
     <ClCompile Include="Scripts\Species.cpp" />
+    <ClCompile Include="Scripts\TitleScene.cpp" />
     <ClCompile Include="Scripts\TutorialArea.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -138,7 +140,7 @@
     <ClInclude Include="ADXEngine\ADXDataPool.h" />
     <ClInclude Include="ADXEngine\ADXImage.h" />
     <ClInclude Include="ADXEngine\ADXImGuiManager.h" />
-    <ClInclude Include="ADXEngine\ADXKeyboardInput.h" />
+    <ClInclude Include="ADXEngine\ADXKeyBoardInput.h" />
     <ClInclude Include="ADXEngine\ADXLevelData.h" />
     <ClInclude Include="ADXEngine\ADXMaterial.h" />
     <ClInclude Include="ADXEngine\ADXMatrix4.h" />
@@ -155,7 +157,6 @@
     <ClInclude Include="ADXEngine\ADXVector3.h" />
     <ClInclude Include="ADXEngine\ADXWindow.h" />
     <ClInclude Include="ADXEngine\ADXWorldTransform.h" />
-    <ClInclude Include="SceneTransition.h" />
     <ClInclude Include="Scripts\Enemy.h" />
     <ClInclude Include="Scripts\FieldBox.h" />
     <ClInclude Include="Scripts\GameScene.h" />
@@ -163,7 +164,10 @@
     <ClInclude Include="Scripts\json.hpp" />
     <ClInclude Include="Scripts\Player.h" />
     <ClInclude Include="Scripts\PlayerMini.h" />
+    <ClInclude Include="Scripts\SceneManager.h" />
+    <ClInclude Include="Scripts\SceneTransition.h" />
     <ClInclude Include="Scripts\Species.h" />
+    <ClInclude Include="Scripts\TitleScene.h" />
     <ClInclude Include="Scripts\TutorialArea.h" />
   </ItemGroup>
   <ItemGroup>

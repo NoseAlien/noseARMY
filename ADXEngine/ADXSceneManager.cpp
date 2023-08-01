@@ -1,50 +1,52 @@
 #include "ADXSceneManager.h"
-#include <typeinfo>
 
-ADXKeyBoardInput* ADXSceneManager::S_keyboard = nullptr;
-ADXScene* ADXSceneManager::S_prevScene = nullptr;
-ADXScene* ADXSceneManager::S_currentScene = nullptr;
-
-ADXScene ADXSceneManager::S_scene;
-GameScene ADXSceneManager::S_gameScene;
-
-int32_t ADXSceneManager::S_prevSceneNum = -1;
-int32_t ADXSceneManager::S_sceneNum = 0;
-bool ADXSceneManager::S_reload = true;
+ADXSceneManager* ADXSceneManager::S_current = nullptr;
 
 
-void ADXSceneManager::StaticInitialize(ADXKeyBoardInput* setKeyboard)
+void ADXSceneManager::Initialize()
 {
-	S_keyboard = setKeyboard;
+	if (!initializable)
+	{
+		return;
+	}
+	sceneIndex = 0;
+	S_current = this;
+
+	UniqueInitialize();
+	initializable = false;
 }
 
-void ADXSceneManager::StaticUpdate()
+void ADXSceneManager::Update()
 {
-	switch (S_sceneNum)
+	initializable = false;
+	currentScene = scenes[sceneIndex];
+
+	if (currentScene != prevScene || sceneIndex != prevSceneIndex || reload)
 	{
-	case 0:
-		S_currentScene = &S_scene;
-		break;
-	case 1:
-		S_currentScene = &S_scene;
-		break;
-	case 2:
-		S_currentScene = &S_gameScene;
-		break;
-	}
+		*currentScene = {};
+		currentScene->Initialize();
 
-
-	if (S_currentScene != S_prevScene || S_sceneNum != S_prevSceneNum || S_reload)
-	{
-		*S_currentScene = {};
-		S_currentScene->Initialize();
-
-		S_reload = false;
-		S_prevSceneNum = S_sceneNum;
-		S_prevScene = S_currentScene;
+		reload = false;
+		prevSceneIndex = sceneIndex;
+		prevScene = currentScene;
 	}
 	else
 	{
-		S_currentScene->Update();
+		currentScene->Update();
 	}
+
+	S_current = this;
+}
+
+void ADXSceneManager::UniqueInitialize()
+{
+}
+
+void ADXSceneManager::SetScenes(std::vector<ADXScene*> setScenes)
+{
+	if (!initializable)
+	{
+		return;
+	}
+	scenes = setScenes;
 }

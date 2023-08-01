@@ -26,4 +26,10 @@ public:
 	bool KeyPress(const BYTE& keyNum);
 	bool KeyTrigger(const BYTE& keyNum);
 	bool KeyRelease(const BYTE& keyNum);
+
+private:
+	static ADXKeyBoardInput* S_current;
+
+public:
+	static ADXKeyBoardInput* GetCurrentInstance() { return S_current; };
 };

@@ -48,7 +48,7 @@ void GameScene::Initialize()
 	player_.colliders.push_back(ADXCollider(&player_));
 	player_.colliders.back().pushable_ = true;
 	player_.material = unlitMat;
-	player_.Initialize(ADXSceneManager::GetKeyboardInput(), { DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C }, &camera_);
+	player_.Initialize(ADXKeyBoardInput::GetCurrentInstance(), { DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C }, &camera_);
 	player_.Species::Initialize("player");
 
 	floors_.push_back(ADXObject());
@@ -328,7 +328,7 @@ void GameScene::Update()
 		itr->Update();
 	}
 
-	if (ADXSceneManager::GetKeyboardInput()->KeyTrigger(DIK_Q))
+	if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_Q))
 	{
 		SceneTransition::ChangeScene(1);
 	}
