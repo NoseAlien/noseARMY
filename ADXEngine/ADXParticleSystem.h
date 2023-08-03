@@ -16,6 +16,7 @@ public:
 	ADXTexAnimation animation{};
 	ADXModel particleModel;
 	std::list<ADXParticle> particles{};
+	bool billboard = true;
 
 private:
 	int32_t nowCoolTime = 0;

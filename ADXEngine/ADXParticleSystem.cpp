@@ -12,6 +12,9 @@ void ADXParticleSystem::Emission()
 		particle.transform.UpdateMatrix();
 		particle.model = &particleModel;
 		particle.animation = animation;
+		particle.maxLifeTime = lifeTime;
+		particle.billboard = billboard;
+		particle.Initialize();
 	}
 }
 
