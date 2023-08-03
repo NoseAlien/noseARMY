@@ -19,8 +19,7 @@ public:
 	bool GetInputStatus(int keyIndex);
 	bool GetInputStatusTrigger(int keyIndex);
 	bool GetInputStatusRelease(int keyIndex);
-	ADXVector3 GetCameraRight() { return cameraRight; };
-	ADXVector3 GetCameraForward() { return cameraForward; };
+	ADXCamera* GetCamera() { return camera; };
 
 private:
 	void SpeciesUpdate();
@@ -51,8 +50,6 @@ private:
 
 	ADXVector3 prevPos{};
 	ADXVector3 velocity = { 0,0,0 };
-	ADXVector3 cameraRight{};
-	ADXVector3 cameraForward{};
 	std::list<PlayerMini> minis{};
 	int splitInterval = 0;
 	bool splitable = true;

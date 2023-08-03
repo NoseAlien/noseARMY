@@ -28,23 +28,29 @@ void PlayerMini::Initialize(Player* setParent, ADXObject setNose)
 
 void PlayerMini::Move(float walkSpeed, float jumpPower)
 {
+	ADXVector3 cameraRight = parent->GetCamera()->transform.TransformPointOnlyRotation({1,0,0});
+	cameraRight = cameraRight.Normalize();
+	ADXVector3 cameraForward = parent->GetCamera()->transform.TransformPointOnlyRotation({ 0,0,1 });
+	cameraForward.y = 0;
+	cameraForward = cameraForward.Normalize();
+
 	if (parent->GetInputStatus(0) || parent->GetInputStatus(1) || parent->GetInputStatus(2) || parent->GetInputStatus(3))
 	{
 		if (parent->GetInputStatus(0))
 		{
-			velocity += parent->GetCameraForward() * walkSpeed;
+			velocity += cameraForward * walkSpeed;
 		}
 		if (parent->GetInputStatus(1))
 		{
-			velocity -= parent->GetCameraForward() * walkSpeed;
+			velocity -= cameraForward * walkSpeed;
 		}
 		if (parent->GetInputStatus(2))
 		{
-			velocity += parent->GetCameraRight() * walkSpeed;
+			velocity += cameraRight * walkSpeed;
 		}
 		if (parent->GetInputStatus(3))
 		{
-			velocity -= parent->GetCameraRight() * walkSpeed;
+			velocity -= cameraRight * walkSpeed;
 		}
 		transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(velocity.x, velocity.z),0 });
 	}

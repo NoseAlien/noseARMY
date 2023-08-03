@@ -1,6 +1,7 @@
 #include "ADXDataPool.h"
 
 std::vector<ADXImage> ADXDataPool::S_imgDataPool{};
+std::vector<ADXModel> ADXDataPool::S_modelDataPool{};
 
 ADXImage* ADXDataPool::GetImgData(const uint32_t& GHandle)
 {
@@ -17,4 +18,9 @@ ADXImage* ADXDataPool::GetImgData(const uint32_t& GHandle)
 void ADXDataPool::SetImgDataPool(const ADXImage& cell)
 {
 	S_imgDataPool.push_back(cell);
+}
+
+void ADXDataPool::SetImgDataPool(const ADXModel& cell)
+{
+	S_modelDataPool.push_back(cell);
 }

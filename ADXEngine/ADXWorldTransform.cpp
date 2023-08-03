@@ -45,7 +45,6 @@ void ADXWorldTransform::Initialize()
 void ADXWorldTransform::UpdateMatrix()
 {
 	//////拡縮//////
-	//スケーリング倍率を行列に設定する
 	matScale_ =
 	{ localScale_.x,0,0,0,
 	0,localScale_.y,0,0,
@@ -53,38 +52,10 @@ void ADXWorldTransform::UpdateMatrix()
 	0,0,0,1 };
 
 	//////回転//////
-
-	//合成用回転行列を宣言し、ZXYの順に合成
 	matRot_ = localRotation_.RotateMatrix();
-	/*ADXVector3 eul = ADXQuaternion::QuaternionToEuler(localRotation_);
-
-	ADXMatrix4 matRotX = ADXMatrix4(
-		1, 0, 0, 0,
-		0, cosf(eul.x), -sinf(eul.x), 0,
-		0, sinf(eul.x), cosf(eul.x), 0,
-		0, 0, 0, 1
-	);
-
-	ADXMatrix4 matRotY = ADXMatrix4(
-		cosf(eul.y), 0, sinf(eul.y), 0,
-		0, 1, 0, 0,
-		-sinf(eul.y), 0, cosf(eul.y), 0,
-		0, 0, 0, 1
-	);
-
-	ADXMatrix4 matRotZ = ADXMatrix4(
-		cosf(eul.z), -sinf(eul.z), 0, 0,
-		sinf(eul.z), cosf(eul.z), 0, 0,
-		0, 0, 1, 0,
-		0, 0, 0, 1
-	);
-
-	matRot_ = matRotZ * matRotX;
-	matRot_ *= matRotY;*/
 
 
 	//////平行移動//////
-	//移動量を行列に設定する
 	matTrans_ =
 	{ 1,0,0,0,
 	0,1,0,0,

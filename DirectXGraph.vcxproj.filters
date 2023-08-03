@@ -135,6 +135,12 @@
     <ClCompile Include="Scripts\SceneManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="ADXEngine\ADXParticleSystem.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXParticle.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ADXEngine\ADXAudio.h">
@@ -250,6 +256,12 @@
     </ClInclude>
     <ClInclude Include="Scripts\SceneManager.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXParticleSystem.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXParticle.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

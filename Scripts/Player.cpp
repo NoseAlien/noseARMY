@@ -85,6 +85,12 @@ bool Player::GetInputStatusRelease(int keyIndex)
 
 void Player::Move(float walkSpeed, float jumpPower)
 {
+	ADXVector3 cameraRight = camera->transform.TransformPointOnlyRotation({ 1,0,0 });
+	cameraRight = cameraRight.Normalize();
+	ADXVector3 cameraForward = camera->transform.TransformPointOnlyRotation({ 0,0,1 });
+	cameraForward.y = 0;
+	cameraForward = cameraForward.Normalize();
+
 	if (keyboard->KeyPress(config[0]) || keyboard->KeyPress(config[1]) || keyboard->KeyPress(config[2]) || keyboard->KeyPress(config[3]))
 	{
 		if (keyboard->KeyPress(config[0]))
@@ -149,12 +155,6 @@ void Player::SpeciesUpdate()
 	camera->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(-cameraVec.x, -cameraVec.z),0 });
 	camera->transform.UpdateMatrix();
 	camera->transform.localRotation_ = ADXQuaternion::Multiply(camera->transform.localRotation_, ADXQuaternion::MakeAxisAngle({ 1,0,0 }, 0.3f));
-
-	cameraRight = ADXMatrix4::transform({ 1,0,0 }, camera->transform.GetMatRot());
-	cameraForward = ADXMatrix4::transform({ 0,0,1 }, camera->transform.GetMatRot());
-	cameraForward.y = 0;
-	cameraForward = cameraForward.Normalize();
-
 
 	bool moveInput = 
 		!keyboard->KeyPress(config[0]) || keyboard->KeyPress(config[1]) || keyboard->KeyPress(config[2]) || keyboard->KeyPress(config[3]);

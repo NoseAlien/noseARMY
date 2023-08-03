@@ -2,7 +2,7 @@
 #include "ADXModel.h"
 #include "ADXMaterial.h"
 #include "ADXImage.h"
-#include "ADXComponentInclude.h"
+#include "ADXCollider.h"
 #include <string>
 
 class ADXCamera;
@@ -60,19 +60,14 @@ protected:
 public: // 静的メンバ関数
 	//静的初期化
 	static void StaticInitialize();
-
 	//静的更新処理
 	static void StaticUpdate();
-
 	// グラフィックパイプライン生成
 	static void InitializeGraphicsPipeline();
-
 	// 描画前処理
 	static void PreDraw();
-
 	// 描画処理
 	static void StaticDraw();
-
 	// 描画後処理
 	static void PostDraw();
 
@@ -108,5 +103,6 @@ private: // 静的メンバ変数
 	// オブジェクトが存在できる領域を制限するための変数
 	static ADXVector3 S_limitPos1;
 	static ADXVector3 S_limitPos2;
+	
 	static bool S_highQualityZSort;
 };

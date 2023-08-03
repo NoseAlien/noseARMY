@@ -106,6 +106,8 @@
     <ClCompile Include="ADXEngine\ADXMatrix4.cpp" />
     <ClCompile Include="ADXEngine\ADXModel.cpp" />
     <ClCompile Include="ADXEngine\ADXObject.cpp" />
+    <ClCompile Include="ADXEngine\ADXParticle.cpp" />
+    <ClCompile Include="ADXEngine\ADXParticleSystem.cpp" />
     <ClCompile Include="ADXEngine\ADXPostEffectLens.cpp" />
     <ClCompile Include="ADXEngine\ADXQuaternion.cpp" />
     <ClCompile Include="ADXEngine\ADXRigidbody.cpp" />
@@ -146,6 +148,8 @@
     <ClInclude Include="ADXEngine\ADXMatrix4.h" />
     <ClInclude Include="ADXEngine\ADXModel.h" />
     <ClInclude Include="ADXEngine\ADXObject.h" />
+    <ClInclude Include="ADXEngine\ADXParticle.h" />
+    <ClInclude Include="ADXEngine\ADXParticleSystem.h" />
     <ClInclude Include="ADXEngine\ADXPostEffectLens.h" />
     <ClInclude Include="ADXEngine\ADXQuaternion.h" />
     <ClInclude Include="ADXEngine\ADXRigidbody.h" />

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ADXObject.h"
+#include <list>
 
 class FieldBox : public ADXObject
 {

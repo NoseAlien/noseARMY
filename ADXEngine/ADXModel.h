@@ -29,6 +29,8 @@ public:
 	Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12Resource> indexBuff = nullptr;
 
+	std::string name = {};
+
 public:
 	ADXModel();
 
