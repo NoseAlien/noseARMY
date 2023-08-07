@@ -24,4 +24,12 @@ private:
 	bool destroyFlag = false;
 	ADXVector3 prevPos{};
 	ADXVector3 velocity = { 0,0,0 };
+
+private:
+	static std::vector<PlayerMini*> S_minis;
+	static std::vector<PlayerMini*> S_allMiniPtr;
+
+public:
+	static void StaticUpdate();
+	static std::vector<PlayerMini*> GetMinis() { return S_minis; };
 };

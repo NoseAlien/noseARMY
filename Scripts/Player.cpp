@@ -195,6 +195,9 @@ void Player::SpeciesUpdate()
 		return false; });
 	}
 
+	minis.remove_if([=](auto& itr)
+		{ return ADXMatrix4::transform(itr.transform.localPosition_, transform.GetMatWorldInverse()).Length() > 30 / scale; });
+
 	nose.transform.localScale_ = ADXVector3{ 0.42f,0.35f,0.35f } * (float)fmax(1,1 + pow(fmax(0, splitInterval),2) * 0.02f);
 
 	//nose.transform.localEulerAngles_.z *= 0.9f;
@@ -225,9 +228,6 @@ void Player::SpeciesUpdate()
 	{
 		splitable = true;
 	}
-
-	minis.remove_if([=](auto& itr) 
-		{ return ADXMatrix4::transform(itr.transform.localPosition_, transform.GetMatWorldInverse()).Length() > 30 / scale; });
 
 	for (auto& itr : minis)
 	{

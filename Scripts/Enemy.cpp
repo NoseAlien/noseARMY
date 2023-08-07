@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "PlayerMini.h"
 
 void Enemy::Initialize()
 {
@@ -19,6 +20,8 @@ void Enemy::SpeciesUpdate()
 
 void Enemy::DeadUpdate()
 {
+	colliders[0].pushBackPriority = -2;
+
 	material.ambient = { 0,0,0 };
 
 	VelocityMove(0.8f);
@@ -46,4 +49,23 @@ void Enemy::VelocityUpdate()
 {
 	transform.localPosition_ += velocity;
 	transform.UpdateMatrix();
+}
+
+void Enemy::SpeciesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
+{
+	if (IsArrive())
+	{
+		return;
+	}
+
+	for (auto& objItr : PlayerMini::GetMinis())
+	{
+		for (auto& colItr : objItr->colliders)
+		{
+			if (col == &colItr)
+			{
+				transform.SetWorldPosition(col->GetGameObject()->transform.GetWorldPosition());
+			}
+		}
+	}
 }

@@ -12,6 +12,7 @@
 #include "FieldBox.h"
 #include "TutorialArea.h"
 #include "Species.h"
+#include "PlayerMini.h"
 
 //#include <assimp/scene.h>
 
@@ -62,6 +63,7 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 			FieldBox::StaticUpdate();
 			TutorialArea::StaticUpdate();
 			Species::StaticUpdate();
+			PlayerMini::StaticUpdate();
 			ADXCollider::StaticUpdate();
 			adximgui.End();
 

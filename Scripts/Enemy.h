@@ -17,4 +17,7 @@ private:
 	void VelocityInitialize();
 	void VelocityMove(float drag);
 	void VelocityUpdate();
+
+private:
+	void SpeciesOnCollisionHit(ADXCollider* col, ADXCollider* myCol);
 };

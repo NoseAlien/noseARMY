@@ -326,6 +326,11 @@ bool ADXCollider::IsHit(const ADXCollider& col)
 //コライダー同士で押し合う（動かないコライダーにぶつかったら一方的に押される）
 void ADXCollider::Collide(ADXCollider* col)
 {
+	if (gameObject == col->gameObject)
+	{
+		return;
+	}
+
 	for (auto& itr : S_ignoreCollidePatterns)
 	{
 		if ((itr.layer1 == collideLayer && itr.layer2 == col->collideLayer) ||

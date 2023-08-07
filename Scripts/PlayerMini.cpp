@@ -1,6 +1,9 @@
 #include "PlayerMini.h"
 #include "Player.h"
 
+std::vector<PlayerMini*> PlayerMini::S_minis{};
+std::vector<PlayerMini*> PlayerMini::S_allMiniPtr{};
+
 PlayerMini::PlayerMini()
 {
 
@@ -97,4 +100,12 @@ void PlayerMini::UniqueUpdate()
 
 	nose.transform.parent_ = &transform;
 	nose.Update();
+
+	S_allMiniPtr.push_back(this);
+}
+
+void PlayerMini::StaticUpdate()
+{
+	S_minis = S_allMiniPtr;
+	S_allMiniPtr.clear();
 }

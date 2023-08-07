@@ -32,11 +32,9 @@ protected:
 	void Damage(float damage);
 	virtual void SpeciesUpdate();
 	virtual void DeadUpdate();
+	virtual void SpeciesOnCollisionHit(ADXCollider* col, ADXCollider* myCol);
 	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol);
 	void OnPreRender();
-
-public:
-	static void StaticUpdate();
 
 private:
 	static std::vector<Species*> S_species;
@@ -45,6 +43,7 @@ private:
 	static std::vector<AttackObject> S_allAttackObj;
 
 public:
+	static void StaticUpdate();
 	static void SetAttackObj(AttackObject attackObj);
 	static std::vector<AttackObject> GetAttackObj() { return S_attackObjs; };
 	static std::vector<Species*> GetSpecies() { return S_species; };

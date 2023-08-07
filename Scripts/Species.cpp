@@ -140,6 +140,10 @@ void Species::DeadUpdate()
 {
 }
 
+void Species::SpeciesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
+{
+}
+
 void Species::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
 	for (auto& objItr : GetAttackObj())
@@ -149,6 +153,7 @@ void Species::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 			Damage(objItr.power);
 		}
 	}
+	SpeciesOnCollisionHit(col, myCol);
 }
 
 void Species::OnPreRender()
