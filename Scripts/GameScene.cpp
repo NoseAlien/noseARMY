@@ -252,6 +252,7 @@ void GameScene::Initialize()
 
 
 	Enemy newEnemy;
+	ADXObject* newEnemyObj;
 
 	enemies_.push_back(Enemy());
 	enemies_.back().ADXObject::Initialize();
@@ -266,6 +267,15 @@ void GameScene::Initialize()
 	enemies_.back().colliders.back().colType_ = box;
 	enemies_.back().Initialize();
 	enemies_.back().Species::Initialize("enemy");
+
+	newEnemyObj = &newEnemy;
+	*newEnemyObj = ADXObject::Duplicate(enemies_.back(), true);
+	enemies_.push_back(newEnemy);
+	enemies_.back().transform.localPosition_ = { 0,41,40 };
+	enemies_.back().transform.UpdateMatrix();
+	enemies_.back().Initialize();
+	enemies_.back().Species::Initialize("enemy");
+
 
 	goal_.ADXObject::Initialize();
 	goal_.transform.localPosition_ = { -40,-50,112 };

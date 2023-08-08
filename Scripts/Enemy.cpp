@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "PlayerMini.h"
+#include "Player.h"
 
 void Enemy::Initialize()
 {
@@ -65,6 +66,7 @@ void Enemy::SpeciesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 			if (col == &colItr)
 			{
 				transform.SetWorldPosition(col->GetGameObject()->transform.GetWorldPosition());
+				Species::SetAttackObj(AttackObject{ myCol,objItr->GetParent(),maxHP});
 			}
 		}
 	}

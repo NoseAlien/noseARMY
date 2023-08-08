@@ -32,6 +32,7 @@ public:
 	void CreateConstBuffer();
 	void Update();
 	void Draw();
+	void Destroy();
 	void InitCols();
 	virtual void OnCollisionHit(ADXCollider* col, ADXCollider* myCol);
 
@@ -56,6 +57,9 @@ public:
 protected:
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffB1 = nullptr;
 	ConstBufferDataB0* constMapMaterial = nullptr;
+
+private:
+	bool deleteFlag = false;
 
 public: // Ã“Iƒƒ“ƒoŠÖ”
 	//Ã“I‰Šú‰»

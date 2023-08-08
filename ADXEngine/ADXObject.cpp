@@ -558,6 +558,11 @@ void ADXObject::Draw()
 	Rendered();
 }
 
+void ADXObject::Destroy()
+{
+	deleteFlag = true;
+}
+
 void ADXObject::OnWillRenderObject()
 {
 
