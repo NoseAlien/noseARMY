@@ -1,19 +1,13 @@
 #pragma once
 
 #include "ADXScene.h"
-#include "ADXModel.h"
-#include "ADXMaterial.h"
-#include "ADXWorldTransform.h"
 #include "ADXObject.h"
 #include "ADXCamera.h"
 #include "Player.h"
-#include "Enemy.h"
 #include "FieldBox.h"
-#include "Goal.h"
-#include "ADXImage.h"
 #include "ADXTexAnimation.h"
 
-class GameScene : public ADXScene
+class StageSelectScene : public ADXScene
 {
 private:
 	//‰æ‘œ
@@ -29,6 +23,7 @@ private:
 	ADXModel ground{};
 	ADXModel battleBox{};
 	ADXModel rect{};
+	ADXModel playerModel{};
 	ADXModel skyDomeModel{};
 
 	//ƒ}ƒeƒŠƒAƒ‹
@@ -43,8 +38,6 @@ private:
 	std::list<ADXObject> floors_{};
 	std::list<TutorialArea> tutorialAreas_{};
 	std::list<FieldBox> fields_{};
-	std::list<Enemy> enemies_{};
-	Goal goal_{};
 
 	ADXObject backGround_{};
 
@@ -52,7 +45,7 @@ private:
 	std::list<ADXObject*> objs{};
 
 public:
-	GameScene();
+	StageSelectScene();
 	void Initialize();
 	void Update();
 };

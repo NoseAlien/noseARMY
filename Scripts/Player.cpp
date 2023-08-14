@@ -20,24 +20,14 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 	noseImage = ADXImage::LoadADXImage("apEGnoSE.png");
 	furImage = ADXImage::LoadADXImage("apEG_fur.png");
 
-	rect.vertices = {
-	{{-1.0f,-1.0f,0.0f},{}, {0.0f,1.0f}},//左下
-	{{-1.0f,1.0f,0.0f},{},{0.0f,0.0f}},//左上
-	{{1.0f,-1.0f,0.0f},{},{1.0f,1.0f}},//右下
-	{{1.0f,1.0f,0.0f},{},{1.0f,0.0f}},//右上
-	};
-	//インデックスデータ
-	rect.indices =
-	{
-		0,1,2,
-		2,1,3,
+	rect = ADXModel::CreateRect();
+	playerModel = ADXModel::LoadModel("model/sphere.obj");
 
-		1,0,2,
-		1,2,3,
-	};
-	rect.Initialize();
-
+	model = &playerModel;
 	texture = furImage;
+
+	colliders.push_back(ADXCollider(this));
+	colliders.back().pushable_ = true;
 
 	nose.Initialize();
 	nose.transform.localPosition_ = { 0,0,1.01f };

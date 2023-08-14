@@ -2,5 +2,5 @@
 
 void SceneManager::UniqueInitialize()
 {
-	SetScenes({ &logoScene,&titleScene,&gameScene });
+	SetScenes({ &logoScene,&titleScene,&stageSelectScene,&gameScene });
 }

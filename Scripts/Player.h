@@ -39,7 +39,8 @@ private:
 	uint32_t furImage{};
 	uint32_t outOfFieldImage{};
 
-	ADXModel rect;
+	ADXModel rect{};
+	ADXModel playerModel{};
 
 	ADXAudio jumpSE{};
 	ADXAudio damageSE{};

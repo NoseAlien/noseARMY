@@ -131,6 +131,7 @@
     <ClCompile Include="Scripts\Species.cpp" />
     <ClCompile Include="Scripts\TitleScene.cpp" />
     <ClCompile Include="Scripts\TutorialArea.cpp" />
+    <ClCompile Include="StageSelectScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ADXEngine\ADXAudio.h" />
@@ -173,6 +174,7 @@
     <ClInclude Include="Scripts\Species.h" />
     <ClInclude Include="Scripts\TitleScene.h" />
     <ClInclude Include="Scripts\TutorialArea.h" />
+    <ClInclude Include="StageSelectScene.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\OBJPixelShader.hlsl">

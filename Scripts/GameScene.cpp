@@ -29,7 +29,6 @@ void GameScene::Initialize()
 	cube = ADXModel::LoadModel("model/cube.obj");
 	ground = ADXModel::LoadModel("model/groundBlock.obj");
 	battleBox = ADXModel::LoadModel("model/battleBox.obj");
-	playerModel = ADXModel::LoadModel("model/sphere.obj");
 	skyDomeModel = ADXModel::LoadModel("skydome/skydome.obj");
 
 	//オブジェクト
@@ -44,10 +43,6 @@ void GameScene::Initialize()
 	player_.transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
 	player_.transform.localScale_ = { 0.5f,0.5f,0.5f };
 	player_.transform.UpdateMatrix();
-	player_.model = &playerModel;
-	player_.colliders.push_back(ADXCollider(&player_));
-	player_.colliders.back().pushable_ = true;
-	player_.material = unlitMat;
 	player_.Initialize(ADXKeyBoardInput::GetCurrentInstance(), { DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C }, &camera_);
 	player_.Species::Initialize("player");
 
@@ -340,6 +335,6 @@ void GameScene::Update()
 
 	if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_Q))
 	{
-		SceneTransition::ChangeScene(1);
+		SceneTransition::ChangeScene(2);
 	}
 }
