@@ -2,7 +2,7 @@
 
 #include "ADXObject.h"
 
-class Goal : public ADXObject
+class SceneGate : public ADXObject
 {
 public:
 	const int32_t MaxSceneTransitionCount = 60;
@@ -10,8 +10,7 @@ public:
 private:
 	std::string team = "";
 	int32_t sceneTransitionCount = MaxSceneTransitionCount;
-	ADXObject clearUI{};
-	ADXObject keyUI{};
+	ADXModel box{};
 	ADXModel rect{};
 
 public:

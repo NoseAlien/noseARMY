@@ -119,6 +119,7 @@
     <ClCompile Include="ADXEngine\ADXVector3.cpp" />
     <ClCompile Include="ADXEngine\ADXWindow.cpp" />
     <ClCompile Include="ADXEngine\ADXWorldTransform.cpp" />
+    <ClCompile Include="SceneGate.cpp" />
     <ClCompile Include="Scripts\Enemy.cpp" />
     <ClCompile Include="Scripts\FieldBox.cpp" />
     <ClCompile Include="Scripts\GameScene.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="ADXEngine\ADXVector3.h" />
     <ClInclude Include="ADXEngine\ADXWindow.h" />
     <ClInclude Include="ADXEngine\ADXWorldTransform.h" />
+    <ClInclude Include="SceneGate.h" />
     <ClInclude Include="Scripts\Enemy.h" />
     <ClInclude Include="Scripts\FieldBox.h" />
     <ClInclude Include="Scripts\GameScene.h" />

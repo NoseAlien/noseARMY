@@ -38,6 +38,7 @@ void GameScene::Initialize()
 	camera_.transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0.3f,0,0 });
 	camera_.Initialize();
 
+	player_ = {};
 	player_.ADXObject::Initialize();
 	player_.transform.localPosition_ = { 0,2,0 };
 	player_.transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
