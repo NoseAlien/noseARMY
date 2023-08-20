@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "FieldBox.h"
 #include "ADXTexAnimation.h"
+#include "SceneGate.h"
 
 class StageSelectScene : public ADXScene
 {
@@ -38,6 +39,7 @@ private:
 	std::list<ADXObject> floors_{};
 	std::list<TutorialArea> tutorialAreas_{};
 	std::list<FieldBox> fields_{};
+	std::list<SceneGate> gates_{};
 
 	ADXObject backGround_{};
 
