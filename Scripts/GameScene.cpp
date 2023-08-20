@@ -15,14 +15,9 @@ void GameScene::Initialize()
 
 	//‰æ‘œ
 	keyImg = ADXImage::LoadADXImage("QUIT_TITLE.png");
-	skyDomeImg = ADXImage::LoadADXImage("skydome/Fine_Basin.jpg");
 	backGroundTex = ADXImage::LoadADXImage("skyBG.png");
 	groundImg = ADXImage::LoadADXImage("GroundBlock.png");
 	battleFieldImg = ADXImage::LoadADXImage("battleField.png");
-	goalImg = ADXImage::LoadADXImage("goalField.png");
-
-	//ƒ}ƒeƒŠƒAƒ‹
-	unlitMat = ADXMaterial::LoadMaterial("material/unlit.mtl");
 
 	rect = ADXModel::CreateRect();
 
@@ -57,7 +52,6 @@ void GameScene::Initialize()
 	floors_.back().texture = groundImg;
 	floors_.back().colliders.push_back(ADXCollider(&floors_.back()));
 	floors_.back().colliders.back().colType_ = box;
-	floors_.back().material = unlitMat;
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
 	floors_.back().transform.localPosition_ = { 0,-2,0 };
@@ -279,11 +273,6 @@ void GameScene::Initialize()
 	goal_.transform.localScale_ = { 6,10,6 };
 	goal_.transform.UpdateMatrix();
 	goal_.model = &battleBox;
-	goal_.texture = goalImg;
-	goal_.colliders.push_back(ADXCollider(&goal_));
-	goal_.colliders.back().isTrigger = true;
-	goal_.colliders.back().colType_ = box;
-	goal_.material = unlitMat;
 	goal_.Initialize("player");
 
 	backGround_.Initialize();
@@ -291,7 +280,6 @@ void GameScene::Initialize()
 	backGround_.transform.UpdateMatrix();
 	backGround_.model = &rect;
 	backGround_.texture = backGroundTex;
-	backGround_.material = unlitMat;
 	backGround_.renderLayer = -1;
 
 	key = ADXObject::Duplicate(backGround_);

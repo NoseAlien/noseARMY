@@ -19,10 +19,8 @@ private:
 	//画像
 	uint32_t keyImg{};
 	uint32_t backGroundTex{};
-	uint32_t skyDomeImg{};
 	uint32_t groundImg{};
 	uint32_t battleFieldImg{};
-	uint32_t goalImg{};
 
 	//3Dモデル
 	ADXModel cube{};
@@ -30,9 +28,6 @@ private:
 	ADXModel battleBox{};
 	ADXModel rect{};
 	ADXModel skyDomeModel{};
-
-	//マテリアル
-	ADXMaterial unlitMat{};
 
 	//カメラ
 	ADXCamera camera_{};

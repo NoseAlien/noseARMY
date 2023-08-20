@@ -12,7 +12,7 @@ private:
 	int32_t sceneTransitionCount = MaxSceneTransitionCount;
 	ADXObject clearUI{};
 	ADXObject keyUI{};
-	ADXModel rect{};
+	ADXModel rectModel{};
 
 public:
 	void Initialize(std::string setTeam);

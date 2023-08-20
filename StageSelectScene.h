@@ -27,9 +27,6 @@ private:
 	ADXModel playerModel{};
 	ADXModel skyDomeModel{};
 
-	//マテリアル
-	ADXMaterial unlitMat{};
-
 	//カメラ
 	ADXCamera camera_{};
 

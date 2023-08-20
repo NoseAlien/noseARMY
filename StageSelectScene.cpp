@@ -20,9 +20,6 @@ void StageSelectScene::Initialize()
 	battleFieldImg = ADXImage::LoadADXImage("battleField.png");
 	goalImg = ADXImage::LoadADXImage("goalField.png");
 
-	//ƒ}ƒeƒŠƒAƒ‹
-	unlitMat = ADXMaterial::LoadMaterial("material/unlit.mtl");
-
 	rect = ADXModel::CreateRect();
 
 	cube = ADXModel::LoadModel("model/cube.obj");
@@ -56,7 +53,6 @@ void StageSelectScene::Initialize()
 	floors_.back().texture = groundImg;
 	floors_.back().colliders.push_back(ADXCollider(&floors_.back()));
 	floors_.back().colliders.back().colType_ = box;
-	floors_.back().material = unlitMat;
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
 	floors_.back().transform.localPosition_ = { 0,-2,0 };
@@ -88,12 +84,21 @@ void StageSelectScene::Initialize()
 	fields_.back().colliders.back().colType_ = box;
 
 
+	gates_.push_back(SceneGate());
+	gates_.back().ADXObject::Initialize();
+	gates_.back().transform.localPosition_ = { 0,1.01f,30 };
+	gates_.back().transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
+	gates_.back().transform.localScale_ = { 2,2,2 };
+	gates_.back().transform.UpdateMatrix();
+	gates_.back().model = &battleBox;
+	gates_.back().Initialize("player");
+
+
 	backGround_.Initialize();
 	backGround_.transform.rectTransform = true;
 	backGround_.transform.UpdateMatrix();
 	backGround_.model = &rect;
 	backGround_.texture = backGroundTex;
-	backGround_.material = unlitMat;
 	backGround_.renderLayer = -1;
 
 	key = ADXObject::Duplicate(backGround_);
@@ -117,6 +122,10 @@ void StageSelectScene::Initialize()
 	{
 		objs.push_back(&itr);
 	}
+	for (auto& itr : gates_)
+	{
+		objs.push_back(&itr);
+	}
 	objs.push_back(&backGround_);
 	objs.push_back(&key);
 }
@@ -131,10 +140,6 @@ void StageSelectScene::Update()
 		itr->Update();
 	}
 
-	if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_C))
-	{
-		SceneTransition::ChangeScene(3);
-	}
 	if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_Q))
 	{
 		SceneTransition::ChangeScene(1);

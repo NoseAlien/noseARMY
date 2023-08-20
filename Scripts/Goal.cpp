@@ -4,14 +4,21 @@
 
 void Goal::Initialize(std::string setTeam)
 {
+	texture = ADXImage::LoadADXImage("goalField.png");
+	sortingOrder = 1;
+
+	colliders.push_back(ADXCollider(this));
+	colliders.back().isTrigger = true;
+	colliders.back().colType_ = box;
+
 	team = setTeam;
 	sceneTransitionCount = MaxSceneTransitionCount;
 
-	rect = ADXModel::CreateRect();
+	rectModel = ADXModel::CreateRect();
 
 	clearUI.Initialize();
 	clearUI.transform.rectTransform = true;
-	clearUI.model = &rect;
+	clearUI.model = &rectModel;
 	clearUI.texture = ADXImage::LoadADXImage("clear.png");
 	clearUI.renderLayer = 5;
 

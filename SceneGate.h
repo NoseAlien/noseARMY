@@ -9,9 +9,10 @@ public:
 
 private:
 	std::string team = "";
-	int32_t sceneTransitionCount = MaxSceneTransitionCount;
-	ADXModel box{};
-	ADXModel rect{};
+	bool hitted = false;
+	ADXObject keyUI{};
+	ADXModel boxModel{};
+	ADXModel rectModel{};
 
 public:
 	void Initialize(std::string setTeam);
