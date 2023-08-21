@@ -15,6 +15,9 @@ void Goal::Initialize(std::string setTeam)
 	sceneTransitionCount = MaxSceneTransitionCount;
 
 	rectModel = ADXModel::CreateRect();
+	boxModel = ADXModel::LoadModel("model/battleBox.obj");
+
+	model = &boxModel;
 
 	clearUI.Initialize();
 	clearUI.transform.rectTransform = true;

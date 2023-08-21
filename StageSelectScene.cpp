@@ -21,10 +21,7 @@ void StageSelectScene::Initialize()
 	goalImg = ADXImage::LoadADXImage("goalField.png");
 
 	rect = ADXModel::CreateRect();
-
-	cube = ADXModel::LoadModel("model/cube.obj");
 	ground = ADXModel::LoadModel("model/groundBlock.obj");
-	battleBox = ADXModel::LoadModel("model/battleBox.obj");
 	skyDomeModel = ADXModel::LoadModel("skydome/skydome.obj");
 
 	//オブジェクト
@@ -90,7 +87,6 @@ void StageSelectScene::Initialize()
 	gates_.back().transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
 	gates_.back().transform.localScale_ = { 2,2,2 };
 	gates_.back().transform.UpdateMatrix();
-	gates_.back().model = &battleBox;
 	gates_.back().Initialize("player");
 
 

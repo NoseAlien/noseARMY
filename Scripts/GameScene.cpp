@@ -12,6 +12,7 @@ void GameScene::Initialize()
 	fields_ = {};
 	enemies_ = {};
 	tutorialAreas_ = {};
+	player_ = {};
 
 	//画像
 	keyImg = ADXImage::LoadADXImage("QUIT_TITLE.png");
@@ -20,10 +21,7 @@ void GameScene::Initialize()
 	battleFieldImg = ADXImage::LoadADXImage("battleField.png");
 
 	rect = ADXModel::CreateRect();
-
-	cube = ADXModel::LoadModel("model/cube.obj");
 	ground = ADXModel::LoadModel("model/groundBlock.obj");
-	battleBox = ADXModel::LoadModel("model/battleBox.obj");
 	skyDomeModel = ADXModel::LoadModel("skydome/skydome.obj");
 
 	//オブジェクト
@@ -33,7 +31,6 @@ void GameScene::Initialize()
 	camera_.transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0.3f,0,0 });
 	camera_.Initialize();
 
-	player_ = {};
 	player_.ADXObject::Initialize();
 	player_.transform.localPosition_ = { 0,2,0 };
 	player_.transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
@@ -204,9 +201,7 @@ void GameScene::Initialize()
 	fields_.back().transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
 	fields_.back().transform.localScale_ = { 10,14,45 };
 	fields_.back().transform.UpdateMatrix();
-	fields_.back().colliders.push_back(ADXCollider(&fields_.back()));
-	fields_.back().colliders.back().isTrigger = true;
-	fields_.back().colliders.back().colType_ = box;
+	fields_.back().Initialize();
 
 	newFieldObj = &newField;
 	*newFieldObj = ADXObject::Duplicate(fields_.back(), true);
@@ -272,7 +267,6 @@ void GameScene::Initialize()
 	goal_.transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
 	goal_.transform.localScale_ = { 6,10,6 };
 	goal_.transform.UpdateMatrix();
-	goal_.model = &battleBox;
 	goal_.Initialize("player");
 
 	backGround_.Initialize();

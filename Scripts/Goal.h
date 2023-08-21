@@ -12,6 +12,7 @@ private:
 	int32_t sceneTransitionCount = MaxSceneTransitionCount;
 	ADXObject clearUI{};
 	ADXObject keyUI{};
+	ADXModel boxModel{};
 	ADXModel rectModel{};
 
 public:

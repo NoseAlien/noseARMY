@@ -20,11 +20,8 @@ private:
 	uint32_t goalImg{};
 
 	//3Dƒ‚ƒfƒ‹
-	ADXModel cube{};
 	ADXModel ground{};
-	ADXModel battleBox{};
 	ADXModel rect{};
-	ADXModel playerModel{};
 	ADXModel skyDomeModel{};
 
 	//ƒJƒƒ‰

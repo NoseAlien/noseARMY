@@ -326,13 +326,16 @@ ADXObject ADXObject::Duplicate(const ADXObject& prefab, bool initCols)
 
 void ADXObject::Update()
 {
-	for (int32_t i = 0; i < colliders.size(); i++)
+	if (isActive)
 	{
-		colliders[i].Update(this);
-	}
-	UniqueUpdate();
+		for (int32_t i = 0; i < colliders.size(); i++)
+		{
+			colliders[i].Update(this);
+		}
+		UniqueUpdate();
 
-	S_allObjPtr.push_back(this);
+		S_allObjPtr.push_back(this);
+	}
 }
 
 void ADXObject::UniqueUpdate()

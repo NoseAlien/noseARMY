@@ -15,6 +15,9 @@ void SceneGate::Initialize(std::string setTeam)
 	team = setTeam;
 
 	rectModel = ADXModel::CreateRect();
+	boxModel = ADXModel::LoadModel("model/battleBox.obj");
+
+	model = &boxModel;
 
 	keyUI.Initialize();
 	keyUI.transform.rectTransform = true;

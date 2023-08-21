@@ -6,12 +6,12 @@
 #include "ADXWorldTransform.h"
 #include "ADXObject.h"
 #include "ADXCamera.h"
+#include "ADXImage.h"
+#include "ADXTexAnimation.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "FieldBox.h"
 #include "Goal.h"
-#include "ADXImage.h"
-#include "ADXTexAnimation.h"
 
 class GameScene : public ADXScene
 {
@@ -23,9 +23,7 @@ private:
 	uint32_t battleFieldImg{};
 
 	//3Dƒ‚ƒfƒ‹
-	ADXModel cube{};
 	ADXModel ground{};
-	ADXModel battleBox{};
 	ADXModel rect{};
 	ADXModel skyDomeModel{};
 

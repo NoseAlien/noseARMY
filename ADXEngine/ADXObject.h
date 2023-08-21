@@ -52,6 +52,7 @@ public:
 	int32_t sortingOrder = 0;
 	bool alphaTex = false;
 	bool isVisible = true;
+	bool isActive = true;
 	bool useDefaultDraw = true;
 
 protected:

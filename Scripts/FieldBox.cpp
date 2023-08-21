@@ -3,6 +3,18 @@
 std::list<FieldBox*> FieldBox::allFieldPtr{};
 std::list<FieldBox*> FieldBox::fields{};
 
+void FieldBox::Initialize()
+{
+	colliders = {};
+	colliders.push_back(ADXCollider(this));
+	colliders.back().isTrigger = true;
+	colliders.back().colType_ = box;
+}
+
+void FieldBox::FieldUpdate()
+{
+}
+
 void FieldBox::UniqueUpdate()
 {
 	adjacentFields.clear();
@@ -51,6 +63,8 @@ void FieldBox::UniqueUpdate()
 		}
 	}
 	allFieldPtr.push_back(this);
+
+	FieldUpdate();
 }
 
 void FieldBox::StaticUpdate()

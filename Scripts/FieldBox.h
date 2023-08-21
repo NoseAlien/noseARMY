@@ -15,6 +15,12 @@ private:
 	static std::list<FieldBox*> allFieldPtr;
 	static std::list<FieldBox*> fields;
 
+public:
+	void Initialize();
+
+protected:
+	virtual void FieldUpdate();
+
 private:
 	void UniqueUpdate();
 	std::list<FieldBox*> GetAdjacentFields() { return adjacentFields; };
