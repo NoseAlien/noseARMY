@@ -16,12 +16,19 @@ void BattleFieldBox::Initialize(std::vector<SpawnData> setGuarders, std::string 
 
 	guarders = setGuarders;
 	team = setTeam;
+
+	animationProgress = 0;
 }
 
 void BattleFieldBox::FieldUpdate()
 {
 	if (awake)
 	{
+		animationProgress += (1 - animationProgress) * 0.2f;
+		transform.modelPosition_ = { 0,-(1 - animationProgress) ,0 };
+		transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,(1 - animationProgress) * 3,0 });
+		transform.modelScale_ = { animationProgress,animationProgress ,animationProgress };
+
 		isVisible = true;
 
 		bool battling = false;

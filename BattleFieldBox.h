@@ -17,6 +17,7 @@ private:
 	bool awake = false;
 	std::string team = "";
 	ADXModel boxModel{};
+	float animationProgress = 0;
 
 public:
 	void Initialize(std::vector<SpawnData> setGuarders, std::string setTeam = "");
