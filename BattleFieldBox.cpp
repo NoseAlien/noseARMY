@@ -3,8 +3,16 @@
 
 void BattleFieldBox::Initialize(std::vector<SpawnData> setGuarders, std::string setTeam)
 {
-	battleFieldImg = ADXImage::LoadADXImage("battleField.png");
-	texture = battleFieldImg;
+	colliders = {};
+	colliders.push_back(ADXCollider(this));
+	colliders.back().isTrigger = true;
+	colliders.back().colType_ = box;
+
+	boxModel = ADXModel::LoadModel("model/battleBox.obj");
+	model = &boxModel;
+	texture = ADXImage::LoadADXImage("battleField.png");
+
+	sortingOrder = 2;
 
 	guarders = setGuarders;
 	team = setTeam;
@@ -15,7 +23,14 @@ void BattleFieldBox::FieldUpdate()
 	if (awake)
 	{
 		isVisible = true;
-		if (guarders.empty())
+
+		bool battling = false;
+		for (auto& itr : guardersInstance)
+		{
+			itr.Update();
+			battling = itr.IsArrive() || battling;
+		}
+		if (!battling)
 		{
 			isActive = false;
 		}
@@ -40,7 +55,14 @@ void BattleFieldBox::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 
 					for (auto& spawnItr : guarders)
 					{
-
+						guardersInstance.push_back(Enemy());
+						guardersInstance.back().ADXObject::Initialize();
+						guardersInstance.back().transform.localPosition_ = ADXMatrix4::transform(spawnItr.position,transform.GetMatWorld());
+						guardersInstance.back().transform.localRotation_ = transform.TransformRotation(spawnItr.rotation);
+						guardersInstance.back().transform.localScale_ = { 1,1,1 };
+						guardersInstance.back().transform.UpdateMatrix();
+						guardersInstance.back().Initialize();
+						guardersInstance.back().Species::Initialize(team);
 					}
 				}
 			}

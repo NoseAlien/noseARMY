@@ -4,6 +4,17 @@
 
 void Enemy::Initialize()
 {
+	enemyModel = ADXModel::LoadModel("model/groundBlock.obj");
+	enemyTex = ADXImage::LoadADXImage("battleField.png");
+
+	model = &enemyModel;
+	texture = enemyTex;
+
+	colliders = {};
+	colliders.push_back(ADXCollider(this));
+	colliders.back().pushable_ = true;
+	colliders.back().colType_ = box;
+
 	VelocityInitialize();
 }
 

@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "FieldBox.h"
+#include "BattleFieldBox.h"
 #include "Goal.h"
 
 class GameScene : public ADXScene
@@ -36,6 +37,7 @@ private:
 	std::list<ADXObject> floors_{};
 	std::list<TutorialArea> tutorialAreas_{};
 	std::list<FieldBox> fields_{};
+	std::list<BattleFieldBox> battleFields_{};
 	std::list<Enemy> enemies_{};
 	Goal goal_{};
 

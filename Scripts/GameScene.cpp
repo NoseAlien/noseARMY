@@ -10,6 +10,7 @@ void GameScene::Initialize()
 	objs = {};
 	floors_ = {};
 	fields_ = {};
+	battleFields_ = {};
 	enemies_ = {};
 	tutorialAreas_ = {};
 	player_ = {};
@@ -214,7 +215,7 @@ void GameScene::Initialize()
 	newFieldObj = &newField;
 	*newFieldObj = ADXObject::Duplicate(fields_.back(), true);
 	fields_.push_back(newField);
-	fields_.back().transform.localPosition_ = { 3,15.5,112 };
+	fields_.back().transform.localPosition_ = { 3,15.5f,112 };
 	fields_.back().transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
 	fields_.back().transform.localScale_ = { 6,5,6 };
 	fields_.back().transform.UpdateMatrix();
@@ -236,6 +237,21 @@ void GameScene::Initialize()
 	fields_.back().transform.UpdateMatrix();
 
 
+	battleFields_.push_back(BattleFieldBox());
+	battleFields_.back().ADXObject::Initialize();
+	battleFields_.back().transform.localPosition_ = { 3,15.4f,112 };
+	battleFields_.back().transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
+	battleFields_.back().transform.localScale_ = { 6,5,6 };
+	battleFields_.back().transform.UpdateMatrix();
+	battleFields_.back().Initialize({ 
+		{{0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
+		{{0.5f,0,-0.5f},ADXQuaternion::IdentityQuaternion()},
+		{{-0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
+		{{-0.5f,0,-0.5f},ADXQuaternion::IdentityQuaternion()},
+		}, "enemy");
+	battleFields_.back().fieldLayer = 2;
+
+
 	Enemy newEnemy;
 	ADXObject* newEnemyObj;
 
@@ -245,11 +261,6 @@ void GameScene::Initialize()
 	enemies_.back().transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
 	enemies_.back().transform.localScale_ = { 1,1,1 };
 	enemies_.back().transform.UpdateMatrix();
-	enemies_.back().model = &ground;
-	enemies_.back().texture = battleFieldImg;
-	enemies_.back().colliders.push_back(ADXCollider(&enemies_.back()));
-	enemies_.back().colliders.back().pushable_ = true;
-	enemies_.back().colliders.back().colType_ = box;
 	enemies_.back().Initialize();
 	enemies_.back().Species::Initialize("enemy");
 
@@ -294,6 +305,10 @@ void GameScene::Initialize()
 		objs.push_back(&itr);
 	}
 	for (auto& itr : fields_)
+	{
+		objs.push_back(&itr);
+	}
+	for (auto& itr : battleFields_)
 	{
 		objs.push_back(&itr);
 	}

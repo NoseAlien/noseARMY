@@ -7,6 +7,8 @@ class Enemy : public Species
 protected:
 	ADXVector3 prevPos{};
 	ADXVector3 velocity = { 0,0,0 };
+	ADXModel enemyModel{};
+	uint32_t enemyTex{};
 
 public:
 	void Initialize();

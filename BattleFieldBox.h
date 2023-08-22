@@ -16,7 +16,7 @@ private:
 	std::list<Enemy> guardersInstance{};
 	bool awake = false;
 	std::string team = "";
-	uint32_t battleFieldImg{};
+	ADXModel boxModel{};
 
 public:
 	void Initialize(std::vector<SpawnData> setGuarders, std::string setTeam = "");
