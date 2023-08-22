@@ -14,15 +14,11 @@ private:
 	//‰æ‘œ
 	uint32_t keyImg{};
 	uint32_t backGroundTex{};
-	uint32_t skyDomeImg{};
 	uint32_t groundImg{};
-	uint32_t battleFieldImg{};
-	uint32_t goalImg{};
 
 	//3Dƒ‚ƒfƒ‹
 	ADXModel ground{};
 	ADXModel rect{};
-	ADXModel skyDomeModel{};
 
 	//ƒJƒƒ‰
 	ADXCamera camera_{};

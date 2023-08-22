@@ -19,11 +19,9 @@ void GameScene::Initialize()
 	keyImg = ADXImage::LoadADXImage("QUIT_TITLE.png");
 	backGroundTex = ADXImage::LoadADXImage("skyBG.png");
 	groundImg = ADXImage::LoadADXImage("GroundBlock.png");
-	battleFieldImg = ADXImage::LoadADXImage("battleField.png");
 
 	rect = ADXModel::CreateRect();
 	ground = ADXModel::LoadModel("model/groundBlock.obj");
-	skyDomeModel = ADXModel::LoadModel("skydome/skydome.obj");
 
 	//オブジェクト
 
@@ -325,6 +323,7 @@ void GameScene::Update()
 {
 	key.transform.localPosition_ = { -0.65f,0.85f,0 };
 	key.transform.localPosition_.y += sinf(clock() * 0.001f) * 0.01f;
+	key.transform.localScale_ = { 0.45f / ADXWindow::GetAspect(),0.45f,1 };
 
 	for (auto& itr : objs)
 	{

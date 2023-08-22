@@ -297,7 +297,7 @@ void Player::SpeciesUpdate()
 		tutorialWindow.texture = setTutorialImg;
 	}
 
-	tutorialWindow.transform.localScale_ = ADXUtility::Lerp({ 0,0.3f,0 }, { 0.3f,0.3f,0 },ADXUtility::EaseOut(tutorialWindowExAmount,4));
+	tutorialWindow.transform.localScale_ = ADXUtility::Lerp({ 0,0.3f,0 }, { 0.3f / ADXWindow::GetAspect(),0.3f,0}, ADXUtility::EaseOut(tutorialWindowExAmount, 4));
 	tutorialWindow.transform.localPosition_ = { 0.65f,-0.65f + sin(clock() * 0.002f) * 0.01f,0};
 
 	tutorialWindow.Update();

@@ -141,13 +141,16 @@
     <ClCompile Include="ADXEngine\ADXParticle.cpp">
       <Filter>ソース ファイル\HanaBehaviour</Filter>
     </ClCompile>
-    <ClCompile Include="StageSelectScene.cpp">
+    <ClCompile Include="Scripts\BattleFieldBox.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="SceneGate.cpp">
+    <ClCompile Include="Scripts\StageSelectScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="BattleFieldBox.cpp">
+    <ClCompile Include="Scripts\PushableObject.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\SceneGate.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -272,13 +275,16 @@
     <ClInclude Include="ADXEngine\ADXParticle.h">
       <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
     </ClInclude>
-    <ClInclude Include="StageSelectScene.h">
+    <ClInclude Include="Scripts\BattleFieldBox.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="SceneGate.h">
+    <ClInclude Include="Scripts\StageSelectScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="BattleFieldBox.h">
+    <ClInclude Include="Scripts\PushableObject.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\SceneGate.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

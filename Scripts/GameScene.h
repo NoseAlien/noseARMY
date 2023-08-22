@@ -21,12 +21,10 @@ private:
 	uint32_t keyImg{};
 	uint32_t backGroundTex{};
 	uint32_t groundImg{};
-	uint32_t battleFieldImg{};
 
 	//3Dƒ‚ƒfƒ‹
 	ADXModel ground{};
 	ADXModel rect{};
-	ADXModel skyDomeModel{};
 
 	//ƒJƒƒ‰
 	ADXCamera camera_{};

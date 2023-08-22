@@ -29,11 +29,11 @@ void SceneGate::Initialize(std::string setTeam)
 void SceneGate::UniqueUpdate()
 {
 	keyUI.transform.localPosition_ = { 0,-0.5f + sin(clock() * 0.001f - 1) * 0.02f,0 };
-	keyUI.transform.localScale_ = { keyUI.transform.localScale_.x,0.3f * ADXWindow::GetAspect(),0.3f };
+	keyUI.transform.localScale_ = { keyUI.transform.localScale_.x,0.45f,1 };
 
 	if (hitted)
 	{
-		keyUI.transform.localScale_.x += (0.3f - keyUI.transform.localScale_.x) * 0.3f;
+		keyUI.transform.localScale_.x += (0.45f / ADXWindow::GetAspect() - keyUI.transform.localScale_.x) * 0.3f;
 		if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_SPACE))
 		{
 			SceneTransition::ChangeScene(3);
