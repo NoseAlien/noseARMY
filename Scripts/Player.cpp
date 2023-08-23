@@ -12,7 +12,7 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 {
 	keyboard = setKeyboard;
 	config = setConfig;
-	VelocityInitialize();
+	rigidbody.Initialize(this);
 	jumpSE = ADXAudio::SoundLoadWave("Resources/sound/jump.wav");
 	damageSE = ADXAudio::SoundLoadWave("Resources/sound/damage.wav");
 	windowOpenSE = ADXAudio::SoundLoadWave("Resources/sound/windowOpen.wav");
@@ -85,51 +85,32 @@ void Player::Move(float walkSpeed, float jumpPower)
 	{
 		if (keyboard->KeyPress(config[0]))
 		{
-			velocity += cameraForward * walkSpeed;
+			rigidbody.velocity += cameraForward * walkSpeed;
 		}
 		if (keyboard->KeyPress(config[1]))
 		{
-			velocity -= cameraForward * walkSpeed;
+			rigidbody.velocity -= cameraForward * walkSpeed;
 		}
 		if (keyboard->KeyPress(config[2]))
 		{
-			velocity += cameraRight * walkSpeed;
+			rigidbody.velocity += cameraRight * walkSpeed;
 		}
 		if (keyboard->KeyPress(config[3]))
 		{
-			velocity -= cameraRight * walkSpeed;
+			rigidbody.velocity -= cameraRight * walkSpeed;
 		}
-		transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(velocity.x, velocity.z),0 });
+		transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(rigidbody.velocity.x, rigidbody.velocity.z),0 });
 	}
 
 	if (keyboard->KeyTrigger(config[4]))
 	{
-		velocity.y = jumpPower;
+		rigidbody.velocity.y = jumpPower;
 		jumpSE.SoundPlayWave();
 	}
-	if (keyboard->KeyRelease(config[4]) && velocity.y > 0)
+	if (keyboard->KeyRelease(config[4]) && rigidbody.velocity.y > 0)
 	{
-		velocity.y *= 0.2f;
+		rigidbody.velocity.y *= 0.2f;
 	}
-}
-
-void Player::VelocityInitialize()
-{
-	prevPos = transform.localPosition_;
-}
-
-void Player::VelocityMove(float drag)
-{
-	velocity = transform.localPosition_ - prevPos;
-	prevPos = transform.localPosition_;
-
-	velocity *= drag;
-}
-
-void Player::VelocityUpdate()
-{
-	transform.localPosition_ += velocity;
-	transform.UpdateMatrix();
 }
 
 void Player::SpeciesUpdate()
@@ -149,20 +130,23 @@ void Player::SpeciesUpdate()
 	bool moveInput = 
 		!keyboard->KeyPress(config[0]) || keyboard->KeyPress(config[1]) || keyboard->KeyPress(config[2]) || keyboard->KeyPress(config[3]);
 
-	VelocityMove(0.8f);
+	rigidbody.drag = 0.8f;
+
+	rigidbody.VelocityMove();
 
 	if (keyboard->KeyPress(config[5]))
 	{
-		velocity *= 0.8f;
+		rigidbody.velocity *= 0.8f;
+		rigidbody.gravityScale = 0;
 	}
 	else
 	{
-		velocity.y /= 0.8f;
-		velocity.y -= 0.015f;
+		rigidbody.gravityScale = 0.01f;
+		rigidbody.dragAxis.y = false;
 		Move(0.05f, 0.4f);
 	}
 
-	VelocityUpdate();
+	rigidbody.Update(this);
 
 	if (splitInterval <= -20)
 	{

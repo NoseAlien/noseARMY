@@ -10,6 +10,7 @@
 #include "PlayerMini.h"
 #include "TutorialArea.h"
 #include "ADXCamera.h"
+#include "ADXRigidbody.h"
 
 class Player : public Species
 {
@@ -24,9 +25,6 @@ public:
 private:
 	void SpeciesUpdate();
 	void Move(float walkSpeed, float jumpPower);
-	void VelocityInitialize();
-	void VelocityMove(float drag);
-	void VelocityUpdate();
 
 private:
 	ADXCamera* camera = nullptr;
@@ -49,8 +47,8 @@ private:
 	ADXKeyBoardInput* keyboard = nullptr;
 	std::vector<int> config{};
 
-	ADXVector3 prevPos{};
-	ADXVector3 velocity = { 0,0,0 };
+	ADXRigidbody rigidbody{};
+
 	std::list<PlayerMini> minis{};
 	int splitInterval = 0;
 	bool splitable = true;

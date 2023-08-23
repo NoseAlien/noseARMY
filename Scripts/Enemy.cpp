@@ -76,7 +76,8 @@ void Enemy::SpeciesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 		{
 			if (col == &colItr)
 			{
-				transform.SetWorldPosition(col->GetGameObject()->transform.GetWorldPosition());
+				transform.SetWorldPosition(transform.GetWorldPosition() 
+					+ (col->GetGameObject()->transform.GetWorldPosition() - transform.GetWorldPosition()) * 0.1f);
 				Species::SetAttackObj(AttackObject{ myCol,objItr->GetParent(),maxHP});
 			}
 		}
