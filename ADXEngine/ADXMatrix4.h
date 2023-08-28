@@ -32,7 +32,7 @@ public:
 	static ADXMatrix4 ConvertToADXMatrix(const DirectX::XMMATRIX& mat);
 
 	//座標変換（ベクトルと行列の掛け算をする）
-	static ADXVector3 transform(const ADXVector3& v, const ADXMatrix4& m);
+	static ADXVector3 Transform(const ADXVector3& v, const ADXMatrix4& m);
 };
 
 // 2項演算子オーバーロード

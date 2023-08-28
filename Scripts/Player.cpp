@@ -170,7 +170,7 @@ void Player::SpeciesUpdate()
 	}
 
 	minis.remove_if([=](auto& itr)
-		{ return ADXMatrix4::transform(itr.transform.localPosition_, transform.GetMatWorldInverse()).Length() > 30 / scale; });
+		{ return ADXMatrix4::Transform(itr.transform.localPosition_, transform.GetMatWorldInverse()).Length() > 30 / scale; });
 
 	nose.transform.localScale_ = ADXVector3{ 0.42f,0.35f,0.35f } * (float)fmax(1,1 + pow(fmax(0, splitInterval),2) * 0.02f);
 
@@ -189,7 +189,7 @@ void Player::SpeciesUpdate()
 			ADXObject* miniObj = &mini;
 			*miniObj = Duplicate(*this);
 			mini.transform.localScale_ = { 0.5f,0.5f,0.5f };
-			mini.transform.localPosition_ = ADXMatrix4::transform({ 0,0,1 }, transform.GetMatWorld());
+			mini.transform.localPosition_ = ADXMatrix4::Transform({ 0,0,1 }, transform.GetMatWorld());
 
 			mini.Initialize(this, nose);
 			minis.push_back(mini);

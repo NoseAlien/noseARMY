@@ -107,7 +107,7 @@ void ADXWorldTransform::UpdateConstBuffer()
 ADXVector3 ADXWorldTransform::GetWorldPosition()
 {
 	UpdateMatrix();
-	return ADXMatrix4::transform({ 0,0,0 }, matWorld_);
+	return ADXMatrix4::Transform({ 0,0,0 }, matWorld_);
 }
 
 void ADXWorldTransform::SetWorldPosition(const ADXVector3& worldPos)
@@ -118,7 +118,7 @@ void ADXWorldTransform::SetWorldPosition(const ADXVector3& worldPos)
 	}
 	else
 	{
-		localPosition_ = ADXMatrix4::transform(worldPos, parent_->matWorld_.Inverse());
+		localPosition_ = ADXMatrix4::Transform(worldPos, parent_->matWorld_.Inverse());
 	}
 }
 
@@ -141,25 +141,25 @@ void ADXWorldTransform::SetWorldRotation(const ADXQuaternion& worldRot)
 
 ADXVector3 ADXWorldTransform::TransformPointWithoutTranslation(const ADXVector3& pos) const
 {
-	ADXVector3 ret = ADXMatrix4::transform(pos, matScale_ * matRot_);
+	ADXVector3 ret = ADXMatrix4::Transform(pos, matScale_ * matRot_);
 	return ret;
 }
 
 ADXVector3 ADXWorldTransform::InverseTransformPointWithoutTranslation(const ADXVector3& pos) const
 {
-	ADXVector3 ret = ADXMatrix4::transform(pos, matRot_.Transpose() * matScale_.Inverse());
+	ADXVector3 ret = ADXMatrix4::Transform(pos, matRot_.Transpose() * matScale_.Inverse());
 	return ret;
 }
 
 ADXVector3 ADXWorldTransform::TransformPointOnlyRotation(const ADXVector3& pos) const
 {
-	ADXVector3 ret = ADXMatrix4::transform(pos, matRot_);
+	ADXVector3 ret = ADXMatrix4::Transform(pos, matRot_);
 	return ret;
 }
 
 ADXVector3 ADXWorldTransform::InverseTransformPointOnlyRotation(const ADXVector3& pos) const
 {
-	ADXVector3 ret = ADXMatrix4::transform(pos, matRot_.Transpose());
+	ADXVector3 ret = ADXMatrix4::Transform(pos, matRot_.Transpose());
 	return ret;
 }
 

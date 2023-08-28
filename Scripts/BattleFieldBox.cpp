@@ -64,7 +64,7 @@ void BattleFieldBox::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 					{
 						guardersInstance.push_back(Enemy());
 						guardersInstance.back().ADXObject::Initialize();
-						guardersInstance.back().transform.localPosition_ = ADXMatrix4::transform(spawnItr.position,transform.GetMatWorld());
+						guardersInstance.back().transform.localPosition_ = ADXMatrix4::Transform(spawnItr.position,transform.GetMatWorld());
 						guardersInstance.back().transform.localRotation_ = transform.TransformRotation(spawnItr.rotation);
 						guardersInstance.back().transform.localScale_ = { 1,1,1 };
 						guardersInstance.back().transform.UpdateMatrix();

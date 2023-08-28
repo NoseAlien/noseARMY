@@ -159,7 +159,7 @@ ADXMatrix4& ADXMatrix4::operator*=(const ADXMatrix4& m2)
 }
 
 //座標変換（ベクトルと行列の掛け算をする）
-ADXVector3 ADXMatrix4::transform(const ADXVector3& v, const ADXMatrix4& m)
+ADXVector3 ADXMatrix4::Transform(const ADXVector3& v, const ADXMatrix4& m)
 {
 	float w = v.x * m.m[0][3] + v.y * m.m[1][3] + v.z * m.m[2][3] + m.m[3][3];
 

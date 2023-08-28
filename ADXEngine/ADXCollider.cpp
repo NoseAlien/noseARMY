@@ -37,7 +37,7 @@ void ADXCollider::UniqueUpdate()
 //空間上の点をコライダーの中に収めた時の座標
 ADXVector3 ADXCollider::ClosestPoint(const ADXVector3& pos) const
 {
-	ADXVector3 ret = ADXMatrix4::transform(pos, gameObject->transform.GetMatWorldInverse());
+	ADXVector3 ret = ADXMatrix4::Transform(pos, gameObject->transform.GetMatWorldInverse());
 	ADXVector3 closPos = ret;
 
 	switch (colType_)
@@ -108,7 +108,7 @@ ADXVector3 ADXCollider::ClosestPoint(const ADXVector3& pos) const
 	if ((closPos - ret).Length() > 0)
 	{
 		ret = closPos;
-		ret = ADXMatrix4::transform(ret, gameObject->transform.GetMatWorld());
+		ret = ADXMatrix4::Transform(ret, gameObject->transform.GetMatWorld());
 	}
 	else
 	{
@@ -127,10 +127,10 @@ ADXVector3 ADXCollider::EdgeLocalPoint(const ADXVector3& pos) const
 //空間上の点をコライダーのフチに寄せた時の相対座標
 ADXVector3 ADXCollider::EdgeLocalPoint(const ADXVector3& pos, const ADXVector3& prePos) const
 {
-	ADXVector3 ret = ADXMatrix4::transform(pos, gameObject->transform.GetMatWorldInverse());
+	ADXVector3 ret = ADXMatrix4::Transform(pos, gameObject->transform.GetMatWorldInverse());
 	ret -= pos_;
 
-	ADXVector3 prevPos = ADXMatrix4::transform(prePos, preMatrixInverse);
+	ADXVector3 prevPos = ADXMatrix4::Transform(prePos, preMatrixInverse);
 	prevPos -= pos_;
 
 	ADXVector3 absLocalPos{};
@@ -234,7 +234,7 @@ ADXVector3 ADXCollider::EdgeLocalPoint(const ADXVector3& pos, const ADXVector3& 
 	}
 
 	ret += pos_;
-	ret = ADXMatrix4::transform(ClosestPoint(ADXMatrix4::transform(ret, gameObject->transform.GetMatWorld())), gameObject->transform.GetMatWorldInverse());
+	ret = ADXMatrix4::Transform(ClosestPoint(ADXMatrix4::Transform(ret, gameObject->transform.GetMatWorld())), gameObject->transform.GetMatWorldInverse());
 
 	return ret;
 }
@@ -249,7 +249,7 @@ ADXVector3 ADXCollider::EdgePoint(const ADXVector3& pos)
 ADXVector3 ADXCollider::EdgePoint(const ADXVector3& pos, const ADXVector3& prePos)
 {
 	ADXVector3 ret = EdgeLocalPoint(pos, prePos);
-	ret = ADXMatrix4::transform(ret, gameObject->transform.GetMatWorld());
+	ret = ADXMatrix4::Transform(ret, gameObject->transform.GetMatWorld());
 	return ret;
 }
 
@@ -257,14 +257,14 @@ ADXVector3 ADXCollider::EdgePoint(const ADXVector3& pos, const ADXVector3& prePo
 ADXVector3 ADXCollider::CollidePoint(const ADXVector3& pos, const ADXVector3& targetColSenter, const ADXVector3& move) const
 {
 	ADXVector3 ret = EdgeLocalPoint(pos, pos - move);
-	ADXVector3 targetLocalSenter = ADXMatrix4::transform(targetColSenter, gameObject->transform.GetMatWorldInverse()) - pos_;
+	ADXVector3 targetLocalSenter = ADXMatrix4::Transform(targetColSenter, gameObject->transform.GetMatWorldInverse()) - pos_;
 
 	if (targetLocalSenter.Dot(ret) < 0)
 	{
 		ret = -ret;
 	}
 
-	ret = ADXMatrix4::transform(ret, gameObject->transform.GetMatWorld());
+	ret = ADXMatrix4::Transform(ret, gameObject->transform.GetMatWorld());
 	return ret;
 }
 
@@ -273,11 +273,11 @@ ADXVector3 ADXCollider::CollideVector(const ADXCollider& col)
 {
 	ADXVector3 ret;
 
-	ADXVector3 myTranslation = ADXMatrix4::transform(pos_, gameObject->transform.GetMatWorld());
-	ADXVector3 myMove = myTranslation - ADXMatrix4::transform(pos_, preMatrix);
+	ADXVector3 myTranslation = ADXMatrix4::Transform(pos_, gameObject->transform.GetMatWorld());
+	ADXVector3 myMove = myTranslation - ADXMatrix4::Transform(pos_, preMatrix);
 
-	ADXVector3 targetTranslation = ADXMatrix4::transform(col.pos_, col.gameObject->transform.GetMatWorld());
-	ADXVector3 targetMove = targetTranslation - ADXMatrix4::transform(col.pos_, col.preMatrix);
+	ADXVector3 targetTranslation = ADXMatrix4::Transform(col.pos_, col.gameObject->transform.GetMatWorld());
+	ADXVector3 targetMove = targetTranslation - ADXMatrix4::Transform(col.pos_, col.preMatrix);
 
 	ADXVector3 myPushBack1 = col.CollidePoint(myTranslation, myTranslation, myMove) - CollidePoint(col.CollidePoint(myTranslation, myTranslation, myMove), targetTranslation, targetMove);
 	ADXVector3 myPushBack2 = col.CollidePoint(CollidePoint(targetTranslation, targetTranslation, targetMove), myTranslation, myMove) - CollidePoint(targetTranslation, targetTranslation, targetMove);
@@ -304,16 +304,16 @@ ADXVector3 ADXCollider::CollideVector(const ADXCollider& col)
 //相手のコライダーと重なっているか
 bool ADXCollider::IsHit(const ADXCollider& col)
 {
-	ADXVector3 closestVec1 = col.ClosestPoint(ClosestPoint(ADXMatrix4::transform(col.pos_, col.gameObject->transform.GetMatWorld())));
-	ADXVector3 closestVec2 = ClosestPoint(col.ClosestPoint(ClosestPoint(ADXMatrix4::transform(col.pos_, col.gameObject->transform.GetMatWorld()))));
+	ADXVector3 closestVec1 = col.ClosestPoint(ClosestPoint(ADXMatrix4::Transform(col.pos_, col.gameObject->transform.GetMatWorld())));
+	ADXVector3 closestVec2 = ClosestPoint(col.ClosestPoint(ClosestPoint(ADXMatrix4::Transform(col.pos_, col.gameObject->transform.GetMatWorld()))));
 	float colPointDiff = (closestVec1 - closestVec2).Length();
 	if ((closestVec1 - closestVec2).Length() <= 0)
 	{
 		return true;
 	}
 
-	closestVec1 = ClosestPoint(col.ClosestPoint(ADXMatrix4::transform(pos_, gameObject->transform.GetMatWorld())));
-	closestVec2 = col.ClosestPoint(ClosestPoint(col.ClosestPoint(ADXMatrix4::transform(pos_, gameObject->transform.GetMatWorld()))));
+	closestVec1 = ClosestPoint(col.ClosestPoint(ADXMatrix4::Transform(pos_, gameObject->transform.GetMatWorld())));
+	closestVec2 = col.ClosestPoint(ClosestPoint(col.ClosestPoint(ADXMatrix4::Transform(pos_, gameObject->transform.GetMatWorld()))));
 	colPointDiff = (closestVec1 - closestVec2).Length();
 	if ((closestVec1 - closestVec2).Length() <= 0)
 	{
@@ -462,9 +462,9 @@ void ADXCollider::StaticUpdate()
 		ADXMatrix4 WorldScalingMat = colItr->gameObject->transform.GetMatScale();
 		WorldScalingMat *= colItr->gameObject->transform.GetMatRot();
 
-		float worldScaleX1 = ADXMatrix4::transform(scaleX1, WorldScalingMat).Length();
-		float worldScaleY1 = ADXMatrix4::transform(scaleY1, WorldScalingMat).Length();
-		float worldScaleZ1 = ADXMatrix4::transform(scaleZ1, WorldScalingMat).Length();
+		float worldScaleX1 = ADXMatrix4::Transform(scaleX1, WorldScalingMat).Length();
+		float worldScaleY1 = ADXMatrix4::Transform(scaleY1, WorldScalingMat).Length();
+		float worldScaleZ1 = ADXMatrix4::Transform(scaleZ1, WorldScalingMat).Length();
 
 		float minimumWorldRadius1 = 1;
 

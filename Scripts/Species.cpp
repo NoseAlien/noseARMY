@@ -146,11 +146,14 @@ void Species::SpeciesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 
 void Species::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
-	for (auto& objItr : GetAttackObj())
+	if (!myCol->isTrigger)
 	{
-		if (col == objItr.col && objItr.attacker->team != team)
+		for (auto& objItr : GetAttackObj())
 		{
-			Damage(objItr.power);
+			if (col == objItr.col && objItr.attacker->team != team)
+			{
+				Damage(objItr.power);
+			}
 		}
 	}
 	SpeciesOnCollisionHit(col, myCol);

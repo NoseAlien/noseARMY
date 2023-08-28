@@ -484,7 +484,7 @@ void ADXObject::StaticDraw()
 						{
 							float VertDepth;
 							ADXVector3 vertLocalPos = { thisLayerObjPtr[j]->model->vertices[k].pos.x,thisLayerObjPtr[j]->model->vertices[k].pos.y,thisLayerObjPtr[j]->model->vertices[k].pos.z };
-							VertDepth = ADXMatrix4::transform(ADXMatrix4::transform(vertLocalPos, thisLayerObjPtr[j]->transform.GetMatWorld()), ADXWorldTransform::GetViewProjection()).Length();
+							VertDepth = ADXMatrix4::Transform(ADXMatrix4::Transform(vertLocalPos, thisLayerObjPtr[j]->transform.GetMatWorld()), ADXWorldTransform::GetViewProjection()).Length();
 
 							if (VertDepth <= nearestVertDepth)
 							{
@@ -497,7 +497,7 @@ void ADXObject::StaticDraw()
 				}
 				else
 				{
-					zDepth = ADXMatrix4::transform(thisLayerObjPtr[j]->transform.GetWorldPosition(), ADXWorldTransform::GetViewProjection()).Length();
+					zDepth = ADXMatrix4::Transform(thisLayerObjPtr[j]->transform.GetWorldPosition(), ADXWorldTransform::GetViewProjection()).Length();
 				}
 
 				if (thisLayerObjPtr[j]->sortingOrder < lowestSortingOrder || thisLayerObjPtr[j]->sortingOrder == lowestSortingOrder && zDepth >= dist)
