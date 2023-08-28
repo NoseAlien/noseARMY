@@ -6,14 +6,14 @@
 
 struct ChunkHeader // チャンクヘッダ
 {
-	char id[4]{}; // チャンク毎のID
+	char id[4] = "";// チャンク毎のID
 	int32_t size = 0; // チャンクサイズ
 };
 
 struct RiffHeader // RIFFヘッダチャンク
 {
 	ChunkHeader chunk{}; // "RIFF"
-	char type[4]{}; // "WAVE"
+	char type[4] = ""; // "WAVE"
 };
 
 struct FormatChunk // FMTチャンク
