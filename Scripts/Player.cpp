@@ -13,18 +13,15 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 	keyboard = setKeyboard;
 	config = setConfig;
 	rigidbody.Initialize(this);
-	jumpSE = ADXAudio::SoundLoadWave("Resources/sound/jump.wav");
-	damageSE = ADXAudio::SoundLoadWave("Resources/sound/damage.wav");
-	windowOpenSE = ADXAudio::SoundLoadWave("Resources/sound/windowOpen.wav");
-
-	noseImage = ADXImage::LoadADXImage("apEGnoSE.png");
-	furImage = ADXImage::LoadADXImage("apEG_fur.png");
+	jumpSE = ADXAudio::LoadADXAudio("sound/jump.wav");
+	damageSE = ADXAudio::LoadADXAudio("sound/damage.wav");
+	windowOpenSE = ADXAudio::LoadADXAudio("sound/windowOpen.wav");
 
 	rect = ADXModel::CreateRect();
 	playerModel = ADXModel::LoadModel("model/sphere.obj");
 
 	model = &playerModel;
-	texture = furImage;
+	texture = ADXImage::LoadADXImage("apEG_fur.png");
 
 	colliders.push_back(ADXCollider(this));
 	colliders.back().pushable_ = true;
@@ -36,7 +33,7 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 	nose.transform.parent_ = &transform;
 	nose.transform.UpdateMatrix();
 	nose.model = &rect;
-	nose.texture = noseImage;
+	nose.texture = ADXImage::LoadADXImage("apEGnoSE.png");
 	nose.material = material;
 
 	tutorialWindow.Initialize();
@@ -105,7 +102,7 @@ void Player::Move(float walkSpeed, float jumpPower)
 	if (keyboard->KeyTrigger(config[4]))
 	{
 		rigidbody.velocity.y = jumpPower;
-		jumpSE.SoundPlayWave();
+		jumpSE.Play();
 	}
 	if (keyboard->KeyRelease(config[4]) && rigidbody.velocity.y > 0)
 	{
@@ -174,8 +171,6 @@ void Player::SpeciesUpdate()
 
 	nose.transform.localScale_ = ADXVector3{ 0.42f,0.35f,0.35f } * (float)fmax(1,1 + pow(fmax(0, splitInterval),2) * 0.02f);
 
-	//nose.transform.localEulerAngles_.z *= 0.9f;
-
 	splitInterval--;
 	splitInterval = max(-20, splitInterval);
 
@@ -194,7 +189,6 @@ void Player::SpeciesUpdate()
 			mini.Initialize(this, nose);
 			minis.push_back(mini);
 		}
-		//nose.transform.localEulerAngles_.z = 10;
 		splitInterval = 7;
 	}
 
@@ -273,7 +267,7 @@ void Player::SpeciesUpdate()
 
 	if (windowOpening && !prevwindowOpening)
 	{
-		windowOpenSE.SoundPlayWave();
+		windowOpenSE.Play();
 	}
 
 	if (!windowClosing)
@@ -298,4 +292,8 @@ void Player::SpeciesUpdate()
 	outOfField.transform.localPosition_ = { -0.6f,0.65f + sin(clock() * 0.003f) * 0.01f,0 };
 
 	outOfField.Update();
+}
+
+void Player::DeadUpdate()
+{
 }

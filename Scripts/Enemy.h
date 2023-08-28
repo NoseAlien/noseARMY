@@ -9,7 +9,6 @@ protected:
 	ADXRigidbody rigidbody{};
 
 	ADXModel enemyModel{};
-	uint32_t enemyTex{};
 	ADXVector3 targetPos{};
 	bool targetDetected = false;
 
@@ -21,10 +20,11 @@ private:
 public:
 	void Initialize();
 
+protected:
+	virtual void EnemyUpdate();
+
 private:
 	void SpeciesUpdate();
 	void DeadUpdate();
-
-private:
 	void SpeciesOnCollisionHit(ADXCollider* col, ADXCollider* myCol);
 };

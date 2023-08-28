@@ -1,7 +1,6 @@
 #include "ADXUtility.h"
 #include <math.h>
-
-
+#include <wrl.h>
 
 ADXVector3 ADXUtility::Lerp(const ADXVector3& startValue, const ADXVector3& endValue, float progress)
 {
@@ -70,4 +69,16 @@ float ADXUtility::LerpInverse(float nowValue, float startValue, float endValue)
 float ADXUtility::ValueMapping(float nowValue, float inputStart, float inputEnd, float outputStart, float outputEnd)
 {
 	return outputStart + (outputEnd - outputStart) * ((nowValue - inputStart) / (inputEnd - inputStart));
+}
+
+//std::stringÇ©ÇÁwchar_t*Ç…ïœä∑Ç∑ÇÈ
+wchar_t* ADXUtility::StringToWideChar(const std::string& pKey)
+{
+	const char* pCStrKey = pKey.c_str();
+	//                ÅC     wchar_t*
+	int32_t pSize = MultiByteToWideChar(CP_OEMCP, 0, pCStrKey, (int32_t)strlen(pCStrKey) + 1, NULL, 0);
+	wchar_t* pWCStrKey = new wchar_t[pSize];
+	//                     
+	MultiByteToWideChar(CP_OEMCP, 0, pCStrKey, (int32_t)strlen(pCStrKey) + 1, pWCStrKey, pSize);
+	return pWCStrKey;
 }

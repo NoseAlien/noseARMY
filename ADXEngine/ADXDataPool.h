@@ -8,7 +8,7 @@ class ADXDataPool
 {
 private:
 	static std::vector<ADXImage> S_imgDataPool;
-	//static std::vector<ADXAudio> S_audioDataPool;
+	static std::vector<ADXAudio> S_audioDataPool;
 
 public:
 	static std::vector<ADXImage> GetImgDataPool() { return S_imgDataPool; };
@@ -16,6 +16,6 @@ public:
 	static void SetImgDataPool(const ADXImage& cell);
 
 	//static std::vector<ADXAudio> GetAudioDataPool() { return S_audioDataPool; };
-	//static ADXAudio* GetAudioData(const uint32_t& index);
-	//static void SetAudioDataPool(const ADXAudio& cell);
+	static ADXAudio* GetAudioData(const uint32_t& index);
+	//static void SetAudioDataPool(const ADXAudio& sHandle);
 };

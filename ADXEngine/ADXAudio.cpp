@@ -5,6 +5,11 @@
 
 Microsoft::WRL::ComPtr<IXAudio2> ADXAudio::S_xAudio2 = nullptr;
 IXAudio2MasteringVoice* ADXAudio::S_masterVoice = nullptr;
+uint32_t ADXAudio::S_currentSHandle = 0;
+
+ADXAudio::ADXAudio()
+{
+}
 
 void ADXAudio::StaticInitialize()
 {
@@ -18,12 +23,12 @@ void ADXAudio::Finalize()
 	S_xAudio2.Reset();
 }
 
-ADXAudio ADXAudio::SoundLoadWave(const char* filename)
+ADXAudio ADXAudio::LoadADXAudio(std::string filename)
 {
 	//ファイル入力ストリームのインスタンス
 	std::ifstream file;
 	//.wavファイルをバイナリモードで開く
-	file.open(filename, std::ios_base::binary);
+	file.open("Resources/" + filename, std::ios_base::binary);
 	//ファイルオープン失敗を検出する
 	assert(file.is_open());
 
@@ -84,11 +89,14 @@ ADXAudio ADXAudio::SoundLoadWave(const char* filename)
 	audioData.data.wfex = format.fmt;
 	audioData.data.pBuffer.reset(reinterpret_cast<BYTE*>(pBuffer));
 	audioData.data.bufferSize = data.size;
+	audioData.SHandle = S_currentSHandle;
+
+	S_currentSHandle++;
 
 	return audioData;
 }
 
-void ADXAudio::SoundPlayWave(bool loop)
+void ADXAudio::Play(bool loop)
 {
 	HRESULT result;
 
@@ -121,7 +129,7 @@ void ADXAudio::SoundPlayWave(bool loop)
 	result = pSourceVoice->Start();
 }
 
-void ADXAudio::SoundStopWave(bool pause)
+void ADXAudio::Stop(bool pause)
 {
 	if (pSourceVoice != nullptr)
 	{

@@ -14,4 +14,5 @@ public:
 	static float LerpInverse(float nowValue, float startValue, float endValue);
 	static float ValueMapping(float nowValue, float inputStart, float inputEnd,
 		float outputStart, float outputEnd);
+	static wchar_t* StringToWideChar(const std::string& pKey);
 };

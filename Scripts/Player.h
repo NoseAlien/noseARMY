@@ -14,28 +14,12 @@
 
 class Player : public Species
 {
-public:
-	Player();
-	void Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfig, ADXCamera* setCamera);
-	bool GetInputStatus(int keyIndex);
-	bool GetInputStatusTrigger(int keyIndex);
-	bool GetInputStatusRelease(int keyIndex);
-	ADXCamera* GetCamera() { return camera; };
-
-private:
-	void SpeciesUpdate();
-	void Move(float walkSpeed, float jumpPower);
-
 private:
 	ADXCamera* camera = nullptr;
 
 	ADXObject nose{};
 	ADXObject outOfField{};
 	ADXObject tutorialWindow{};
-
-	uint32_t noseImage{};
-	uint32_t furImage{};
-	uint32_t outOfFieldImage{};
 
 	ADXModel rect{};
 	ADXModel playerModel{};
@@ -55,4 +39,17 @@ private:
 	float tutorialWindowExAmount = 0;
 	bool windowOpening = false;
 	bool windowClosing = false;
+
+public:
+	Player();
+	void Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfig, ADXCamera* setCamera);
+	bool GetInputStatus(int keyIndex);
+	bool GetInputStatusTrigger(int keyIndex);
+	bool GetInputStatusRelease(int keyIndex);
+	ADXCamera* GetCamera() { return camera; };
+
+private:
+	void SpeciesUpdate();
+	void DeadUpdate();
+	void Move(float walkSpeed, float jumpPower);
 };

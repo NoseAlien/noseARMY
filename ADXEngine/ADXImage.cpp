@@ -1,6 +1,7 @@
 #include "ADXimage.h"
 #include "ADXDataPool.h"
 #include "ADXCommon.h"
+#include "ADXUtility.h"
 
 using namespace DirectX;
 
@@ -12,17 +13,6 @@ uint64_t ADXImage::S_incrementSize = 0;
 ADXImage::ADXImage()
 {
 
-}
-
-wchar_t* multiByteToWideChar(const std::string& pKey)
-{
-	const char* pCStrKey = pKey.c_str();
-	//                ，     wchar_t*         
-	int32_t pSize = MultiByteToWideChar(CP_OEMCP, 0, pCStrKey, (int32_t)strlen(pCStrKey) + 1, NULL, 0);
-	wchar_t* pWCStrKey = new wchar_t[pSize];
-	//                     
-	MultiByteToWideChar(CP_OEMCP, 0, pCStrKey, (int32_t)strlen(pCStrKey) + 1, pWCStrKey, pSize);
-	return pWCStrKey;
 }
 
 void ADXImage::StaticInitialize()
@@ -78,7 +68,7 @@ uint32_t ADXImage::LoadADXImage(const std::string& imgName)
 
 	//WICテクスチャのロード
 	result = LoadFromWICFile(
-		multiByteToWideChar("Resources/" + imgName),
+		ADXUtility::StringToWideChar("Resources/" + imgName),
 		WIC_FLAGS_NONE,
 		&metadata, scratchImg);
 

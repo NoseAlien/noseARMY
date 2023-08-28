@@ -6,10 +6,9 @@
 void Enemy::Initialize()
 {
 	enemyModel = ADXModel::LoadModel("model/groundBlock.obj");
-	enemyTex = ADXImage::LoadADXImage("battleField.png");
 
 	model = &enemyModel;
-	texture = enemyTex;
+	texture = ADXImage::LoadADXImage("battleField.png");
 
 	colliders = {};
 	colliders.push_back(ADXCollider(this));
@@ -23,16 +22,9 @@ void Enemy::Initialize()
 	rigidbody.Initialize(this);
 }
 
-void Enemy::SpeciesUpdate()
+void Enemy::EnemyUpdate()
 {
-	rigidbody.drag = 0.8f;
-	rigidbody.gravity = { 0,0,0 };
-	rigidbody.VelocityMove();
-
-	rigidbody.velocity.y /= 0.8f;
-	rigidbody.velocity.y -= 0.015f;
-
-	//Ç±Ç±Ç©ÇÁìGÇ≤Ç∆ÇÃå≈óLèàóù ------
+	sortingOrder = 1;
 
 	if (targetDetected && attackProgress <= 0)
 	{
@@ -55,7 +47,7 @@ void Enemy::SpeciesUpdate()
 			finalTarget.y += 6;
 			rigidbody.velocity = (finalTarget - transform.localPosition_) * 0.05f;
 		}
-		else if(attackProgress > 0.2f)
+		else if (attackProgress > 0.2f)
 		{
 			transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,
 				ADXUtility::EaseIn(ADXUtility::ValueMapping(attackProgress,0.5f,0.2f,1,0),2) * 3.1415f * 6,
@@ -66,14 +58,19 @@ void Enemy::SpeciesUpdate()
 			}
 		}
 	}
-	attackProgress = min(max(0,attackProgress - 0.006f),1);
+	attackProgress = min(max(0, attackProgress - 0.006f), 1);
+}
 
-	//Ç±Ç±Ç‹Ç≈ìGÇ≤Ç∆ÇÃå≈óLèàóù ------
+void Enemy::SpeciesUpdate()
+{
+	rigidbody.drag = 0.8f;
+	rigidbody.dragAxis = { true,false,true };
+	rigidbody.gravity = { 0,-0.015f,0 };
+	rigidbody.VelocityMove();
+
+	EnemyUpdate();
 
 	rigidbody.Update(this);
-
-	sortingOrder = 1;
-
 	targetDetected = false;
 }
 
@@ -100,7 +97,7 @@ void Enemy::SpeciesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 		{
 			for (auto& colItr : objItr->colliders)
 			{
-				if (col == &colItr && !colItr.isTrigger && objItr->GetTeam() != GetTeam())
+				if (col == &colItr && !colItr.isTrigger && objItr->IsArrive() && objItr->GetTeam() != GetTeam())
 				{
 					targetDetected = true;
 					targetPos = objItr->transform.GetWorldPosition();

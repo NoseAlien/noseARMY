@@ -255,7 +255,7 @@ void GameScene::Initialize()
 
 	enemies_.push_back(Enemy());
 	enemies_.back().ADXObject::Initialize();
-	enemies_.back().transform.localPosition_ = { 0,40,40 };
+	enemies_.back().transform.localPosition_ = { 2,40,40 };
 	enemies_.back().transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
 	enemies_.back().transform.localScale_ = { 1,1,1 };
 	enemies_.back().transform.UpdateMatrix();
@@ -265,7 +265,7 @@ void GameScene::Initialize()
 	newEnemyObj = &newEnemy;
 	*newEnemyObj = ADXObject::Duplicate(enemies_.back(), true);
 	enemies_.push_back(newEnemy);
-	enemies_.back().transform.localPosition_ = { 0,41,40 };
+	enemies_.back().transform.localPosition_ = { -2,40,40 };
 	enemies_.back().transform.UpdateMatrix();
 	enemies_.back().Initialize();
 	enemies_.back().Species::Initialize("enemy");

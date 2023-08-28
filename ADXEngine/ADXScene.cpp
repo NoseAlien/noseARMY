@@ -20,7 +20,7 @@ void ADXScene::Initialize()
 	logoImg_X = ADXImage::LoadADXImage("logo_X.png");
 	logoImg_Engine = ADXImage::LoadADXImage("logo_Engine.png");
 
-	logoJingle = ADXAudio::SoundLoadWave("Resources/sound/ADXJingle.wav");
+	logoJingle = ADXAudio::LoadADXAudio("sound/ADXJingle.wav");
 
 	//ƒ}ƒeƒŠƒAƒ‹
 	unlitMat = ADXMaterial::LoadMaterial("material/unlit.mtl");
@@ -65,7 +65,7 @@ void ADXScene::Initialize()
 
 	startTime = clock();
 
-	logoJingle.SoundPlayWave();
+	logoJingle.Play();
 }
 
 void ADXScene::Update()
@@ -91,7 +91,7 @@ void ADXScene::Update()
 
 	if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_SPACE) || (clock() - startTime >= 7000))
 	{
-		logoJingle.SoundStopWave();
+		logoJingle.Stop();
 		ADXSceneManager::GetCurrentInstance()->SetSceneNum(1);
 	}
 	title.material.alpha = (float)(clock() - startTime) * 0.0004f;
@@ -115,7 +115,7 @@ void ADXScene::Update()
 
 	if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_SPACE) || (clock() - startTime >= 7000))
 	{
-		logoJingle.SoundStopWave();
+		logoJingle.Stop();
 		ADXSceneManager::GetCurrentInstance()->SetSceneNum(1);
 	}
 
