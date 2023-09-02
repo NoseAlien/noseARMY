@@ -39,7 +39,11 @@ void BattleFieldBox::FieldUpdate()
 
 		if (battling <= 0)
 		{
-			isActive = false;
+			animationProgress += (-1 - animationProgress) * 0.2f;
+			if (animationProgress <= 0)
+			{
+				isActive = false;
+			}
 		}
 		battling--;
 	}
