@@ -15,6 +15,7 @@ private:
 	std::vector<SpawnData> guarders{};
 	std::list<Enemy> guardersInstance{};
 	bool awake = false;
+	int32_t battling = 10;
 	std::string team = "";
 	ADXModel boxModel{};
 	float animationProgress = 0;

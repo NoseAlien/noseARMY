@@ -18,7 +18,7 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 	windowOpenSE = ADXAudio::LoadADXAudio("sound/windowOpen.wav");
 
 	rect = ADXModel::CreateRect();
-	playerModel = ADXModel::LoadModel("model/sphere.obj");
+	playerModel = ADXModel::LoadADXModel("model/sphere.obj");
 
 	model = &playerModel;
 	texture = ADXImage::LoadADXImage("apEG_fur.png");
@@ -112,7 +112,12 @@ void Player::Move(float walkSpeed, float jumpPower)
 
 void Player::SpeciesUpdate()
 {	
-	float scale = ADXUtility::ValueMapping((float)minis.size(), 0, 20, 1, 0.25f);
+	renderLayer = 0;
+	nose.renderLayer = 0;
+
+	deadAnimationProgress = 0;
+
+	float scale = ADXUtility::ValueMapping((float)minis.size(), 0, (float)maxMinisNum, 1, 0.25f);
 	transform.localScale_ = { scale,scale,scale };
 
 	ADXVector3 cameraVec = camera->transform.GetWorldPosition() - transform.GetWorldPosition();
@@ -122,7 +127,7 @@ void Player::SpeciesUpdate()
 	camera->transform.localPosition_.y += 5;
 	camera->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(-cameraVec.x, -cameraVec.z),0 });
 	camera->transform.UpdateMatrix();
-	camera->transform.localRotation_ = ADXQuaternion::Multiply(camera->transform.localRotation_, ADXQuaternion::MakeAxisAngle({ 1,0,0 }, 0.3f));
+	camera->transform.localRotation_ = camera->transform.localRotation_ * ADXQuaternion::MakeAxisAngle({ 1,0,0 }, 0.3f);
 
 	bool moveInput = 
 		!keyboard->KeyPress(config[0]) || keyboard->KeyPress(config[1]) || keyboard->KeyPress(config[2]) || keyboard->KeyPress(config[3]);
@@ -178,7 +183,7 @@ void Player::SpeciesUpdate()
 	{
 		nose.transform.localScale_ = { 0.42f,0.35f,0.35f };
 		nose.transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 });
-		if (minis.size() < 20)
+		if (minis.size() < maxMinisNum)
 		{
 			PlayerMini mini;
 			ADXObject* miniObj = &mini;
@@ -296,4 +301,14 @@ void Player::SpeciesUpdate()
 
 void Player::DeadUpdate()
 {
+	renderLayer = 4;
+	nose.renderLayer = 4;
+	transform.localRotation_ = camera->transform.localRotation_;
+	transform.UpdateMatrix();
+	transform.SetWorldRotation(ADXQuaternion::MakeAxisAngle(transform.TransformPointOnlyRotation({ 0,1,0 }), 3.1415f) * transform.GetWorldRotation());
+	nose.Update();
+
+	isVisible = deadAnimationProgress < 0.1;
+
+	deadAnimationProgress = min(max(0, deadAnimationProgress + 0.001f), 1);
 }

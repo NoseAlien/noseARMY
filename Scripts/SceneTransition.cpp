@@ -34,7 +34,7 @@ void SceneTransition::StaticUpdate()
 
 		float shutterScale = sinf(((float)S_sceneChangeFrame / S_MaxSceneChangeFrame) * 3.1415f) * 2;
 
-		S_shutter.transform.localScale_ = { shutterScale ,shutterScale ,shutterScale };
+		S_shutter.transform.localScale_ = { shutterScale ,shutterScale * ADXWindow::GetAspect() ,shutterScale };
 
 		S_shutter.transform.UpdateMatrix();
 		S_shutter.Update();

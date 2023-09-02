@@ -2,6 +2,7 @@
 
 std::vector<ADXImage> ADXDataPool::S_imgDataPool{};
 std::vector<ADXAudio> ADXDataPool::S_audioDataPool{};
+std::vector<ADXModel> ADXDataPool::S_modelDataPool{};
 
 ADXImage* ADXDataPool::GetImgData(const uint32_t& gHandle)
 {
@@ -36,3 +37,13 @@ ADXAudio* ADXDataPool::GetAudioData(const uint32_t& sHandle)
 //{
 //	S_audioDataPool.push_back(cell);
 //}
+
+ADXModel* ADXDataPool::GetModelData(const uint32_t& mHandle)
+{
+	return nullptr;
+}
+
+void ADXDataPool::SetModelDataPool(const ADXModel& cell)
+{
+	S_modelDataPool.push_back(cell);
+}

@@ -43,6 +43,8 @@ void Species::Initialize(const std::string& setTeam)
 
 void Species::UniqueUpdate()
 {
+	isVisible = true;
+
 	hpGaugeBG.material.ambient = { 0.1f,0.1f,0.1f };
 	hpGauge.material.ambient = { 0.1f,1,0.3f };
 
@@ -95,7 +97,7 @@ void Species::UniqueUpdate()
 	for (auto& itr : particle.particles)
 	{
 		itr.moveVec *= 0.9f;
-		itr.transform.modelRotation_ = ADXQuaternion::Multiply(itr.transform.modelRotation_, ADXQuaternion::EulerToQuaternion({ 0,0,0.01f }));
+		itr.transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0.01f }) * itr.transform.modelRotation_;
 	}
 
 	if (attackHitted)

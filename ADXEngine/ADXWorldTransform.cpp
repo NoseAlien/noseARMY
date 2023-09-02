@@ -175,11 +175,11 @@ ADXQuaternion ADXWorldTransform::TransformRotation(const ADXQuaternion& rot) con
 		}
 		else
 		{
-			quatWorld = ADXQuaternion::Multiply(quatWorld, parentPtr->localRotation_);
+			quatWorld = quatWorld * parentPtr->localRotation_;
 			parentPtr = parentPtr->parent_;
 		}
 	}
-	ADXQuaternion ret = ADXQuaternion::Multiply(rot, quatWorld);
+	ADXQuaternion ret = rot * quatWorld;
 	return ret;
 }
 
@@ -195,11 +195,11 @@ ADXQuaternion ADXWorldTransform::InverseTransformRotation(const ADXQuaternion& r
 		}
 		else
 		{
-			quatWorld = ADXQuaternion::Multiply(parentPtr->localRotation_.Inverse(), quatWorld);
+			quatWorld = parentPtr->localRotation_.Inverse() * quatWorld;
 			parentPtr = parentPtr->parent_;
 		}
 	}
-	ADXQuaternion ret = ADXQuaternion::Multiply(quatWorld, rot);
+	ADXQuaternion ret = quatWorld * rot;
 	return ret;
 }
 

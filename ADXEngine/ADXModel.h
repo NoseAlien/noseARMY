@@ -9,7 +9,7 @@
 class ADXModel
 {
 public:
-	static ADXModel LoadModel(const std::string& filePath);
+	static ADXModel LoadADXModel(const std::string& filePath);
 
 public:
 	//頂点データ構造体

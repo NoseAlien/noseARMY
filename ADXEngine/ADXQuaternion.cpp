@@ -253,3 +253,8 @@ const ADXQuaternion operator*(float s, const ADXQuaternion& q)
 	ADXQuaternion temp(q);
 	return temp *= s;
 }
+
+const ADXQuaternion operator*(const ADXQuaternion& q0, const ADXQuaternion& q1)
+{
+	return ADXQuaternion::Multiply(q0, q1);
+}

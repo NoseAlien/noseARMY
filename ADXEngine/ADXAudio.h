@@ -4,34 +4,34 @@
 #include <fstream>
 #include <wrl.h>
 
-struct ChunkHeader // チャンクヘッダ
-{
-	char id[4] = "";// チャンク毎のID
-	int32_t size = 0; // チャンクサイズ
-};
-
-struct RiffHeader // RIFFヘッダチャンク
-{
-	ChunkHeader chunk{}; // "RIFF"
-	char type[4] = ""; // "WAVE"
-};
-
-struct FormatChunk // FMTチャンク
-{
-	ChunkHeader chunk{}; // "fmt "
-	WAVEFORMATEX fmt{}; // 波形フォーマット
-};
-
-struct SoundData // 音声データ
-{
-	WAVEFORMATEX wfex{}; // 波形フォーマット
-	std::unique_ptr<BYTE> pBuffer = nullptr; // バッファの先頭アドレス
-	uint32_t bufferSize = 0; // バッファのサイズ
-};
-
 class ADXAudio
 {
 private:
+	struct ChunkHeader // チャンクヘッダ
+	{
+		char id[4] = "";// チャンク毎のID
+		int32_t size = 0; // チャンクサイズ
+	};
+
+	struct RiffHeader // RIFFヘッダチャンク
+	{
+		ChunkHeader chunk{}; // "RIFF"
+		char type[4] = ""; // "WAVE"
+	};
+
+	struct FormatChunk // FMTチャンク
+	{
+		ChunkHeader chunk{}; // "fmt "
+		WAVEFORMATEX fmt{}; // 波形フォーマット
+	};
+
+	struct SoundData // 音声データ
+	{
+		WAVEFORMATEX wfex{}; // 波形フォーマット
+		std::unique_ptr<BYTE> pBuffer = nullptr; // バッファの先頭アドレス
+		uint32_t bufferSize = 0; // バッファのサイズ
+	};
+
 	std::string name = {};
 	uint32_t SHandle = 0;
 	SoundData data{};
@@ -55,6 +55,6 @@ private:
 
 public:
 	static void StaticInitialize();
-	static void Finalize();
+	static void StaticFinalize();
 	static ADXAudio LoadADXAudio(std::string filename);
 };

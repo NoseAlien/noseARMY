@@ -15,6 +15,9 @@
 class Player : public Species
 {
 private:
+	static const uint32_t maxMinisNum = 20;
+
+private:
 	ADXCamera* camera = nullptr;
 
 	ADXObject nose{};
@@ -32,6 +35,8 @@ private:
 	std::vector<int> config{};
 
 	ADXRigidbody rigidbody{};
+	ADXParticleSystem deadParticle;
+
 
 	std::list<PlayerMini> minis{};
 	int splitInterval = 0;
@@ -39,6 +44,8 @@ private:
 	float tutorialWindowExAmount = 0;
 	bool windowOpening = false;
 	bool windowClosing = false;
+
+	float deadAnimationProgress = 0;
 
 public:
 	Player();

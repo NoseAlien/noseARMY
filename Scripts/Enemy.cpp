@@ -5,7 +5,7 @@
 
 void Enemy::Initialize()
 {
-	enemyModel = ADXModel::LoadModel("model/groundBlock.obj");
+	enemyModel = ADXModel::LoadADXModel("model/groundBlock.obj");
 
 	model = &enemyModel;
 	texture = ADXImage::LoadADXImage("battleField.png");
@@ -54,7 +54,7 @@ void Enemy::EnemyUpdate()
 				0 });
 			if (attackProgress > 0.25f)
 			{
-				Species::SetAttackObj({ &colliders[0],this,1 });
+				Species::SetAttackObj({ &colliders[0],this,10 });
 			}
 		}
 	}

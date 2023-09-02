@@ -15,7 +15,7 @@ void SceneGate::Initialize(std::string setTeam)
 	team = setTeam;
 
 	rectModel = ADXModel::CreateRect();
-	boxModel = ADXModel::LoadModel("model/battleBox.obj");
+	boxModel = ADXModel::LoadADXModel("model/battleBox.obj");
 
 	model = &boxModel;
 

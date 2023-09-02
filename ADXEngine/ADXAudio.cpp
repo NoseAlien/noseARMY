@@ -18,7 +18,7 @@ void ADXAudio::StaticInitialize()
 	result = S_xAudio2->CreateMasteringVoice(&S_masterVoice);
 }
 
-void ADXAudio::Finalize()
+void ADXAudio::StaticFinalize()
 {
 	S_xAudio2.Reset();
 }

@@ -8,7 +8,7 @@ void BattleFieldBox::Initialize(std::vector<SpawnData> setGuarders, std::string 
 	colliders.back().isTrigger = true;
 	colliders.back().colType_ = box;
 
-	boxModel = ADXModel::LoadModel("model/battleBox.obj");
+	boxModel = ADXModel::LoadADXModel("model/battleBox.obj");
 	model = &boxModel;
 	texture = ADXImage::LoadADXImage("battleField.png");
 
@@ -31,16 +31,17 @@ void BattleFieldBox::FieldUpdate()
 
 		isVisible = true;
 
-		bool battling = false;
+
 		for (auto& itr : guardersInstance)
 		{
 			itr.Update();
-			battling = itr.IsArrive() || battling;
 		}
-		if (!battling)
+
+		if (battling <= 0)
 		{
 			isActive = false;
 		}
+		battling--;
 	}
 	else
 	{
@@ -71,6 +72,19 @@ void BattleFieldBox::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 						guardersInstance.back().Initialize();
 						guardersInstance.back().Species::Initialize(team);
 					}
+				}
+			}
+		}
+	}
+	else
+	{
+		for (auto& objItr : guardersInstance)
+		{
+			for (auto& colItr : objItr.colliders)
+			{
+				if (col == &colItr && objItr.IsArrive())
+				{
+					battling = 10;
 				}
 			}
 		}

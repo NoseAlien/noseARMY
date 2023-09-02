@@ -18,7 +18,7 @@ void StageSelectScene::Initialize()
 	groundImg = ADXImage::LoadADXImage("GroundBlock.png");
 
 	rect = ADXModel::CreateRect();
-	ground = ADXModel::LoadModel("model/groundBlock.obj");
+	ground = ADXModel::LoadADXModel("model/groundBlock.obj");
 
 	//オブジェクト
 

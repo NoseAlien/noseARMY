@@ -13,7 +13,7 @@ ADXModel::ADXModel()
 
 }
 
-ADXModel ADXModel::LoadModel(const std::string& filePath)
+ADXModel ADXModel::LoadADXModel(const std::string& filePath)
 {
 	ADXModel model;
 

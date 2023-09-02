@@ -50,3 +50,4 @@ public:
 const ADXQuaternion operator+(const ADXQuaternion& q0, const ADXQuaternion& q1);
 const ADXQuaternion operator*(const ADXQuaternion& q, float s);
 const ADXQuaternion operator*(float s, const ADXQuaternion& q);
+const ADXQuaternion operator*(const ADXQuaternion& q0, const ADXQuaternion& q1);

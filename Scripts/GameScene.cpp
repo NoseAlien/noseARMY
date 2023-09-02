@@ -21,7 +21,7 @@ void GameScene::Initialize()
 	groundImg = ADXImage::LoadADXImage("GroundBlock.png");
 
 	rect = ADXModel::CreateRect();
-	ground = ADXModel::LoadModel("model/groundBlock.obj");
+	ground = ADXModel::LoadADXModel("model/groundBlock.obj");
 
 	//オブジェクト
 
@@ -116,13 +116,7 @@ void GameScene::Initialize()
 	floors_.back().transform.UpdateMatrix();
 
 	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.localPosition_ = { 3,10.75f,112 };
-	floors_.back().transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	floors_.back().transform.localScale_ = { 6,0.25,2 };
-	floors_.back().transform.UpdateMatrix();
-
-	floors_.push_back(ADXObject::Duplicate(floors_.back(), true));
-	floors_.back().transform.localPosition_ = { 3,9.5f,112 };
+	floors_.back().transform.localPosition_ = { 3,10,112 };
 	floors_.back().transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
 	floors_.back().transform.localScale_ = { 6,1,6 };
 	floors_.back().transform.UpdateMatrix();
@@ -215,7 +209,7 @@ void GameScene::Initialize()
 	fields_.push_back(newField);
 	fields_.back().transform.localPosition_ = { 3,15.5f,112 };
 	fields_.back().transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	fields_.back().transform.localScale_ = { 6,5,6 };
+	fields_.back().transform.localScale_ = { 6.1f,5,6 };
 	fields_.back().transform.UpdateMatrix();
 
 	newFieldObj = &newField;
