@@ -110,7 +110,7 @@ void Player::Move(float walkSpeed, float jumpPower)
 	}
 }
 
-void Player::SpeciesUpdate()
+void Player::LiveEntitiesUpdate()
 {	
 	renderLayer = 0;
 	nose.renderLayer = 0;

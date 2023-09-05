@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Species.h"
+#include "LiveEntity.h"
 #include "ADXRigidbody.h"
 
-class Enemy : public Species
+class Enemy : public LiveEntity
 {
 protected:
 	ADXRigidbody rigidbody{};
@@ -24,7 +24,7 @@ protected:
 	virtual void EnemyUpdate();
 
 private:
-	void SpeciesUpdate();
+	void LiveEntitiesUpdate();
 	void DeadUpdate();
-	void SpeciesOnCollisionHit(ADXCollider* col, ADXCollider* myCol);
+	void LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol);
 };

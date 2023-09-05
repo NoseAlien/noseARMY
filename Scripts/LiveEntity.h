@@ -6,7 +6,7 @@
 
 struct AttackObject;
 
-class Species : public ADXObject
+class LiveEntity : public ADXObject
 {
 protected:
 	float maxHP = 999;
@@ -25,20 +25,20 @@ public:
 	void Initialize(const std::string& setTeam);
 	void UniqueUpdate();
 
-	bool IsArrive() { return hpAmount > 0; };
+	bool IsLive() { return hpAmount > 0; };
 	std::string GetTeam() { return team; };
 
 protected:
 	void Damage(float damage);
-	virtual void SpeciesUpdate();
+	virtual void LiveEntitiesUpdate();
 	virtual void DeadUpdate();
-	virtual void SpeciesOnCollisionHit(ADXCollider* col, ADXCollider* myCol);
+	virtual void LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol);
 	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol);
 	void OnPreRender();
 
 private:
-	static std::vector<Species*> S_species;
-	static std::vector<Species*> S_allSpeciesPtr;
+	static std::vector<LiveEntity*> S_liveEntities;
+	static std::vector<LiveEntity*> S_allLiveEntitiesPtr;
 	static std::vector<AttackObject> S_attackObjs;
 	static std::vector<AttackObject> S_allAttackObj;
 
@@ -46,12 +46,12 @@ public:
 	static void StaticUpdate();
 	static void SetAttackObj(AttackObject attackObj);
 	static std::vector<AttackObject> GetAttackObj() { return S_attackObjs; };
-	static std::vector<Species*> GetSpecies() { return S_species; };
+	static std::vector<LiveEntity*> GetLiveEntities() { return S_liveEntities; };
 };
 
 struct AttackObject
 {
 	ADXCollider* col = nullptr;
-	Species* attacker = nullptr;
+	LiveEntity* attacker = nullptr;
 	float power = 0;
 };

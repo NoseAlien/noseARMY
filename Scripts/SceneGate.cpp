@@ -1,5 +1,5 @@
 #include "SceneGate.h"
-#include "Species.h"
+#include "LiveEntity.h"
 #include "SceneTransition.h"
 #include "ADXCollider.h"
 
@@ -50,7 +50,7 @@ void SceneGate::UniqueUpdate()
 
 void SceneGate::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
-	for (auto& objItr : Species::GetSpecies())
+	for (auto& objItr : LiveEntity::GetLiveEntities())
 	{
 		if (!objItr->colliders.empty() && col == &objItr->colliders[0] && objItr->GetTeam() == team)
 		{

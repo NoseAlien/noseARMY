@@ -34,7 +34,7 @@ void StageSelectScene::Initialize()
 	player_.transform.localScale_ = { 0.5f,0.5f,0.5f };
 	player_.transform.UpdateMatrix();
 	player_.Initialize(ADXKeyBoardInput::GetCurrentInstance(), { DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C }, &camera_);
-	player_.Species::Initialize("player");
+	player_.LiveEntity::Initialize("player");
 
 	floors_.push_back(ADXObject());
 	floors_.back().Initialize();

@@ -131,7 +131,7 @@
     <ClCompile Include="Scripts\SceneGate.cpp" />
     <ClCompile Include="Scripts\SceneManager.cpp" />
     <ClCompile Include="Scripts\SceneTransition.cpp" />
-    <ClCompile Include="Scripts\Species.cpp" />
+    <ClCompile Include="Scripts\LiveEntity.cpp" />
     <ClCompile Include="Scripts\StageSelectScene.cpp" />
     <ClCompile Include="Scripts\TitleScene.cpp" />
     <ClCompile Include="Scripts\TutorialArea.cpp" />
@@ -177,7 +177,7 @@
     <ClInclude Include="Scripts\SceneGate.h" />
     <ClInclude Include="Scripts\SceneManager.h" />
     <ClInclude Include="Scripts\SceneTransition.h" />
-    <ClInclude Include="Scripts\Species.h" />
+    <ClInclude Include="Scripts\LiveEntity.h" />
     <ClInclude Include="Scripts\StageSelectScene.h" />
     <ClInclude Include="Scripts\TitleScene.h" />
     <ClInclude Include="Scripts\TutorialArea.h" />

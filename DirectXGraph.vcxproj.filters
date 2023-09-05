@@ -120,7 +120,7 @@
     <ClCompile Include="Scripts\PlayerMini.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\Species.cpp">
+    <ClCompile Include="Scripts\LiveEntity.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\TutorialArea.cpp">
@@ -254,7 +254,7 @@
     <ClInclude Include="Scripts\PlayerMini.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\Species.h">
+    <ClInclude Include="Scripts\LiveEntity.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\TutorialArea.h">

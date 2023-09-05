@@ -6,13 +6,13 @@
 #include "ADXAudio.h"
 #include <vector>
 #include <list>
-#include "Species.h"
+#include "LiveEntity.h"
 #include "PlayerMini.h"
 #include "TutorialArea.h"
 #include "ADXCamera.h"
 #include "ADXRigidbody.h"
 
-class Player : public Species
+class Player : public LiveEntity
 {
 private:
 	static const uint32_t maxMinisNum = 20;
@@ -56,7 +56,7 @@ public:
 	ADXCamera* GetCamera() { return camera; };
 
 private:
-	void SpeciesUpdate();
+	void LiveEntitiesUpdate();
 	void DeadUpdate();
 	void Move(float walkSpeed, float jumpPower);
 };

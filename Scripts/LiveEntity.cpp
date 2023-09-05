@@ -1,14 +1,14 @@
-#include "Species.h"
+#include "LiveEntity.h"
 #include "ADXCamera.h"
 #include <time.h>
 
-std::vector<Species*> Species::S_species = {};
-std::vector<Species*> Species::S_allSpeciesPtr = {};
-std::vector<AttackObject> Species::S_attackObjs = {};
-std::vector<AttackObject> Species::S_allAttackObj = {};
+std::vector<LiveEntity*> LiveEntity::S_liveEntities = {};
+std::vector<LiveEntity*> LiveEntity::S_allLiveEntitiesPtr = {};
+std::vector<AttackObject> LiveEntity::S_attackObjs = {};
+std::vector<AttackObject> LiveEntity::S_allAttackObj = {};
 
 
-void Species::Initialize(const std::string& setTeam)
+void LiveEntity::Initialize(const std::string& setTeam)
 {
 	team = setTeam;
 
@@ -41,7 +41,7 @@ void Species::Initialize(const std::string& setTeam)
 	particle.particleModel = rect;
 }
 
-void Species::UniqueUpdate()
+void LiveEntity::UniqueUpdate()
 {
 	isVisible = true;
 
@@ -56,9 +56,9 @@ void Species::UniqueUpdate()
 
 	transform.modelPosition_ *= 0.8f;
 
-	if (IsArrive())
+	if (IsLive())
 	{
-		SpeciesUpdate();
+		LiveEntitiesUpdate();
 		hpGaugeBG.transform.localScale_ = { 0.5,0.2f,1 };
 	}
 	else
@@ -122,31 +122,31 @@ void Species::UniqueUpdate()
 	hpGaugeBG.Update();
 	hpGauge.Update();
 
-	S_allSpeciesPtr.push_back(this);
+	S_allLiveEntitiesPtr.push_back(this);
 }
 
-void Species::Damage(float damage)
+void LiveEntity::Damage(float damage)
 {
-	if (IsArrive() && !attackHitted)
+	if (IsLive() && !attackHitted)
 	{
 		hpAmount -= damage / maxHP;
 		attackHitted = true;
 	}
 }
 
-void Species::SpeciesUpdate()
+void LiveEntity::LiveEntitiesUpdate()
 {
 }
 
-void Species::DeadUpdate()
+void LiveEntity::DeadUpdate()
 {
 }
 
-void Species::SpeciesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
+void LiveEntity::LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
 }
 
-void Species::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
+void LiveEntity::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
 	if (!myCol->isTrigger)
 	{
@@ -158,23 +158,23 @@ void Species::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 			}
 		}
 	}
-	SpeciesOnCollisionHit(col, myCol);
+	LiveEntitiesOnCollisionHit(col, myCol);
 }
 
-void Species::OnPreRender()
+void LiveEntity::OnPreRender()
 {
 	hpGaugeBG.transform.SetWorldRotation(ADXCamera::GetCurrentCamera()->transform.GetWorldRotation());
 }
 
-void Species::StaticUpdate()
+void LiveEntity::StaticUpdate()
 {
-	S_species = S_allSpeciesPtr;
-	S_allSpeciesPtr.clear();
+	S_liveEntities = S_allLiveEntitiesPtr;
+	S_allLiveEntitiesPtr.clear();
 	S_attackObjs = S_allAttackObj;
 	S_allAttackObj.clear();
 }
 
-void Species::SetAttackObj(AttackObject attackObj)
+void LiveEntity::SetAttackObj(AttackObject attackObj)
 {
 	S_allAttackObj.push_back(attackObj);
 }

@@ -36,7 +36,7 @@ void GameScene::Initialize()
 	player_.transform.localScale_ = { 0.5f,0.5f,0.5f };
 	player_.transform.UpdateMatrix();
 	player_.Initialize(ADXKeyBoardInput::GetCurrentInstance(), { DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C }, &camera_);
-	player_.Species::Initialize("player");
+	player_.LiveEntity::Initialize("player");
 
 	floors_.push_back(ADXObject());
 	floors_.back().Initialize();
@@ -254,7 +254,7 @@ void GameScene::Initialize()
 	enemies_.back().transform.localScale_ = { 1,1,1 };
 	enemies_.back().transform.UpdateMatrix();
 	enemies_.back().Initialize();
-	enemies_.back().Species::Initialize("enemy");
+	enemies_.back().LiveEntity::Initialize("enemy");
 
 	newEnemyObj = &newEnemy;
 	*newEnemyObj = ADXObject::Duplicate(enemies_.back(), true);
@@ -262,7 +262,7 @@ void GameScene::Initialize()
 	enemies_.back().transform.localPosition_ = { -2,40,40 };
 	enemies_.back().transform.UpdateMatrix();
 	enemies_.back().Initialize();
-	enemies_.back().Species::Initialize("enemy");
+	enemies_.back().LiveEntity::Initialize("enemy");
 
 
 	goal_.ADXObject::Initialize();

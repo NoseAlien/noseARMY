@@ -1,5 +1,5 @@
 #include "Goal.h"
-#include "Species.h"
+#include "LiveEntity.h"
 #include "SceneTransition.h"
 
 void Goal::Initialize(std::string setTeam)
@@ -69,7 +69,7 @@ void Goal::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
 	if (sceneTransitionCount == MaxSceneTransitionCount)
 	{
-		for (auto& objItr : Species::GetSpecies())
+		for (auto& objItr : LiveEntity::GetLiveEntities())
 		{
 			if (!objItr->colliders.empty() && col == &objItr->colliders[0] && objItr->GetTeam() == team)
 			{

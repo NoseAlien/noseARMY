@@ -1,5 +1,5 @@
 #include "BattleFieldBox.h"
-#include "Species.h"
+#include "LiveEntity.h"
 
 void BattleFieldBox::Initialize(std::vector<SpawnData> setGuarders, std::string setTeam)
 {
@@ -39,7 +39,7 @@ void BattleFieldBox::FieldUpdate()
 
 		if (battling <= 0)
 		{
-			animationProgress += (-1 - animationProgress) * 0.2f;
+			animationProgress += (-1 - animationProgress) * 0.2f; 
 			if (animationProgress <= 0)
 			{
 				isActive = false;
@@ -57,7 +57,7 @@ void BattleFieldBox::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
 	if (!awake)
 	{
-		for (auto& objItr : Species::GetSpecies())
+		for (auto& objItr : LiveEntity::GetLiveEntities())
 		{
 			for (auto& colItr : objItr->colliders)
 			{
@@ -74,7 +74,7 @@ void BattleFieldBox::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 						guardersInstance.back().transform.localScale_ = { 1,1,1 };
 						guardersInstance.back().transform.UpdateMatrix();
 						guardersInstance.back().Initialize();
-						guardersInstance.back().Species::Initialize(team);
+						guardersInstance.back().LiveEntity::Initialize(team);
 					}
 				}
 			}
@@ -86,7 +86,7 @@ void BattleFieldBox::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 		{
 			for (auto& colItr : objItr.colliders)
 			{
-				if (col == &colItr && objItr.IsArrive())
+				if (col == &colItr && objItr.IsLive())
 				{
 					battling = 10;
 				}

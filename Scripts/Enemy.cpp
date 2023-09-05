@@ -54,14 +54,14 @@ void Enemy::EnemyUpdate()
 				0 });
 			if (attackProgress > 0.25f)
 			{
-				Species::SetAttackObj({ &colliders[0],this,10 });
+				LiveEntity::SetAttackObj({ &colliders[0],this,10 });
 			}
 		}
 	}
 	attackProgress = min(max(0, attackProgress - 0.006f), 1);
 }
 
-void Enemy::SpeciesUpdate()
+void Enemy::LiveEntitiesUpdate()
 {
 	rigidbody.drag = 0.8f;
 	rigidbody.dragAxis = { true,false,true };
@@ -89,15 +89,15 @@ void Enemy::DeadUpdate()
 	rigidbody.Update(this);
 }
 
-void Enemy::SpeciesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
+void Enemy::LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
-	if(myCol->isTrigger && IsArrive())
+	if(myCol->isTrigger && IsLive())
 	{
-		for (auto& objItr : Species::GetSpecies())
+		for (auto& objItr : LiveEntity::GetLiveEntities())
 		{
 			for (auto& colItr : objItr->colliders)
 			{
-				if (col == &colItr && !colItr.isTrigger && objItr->IsArrive() && objItr->GetTeam() != GetTeam())
+				if (col == &colItr && !colItr.isTrigger && objItr->IsLive() && objItr->GetTeam() != GetTeam())
 				{
 					targetDetected = true;
 					targetPos = objItr->transform.GetWorldPosition();
@@ -105,7 +105,7 @@ void Enemy::SpeciesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 			}
 		}
 	}
-	else if(!myCol->isTrigger && !IsArrive())
+	else if(!myCol->isTrigger && !IsLive())
 	{
 		for (auto& objItr : PlayerMini::GetMinis())
 		{
@@ -115,7 +115,7 @@ void Enemy::SpeciesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 				{
 					transform.SetWorldPosition(transform.GetWorldPosition()
 						+ (col->GetGameObject()->transform.GetWorldPosition() - transform.GetWorldPosition()) * 0.1f);
-					Species::SetAttackObj({ myCol,objItr->GetParent(),maxHP });
+					LiveEntity::SetAttackObj({ myCol,objItr->GetParent(),maxHP });
 				}
 			}
 		}

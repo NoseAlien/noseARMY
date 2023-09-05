@@ -11,7 +11,7 @@
 #include "SceneTransition.h"
 #include "FieldBox.h"
 #include "TutorialArea.h"
-#include "Species.h"
+#include "LiveEntity.h"
 #include "PlayerMini.h"
 
 //#include <assimp/scene.h>
@@ -62,7 +62,7 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 			SceneTransition::StaticUpdate();
 			FieldBox::StaticUpdate();
 			TutorialArea::StaticUpdate();
-			Species::StaticUpdate();
+			LiveEntity::StaticUpdate();
 			PlayerMini::StaticUpdate();
 			ADXCollider::StaticUpdate();
 			adximgui.End();
