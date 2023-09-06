@@ -40,6 +40,7 @@ public:
     ADXVector3 scale_ = { 1,1,1 };
     float pushBackPriority = 0;
     int32_t collideLayer = 0;
+    float maxMoveDistanceRate = 2;
 
 private:
     ADXVector3 preTranslation;

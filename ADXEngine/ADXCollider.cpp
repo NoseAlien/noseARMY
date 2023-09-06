@@ -481,9 +481,9 @@ void ADXCollider::StaticUpdate()
 			minimumWorldRadius1 = worldScaleZ1;
 		}
 
-		ADXVector3 limitedMove = move.Normalize() * minimumWorldRadius1 * 0.95f * colItr->gameObject->maxMoveDistanceRate;
+		ADXVector3 limitedMove = move.Normalize() * minimumWorldRadius1 * 0.95f * colItr->maxMoveDistanceRate;
 
-		if (colItr->gameObject->maxMoveDistanceRate >= 0 && move.Length() > limitedMove.Length())
+		if (colItr->maxMoveDistanceRate >= 0 && move.Length() > limitedMove.Length())
 		{
 			move = limitedMove;
 		}

@@ -54,7 +54,6 @@ public:
 	bool isVisible = true;
 	bool isActive = true;
 	bool useDefaultDraw = true;
-	float maxMoveDistanceRate = 4;
 
 protected:
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffB1 = nullptr;
