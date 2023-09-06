@@ -34,13 +34,13 @@ public:
 	void Draw();
 	void Destroy();
 	void InitCols();
-	virtual void OnCollisionHit(ADXCollider* col, ADXCollider* myCol);
+	virtual void OnCollisionHit(ADXCollider* col, ADXCollider* myCol) {};
 
 protected:
-	virtual void UniqueUpdate();
-	virtual void OnPreRender();
-	virtual void OnWillRenderObject();
-	virtual void Rendered();
+	virtual void UniqueUpdate() {};
+	virtual void OnPreRender() {};
+	virtual void OnWillRenderObject() {};
+	virtual void Rendered() {};
 
 public:
 	ADXWorldTransform transform{};

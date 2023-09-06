@@ -134,18 +134,6 @@ void LiveEntity::Damage(float damage)
 	}
 }
 
-void LiveEntity::LiveEntitiesUpdate()
-{
-}
-
-void LiveEntity::DeadUpdate()
-{
-}
-
-void LiveEntity::LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
-{
-}
-
 void LiveEntity::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
 	if (!myCol->isTrigger)

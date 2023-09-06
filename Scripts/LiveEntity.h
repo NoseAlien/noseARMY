@@ -30,9 +30,9 @@ public:
 
 protected:
 	void Damage(float damage);
-	virtual void LiveEntitiesUpdate();
-	virtual void DeadUpdate();
-	virtual void LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol);
+	virtual void LiveEntitiesUpdate() {};
+	virtual void DeadUpdate() {};
+	virtual void LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol) {};
 	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol);
 	void OnPreRender();
 

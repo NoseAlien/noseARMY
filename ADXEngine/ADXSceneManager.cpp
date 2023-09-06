@@ -38,10 +38,6 @@ void ADXSceneManager::Update()
 	S_current = this;
 }
 
-void ADXSceneManager::UniqueInitialize()
-{
-}
-
 void ADXSceneManager::SetScenes(std::vector<ADXScene*> setScenes)
 {
 	if (!initializable)

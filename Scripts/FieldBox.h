@@ -19,7 +19,7 @@ public:
 	void Initialize();
 
 protected:
-	virtual void FieldUpdate();
+	virtual void FieldUpdate() {};
 
 private:
 	void UniqueUpdate();

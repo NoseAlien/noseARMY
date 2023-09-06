@@ -335,15 +335,6 @@ void ADXObject::Update()
 	}
 }
 
-void ADXObject::UniqueUpdate()
-{
-
-}
-
-void ADXObject::OnPreRender()
-{
-}
-
 void ADXObject::StaticUpdate()
 {
 	S_objs = S_allObjPtr;
@@ -563,24 +554,10 @@ void ADXObject::Destroy()
 	deleteFlag = true;
 }
 
-void ADXObject::OnWillRenderObject()
-{
-
-}
-
-void ADXObject::Rendered()
-{
-
-}
-
 void ADXObject::InitCols()
 {
 	for (int32_t i = 0; i < colliders.size(); i++)
 	{
 		colliders[i].Initialize(this);
 	}
-}
-
-void ADXObject::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
-{
 }

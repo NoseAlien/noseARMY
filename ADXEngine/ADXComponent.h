@@ -13,7 +13,7 @@ public:
 	ADXObject* GetGameObject() { return gameObject; };
 
 protected:
-	virtual void UniqueInitialize();
-	virtual void UniqueUpdate();
+	virtual void UniqueInitialize() {};
+	virtual void UniqueUpdate() {};
 
 };

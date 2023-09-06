@@ -28,7 +28,7 @@ public:
 	static ADXSceneManager* GetCurrentInstance() { return S_current; };
 
 protected:
-	virtual void UniqueInitialize();
+	virtual void UniqueInitialize() {};
 
 	void SetScenes(std::vector<ADXScene*> setScenes);
 };

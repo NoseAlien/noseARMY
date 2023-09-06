@@ -11,10 +11,6 @@ void FieldBox::Initialize()
 	colliders.back().colType_ = box;
 }
 
-void FieldBox::FieldUpdate()
-{
-}
-
 void FieldBox::UniqueUpdate()
 {
 	adjacentFields.clear();

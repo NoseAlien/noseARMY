@@ -13,13 +13,3 @@ void ADXComponent::Update(ADXObject* obj)
 
 	UniqueUpdate();
 }
-
-void ADXComponent::UniqueInitialize()
-{
-
-}
-
-void ADXComponent::UniqueUpdate()
-{
-
-}
