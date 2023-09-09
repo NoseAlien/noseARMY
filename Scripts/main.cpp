@@ -14,8 +14,6 @@
 #include "LiveEntity.h"
 #include "PlayerMini.h"
 
-//#include <assimp/scene.h>
-
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
