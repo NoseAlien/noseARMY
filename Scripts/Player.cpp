@@ -120,6 +120,8 @@ void Player::LiveEntitiesUpdate()
 	float scale = ADXUtility::ValueMapping((float)minis.size(), 0, (float)maxMinisNum, 1, 0.25f);
 	transform.localScale_ = { scale,scale,scale };
 
+	transform.modelScale_ = { 1 + sinf((float)clock() * 0.001f) * 0.03f,1 + cosf((float)clock() * 0.001f) * 0.03f,1 + sinf((float)clock() * 0.001f) * 0.03f };
+
 	ADXVector3 cameraVec = camera->transform.GetWorldPosition() - transform.GetWorldPosition();
 	cameraVec.y = 0;
 	cameraVec = cameraVec.Normalize();
@@ -175,6 +177,7 @@ void Player::LiveEntitiesUpdate()
 		{ return ADXMatrix4::Transform(itr.transform.localPosition_, transform.GetMatWorldInverse()).Length() > 30 / scale; });
 
 	nose.transform.localScale_ = ADXVector3{ 0.42f,0.35f,0.35f } * (float)fmax(1,1 + pow(fmax(0, splitInterval),2) * 0.02f);
+	nose.transform.localPosition_ = { 0,sinf((float)clock() * 0.001f) * 0.03f,1.01f + sinf((float)clock() * 0.001f) * 0.03f };
 
 	splitInterval--;
 	splitInterval = max(-20, splitInterval);
