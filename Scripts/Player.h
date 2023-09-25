@@ -4,6 +4,7 @@
 #include "ADXKeyBoardInput.h"
 #include "ADXVector3.h"
 #include "ADXAudio.h"
+#include "ADXUtility.h"
 #include <vector>
 #include <list>
 #include "LiveEntity.h"
@@ -38,7 +39,7 @@ private:
 	ADXParticleSystem deadParticle;
 
 
-	std::list<PlayerMini> minis{};
+	std::list<std::unique_ptr<PlayerMini, ADXUtility::NPManager<PlayerMini>>> minis{};
 	int splitInterval = 0;
 	bool splitable = true;
 	float tutorialWindowExAmount = 0;

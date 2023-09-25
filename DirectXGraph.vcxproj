@@ -167,12 +167,12 @@
     <ClInclude Include="ADXEngine\ADXVector3.h" />
     <ClInclude Include="ADXEngine\ADXWindow.h" />
     <ClInclude Include="ADXEngine\ADXWorldTransform.h" />
+    <ClInclude Include="ADXEngine\json.hpp" />
     <ClInclude Include="Scripts\BattleFieldBox.h" />
     <ClInclude Include="Scripts\Enemy.h" />
     <ClInclude Include="Scripts\FieldBox.h" />
     <ClInclude Include="Scripts\GameScene.h" />
     <ClInclude Include="Scripts\Goal.h" />
-    <ClInclude Include="Scripts\json.hpp" />
     <ClInclude Include="Scripts\Player.h" />
     <ClInclude Include="Scripts\PlayerMini.h" />
     <ClInclude Include="Scripts\PushableObject.h" />

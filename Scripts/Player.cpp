@@ -160,7 +160,7 @@ void Player::LiveEntitiesUpdate()
 				{
 					for (auto& colListItr : colItr.GetCollideList())
 					{
-						for (auto& colItr2 : itr.colliders)
+						for (auto& colItr2 : itr->colliders)
 						{
 							if (colListItr == &colItr2)
 							{
@@ -174,7 +174,7 @@ void Player::LiveEntitiesUpdate()
 	}
 
 	minis.remove_if([=](auto& itr)
-		{ return ADXMatrix4::Transform(itr.transform.localPosition_, transform.GetMatWorldInverse()).Length() > 30 / scale; });
+		{ return ADXMatrix4::Transform(itr->transform.localPosition_, transform.GetMatWorldInverse()).Length() > 30 / scale; });
 
 	nose.transform.localScale_ = ADXVector3{ 0.42f,0.35f,0.35f } * (float)fmax(1,1 + pow(fmax(0, splitInterval),2) * 0.02f);
 	nose.transform.localPosition_ = { 0,sinf((float)clock() * 0.001f) * 0.03f,1.01f + sinf((float)clock() * 0.001f) * 0.03f };
@@ -188,14 +188,14 @@ void Player::LiveEntitiesUpdate()
 		nose.transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 });
 		if (minis.size() < maxMinisNum)
 		{
-			PlayerMini mini;
-			ADXObject* miniObj = &mini;
+			std::unique_ptr<PlayerMini, ADXUtility::NPManager<PlayerMini>> mini(new PlayerMini);
+			ADXObject* miniObj = mini.get();
 			*miniObj = Duplicate(*this);
-			mini.transform.localScale_ = { 0.5f,0.5f,0.5f };
-			mini.transform.localPosition_ = ADXMatrix4::Transform({ 0,0,1 }, transform.GetMatWorld());
+			mini->transform.localScale_ = { 0.5f,0.5f,0.5f };
+			mini->transform.localPosition_ = ADXMatrix4::Transform({ 0,0,1 }, transform.GetMatWorld());
 
-			mini.Initialize(this, nose);
-			minis.push_back(mini);
+			mini->Initialize(this, nose);
+			minis.push_back(move(mini));
 		}
 		splitInterval = 7;
 	}
@@ -207,8 +207,8 @@ void Player::LiveEntitiesUpdate()
 
 	for (auto& itr : minis)
 	{
-		itr.Update();
-		SetAttackObj({&itr.colliders.back(), this, (float)minis.size() });
+		itr->Update();
+		SetAttackObj({&itr->colliders.back(), this, (float)minis.size() });
 	}
 	nose.Update();
 
