@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ADXObject.h"
+#include "ADXRigidbody.h"
 
 class Player;
 
@@ -11,20 +12,15 @@ private:
 	Player* parent = nullptr;
 
 	bool destroyFlag = false;
-	ADXVector3 prevPos{};
-	ADXVector3 velocity = { 0,0,0 };
+	ADXRigidbody rigidbody{};
 
 public:
-	PlayerMini();
 	void Initialize(Player* setParent, ADXObject setNose);
 	Player* GetParent() { return parent; };
 		
 private:
 	void UniqueUpdate();
 	void Move(float walkSpeed, float jumpPower);
-	void VelocityInitialize();
-	void VelocityMove(float drag);
-	void VelocityUpdate();
 
 private:
 	static std::vector<PlayerMini*> S_minis;

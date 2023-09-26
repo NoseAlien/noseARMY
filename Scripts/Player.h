@@ -4,7 +4,6 @@
 #include "ADXKeyBoardInput.h"
 #include "ADXVector3.h"
 #include "ADXAudio.h"
-#include "ADXUtility.h"
 #include <vector>
 #include <list>
 #include "LiveEntity.h"

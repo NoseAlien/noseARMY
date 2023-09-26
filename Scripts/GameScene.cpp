@@ -1,6 +1,8 @@
 #include "GameScene.h"
 #include "SceneTransition.h"
 
+#include "Cub_E.h"
+
 GameScene::GameScene()
 {
 }
@@ -244,25 +246,16 @@ void GameScene::Initialize()
 	battleFields_.back().fieldLayer = 2;
 
 
-	Enemy newEnemy;
-	ADXObject* newEnemyObj;
+	std::unique_ptr<Enemy, ADXUtility::NPManager<Enemy>> temp(new Cub_E);
 
-	enemies_.push_back(Enemy());
-	enemies_.back().ADXObject::Initialize();
-	enemies_.back().transform.localPosition_ = { 2,40,40 };
-	enemies_.back().transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	enemies_.back().transform.localScale_ = { 1,1,1 };
-	enemies_.back().transform.UpdateMatrix();
-	enemies_.back().Initialize();
-	enemies_.back().LiveEntity::Initialize("enemy");
-
-	newEnemyObj = &newEnemy;
-	*newEnemyObj = ADXObject::Duplicate(enemies_.back(), true);
-	enemies_.push_back(newEnemy);
-	enemies_.back().transform.localPosition_ = { -2,40,40 };
-	enemies_.back().transform.UpdateMatrix();
-	enemies_.back().Initialize();
-	enemies_.back().LiveEntity::Initialize("enemy");
+	enemies_.push_back(move(temp));
+	enemies_.back()->ADXObject::Initialize();
+	enemies_.back()->transform.localPosition_ = { 2,40,40 };
+	enemies_.back()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
+	enemies_.back()->transform.localScale_ = { 1,1,1 };
+	enemies_.back()->transform.UpdateMatrix();
+	enemies_.back()->Initialize();
+	enemies_.back()->LiveEntity::Initialize("enemy");
 
 
 	goal_.ADXObject::Initialize();
@@ -306,7 +299,7 @@ void GameScene::Initialize()
 	}
 	for (auto& itr : enemies_)
 	{
-		objs.push_back(&itr);
+		objs.push_back(itr.get());
 	}
 	objs.push_back(&goal_);
 	objs.push_back(&backGround_);

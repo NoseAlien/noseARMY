@@ -3,6 +3,7 @@
 #include "ADXMaterial.h"
 #include "ADXImage.h"
 #include "ADXCollider.h"
+#include "ADXUtility.h"
 #include <string>
 
 class ADXCamera;

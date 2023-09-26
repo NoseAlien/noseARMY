@@ -8,6 +8,7 @@
 #include "ADXCamera.h"
 #include "ADXImage.h"
 #include "ADXTexAnimation.h"
+#include "ADXUtility.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "FieldBox.h"
@@ -36,7 +37,7 @@ private:
 	std::list<TutorialArea> tutorialAreas_{};
 	std::list<FieldBox> fields_{};
 	std::list<BattleFieldBox> battleFields_{};
-	std::list<Enemy> enemies_{};
+	std::list<std::unique_ptr<Enemy,ADXUtility::NPManager<Enemy>>> enemies_{};
 	Goal goal_{};
 
 	ADXObject backGround_{};

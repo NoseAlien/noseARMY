@@ -162,7 +162,7 @@ void LiveEntity::StaticUpdate()
 	S_allAttackObj.clear();
 }
 
-void LiveEntity::SetAttackObj(AttackObject attackObj)
+void LiveEntity::SetAttackObj(const AttackObject& attackObj)
 {
 	S_allAttackObj.push_back(attackObj);
 }

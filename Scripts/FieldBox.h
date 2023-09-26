@@ -10,6 +10,7 @@ public:
 
 private:
 	std::list<FieldBox*> adjacentFields{};
+	std::list<ADXObject*> insideObjects{};
 
 private:
 	static std::list<FieldBox*> allFieldPtr;
@@ -23,6 +24,7 @@ protected:
 
 private:
 	void UniqueUpdate();
+	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol);
 	std::list<FieldBox*> GetAdjacentFields() { return adjacentFields; };
 
 public:

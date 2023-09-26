@@ -13,54 +13,55 @@ void FieldBox::Initialize()
 
 void FieldBox::UniqueUpdate()
 {
-	adjacentFields.clear();
-	for (auto& objItr : GetFields())
-	{
-		for (auto& colItr : colliders)
-		{
-			for (auto& colItr2 : colItr.GetCollideList())
-			{
-				if (colItr2->GetGameObject() == objItr && colItr2->GetGameObject() != this
-					&& objItr->fieldLayer == fieldLayer)
-				{
-					adjacentFields.push_back(objItr);
-				}
-			}
-		}
-	}
-
 	for (auto& colItr : colliders)
 	{
-		for (auto& colItr2 : colItr.GetCollideList())
+		for (auto& objItr : insideObjects)
 		{
-			if (!colItr2->isTrigger && colItr2->pushable_)
+			bool pullBack = true;
+			for (auto& fieldItr : adjacentFields)
 			{
-				bool pullBack = true;
-				for (auto& objItr : adjacentFields)
+				for (auto& colItr2 : fieldItr->colliders)
 				{
-					for (auto& colItr3 : objItr->colliders)
+					if (objItr->transform.GetWorldPosition() == colItr2.ClosestPoint(objItr->transform.GetWorldPosition()))
 					{
-						if (colItr2->GetGameObject()->transform.GetWorldPosition() == colItr3.ClosestPoint(colItr2->GetGameObject()->transform.GetWorldPosition()))
-						{
-							pullBack = false;
-							break;
-						}
-					}
-					if (!pullBack)
-					{
+						pullBack = false;
 						break;
 					}
 				}
-				if (pullBack)
+				if (!pullBack)
 				{
-					colItr2->GetGameObject()->transform.SetWorldPosition(colItr.ClosestPoint(colItr2->GetGameObject()->transform.GetWorldPosition()));
+					break;
 				}
+			}
+			if (pullBack)
+			{
+				objItr->transform.SetWorldPosition(colItr.ClosestPoint(objItr->transform.GetWorldPosition()));
 			}
 		}
 	}
+	insideObjects.clear();
+
+	adjacentFields.clear();
 	allFieldPtr.push_back(this);
 
 	FieldUpdate();
+}
+
+void FieldBox::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
+{
+	for (auto& objItr : GetFields())
+	{
+		if (col->GetGameObject() == objItr && col->GetGameObject() != this
+			&& objItr->fieldLayer == fieldLayer)
+		{
+			adjacentFields.push_back(objItr);
+		}
+	}
+
+	if (!col->isTrigger && col->pushable_)
+	{
+		insideObjects.push_back(col->GetGameObject());
+	}
 }
 
 void FieldBox::StaticUpdate()

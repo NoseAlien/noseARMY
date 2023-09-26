@@ -15,7 +15,7 @@ protected:
 private:
 	ADXModel rect{};
 	uint32_t gaugeTex = 0;
-	ADXParticleSystem particle;
+	ADXParticleSystem particle{};
 	ADXObject hpGauge{};
 	ADXObject hpGaugeBG{};
 	std::string team = "";
@@ -44,7 +44,7 @@ private:
 
 public:
 	static void StaticUpdate();
-	static void SetAttackObj(AttackObject attackObj);
+	static void SetAttackObj(const AttackObject& attackObj);
 	static std::vector<AttackObject> GetAttackObj() { return S_attackObjs; };
 	static std::vector<LiveEntity*> GetLiveEntities() { return S_liveEntities; };
 };
