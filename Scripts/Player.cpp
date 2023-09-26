@@ -2,6 +2,7 @@
 #include "ADXUtility.h"
 #include "FieldBox.h"
 #include <time.h>
+#include "ADXImGuiManager.h"
 
 Player::Player()
 {
@@ -111,7 +112,7 @@ void Player::Move(float walkSpeed, float jumpPower)
 }
 
 void Player::LiveEntitiesUpdate()
-{	
+{
 	renderLayer = 0;
 	nose.renderLayer = 0;
 
@@ -131,7 +132,7 @@ void Player::LiveEntitiesUpdate()
 	camera->transform.UpdateMatrix();
 	camera->transform.localRotation_ = camera->transform.localRotation_ * ADXQuaternion::MakeAxisAngle({ 1,0,0 }, 0.3f);
 
-	bool moveInput = 
+	bool moveInput =
 		!keyboard->KeyPress(config[0]) || keyboard->KeyPress(config[1]) || keyboard->KeyPress(config[2]) || keyboard->KeyPress(config[3]);
 
 	rigidbody.drag = 0.8f;
@@ -176,7 +177,7 @@ void Player::LiveEntitiesUpdate()
 	minis.remove_if([=](auto& itr)
 		{ return ADXMatrix4::Transform(itr->transform.localPosition_, transform.GetMatWorldInverse()).Length() > 30 / scale; });
 
-	nose.transform.localScale_ = ADXVector3{ 0.42f,0.35f,0.35f } * (float)fmax(1,1 + pow(fmax(0, splitInterval),2) * 0.02f);
+	nose.transform.localScale_ = ADXVector3{ 0.42f,0.35f,0.35f } *(float)fmax(1, 1 + pow(fmax(0, splitInterval), 2) * 0.02f);
 	nose.transform.localPosition_ = { 0,sinf((float)clock() * 0.001f) * 0.03f,1.01f + sinf((float)clock() * 0.001f) * 0.03f };
 
 	splitInterval--;
@@ -208,7 +209,7 @@ void Player::LiveEntitiesUpdate()
 	for (auto& itr : minis)
 	{
 		itr->Update();
-		SetAttackObj({&itr->colliders.back(), this, (float)minis.size() });
+		SetAttackObj({ &itr->colliders.back(), this, (float)minis.size() });
 	}
 	nose.Update();
 
@@ -216,7 +217,7 @@ void Player::LiveEntitiesUpdate()
 	uint32_t setTutorialImg = prevTutorialImg;
 	bool windowExtend = false;
 	bool isOutOfField = true;
-	
+
 	for (auto& colItr : colliders)
 	{
 		for (auto& colItr2 : colItr.GetCollideList())
@@ -234,7 +235,7 @@ void Player::LiveEntitiesUpdate()
 			}
 			for (auto& objItr : FieldBox::GetFields())
 			{
-				if (colItr2->GetGameObject() == objItr 
+				if (colItr2->GetGameObject() == objItr
 					&& (transform.GetWorldPosition() - colItr2->ClosestPoint(transform.GetWorldPosition())).Length() < 0.1)
 				{
 					isOutOfField = false;
@@ -264,7 +265,7 @@ void Player::LiveEntitiesUpdate()
 		tutorialWindowExAmount -= 0.1f;
 		windowClosing = true;
 	}
-	tutorialWindowExAmount = max(0,min(tutorialWindowExAmount,1));
+	tutorialWindowExAmount = max(0, min(tutorialWindowExAmount, 1));
 
 	if (tutorialWindowExAmount >= 1 || tutorialWindowExAmount <= 0)
 	{
@@ -283,8 +284,8 @@ void Player::LiveEntitiesUpdate()
 		tutorialWindow.texture = setTutorialImg;
 	}
 
-	tutorialWindow.transform.localScale_ = ADXUtility::Lerp({ 0,0.3f,0 }, { 0.3f / ADXWindow::GetAspect(),0.3f,0}, ADXUtility::EaseOut(tutorialWindowExAmount, 4));
-	tutorialWindow.transform.localPosition_ = { 0.65f,-0.65f + sin(clock() * 0.002f) * 0.01f,0};
+	tutorialWindow.transform.localScale_ = ADXUtility::Lerp({ 0,0.3f,0 }, { 0.3f / ADXWindow::GetAspect(),0.3f,0 }, ADXUtility::EaseOut(tutorialWindowExAmount, 4));
+	tutorialWindow.transform.localPosition_ = { 0.65f,-0.65f + sin(clock() * 0.002f) * 0.01f,0 };
 
 	tutorialWindow.Update();
 
@@ -300,6 +301,10 @@ void Player::LiveEntitiesUpdate()
 	outOfField.transform.localPosition_ = { -0.6f,0.65f + sin(clock() * 0.003f) * 0.01f,0 };
 
 	outOfField.Update();
+
+#ifdef _DEBUG
+	
+#endif
 }
 
 void Player::DeadUpdate()

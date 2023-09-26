@@ -159,7 +159,13 @@
     <ClCompile Include="Scripts\SceneGate.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Cub_E.cpp">
+    <ClCompile Include="Scripts\Cub_E.cpp">
+      <Filter>ソース ファイル\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\EnemySpawnData.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Clex.cpp">
       <Filter>ソース ファイル\Enemies</Filter>
     </ClCompile>
   </ItemGroup>
@@ -296,7 +302,13 @@
     <ClInclude Include="ADXEngine\json.hpp">
       <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
     </ClInclude>
-    <ClInclude Include="Cub_E.h">
+    <ClInclude Include="Scripts\Cub_E.h">
+      <Filter>ヘッダー ファイル\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\EnemySpawnData.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Clex.h">
       <Filter>ヘッダー ファイル\Enemies</Filter>
     </ClInclude>
   </ItemGroup>

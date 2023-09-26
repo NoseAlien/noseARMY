@@ -121,9 +121,11 @@
     <ClCompile Include="ADXEngine\ADXVector3.cpp" />
     <ClCompile Include="ADXEngine\ADXWindow.cpp" />
     <ClCompile Include="ADXEngine\ADXWorldTransform.cpp" />
-    <ClCompile Include="Cub_E.cpp" />
     <ClCompile Include="Scripts\BattleFieldBox.cpp" />
+    <ClCompile Include="Scripts\Clex.cpp" />
+    <ClCompile Include="Scripts\Cub_E.cpp" />
     <ClCompile Include="Scripts\Enemy.cpp" />
+    <ClCompile Include="Scripts\EnemySpawnData.cpp" />
     <ClCompile Include="Scripts\FieldBox.cpp" />
     <ClCompile Include="Scripts\GameScene.cpp" />
     <ClCompile Include="Scripts\Goal.cpp" />
@@ -169,9 +171,11 @@
     <ClInclude Include="ADXEngine\ADXWindow.h" />
     <ClInclude Include="ADXEngine\ADXWorldTransform.h" />
     <ClInclude Include="ADXEngine\json.hpp" />
-    <ClInclude Include="Cub_E.h" />
     <ClInclude Include="Scripts\BattleFieldBox.h" />
+    <ClInclude Include="Scripts\Clex.h" />
+    <ClInclude Include="Scripts\Cub_E.h" />
     <ClInclude Include="Scripts\Enemy.h" />
+    <ClInclude Include="Scripts\EnemySpawnData.h" />
     <ClInclude Include="Scripts\FieldBox.h" />
     <ClInclude Include="Scripts\GameScene.h" />
     <ClInclude Include="Scripts\Goal.h" />

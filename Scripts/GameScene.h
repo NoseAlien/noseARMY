@@ -42,6 +42,8 @@ private:
 
 	ADXObject backGround_{};
 
+	EnemySpawnData enemySpawnData{};
+
 	//全てのオブジェクト
 	std::list<ADXObject*> objs{};
 

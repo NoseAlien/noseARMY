@@ -238,25 +238,19 @@ void GameScene::Initialize()
 	battleFields_.back().transform.localScale_ = { 6,5,6 };
 	battleFields_.back().transform.UpdateMatrix();
 	battleFields_.back().Initialize({ 
-		{{0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
-		{{0.5f,0,-0.5f},ADXQuaternion::IdentityQuaternion()},
-		{{-0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
-		{{-0.5f,0,-0.5f},ADXQuaternion::IdentityQuaternion()},
-		}, "enemy");
+		{1,{0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
+		{2,{0.5f,0,-0.5f},ADXQuaternion::IdentityQuaternion()},
+		{1,{-0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
+		{2,{-0.5f,0,-0.5f},ADXQuaternion::IdentityQuaternion()},
+		}, &enemies_, "enemy");
 	battleFields_.back().fieldLayer = 2;
 
+	enemySpawnData.SetSpawnList({
+		{ 2,{2,24,40},ADXQuaternion::IdentityQuaternion() },
+		{ 1,{-2,24,40},ADXQuaternion::IdentityQuaternion() },
+		});
 
-	std::unique_ptr<Enemy, ADXUtility::NPManager<Enemy>> temp(new Cub_E);
-
-	enemies_.push_back(move(temp));
-	enemies_.back()->ADXObject::Initialize();
-	enemies_.back()->transform.localPosition_ = { 2,40,40 };
-	enemies_.back()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	enemies_.back()->transform.localScale_ = { 1,1,1 };
-	enemies_.back()->transform.UpdateMatrix();
-	enemies_.back()->Initialize();
-	enemies_.back()->LiveEntity::Initialize("enemy");
-
+	enemySpawnData.Spawn(&enemies_, "enemy");
 
 	goal_.ADXObject::Initialize();
 	goal_.transform.localPosition_ = { -40,-50,112 };

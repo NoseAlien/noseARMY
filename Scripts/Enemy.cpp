@@ -24,10 +24,12 @@ void Enemy::Initialize()
 
 void Enemy::LiveEntitiesUpdate()
 {
+	rigidbody.VelocityMove();
+
 	rigidbody.drag = 0.8f;
 	rigidbody.dragAxis = { true,false,true };
-	rigidbody.gravity = { 0,-0.015f,0 };
-	rigidbody.VelocityMove();
+	rigidbody.gravity = { 0,-1,0 };
+	rigidbody.gravityScale = 0.015f;
 
 	EnemyUpdate();
 
@@ -42,10 +44,11 @@ void Enemy::DeadUpdate()
 	material.ambient = { 0,0,0 };
 
 	rigidbody.drag = 0.8f;
-	rigidbody.VelocityMove();
+	rigidbody.dragAxis = { true,false,true };
+	rigidbody.gravity = { 0,-1,0 };
+	rigidbody.gravityScale = 0.015f;
 
-	rigidbody.velocity.y /= 0.8f;
-	rigidbody.velocity.y -= 0.015f;
+	rigidbody.VelocityMove();
 
 	rigidbody.Update(this);
 }

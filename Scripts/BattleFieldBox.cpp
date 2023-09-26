@@ -1,7 +1,8 @@
 #include "BattleFieldBox.h"
 #include "LiveEntity.h"
 
-void BattleFieldBox::Initialize(std::vector<SpawnData> setGuarders, std::string setTeam)
+void BattleFieldBox::Initialize(std::vector<SpawnData> setGuarders,
+	std::list<std::unique_ptr<Enemy, ADXUtility::NPManager<Enemy>>>* setEnemiesPtr, std::string setTeam)
 {
 	colliders = {};
 	colliders.push_back(ADXCollider(this));
@@ -14,7 +15,8 @@ void BattleFieldBox::Initialize(std::vector<SpawnData> setGuarders, std::string 
 
 	sortingOrder = 2;
 
-	guarders = setGuarders;
+	enemySpawnData.SetSpawnList(setGuarders);
+	enemiesPtr = setEnemiesPtr;
 	team = setTeam;
 
 	animationProgress = 0;
@@ -32,9 +34,9 @@ void BattleFieldBox::FieldUpdate()
 		isVisible = true;
 
 
-		for (auto& itr : guardersInstance)
+		for (auto& itr : guardersPtr)
 		{
-			itr.Update();
+			itr->Update();
 		}
 
 		if (battling <= 0)
@@ -53,7 +55,7 @@ void BattleFieldBox::FieldUpdate()
 	}
 }
 
-void BattleFieldBox::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
+void BattleFieldBox::FieldOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
 	if (!awake)
 	{
@@ -65,28 +67,18 @@ void BattleFieldBox::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 				{
 					awake = true;
 
-					for (auto& spawnItr : guarders)
-					{
-						guardersInstance.push_back(Enemy());
-						guardersInstance.back().ADXObject::Initialize();
-						guardersInstance.back().transform.localPosition_ = ADXMatrix4::Transform(spawnItr.position,transform.GetMatWorld());
-						guardersInstance.back().transform.localRotation_ = transform.TransformRotation(spawnItr.rotation);
-						guardersInstance.back().transform.localScale_ = { 1,1,1 };
-						guardersInstance.back().transform.UpdateMatrix();
-						guardersInstance.back().Initialize();
-						guardersInstance.back().LiveEntity::Initialize(team);
-					}
+					guardersPtr = enemySpawnData.Spawn(enemiesPtr, team, &transform);
 				}
 			}
 		}
 	}
 	else
 	{
-		for (auto& objItr : guardersInstance)
+		for (auto& objItr : guardersPtr)
 		{
-			for (auto& colItr : objItr.colliders)
+			for (auto& colItr : objItr->colliders)
 			{
-				if (col == &colItr && objItr.IsLive())
+				if (col == &colItr && objItr->IsLive())
 				{
 					battling = 10;
 				}

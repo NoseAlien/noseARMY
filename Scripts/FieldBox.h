@@ -21,10 +21,12 @@ public:
 
 protected:
 	virtual void FieldUpdate() {};
+	virtual void FieldOnCollisionHit(ADXCollider* col, ADXCollider* myCol) {};
+
 
 private:
-	void UniqueUpdate();
-	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol);
+	void UniqueUpdate() final;
+	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol) final;
 	std::list<FieldBox*> GetAdjacentFields() { return adjacentFields; };
 
 public:

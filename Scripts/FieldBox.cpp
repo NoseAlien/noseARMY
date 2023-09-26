@@ -62,6 +62,8 @@ void FieldBox::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 	{
 		insideObjects.push_back(col->GetGameObject());
 	}
+
+	FieldOnCollisionHit(col, myCol);
 }
 
 void FieldBox::StaticUpdate()
