@@ -65,6 +65,7 @@ void PlayerMini::Move(float walkSpeed, float jumpPower)
 
 void PlayerMini::UniqueUpdate()
 {
+	rigidbody.gravityScale = 0.01f;
 	rigidbody.drag = 0.8f;
 
 	rigidbody.VelocityMove();

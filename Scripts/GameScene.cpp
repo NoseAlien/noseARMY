@@ -13,7 +13,7 @@ void GameScene::Initialize()
 	floors_ = {};
 	fields_ = {};
 	battleFields_ = {};
-	enemies_ = {};
+	enemies_.clear();
 	tutorialAreas_ = {};
 	player_ = {};
 
