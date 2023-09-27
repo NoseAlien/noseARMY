@@ -10,6 +10,9 @@ void Enemy::Initialize()
 	model = &enemyModel;
 	texture = ADXImage::LoadADXImage("battleField.png");
 
+	damageSE = ADXAudio::LoadADXAudio("sound/hit.wav");
+	defeatSE = ADXAudio::LoadADXAudio("sound/slap.wav");
+
 	colliders = {};
 	colliders.push_back(ADXCollider(this));
 	colliders.back().pushable_ = true;

@@ -1,8 +1,9 @@
 #include "Player.h"
 #include "ADXUtility.h"
 #include "FieldBox.h"
+#include "SceneTransition.h"
 #include <time.h>
-#include "ADXImGuiManager.h"
+#include <imgui.h>
 
 Player::Player()
 {
@@ -16,6 +17,7 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 	rigidbody.Initialize(this);
 	jumpSE = ADXAudio::LoadADXAudio("sound/jump.wav");
 	damageSE = ADXAudio::LoadADXAudio("sound/damage.wav");
+	defeatSE = ADXAudio::LoadADXAudio("sound/despawn.wav");
 	windowOpenSE = ADXAudio::LoadADXAudio("sound/windowOpen.wav");
 
 	rect = ADXModel::CreateRect();
@@ -52,6 +54,29 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 	outOfField.texture = ADXImage::LoadADXImage("outOfField.png");
 	outOfField.material = material;
 	outOfField.renderLayer = 1;
+
+	gameOverFilter.Initialize();
+	gameOverFilter.transform.rectTransform = true;
+	gameOverFilter.transform.UpdateMatrix();
+	gameOverFilter.model = &rect;
+	gameOverFilter.texture = ADXImage::LoadADXImage("WhiteDot.png");
+	gameOverFilter.material = material;
+	gameOverFilter.renderLayer = 1;
+
+	dead.Initialize();
+	dead.transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 });
+	dead.transform.parent_ = &transform;
+	dead.transform.UpdateMatrix();
+	dead.model = &rect;
+	dead.texture = ADXImage::LoadADXImage("apEGnoSE_dead.png");
+	dead.material = material;
+
+	keyUI.Initialize();
+	keyUI.transform.rectTransform = true;
+	keyUI.model = &rect;
+	keyUI.renderLayer = 5;
+	keyUI.texture = ADXImage::LoadADXImage("PRESS_SPACE.png");
+
 
 	camera = setCamera;
 }
@@ -303,20 +328,69 @@ void Player::LiveEntitiesUpdate()
 	outOfField.Update();
 
 #ifdef _DEBUG
-	
+	float pos[3] = { transform.localPosition_.x,transform.localPosition_.y,transform.localPosition_.z };
+
+	bool tool_active = true;
+	ImGui::Begin("My First Tool", &tool_active, ImGuiWindowFlags_MenuBar);
+	ImGui::InputFloat3("Position", pos);
+
+	ImGui::End();
+
+	transform.localPosition_ = { pos[0],pos[1],pos[2] };
 #endif
 }
 
 void Player::DeadUpdate()
 {
+	gameOverFilter.renderLayer = 3;
+	gameOverFilter.material.ambient = { 0,0,0 };
+	gameOverFilter.material.alpha = 0.8f;
+	gameOverFilter.Update();
+
 	renderLayer = 4;
 	nose.renderLayer = 4;
+	dead.renderLayer = 4;
+
 	transform.localRotation_ = camera->transform.localRotation_;
 	transform.UpdateMatrix();
 	transform.SetWorldRotation(ADXQuaternion::MakeAxisAngle(transform.TransformPointOnlyRotation({ 0,1,0 }), 3.1415f) * transform.GetWorldRotation());
+
+	nose.transform.localPosition_ = { 0,sin(min(max(0,
+		ADXUtility::ValueMapping(deadAnimationProgress,0.3f,0.8f,0.0f,1.0f)
+		), 1) * 3.1415f) * 4,1.01f };
+	nose.transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,3.14159f,min(max(0,
+		ADXUtility::ValueMapping(deadAnimationProgress,0.3f,0.8f,0.0f,1.0f)
+		), 1) * 50 });
 	nose.Update();
 
-	isVisible = deadAnimationProgress < 0.1;
+	dead.Update();
 
-	deadAnimationProgress = min(max(0, deadAnimationProgress + 0.001f), 1);
+	isVisible = deadAnimationProgress < 0.3f;
+	nose.isVisible = deadAnimationProgress < 0.8f;
+	dead.isVisible = !nose.isVisible;
+
+	keyUI.transform.localPosition_ = { 0,-0.5f + sin(clock() * 0.001f - 1) * 0.02f,0 };
+	keyUI.transform.localScale_ = { keyUI.transform.localScale_.x,0.45f,1 };
+	if (deadAnimationProgress >= 1)
+	{
+		keyUI.transform.localScale_.x += (0.45f / ADXWindow::GetAspect() - keyUI.transform.localScale_.x) * 0.3f;
+		if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_SPACE))
+		{
+			SceneTransition::ChangeScene(2);
+		}
+	}
+	else
+	{
+		keyUI.transform.localScale_.x = 0;
+		if (deadAnimationProgress > 0.3f
+			&& ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_SPACE))
+		{
+			deadAnimationProgress = 1;
+		}
+	}
+
+	keyUI.Update();
+
+	deadAnimationProgress = min(max(0, deadAnimationProgress + 0.01f), 1);
+
 }

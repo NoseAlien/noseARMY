@@ -68,6 +68,7 @@ void LiveEntity::UniqueUpdate()
 
 		if (attackHitted)
 		{
+			defeatSE.Play();
 			particle.animation.delayFrame = 0;
 			particle.lifeTime = particle.animation.GetLength();
 			for (int i = 0; i < 10; i++)
@@ -129,6 +130,7 @@ void LiveEntity::Damage(float damage)
 {
 	if (IsLive() && !attackHitted)
 	{
+		//damageSE.Play();
 		hpAmount -= damage / maxHP;
 		attackHitted = true;
 	}

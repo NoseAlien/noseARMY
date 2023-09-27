@@ -3,7 +3,6 @@
 #include "ADXComponent.h"
 #include "ADXKeyBoardInput.h"
 #include "ADXVector3.h"
-#include "ADXAudio.h"
 #include <vector>
 #include <list>
 #include "LiveEntity.h"
@@ -23,12 +22,14 @@ private:
 	ADXObject nose{};
 	ADXObject outOfField{};
 	ADXObject tutorialWindow{};
+	ADXObject gameOverFilter{};
+	ADXObject dead{};
+	ADXObject keyUI{};
 
 	ADXModel rect{};
 	ADXModel playerModel{};
 
 	ADXAudio jumpSE{};
-	ADXAudio damageSE{};
 	ADXAudio windowOpenSE{};
 
 	ADXKeyBoardInput* keyboard = nullptr;

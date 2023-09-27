@@ -248,6 +248,9 @@ void GameScene::Initialize()
 	enemySpawnData.SetSpawnList({
 		{ 2,{2,24,40},ADXQuaternion::IdentityQuaternion() },
 		{ 1,{-2,24,40},ADXQuaternion::IdentityQuaternion() },
+		{ 2,{16,13,82},ADXQuaternion::IdentityQuaternion() },
+		{ 1,{12,12,101},ADXQuaternion::IdentityQuaternion() },
+
 		});
 
 	enemySpawnData.Spawn(&enemies_, "enemy");
