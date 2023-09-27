@@ -27,20 +27,17 @@ private:
 	ADXMaterial unlitMat{};
 
 	//カメラ
-	ADXCamera camera_{};
+	ADXCamera* camera_ = nullptr;
 
 	//オブジェクト
-	ADXObject engineLogo{};
-	ADXObject logo_A{};
-	ADXObject logo_D{};
-	ADXObject logo_X{};
-	ADXObject logo_Engine{};
-	ADXObject title{};
+	ADXObject* engineLogo = nullptr;
+	ADXObject* logo_A = nullptr;
+	ADXObject* logo_D = nullptr;
+	ADXObject* logo_X = nullptr;
+	ADXObject* logo_Engine = nullptr;
+	ADXObject* title = nullptr;
 
 	int32_t startTime = 0;
-
-	//全てのオブジェクト
-	std::list<ADXObject*> objs{};
 
 public:
 	ADXScene();
