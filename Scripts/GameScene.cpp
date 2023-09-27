@@ -251,33 +251,33 @@ void GameScene::Initialize()
 
 	enemySpawnData.Spawn(&enemies_, "enemy");
 
-	goal_.ADXObject::Initialize();
-	goal_.transform.localPosition_ = { -40,-50,112 };
-	goal_.transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	goal_.transform.localScale_ = { 6,10,6 };
-	goal_.transform.UpdateMatrix();
-	goal_.Initialize("player");
+	goal_->ADXObject::Initialize();
+	goal_->transform.localPosition_ = { -40,-50,112 };
+	goal_->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
+	goal_->transform.localScale_ = { 6,10,6 };
+	goal_->transform.UpdateMatrix();
+	goal_->Initialize("player");
 
-	backGround_.Initialize();
-	backGround_.transform.rectTransform = true;
-	backGround_.transform.UpdateMatrix();
-	backGround_.model = &rect;
-	backGround_.texture = backGroundTex;
-	backGround_.renderLayer = -1;
+	backGround_->Initialize();
+	backGround_->transform.rectTransform = true;
+	backGround_->transform.UpdateMatrix();
+	backGround_->model = &rect;
+	backGround_->texture = backGroundTex;
+	backGround_->renderLayer = -1;
 
 	key = ADXObject::Duplicate(backGround_);
-	key.transform.localPosition_ = { -0.65f,0.85f,0 };
-	key.transform.localScale_ = { 0.3f,0.45f,1 };
-	key.transform.UpdateMatrix();
-	key.texture = keyImg;
-	key.renderLayer = 1;
+	key->transform.localPosition_ = { -0.65f,0.85f,0 };
+	key->transform.localScale_ = { 0.3f,0.45f,1 };
+	key->transform.UpdateMatrix();
+	key->texture = keyImg;
+	key->renderLayer = 1;
 }
 
 void GameScene::Update()
 {
-	key.transform.localPosition_ = { -0.65f,0.85f,0 };
-	key.transform.localPosition_.y += sinf(clock() * 0.001f) * 0.01f;
-	key.transform.localScale_ = { 0.45f / ADXWindow::GetAspect(),0.45f,1 };
+	key->transform.localPosition_ = { -0.65f,0.85f,0 };
+	key->transform.localPosition_.y += sinf(clock() * 0.001f) * 0.01f;
+	key->transform.localScale_ = { 0.45f / ADXWindow::GetAspect(),0.45f,1 };
 
 	if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_Q))
 	{

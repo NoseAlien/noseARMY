@@ -20,9 +20,9 @@ private:
 private:
 	ADXCamera* camera = nullptr;
 
-	ADXObject nose{};
-	ADXObject outOfField{};
-	ADXObject tutorialWindow{};
+	ADXObject *nose;
+	ADXObject *outOfField;
+	ADXObject *tutorialWindow;
 
 	ADXModel rect{};
 	ADXModel playerModel{};

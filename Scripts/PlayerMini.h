@@ -8,7 +8,7 @@ class Player;
 class PlayerMini : public ADXComponent
 {
 private:
-	ADXObject nose{};
+	ADXObject* nose = nullptr;
 	Player* parent = nullptr;
 
 	bool destroyFlag = false;

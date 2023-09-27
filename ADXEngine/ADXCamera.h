@@ -1,7 +1,7 @@
 #pragma once
 #include "ADXObject.h"
 
-class ADXCamera : public ADXObject
+class ADXCamera : public ADXComponent
 {
 
 private:

@@ -10,7 +10,7 @@ public:
 private:
 	std::string team = "";
 	bool hitted = false;
-	ADXObject keyUI{};
+	ADXObject *keyUI = nullptr;
 	ADXModel boxModel{};
 	ADXModel rectModel{};
 

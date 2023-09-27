@@ -10,8 +10,8 @@ public:
 private:
 	std::string team = "";
 	int32_t sceneTransitionCount = MaxSceneTransitionCount;
-	ADXObject clearUI{};
-	ADXObject keyUI{};
+	ADXObject *clearUI = nullptr;
+	ADXObject *keyUI = nullptr;
 	ADXModel boxModel{};
 	ADXModel rectModel{};
 

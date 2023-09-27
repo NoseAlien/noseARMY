@@ -4,7 +4,7 @@ void Projectile::EnemyUpdate()
 {
 	if (lifetime <= 0)
 	{
-		Destroy();
+		gameObject->Destroy();
 	}
 	else
 	{
