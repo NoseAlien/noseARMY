@@ -2,7 +2,7 @@
 #include "ADXUtility.h"
 #include "FieldBox.h"
 #include <time.h>
-#include "ADXImGuiManager.h"
+#include <imgui.h>
 
 Player::Player()
 {
@@ -303,7 +303,15 @@ void Player::LiveEntitiesUpdate()
 	outOfField.Update();
 
 #ifdef _DEBUG
-	
+	float pos[3] = { transform.localPosition_.x,transform.localPosition_.y,transform.localPosition_.z };
+
+	bool tool_active = true;
+	ImGui::Begin("My First Tool", &tool_active, ImGuiWindowFlags_MenuBar);
+	ImGui::InputFloat3("Position", pos);
+
+	ImGui::End();
+
+	transform.localPosition_ = { pos[0],pos[1],pos[2] };
 #endif
 }
 

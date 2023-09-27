@@ -5,7 +5,7 @@
 
 class Player;
 
-class PlayerMini : public ADXObject
+class PlayerMini : public ADXComponent
 {
 private:
 	ADXObject nose{};

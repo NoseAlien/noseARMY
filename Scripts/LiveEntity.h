@@ -6,7 +6,7 @@
 
 struct AttackObject;
 
-class LiveEntity : public ADXObject
+class LiveEntity : public ADXComponent
 {
 protected:
 	float maxHP = 999;
@@ -16,8 +16,8 @@ private:
 	ADXModel rect{};
 	uint32_t gaugeTex = 0;
 	ADXParticleSystem particle{};
-	ADXObject hpGauge{};
-	ADXObject hpGaugeBG{};
+	ADXObject* hpGauge{};
+	ADXObject* hpGaugeBG{};
 	std::string team = "";
 	bool attackHitted = false;
 

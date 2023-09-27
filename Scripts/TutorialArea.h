@@ -2,7 +2,7 @@
 
 #include "ADXObject.h"
 
-class TutorialArea : public ADXObject
+class TutorialArea : public ADXComponent
 {
 private:
 	ADXObject tutorialWindow{};

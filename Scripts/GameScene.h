@@ -28,24 +28,21 @@ private:
 	ADXModel rect{};
 
 	//カメラ
-	ADXCamera camera_{};
+	ADXCamera* camera_{};
 
 	//オブジェクト
-	ADXObject key{};
-	Player player_{};
-	std::list<ADXObject> floors_{};
-	std::list<TutorialArea> tutorialAreas_{};
-	std::list<FieldBox> fields_{};
-	std::list<BattleFieldBox> battleFields_{};
-	std::list<std::unique_ptr<Enemy,ADXUtility::NPManager<Enemy>>> enemies_{};
-	Goal goal_{};
+	ADXObject* key{};
+	Player* player_{};
+	std::list<ADXObject*> floors_{};
+	std::list<TutorialArea*> tutorialAreas_{};
+	std::list<FieldBox*> fields_{};
+	std::list<BattleFieldBox*> battleFields_{};
+	std::list<Enemy*> enemies_{};
+	Goal* goal_{};
 
-	ADXObject backGround_{};
+	ADXObject* backGround_{};
 
 	EnemySpawnData enemySpawnData{};
-
-	//全てのオブジェクト
-	std::list<ADXObject*> objs{};
 
 public:
 	GameScene();

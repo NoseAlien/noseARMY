@@ -15,17 +15,11 @@ Microsoft::WRL::ComPtr<ID3D12PipelineState> ADXObject::S_pipelineStateAlpha;
 uint64_t ADXObject::S_GpuStartHandle = 0;
 D3D12_CPU_DESCRIPTOR_HANDLE ADXObject::S_cpuDescHandleSRV;
 D3D12_GPU_DESCRIPTOR_HANDLE ADXObject::S_gpuDescHandleSRV;
-std::vector<ADXObject*> ADXObject::S_allObjPtr{};
-std::vector<ADXObject*> ADXObject::S_objs{};
+std::list<std::unique_ptr<ADXObject, ADXUtility::NPManager<ADXObject>>> ADXObject::S_objs{};
 std::vector<ADXCamera*> ADXObject::S_allCameraPtr{};
 ADXVector3 ADXObject::S_limitPos1 = { -300,-300,-100 };
 ADXVector3 ADXObject::S_limitPos2 = { 100,100,150 };
 bool ADXObject::S_highQualityZSort = false;
-
-ADXObject::ADXObject()
-{
-
-}
 
 void ADXObject::StaticInitialize()
 {
@@ -310,14 +304,24 @@ void ADXObject::SetAllCameraPtr(ADXCamera* camPtr)
 	S_allCameraPtr.push_back(camPtr);
 }
 
-ADXObject ADXObject::Duplicate(const ADXObject& prefab, bool initCols)
+ADXObject* ADXObject::Create(const ADXVector3& setLocalPosition, const ADXQuaternion& setLocalRotation,
+	const ADXVector3& setLocalScale, ADXWorldTransform* parent)
+{
+	std::unique_ptr<ADXObject, ADXUtility::NPManager<ADXObject>> obj(new ADXObject);
+	obj->Initialize();
+	obj->transform.localPosition_ = setLocalPosition;
+	obj->transform.localRotation_ = setLocalRotation;
+	obj->transform.localScale_ = setLocalScale;
+	obj->InitComponents();
+	S_objs.push_back(move(obj));
+	return S_objs.back().get();
+}
+
+ADXObject ADXObject::Duplicate(const ADXObject& prefab)
 {
 	ADXObject ret = prefab;
 	ret.CreateConstBuffer();
-	if (initCols)
-	{
-		ret.InitCols();
-	}
+	ret.InitComponents();
 	return ret;
 }
 
@@ -325,25 +329,22 @@ void ADXObject::Update()
 {
 	if (isActive)
 	{
-		for (int32_t i = 0; i < colliders.size(); i++)
+		for (auto& itr : components)
 		{
-			colliders[i].Update(this);
+			itr->Update(this);
 		}
 		UniqueUpdate();
-
-		S_allObjPtr.push_back(this);
 	}
 }
 
 void ADXObject::StaticUpdate()
 {
-	S_objs = S_allObjPtr;
-
 	ADXVector3 limitMinPos = { min(S_limitPos1.x,S_limitPos2.x),min(S_limitPos1.y,S_limitPos2.y) ,min(S_limitPos1.z,S_limitPos2.z) };
 	ADXVector3 limitMaxPos = { max(S_limitPos1.x,S_limitPos2.x),max(S_limitPos1.y,S_limitPos2.y) ,max(S_limitPos1.z,S_limitPos2.z) };
 
-	for (auto& itr : GetObjs())
+	for (auto& itr : S_objs)
 	{
+		itr->Update();
 		if (itr->transform.parent_ == nullptr && !itr->transform.rectTransform)
 		{
 			ADXVector3 itrWorldPos = itr->transform.GetWorldPosition();
@@ -389,14 +390,16 @@ void ADXObject::PreDraw()
 
 void ADXObject::StaticDraw()
 {
+	std::list<ADXObject*> allObjPtr = GetObjs();
+
 	for (int32_t i = 0; i < S_allCameraPtr.size(); i++)
 	{
 		S_allCameraPtr[i]->PrepareToRandering();
 	}
 
-	for (int32_t i = 0; i < S_allObjPtr.size(); i++)
+	for (auto& itr : allObjPtr)
 	{
-		S_allObjPtr[i]->OnPreRender();
+		itr->OnPreRender();
 	}
 
 	int32_t minLayer = 0;
@@ -404,33 +407,33 @@ void ADXObject::StaticDraw()
 	int32_t minSortingOrder = 0;
 	int32_t maxSortingOrder = 0;
 
-	if (S_allObjPtr.size() > 0)
+	if (allObjPtr.size() > 0)
 	{
-		minLayer = S_allObjPtr[0]->renderLayer;
-		maxLayer = S_allObjPtr[0]->renderLayer;
-		minSortingOrder = S_allObjPtr[0]->sortingOrder;
-		maxSortingOrder = S_allObjPtr[0]->sortingOrder;
+		minLayer = allObjPtr.front()->renderLayer;
+		maxLayer = allObjPtr.front()->renderLayer;
+		minSortingOrder = allObjPtr.front()->sortingOrder;
+		maxSortingOrder = allObjPtr.front()->sortingOrder;
 	}
 
 	//RenderLayerの範囲を読み取る
-	for (int32_t i = 0; i < S_allObjPtr.size(); i++)
+	for (auto& itr : allObjPtr)
 	{
-		if (S_allObjPtr[i]->renderLayer < minLayer)
+		if (itr->renderLayer < minLayer)
 		{
-			minLayer = S_allObjPtr[i]->renderLayer;
+			minLayer = itr->renderLayer;
 		}
-		if (S_allObjPtr[i]->renderLayer > maxLayer)
+		if (itr->renderLayer > maxLayer)
 		{
-			maxLayer = S_allObjPtr[i]->renderLayer;
+			maxLayer = itr->renderLayer;
 		}
 
-		if (S_allObjPtr[i]->sortingOrder < minSortingOrder)
+		if (itr->sortingOrder < minSortingOrder)
 		{
-			minSortingOrder = S_allObjPtr[i]->sortingOrder;
+			minSortingOrder = itr->sortingOrder;
 		}
-		if (S_allObjPtr[i]->sortingOrder > maxSortingOrder)
+		if (itr->sortingOrder > maxSortingOrder)
 		{
-			maxSortingOrder = S_allObjPtr[i]->sortingOrder;
+			maxSortingOrder = itr->sortingOrder;
 		}
 	}
 
@@ -443,11 +446,11 @@ void ADXObject::StaticDraw()
 		//全ピクセルの深度バッファ値を最奥の1.0にする
 		S_cmdList->ClearDepthStencilView(*ADXCommon::GetCurrentInstance()->GetDsvHandle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
-		for (int32_t i = 0; i < S_allObjPtr.size(); i++)
+		for (auto& itr : allObjPtr)
 		{
-			if (S_allObjPtr[i]->renderLayer == nowLayer)
+			if (itr->renderLayer == nowLayer)
 			{
-				thisLayerObjPtr.push_back(S_allObjPtr[i]);
+				thisLayerObjPtr.push_back(itr);
 			}
 		}
 
@@ -509,8 +512,19 @@ void ADXObject::PostDraw()
 	// コマンドリストを解除
 	ADXObject::S_cmdList = nullptr;
 	//ソート用配列を空にする
-	S_allObjPtr.clear();
 	S_allCameraPtr.clear();
+}
+
+std::list<ADXObject*> ADXObject::GetObjs()
+{
+	std::list<ADXObject*> ret = {};
+
+	for (auto& itr : S_objs)
+	{
+		ret.push_back(itr.get());
+	}
+
+	return ret;
 }
 
 void ADXObject::Draw()
@@ -554,10 +568,10 @@ void ADXObject::Destroy()
 	deleteFlag = true;
 }
 
-void ADXObject::InitCols()
+void ADXObject::InitComponents()
 {
-	for (int32_t i = 0; i < colliders.size(); i++)
+	for (auto& itr : components)
 	{
-		colliders[i].Initialize(this);
+		itr->Initialize(this);
 	}
 }

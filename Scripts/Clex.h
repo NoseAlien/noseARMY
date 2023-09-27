@@ -4,5 +4,8 @@
 class Clex : public Enemy
 {
 private:
+	std::list<Enemy*> projectiles{};
+
+private:
 	void EnemyUpdate();
 };

@@ -168,6 +168,9 @@
     <ClCompile Include="Scripts\Clex.cpp">
       <Filter>ソース ファイル\Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\Projectile.cpp">
+      <Filter>ソース ファイル\Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ADXEngine\ADXAudio.h">
@@ -309,6 +312,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\Clex.h">
+      <Filter>ヘッダー ファイル\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Projectile.h">
       <Filter>ヘッダー ファイル\Enemies</Filter>
     </ClInclude>
   </ItemGroup>

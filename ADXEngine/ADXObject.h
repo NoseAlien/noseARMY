@@ -2,9 +2,10 @@
 #include "ADXModel.h"
 #include "ADXMaterial.h"
 #include "ADXImage.h"
-#include "ADXCollider.h"
+#include "ADXComponentInclude.h"
 #include "ADXUtility.h"
 #include <string>
+#include <memory>
 
 class ADXCamera;
 
@@ -28,13 +29,9 @@ public:
 	};
 
 public:
-	ADXObject();
-	void Initialize();
-	void CreateConstBuffer();
-	void Update();
 	void Draw();
 	void Destroy();
-	void InitCols();
+	void InitComponents();
 	virtual void OnCollisionHit(ADXCollider* col, ADXCollider* myCol) {};
 
 protected:
@@ -43,12 +40,19 @@ protected:
 	virtual void OnWillRenderObject() {};
 	virtual void Rendered() {};
 
+private:
+	ADXObject() = default;
+	~ADXObject() = default;
+	void Initialize();
+	void Update();
+	void CreateConstBuffer();
+
 public:
 	ADXWorldTransform transform{};
 	ADXModel* model = nullptr;
 	ADXMaterial material{};
 	uint32_t texture = 0;
-	std::vector<ADXCollider> colliders{};
+	std::list<std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>>> components{};
 	int32_t renderLayer = 0;
 	int32_t sortingOrder = 0;
 	bool alphaTex = false;
@@ -77,11 +81,17 @@ public: // 静的メンバ関数
 	// 描画後処理
 	static void PostDraw();
 
-	static std::vector<ADXObject*> GetObjs() { return S_objs; };
+	static std::list<ADXObject*> GetObjs();
 
 	static void SetAllCameraPtr(ADXCamera* camPtr);
 
-	static ADXObject Duplicate(const ADXObject& prefab, bool initCols = false);
+	//空のオブジェクトを生成
+	static ADXObject* Create(const ADXVector3& setLocalPosition = { 0,0,0 },
+		const ADXQuaternion& setLocalRotation = ADXQuaternion::IdentityQuaternion(),
+		const ADXVector3& setLocalScale = { 1,1,1 }, ADXWorldTransform* parent = nullptr);
+
+	//既存のオブジェクトを複製
+	static ADXObject Duplicate(const ADXObject& prefab);
 
 private: // 静的メンバ変数
 	// ルートシグネチャ
@@ -100,10 +110,8 @@ private: // 静的メンバ変数
 	static D3D12_GPU_DESCRIPTOR_HANDLE S_gpuDescHandleSRV;
 
 	static uint64_t S_GpuStartHandle;
-	// 全てのオブジェクトを入れる配列
-	static std::vector<ADXObject*> S_allObjPtr;
 	// 全てのオブジェクトが入った配列
-	static std::vector<ADXObject*> S_objs;
+	static std::list<std::unique_ptr<ADXObject, ADXUtility::NPManager<ADXObject>>> S_objs;
 	// 全てのカメラを入れる配列
 	static std::vector<ADXCamera*> S_allCameraPtr;
 	// オブジェクトが存在できる領域を制限するための変数

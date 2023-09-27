@@ -9,11 +9,10 @@ GameScene::GameScene()
 
 void GameScene::Initialize()
 {
-	objs = {};
 	floors_ = {};
 	fields_ = {};
 	battleFields_ = {};
-	enemies_.clear();
+	enemies_ = {};
 	tutorialAreas_ = {};
 	player_ = {};
 
@@ -272,32 +271,6 @@ void GameScene::Initialize()
 	key.transform.UpdateMatrix();
 	key.texture = keyImg;
 	key.renderLayer = 1;
-
-	objs.push_back(&camera_);
-	objs.push_back(&player_);
-	for (auto& itr : floors_)
-	{
-		objs.push_back(&itr);
-	}
-	for (auto& itr : tutorialAreas_)
-	{
-		objs.push_back(&itr);
-	}
-	for (auto& itr : fields_)
-	{
-		objs.push_back(&itr);
-	}
-	for (auto& itr : battleFields_)
-	{
-		objs.push_back(&itr);
-	}
-	for (auto& itr : enemies_)
-	{
-		objs.push_back(itr.get());
-	}
-	objs.push_back(&goal_);
-	objs.push_back(&backGround_);
-	objs.push_back(&key);
 }
 
 void GameScene::Update()
@@ -305,11 +278,6 @@ void GameScene::Update()
 	key.transform.localPosition_ = { -0.65f,0.85f,0 };
 	key.transform.localPosition_.y += sinf(clock() * 0.001f) * 0.01f;
 	key.transform.localScale_ = { 0.45f / ADXWindow::GetAspect(),0.45f,1 };
-
-	for (auto& itr : objs)
-	{
-		itr->Update();
-	}
 
 	if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_Q))
 	{

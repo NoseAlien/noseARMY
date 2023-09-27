@@ -2,7 +2,7 @@
 #include "ADXObject.h"
 #include "ADXTexAnimation.h"
 
-class ADXParticle : public ADXObject
+class ADXParticle : public ADXComponent
 {
 public:
 	ADXVector3 moveVec{};

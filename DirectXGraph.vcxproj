@@ -132,6 +132,7 @@
     <ClCompile Include="Scripts\main.cpp" />
     <ClCompile Include="Scripts\Player.cpp" />
     <ClCompile Include="Scripts\PlayerMini.cpp" />
+    <ClCompile Include="Scripts\Projectile.cpp" />
     <ClCompile Include="Scripts\PushableObject.cpp" />
     <ClCompile Include="Scripts\SceneGate.cpp" />
     <ClCompile Include="Scripts\SceneManager.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="Scripts\Goal.h" />
     <ClInclude Include="Scripts\Player.h" />
     <ClInclude Include="Scripts\PlayerMini.h" />
+    <ClInclude Include="Scripts\Projectile.h" />
     <ClInclude Include="Scripts\PushableObject.h" />
     <ClInclude Include="Scripts\SceneGate.h" />
     <ClInclude Include="Scripts\SceneManager.h" />

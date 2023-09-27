@@ -1,7 +1,7 @@
 #pragma once
 #include "ADXObject.h"
 
-class ADXPostEffectLens : public ADXObject
+class ADXPostEffectLens : public ADXComponent
 {
 private:
 	ADXModel rect{};

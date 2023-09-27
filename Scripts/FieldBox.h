@@ -3,7 +3,7 @@
 #include "ADXObject.h"
 #include <list>
 
-class FieldBox : public ADXObject
+class FieldBox : public ADXComponent
 {
 public:
 	int fieldLayer = 0;

@@ -2,7 +2,7 @@
 
 #include "ADXObject.h"
 
-class Goal : public ADXObject
+class Goal : public ADXComponent
 {
 public:
 	const int32_t MaxSceneTransitionCount = 60;
