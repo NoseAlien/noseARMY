@@ -317,12 +317,14 @@ ADXObject* ADXObject::Create(const ADXVector3& setLocalPosition, const ADXQuater
 	return S_objs.back().get();
 }
 
-ADXObject ADXObject::Duplicate(const ADXObject& prefab)
+ADXObject* ADXObject::Duplicate(const ADXObject& prefab)
 {
-	ADXObject ret = prefab;
-	ret.CreateConstBuffer();
-	ret.InitComponents();
-	return ret;
+	std::unique_ptr<ADXObject, ADXUtility::NPManager<ADXObject>> obj(new ADXObject);
+	*obj = prefab;
+	obj->CreateConstBuffer();
+	obj->InitComponents();
+	S_objs.push_back(move(obj));
+	return S_objs.back().get();
 }
 
 void ADXObject::Update()

@@ -41,8 +41,6 @@ protected:
 	virtual void Rendered() {};
 
 private:
-	ADXObject() = default;
-	~ADXObject() = default;
 	void Initialize();
 	void Update();
 	void CreateConstBuffer();
@@ -91,7 +89,7 @@ public: // 静的メンバ関数
 		const ADXVector3& setLocalScale = { 1,1,1 }, ADXWorldTransform* parent = nullptr);
 
 	//既存のオブジェクトを複製
-	static ADXObject Duplicate(const ADXObject& prefab);
+	static ADXObject* Duplicate(const ADXObject& prefab);
 
 private: // 静的メンバ変数
 	// ルートシグネチャ

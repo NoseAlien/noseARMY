@@ -45,7 +45,6 @@ private:
 	EnemySpawnData enemySpawnData{};
 
 public:
-	GameScene();
 	void Initialize();
 	void Update();
 };
