@@ -22,28 +22,22 @@ void GameScene::Initialize()
 
 	//オブジェクト
 
-	camera_->ADXObject::Initialize();
-	camera_->GetGameObject()->transform.localPosition_ = {0,5,-20};
-	camera_->GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0.3f,0,0 });
-	camera_->Initialize();
+	ADXObject* temp = ADXObject::Create({ 0,5,-20 }, ADXQuaternion::EulerToQuaternion({ 0.3f,0,0 }));
+	temp->transform.localPosition_ = { 0,5,-20 };
+	temp->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0.3f,0,0 });
+	camera_ = temp->AddComponent<ADXCamera>();
 
-	player_->ADXObject::Initialize();
-	player_->GetGameObject()->transform.localPosition_ = { 0,2,0 };
-	player_->GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	player_->GetGameObject()->transform.localScale_ = { 0.5f,0.5f,0.5f };
-	player_->GetGameObject()->transform.UpdateMatrix();
-	player_->Initialize(ADXKeyBoardInput::GetCurrentInstance(), { DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C }, &camera_);
+	temp = ADXObject::Create({ 0,2,0 });
+	player_ = temp->AddComponent<Player>();
+	player_->Initialize(ADXKeyBoardInput::GetCurrentInstance(), { DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C }, camera_);
 	player_->LiveEntity::Initialize("player");
 
-	floors_.push_back(ADXObject::Create({ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), {2,2,2}));
-	floors_.back()->transform.localPosition_ = { 0,-1,0 };
-	floors_.back()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	floors_.back()->transform.localScale_ = { 2,2,2 };
-	floors_.back()->transform.UpdateMatrix();
+	temp = ADXObject::Create({ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 2,2,2 });
+	floors_.push_back(temp);
 	floors_.back()->model = &ground;
 	floors_.back()->texture = groundImg;
-	floors_.back()->colliders.push_back(ADXCollider(floors_.back()));
-	floors_.back()->colliders.back().colType_ = box;
+	ADXCollider* tempCol = temp->AddComponent<ADXCollider>();
+	tempCol->colType_ = box;
 
 	floors_.push_back(ADXObject::Duplicate(*floors_.back()));
 	floors_.back()->transform.localPosition_ = { 0,-2,0 };
