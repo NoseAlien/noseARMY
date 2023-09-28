@@ -98,6 +98,8 @@ ADXAudio ADXAudio::LoadADXAudio(std::string filename)
 
 void ADXAudio::Play(bool loop)
 {
+	Stop();
+
 	HRESULT result;
 
 	//再生する波形データの設定

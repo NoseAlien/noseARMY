@@ -1,6 +1,7 @@
 #pragma once
 
 #include "LiveEntity.h"
+#include "PlayerMini.h"
 #include "ADXRigidbody.h"
 
 class Enemy : public LiveEntity
@@ -13,6 +14,7 @@ protected:
 	bool targetDetected = false;
 	ADXVector3 cursor{};
 	float attackProgress = 0;
+	PlayerMini* grabber = nullptr;
 
 public:
 	void Initialize();

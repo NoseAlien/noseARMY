@@ -1,5 +1,4 @@
 #include "Enemy.h"
-#include "PlayerMini.h"
 #include "Player.h"
 #include "ADXUtility.h"
 
@@ -10,7 +9,7 @@ void Enemy::Initialize()
 	model = &enemyModel;
 	texture = ADXImage::LoadADXImage("battleField.png");
 
-	damageSE = ADXAudio::LoadADXAudio("sound/hit.wav");
+	damageSE = ADXAudio::LoadADXAudio("sound/slam.wav");
 	defeatSE = ADXAudio::LoadADXAudio("sound/slap.wav");
 
 	colliders = {};
@@ -53,6 +52,13 @@ void Enemy::DeadUpdate()
 
 	rigidbody.VelocityMove();
 
+	if (grabber != nullptr)
+	{
+		transform.SetWorldPosition(transform.GetWorldPosition()
+			+ (grabber->transform.GetWorldPosition() - transform.GetWorldPosition()) * 0.1f);
+		LiveEntity::SetAttackObj({ &colliders[0],grabber->GetParent(),maxHP});
+	}
+
 	rigidbody.Update(this);
 }
 
@@ -80,9 +86,7 @@ void Enemy::LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 			{
 				if (col == &colItr)
 				{
-					transform.SetWorldPosition(transform.GetWorldPosition()
-						+ (col->GetGameObject()->transform.GetWorldPosition() - transform.GetWorldPosition()) * 0.1f);
-					LiveEntity::SetAttackObj({ myCol,objItr->GetParent(),maxHP });
+					grabber = objItr;
 				}
 			}
 		}
