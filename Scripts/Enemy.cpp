@@ -50,14 +50,15 @@ void Enemy::DeadUpdate()
 	rigidbody.gravity = { 0,-1,0 };
 	rigidbody.gravityScale = 0.015f;
 
-	rigidbody.VelocityMove();
-
 	if (grabber != nullptr)
 	{
 		transform.SetWorldPosition(transform.GetWorldPosition()
 			+ (grabber->transform.GetWorldPosition() - transform.GetWorldPosition()) * 0.1f);
-		LiveEntity::SetAttackObj({ &colliders[0],grabber->GetParent(),maxHP});
+		LiveEntity::SetAttackObj({ &colliders[0],grabber->GetParent(),maxHP });
+		rigidbody.velocity = { 0,0,0 };
 	}
+
+	rigidbody.VelocityMove();
 
 	rigidbody.Update(this);
 }
