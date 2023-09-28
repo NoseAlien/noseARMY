@@ -7,7 +7,7 @@ StageSelectScene::StageSelectScene()
 
 void StageSelectScene::Initialize()
 {
-	objs = {};
+	player_ = {};
 	floors_ = {};
 	fields_ = {};
 	tutorialAreas_ = {};
@@ -22,19 +22,10 @@ void StageSelectScene::Initialize()
 
 	//オブジェクト
 
-	camera_.ADXObject::Initialize();
-	camera_.transform.localPosition_ = { 0,5,-20 };
-	camera_.transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0.3f,0,0 });
-	camera_.Initialize();
-
-	player_ = {};
-	player_.ADXObject::Initialize();
-	player_.transform.localPosition_ = { 0,2,0 };
-	player_.transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	player_.transform.localScale_ = { 0.5f,0.5f,0.5f };
-	player_.transform.UpdateMatrix();
-	player_.Initialize(ADXKeyBoardInput::GetCurrentInstance(), { DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C }, &camera_);
-	player_.LiveEntity::Initialize("player");
+	ADXObject* temp = ADXObject::Create({ 0,5,-20 }, ADXQuaternion::EulerToQuaternion({ 0.3f,0,0 }));
+	player_ = temp->AddComponent<Player>();
+	player_->Initialize(ADXKeyBoardInput::GetCurrentInstance(), { DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C }, camera_);
+	player_->LiveEntity::Initialize("player");
 
 	floors_.push_back(ADXObject());
 	floors_.back().Initialize();
@@ -99,27 +90,6 @@ void StageSelectScene::Initialize()
 	key.transform.UpdateMatrix();
 	key.texture = keyImg;
 	key.renderLayer = 1;
-
-	objs.push_back(&camera_);
-	objs.push_back(&player_);
-	for (auto& itr : floors_)
-	{
-		objs.push_back(&itr);
-	}
-	for (auto& itr : tutorialAreas_)
-	{
-		objs.push_back(&itr);
-	}
-	for (auto& itr : fields_)
-	{
-		objs.push_back(&itr);
-	}
-	for (auto& itr : gates_)
-	{
-		objs.push_back(&itr);
-	}
-	objs.push_back(&backGround_);
-	objs.push_back(&key);
 }
 
 void StageSelectScene::Update()
@@ -127,11 +97,6 @@ void StageSelectScene::Update()
 	key.transform.localPosition_ = { -0.65f,0.85f,0 };
 	key.transform.localPosition_.y += sinf(clock() * 0.001f) * 0.01f;
 	key.transform.localScale_ = { 0.45f / ADXWindow::GetAspect(),0.45f,1 };
-
-	for (auto& itr : objs)
-	{
-		itr->Update();
-	}
 
 	if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_Q))
 	{

@@ -32,6 +32,8 @@ public:
 	void Draw();
 	void Destroy();
 	void InitComponents();
+	template <class Type>
+	Type* AddComponent();
 	virtual void OnCollisionHit(ADXCollider* col, ADXCollider* myCol) {};
 
 protected:
@@ -118,3 +120,11 @@ private: // Ã“Iƒƒ“ƒo•Ï”
 	
 	static bool S_highQualityZSort;
 };
+
+template<class Type>
+inline Type* ADXObject::AddComponent()
+{
+	std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>> temp(new Type);
+	components.push_back(move(temp));
+	return components.back().get();
+}

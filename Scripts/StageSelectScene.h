@@ -21,20 +21,17 @@ private:
 	ADXModel rect{};
 
 	//カメラ
-	ADXCamera camera_{};
+	ADXCamera* camera_ = nullptr;
 
 	//オブジェクト
-	ADXObject key{};
-	Player player_{};
-	std::list<ADXObject> floors_{};
-	std::list<TutorialArea> tutorialAreas_{};
-	std::list<FieldBox> fields_{};
-	std::list<SceneGate> gates_{};
+	ADXObject* key{};
+	Player* player_{};
+	std::list<ADXObject*> floors_{};
+	std::list<TutorialArea*> tutorialAreas_{};
+	std::list<FieldBox*> fields_{};
+	std::list<SceneGate*> gates_{};
 
-	ADXObject backGround_{};
-
-	//全てのオブジェクト
-	std::list<ADXObject*> objs{};
+	ADXObject* backGround_{};
 
 public:
 	StageSelectScene();

@@ -29,8 +29,8 @@ void ADXScene::Initialize()
 
 	//オブジェクト
 
-	camera_.ADXObject::Initialize();
-	camera_->GetGameObject()->transform.localPosition_ = { 0,0,-2 };
+	ADXObject* temp = ADXObject::Create({0,0,-2});
+	camera_ = temp->AddComponent<ADXCamera>();
 
 	title = ADXObject::Create({ 0,0,0.1f },ADXQuaternion::IdentityQuaternion());
 	title->transform.UpdateMatrix();
