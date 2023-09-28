@@ -32,11 +32,10 @@ void GameScene::Initialize()
 	player_->Initialize(ADXKeyBoardInput::GetCurrentInstance(), { DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C }, camera_);
 	player_->LiveEntity::Initialize("player");
 
-	temp = ADXObject::Create({ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 2,2,2 });
-	floors_.push_back(temp);
+	floors_.push_back(ADXObject::Create({ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 2,2,2 }));
 	floors_.back()->model = &ground;
 	floors_.back()->texture = groundImg;
-	ADXCollider* tempCol = temp->AddComponent<ADXCollider>();
+	ADXCollider* tempCol = floors_.back()->AddComponent<ADXCollider>();
 	tempCol->colType_ = box;
 
 	floors_.push_back(ADXObject::Duplicate(*floors_.back()));
@@ -124,99 +123,56 @@ void GameScene::Initialize()
 	floors_.back()->transform.UpdateMatrix();
 
 
-	TutorialArea newArea;
-	ADXObject* newAreaObj;
-
-	tutorialAreas_.push_back(TutorialArea());
-	tutorialAreas_.back()->ADXObject::Initialize();
-	tutorialAreas_.back()->GetGameObject()->transform.localPosition_ = { 0,3,0 };
-	tutorialAreas_.back()->GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	tutorialAreas_.back()->GetGameObject()->transform.localScale_ = { 4,4,4 };
-	tutorialAreas_.back()->GetGameObject()->transform.UpdateMatrix();
-	tutorialAreas_.back()->colliders.push_back(ADXCollider(&tutorialAreas_->back()));
-	tutorialAreas_.back()->colliders.back().isTrigger = true;
-	tutorialAreas_.back()->colliders.back().colType_ = box;
+	temp = ADXObject::Create({ 0,3,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 4,4,4 });
+	tutorialAreas_.push_back(temp->AddComponent<TutorialArea>());
+	tempCol = temp->AddComponent<ADXCollider>();
+	tempCol->isTrigger = true;
+	tempCol->colType_ = box;
 	tutorialAreas_.back()->Initialize(ADXImage::LoadADXImage("tutorial_move.png"));
 
-	newAreaObj = &newArea;
-	*newAreaObj = ADXObject::Duplicate(tutorialAreas_->back(), true);
-	tutorialAreas_.push_back(newArea);
-	tutorialAreas_.back()->GetGameObject()->transform.localPosition_ = { 0,0,8 };
-	tutorialAreas_.back()->GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	tutorialAreas_.back()->GetGameObject()->transform.localScale_ = { 10,1,2 };
-	tutorialAreas_.back()->GetGameObject()->transform.UpdateMatrix();
+	temp = ADXObject::Create({ 0,0,8 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,1,2 });
+	tutorialAreas_.push_back(temp->AddComponent<TutorialArea>());
+	tempCol = temp->AddComponent<ADXCollider>();
+	tempCol->isTrigger = true;
+	tempCol->colType_ = box;
 	tutorialAreas_.back()->Initialize(ADXImage::LoadADXImage("tutorial_jump.png"));
 
-	newAreaObj = &newArea;
-	*newAreaObj = ADXObject::Duplicate(tutorialAreas_->back(), true);
-	tutorialAreas_.push_back(newArea);
-	tutorialAreas_.back()->GetGameObject()->transform.localPosition_ = { 0,10,15 };
-	tutorialAreas_.back()->GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	tutorialAreas_.back()->GetGameObject()->transform.localScale_ = { 10,10,5 };
-	tutorialAreas_.back()->GetGameObject()->transform.UpdateMatrix();
+	temp = ADXObject::Create({ 0,10,15 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,10,15 });
+	tutorialAreas_.push_back(temp->AddComponent<TutorialArea>());
+	tempCol = temp->AddComponent<ADXCollider>();
+	tempCol->isTrigger = true;
+	tempCol->colType_ = box;
 	tutorialAreas_.back()->Initialize(ADXImage::LoadADXImage("tutorial_jump_2.png"));
 
-	newAreaObj = &newArea;
-	*newAreaObj = ADXObject::Duplicate(tutorialAreas_->back(), true);
-	tutorialAreas_.push_back(newArea);
-	tutorialAreas_.back()->GetGameObject()->transform.localPosition_ = { 0,23,38 };
-	tutorialAreas_.back()->GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	tutorialAreas_.back()->GetGameObject()->transform.localScale_ = { 10,4,15 };
-	tutorialAreas_.back()->GetGameObject()->transform.UpdateMatrix();
+	temp = ADXObject::Create({ 0,23,38 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,4,15 });
+	tutorialAreas_.push_back(temp->AddComponent<TutorialArea>());
+	tempCol = temp->AddComponent<ADXCollider>();
+	tempCol->isTrigger = true;
+	tempCol->colType_ = box;
 	tutorialAreas_.back()->Initialize(ADXImage::LoadADXImage("tutorial_army.png"));
 
-	newAreaObj = &newArea;
-	*newAreaObj = ADXObject::Duplicate(tutorialAreas_->back(), true);
-	tutorialAreas_.push_back(newArea);
-	tutorialAreas_.back()->GetGameObject()->transform.localPosition_ = { 3,15.5,112 };
-	tutorialAreas_.back()->GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	tutorialAreas_.back()->GetGameObject()->transform.localScale_ = { 6,5,6 };
-	tutorialAreas_.back()->GetGameObject()->transform.UpdateMatrix();
+	temp = ADXObject::Create({ 3,15.5,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,5,6 });
+	tutorialAreas_.push_back(temp->AddComponent<TutorialArea>());
+	tempCol = temp->AddComponent<ADXCollider>();
+	tempCol->isTrigger = true;
+	tempCol->colType_ = box;
 	tutorialAreas_.back()->Initialize(ADXImage::LoadADXImage("tutorial_army_2.png"));
 
 
-	FieldBox newField;
-	ADXObject* newFieldObj;
+	temp = ADXObject::Create({ 0,13,35 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,14,45 });
+	fields_.push_back(temp->AddComponent<FieldBox>());
 
-	fields_.push_back(FieldBox());
-	fields_.back()->ADXObject::Initialize();
-	fields_.back()->GetGameObject()->transform.localPosition_ = { 0,13,35 };
-	fields_.back()->GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	fields_.back()->GetGameObject()->transform.localScale_ = { 10,14,45 };
-	fields_.back()->GetGameObject()->transform.UpdateMatrix();
-	fields_.back()->Initialize();
+	temp = ADXObject::Create({ 13.5,15,82 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 4.5,5,32 });
+	fields_.push_back(temp->AddComponent<FieldBox>());
 
-	newFieldObj = &newField;
-	*newFieldObj = ADXObject::Duplicate(fields_->back(), true);
-	fields_.push_back(newField);
-	fields_.back()->GetGameObject()->transform.localPosition_ = { 13.5,15,82 };
-	fields_.back()->GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	fields_.back()->GetGameObject()->transform.localScale_ = { 4.5,5,32 };
-	fields_.back()->GetGameObject()->transform.UpdateMatrix();
+	temp = ADXObject::Create({ 3,15.5f,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6.1f,5,6 });
+	fields_.push_back(temp->AddComponent<FieldBox>());
 
-	newFieldObj = &newField;
-	*newFieldObj = ADXObject::Duplicate(fields_->back(), true);
-	fields_.push_back(newField);
-	fields_.back()->GetGameObject()->transform.localPosition_ = { 3,15.5f,112 };
-	fields_.back()->GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	fields_.back()->GetGameObject()->transform.localScale_ = { 6.1f,5,6 };
-	fields_.back()->GetGameObject()->transform.UpdateMatrix();
+	temp = ADXObject::Create({ -22,-14,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,1 }), { 38,4,2 });
+	fields_.push_back(temp->AddComponent<FieldBox>());
 
-	newFieldObj = &newField;
-	*newFieldObj = ADXObject::Duplicate(fields_->back(), true);
-	fields_.push_back(newField);
-	fields_.back()->GetGameObject()->transform.localPosition_ = { -22,-14,112 };
-	fields_.back()->GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,1 });
-	fields_.back()->GetGameObject()->transform.localScale_ = { 38,4,2 };
-	fields_.back()->GetGameObject()->transform.UpdateMatrix();
-
-	newFieldObj = &newField;
-	*newFieldObj = ADXObject::Duplicate(fields_->back(), true);
-	fields_.push_back(newField);
-	fields_.back()->GetGameObject()->transform.localPosition_ = { -40,-50,112 };
-	fields_.back()->GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	fields_.back()->GetGameObject()->transform.localScale_ = { 6,10,6 };
-	fields_.back()->GetGameObject()->transform.UpdateMatrix();
+	temp = ADXObject::Create({ -40,-50,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,10,6 });
+	fields_.push_back(temp->AddComponent<FieldBox>());
 
 
 	battleFields_.push_back(BattleFieldBox());

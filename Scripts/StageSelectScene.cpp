@@ -32,11 +32,10 @@ void StageSelectScene::Initialize()
 	player_->Initialize(ADXKeyBoardInput::GetCurrentInstance(), { DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C }, camera_);
 	player_->LiveEntity::Initialize("player");
 
-	temp = ADXObject::Create({ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 2,2,2 });
-	floors_.push_back(temp);
+	floors_.push_back(ADXObject::Create({ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 2,2,2 }));
 	floors_.back()->model = &ground;
 	floors_.back()->texture = groundImg;
-	ADXCollider* tempCol = temp->AddComponent<ADXCollider>();
+	ADXCollider* tempCol = floors_.back()->AddComponent<ADXCollider>();
 	tempCol->colType_ = box;
 
 	floors_.push_back(ADXObject::Duplicate(*floors_.back()));
