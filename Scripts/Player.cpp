@@ -13,7 +13,7 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 {
 	keyboard = setKeyboard;
 	config = setConfig;
-	rigidbody.Initialize(this);
+	rigidbody.Initialize(GetGameObject());
 	jumpSE = ADXAudio::LoadADXAudio("sound/jump.wav");
 	damageSE = ADXAudio::LoadADXAudio("sound/damage.wav");
 	windowOpenSE = ADXAudio::LoadADXAudio("sound/windowOpen.wav");
@@ -21,37 +21,37 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 	rect = ADXModel::CreateRect();
 	playerModel = ADXModel::LoadADXModel("model/sphere.obj");
 
-	model = &playerModel;
-	texture = ADXImage::LoadADXImage("apEG_fur.png");
+	GetGameObject()->model = &playerModel;
+	GetGameObject()->texture = ADXImage::LoadADXImage("apEG_fur.png");
 
-	colliders.push_back(ADXCollider(this));
-	colliders.back().pushable_ = true;
+	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
+	tempCol->pushable_ = true;
 
-	nose.Initialize();
-	nose.transform.localPosition_ = { 0,0,1.01f };
-	nose.transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 });
-	nose.transform.localScale_ = { 0.42f,0.35f,0.35f };
-	nose.transform.parent_ = &transform;
-	nose.transform.UpdateMatrix();
-	nose.model = &rect;
-	nose.texture = ADXImage::LoadADXImage("apEGnoSE.png");
-	nose.material = material;
+	nose->Initialize();
+	nose->transform.localPosition_ = { 0,0,1.01f };
+	nose->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 });
+	nose->transform.localScale_ = { 0.42f,0.35f,0.35f };
+	nose->transform.parent_ = &GetGameObject()->transform;
+	nose->transform.UpdateMatrix();
+	nose->model = &rect;
+	nose->texture = ADXImage::LoadADXImage("apEGnoSE.png");
+	nose->material = GetGameObject()->material;
 
-	tutorialWindow.Initialize();
-	tutorialWindow.transform.rectTransform = true;
-	tutorialWindow.transform.UpdateMatrix();
-	tutorialWindow.model = &rect;
-	tutorialWindow.texture = ADXImage::LoadADXImage("WhiteDot.png");
-	tutorialWindow.material = material;
-	tutorialWindow.renderLayer = 1;
+	tutorialWindow->Initialize();
+	tutorialWindow->transform.rectTransform = true;
+	tutorialWindow->transform.UpdateMatrix();
+	tutorialWindow->model = &rect;
+	tutorialWindow->texture = ADXImage::LoadADXImage("WhiteDot.png");
+	tutorialWindow->material = GetGameObject()->material;
+	tutorialWindow->renderLayer = 1;
 
-	outOfField.Initialize();
-	outOfField.transform.rectTransform = true;
-	outOfField.transform.UpdateMatrix();
-	outOfField.model = &rect;
-	outOfField.texture = ADXImage::LoadADXImage("outOfField.png");
-	outOfField.material = material;
-	outOfField.renderLayer = 1;
+	outOfField->Initialize();
+	outOfField->transform.rectTransform = true;
+	outOfField->transform.UpdateMatrix();
+	outOfField->model = &rect;
+	outOfField->texture = ADXImage::LoadADXImage("outOfField->png");
+	outOfField->material = GetGameObject()->material;
+	outOfField->renderLayer = 1;
 
 	camera = setCamera;
 }
@@ -73,9 +73,9 @@ bool Player::GetInputStatusRelease(int keyIndex)
 
 void Player::Move(float walkSpeed, float jumpPower)
 {
-	ADXVector3 cameraRight = camera->transform.TransformPointOnlyRotation({ 1,0,0 });
+	ADXVector3 cameraRight = camera->GetGameObject()->transform.TransformPointOnlyRotation({ 1,0,0 });
 	cameraRight = cameraRight.Normalize();
-	ADXVector3 cameraForward = camera->transform.TransformPointOnlyRotation({ 0,0,1 });
+	ADXVector3 cameraForward = camera->GetGameObject()->transform.TransformPointOnlyRotation({ 0,0,1 });
 	cameraForward.y = 0;
 	cameraForward = cameraForward.Normalize();
 
@@ -97,7 +97,7 @@ void Player::Move(float walkSpeed, float jumpPower)
 		{
 			rigidbody.velocity -= cameraRight * walkSpeed;
 		}
-		transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(rigidbody.velocity.x, rigidbody.velocity.z),0 });
+		GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(rigidbody.velocity.x, rigidbody.velocity.z),0 });
 	}
 
 	if (keyboard->KeyTrigger(config[4]))
@@ -113,24 +113,24 @@ void Player::Move(float walkSpeed, float jumpPower)
 
 void Player::LiveEntitiesUpdate()
 {
-	renderLayer = 0;
-	nose.renderLayer = 0;
+	GetGameObject()->renderLayer = 0;
+	nose->renderLayer = 0;
 
 	deadAnimationProgress = 0;
 
 	float scale = ADXUtility::ValueMapping((float)minis.size(), 0, (float)maxMinisNum, 1, 0.25f);
-	transform.localScale_ = { scale,scale,scale };
+	GetGameObject()->transform.localScale_ = { scale,scale,scale };
 
-	transform.modelScale_ = { 1 + sinf((float)clock() * 0.001f) * 0.03f,1 + cosf((float)clock() * 0.001f) * 0.03f,1 + sinf((float)clock() * 0.001f) * 0.03f };
+	GetGameObject()->transform.modelScale_ = { 1 + sinf((float)clock() * 0.001f) * 0.03f,1 + cosf((float)clock() * 0.001f) * 0.03f,1 + sinf((float)clock() * 0.001f) * 0.03f };
 
-	ADXVector3 cameraVec = camera->transform.GetWorldPosition() - transform.GetWorldPosition();
+	ADXVector3 cameraVec = camera->GetGameObject()->transform.GetWorldPosition() - GetGameObject()->transform.GetWorldPosition();
 	cameraVec.y = 0;
 	cameraVec = cameraVec.Normalize();
-	camera->transform.localPosition_ = transform.localPosition_ + cameraVec * 20;
-	camera->transform.localPosition_.y += 5;
-	camera->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(-cameraVec.x, -cameraVec.z),0 });
-	camera->transform.UpdateMatrix();
-	camera->transform.localRotation_ = camera->transform.localRotation_ * ADXQuaternion::MakeAxisAngle({ 1,0,0 }, 0.3f);
+	camera->GetGameObject()->transform.localPosition_ = GetGameObject()->transform.localPosition_ + cameraVec * 20;
+	camera->GetGameObject()->transform.localPosition_.y += 5;
+	camera->GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(-cameraVec.x, -cameraVec.z),0 });
+	camera->GetGameObject()->transform.UpdateMatrix();
+	camera->GetGameObject()->transform.localRotation_ = camera->GetGameObject()->transform.localRotation_ * ADXQuaternion::MakeAxisAngle({ 1,0,0 }, 0.3f);
 
 	bool moveInput =
 		!keyboard->KeyPress(config[0]) || keyboard->KeyPress(config[1]) || keyboard->KeyPress(config[2]) || keyboard->KeyPress(config[3]);
@@ -151,51 +151,51 @@ void Player::LiveEntitiesUpdate()
 		Move(0.05f, 0.4f);
 	}
 
-	rigidbody.Update(this);
+	rigidbody.Update(GetGameObject());
 
 	if (splitInterval <= -20)
 	{
-		minis.remove_if([=](auto& itr)
+		for (auto& itr : minis)
+		{
+			for (auto& colItr : GetGameObject()->GetComponents<ADXCollider>())
 			{
-				for (auto& colItr : colliders)
+				for (auto& colListItr : colItr->GetCollideList())
 				{
-					for (auto& colListItr : colItr.GetCollideList())
+					for (auto& colItr2 : itr->GetGameObject()->GetComponent<ADXCollider>())
 					{
-						for (auto& colItr2 : itr->colliders)
+						if (colListItr == &colItr2)
 						{
-							if (colListItr == &colItr2)
-							{
-								splitable = false;
-								return true;
-							}
+							splitable = false;
+							itr->GetGameObject()->Destroy();
 						}
 					}
 				}
-		return false; });
+			}
+		}
 	}
 
 	minis.remove_if([=](auto& itr)
-		{ return ADXMatrix4::Transform(itr->transform.localPosition_, transform.GetMatWorldInverse()).Length() > 30 / scale; });
+		{ return ADXMatrix4::Transform(itr->GetGameObject()->transform.localPosition_, GetGameObject()->transform.GetMatWorldInverse()).Length() > 30 / scale; });
 
-	nose.transform.localScale_ = ADXVector3{ 0.42f,0.35f,0.35f } *(float)fmax(1, 1 + pow(fmax(0, splitInterval), 2) * 0.02f);
-	nose.transform.localPosition_ = { 0,sinf((float)clock() * 0.001f) * 0.03f,1.01f + sinf((float)clock() * 0.001f) * 0.03f };
+	nose->transform.localScale_ = ADXVector3{ 0.42f,0.35f,0.35f } *(float)fmax(1, 1 + pow(fmax(0, splitInterval), 2) * 0.02f);
+	nose->transform.localPosition_ = { 0,sinf((float)clock() * 0.001f) * 0.03f,1.01f + sinf((float)clock() * 0.001f) * 0.03f };
 
 	splitInterval--;
 	splitInterval = max(-20, splitInterval);
 
 	if (splitable && keyboard->KeyRelease(config[5]) && splitInterval <= 0)
 	{
-		nose.transform.localScale_ = { 0.42f,0.35f,0.35f };
-		nose.transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 });
+		nose->transform.localScale_ = { 0.42f,0.35f,0.35f };
+		nose->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 });
 		if (minis.size() < maxMinisNum)
 		{
 			std::unique_ptr<PlayerMini, ADXUtility::NPManager<PlayerMini>> mini(new PlayerMini);
 			ADXObject* miniObj = mini.get();
-			*miniObj = Duplicate(*this);
-			mini->transform.localScale_ = { 0.5f,0.5f,0.5f };
-			mini->transform.localPosition_ = ADXMatrix4::Transform({ 0,0,1 }, transform.GetMatWorld());
+			*miniObj = Duplicate(*GetGameObject());
+			mini->GetGameObject()->transform.localScale_ = { 0.5f,0.5f,0.5f };
+			mini->GetGameObject()->transform.localPosition_ = ADXMatrix4::Transform({ 0,0,1 }, GetGameObject()->transform.GetMatWorld());
 
-			mini->Initialize(this, nose);
+			mini->Initialize(this, *nose);
 			minis.push_back(move(mini));
 		}
 		splitInterval = 7;
@@ -208,23 +208,21 @@ void Player::LiveEntitiesUpdate()
 
 	for (auto& itr : minis)
 	{
-		itr->Update();
-		SetAttackObj({ &itr->colliders.back(), this, (float)minis.size() });
+		SetAttackObj({ itr->GetGameObject()->GetComponent<ADXCollider>(), this, (float)minis.size()});
 	}
-	nose.Update();
 
-	uint32_t prevTutorialImg = tutorialWindow.texture;
+	uint32_t prevTutorialImg = tutorialWindow->texture;
 	uint32_t setTutorialImg = prevTutorialImg;
 	bool windowExtend = false;
 	bool isOutOfField = true;
 
-	for (auto& colItr : colliders)
+	for (auto& colItr : GetGameObject()->GetComponents<ADXCollider>())
 	{
-		for (auto& colItr2 : colItr.GetCollideList())
+		for (auto& colItr2 : colItr->GetCollideList())
 		{
 			for (auto& objItr : TutorialArea::GetAreas())
 			{
-				if (colItr2->GetGameObject() == objItr)
+				if (colItr2->GetGameObject() == objItr->GetGameObject())
 				{
 					if (!windowClosing)
 					{
@@ -235,8 +233,8 @@ void Player::LiveEntitiesUpdate()
 			}
 			for (auto& objItr : FieldBox::GetFields())
 			{
-				if (colItr2->GetGameObject() == objItr
-					&& (transform.GetWorldPosition() - colItr2->ClosestPoint(transform.GetWorldPosition())).Length() < 0.1)
+				if (colItr2->GetGameObject() == objItr->GetGameObject()
+					&& (GetGameObject()->transform.GetWorldPosition() - colItr2->ClosestPoint(GetGameObject()->transform.GetWorldPosition())).Length() < 0.1)
 				{
 					isOutOfField = false;
 				}
@@ -281,26 +279,23 @@ void Player::LiveEntitiesUpdate()
 
 	if (!windowClosing)
 	{
-		tutorialWindow.texture = setTutorialImg;
+		tutorialWindow->texture = setTutorialImg;
 	}
 
-	tutorialWindow.transform.localScale_ = ADXUtility::Lerp({ 0,0.3f,0 }, { 0.3f / ADXWindow::GetAspect(),0.3f,0 }, ADXUtility::EaseOut(tutorialWindowExAmount, 4));
-	tutorialWindow.transform.localPosition_ = { 0.65f,-0.65f + sin(clock() * 0.002f) * 0.01f,0 };
+	tutorialWindow->transform.localScale_ = ADXUtility::Lerp({ 0,0.3f,0 }, { 0.3f / ADXWindow::GetAspect(),0.3f,0 }, ADXUtility::EaseOut(tutorialWindowExAmount, 4));
+	tutorialWindow->transform.localPosition_ = { 0.65f,-0.65f + sin(clock() * 0.002f) * 0.01f,0 };
 
-	tutorialWindow.Update();
 
 	if (isOutOfField)
 	{
-		outOfField.transform.localScale_ = { 0.4f,0.7f,0 };
+		outOfField->transform.localScale_ = { 0.4f,0.7f,0 };
 	}
 	else
 	{
-		outOfField.transform.localScale_ = { 0,0,0 };
+		outOfField->transform.localScale_ = { 0,0,0 };
 	}
 
-	outOfField.transform.localPosition_ = { -0.6f,0.65f + sin(clock() * 0.003f) * 0.01f,0 };
-
-	outOfField.Update();
+	outOfField->transform.localPosition_ = { -0.6f,0.65f + sin(clock() * 0.003f) * 0.01f,0 };
 
 #ifdef _DEBUG
 	float pos[3] = { transform.localPosition_.x,transform.localPosition_.y,transform.localPosition_.z };
@@ -317,14 +312,13 @@ void Player::LiveEntitiesUpdate()
 
 void Player::DeadUpdate()
 {
-	renderLayer = 4;
-	nose.renderLayer = 4;
-	transform.localRotation_ = camera->transform.localRotation_;
-	transform.UpdateMatrix();
-	transform.SetWorldRotation(ADXQuaternion::MakeAxisAngle(transform.TransformPointOnlyRotation({ 0,1,0 }), 3.1415f) * transform.GetWorldRotation());
-	nose.Update();
+	GetGameObject()->renderLayer = 4;
+	nose->renderLayer = 4;
+	GetGameObject()->transform.localRotation_ = camera->GetGameObject()->transform.localRotation_;
+	GetGameObject()->transform.UpdateMatrix();
+	GetGameObject()->transform.SetWorldRotation(ADXQuaternion::MakeAxisAngle(GetGameObject()->transform.TransformPointOnlyRotation({ 0,1,0 }), 3.1415f) * GetGameObject()->transform.GetWorldRotation());
 
-	isVisible = deadAnimationProgress < 0.1;
+	GetGameObject()->isVisible = deadAnimationProgress < 0.1;
 
 	deadAnimationProgress = min(max(0, deadAnimationProgress + 0.001f), 1);
 }

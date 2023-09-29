@@ -1,22 +1,19 @@
 #include "BattleFieldBox.h"
 #include "LiveEntity.h"
 
-void BattleFieldBox::Initialize(std::vector<SpawnData> setGuarders,
-	std::list<std::unique_ptr<Enemy, ADXUtility::NPManager<Enemy>>>* setEnemiesPtr, std::string setTeam)
+void BattleFieldBox::Initialize(std::vector<SpawnData> setGuarders, std::string setTeam)
 {
-	colliders = {};
-	colliders.push_back(ADXCollider(this));
-	colliders.back().isTrigger = true;
-	colliders.back().colType_ = box;
+	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
+	tempCol->isTrigger = true;
+	tempCol->colType_ = box;
 
 	boxModel = ADXModel::LoadADXModel("model/battleBox.obj");
-	model = &boxModel;
-	texture = ADXImage::LoadADXImage("battleField.png");
+	GetGameObject()->model = &boxModel;
+	GetGameObject()->texture = ADXImage::LoadADXImage("battleField.png");
 
-	sortingOrder = 2;
+	GetGameObject()->sortingOrder = 2;
 
 	enemySpawnData.SetSpawnList(setGuarders);
-	enemiesPtr = setEnemiesPtr;
 	team = setTeam;
 
 	animationProgress = 0;
@@ -27,31 +24,25 @@ void BattleFieldBox::FieldUpdate()
 	if (awake)
 	{
 		animationProgress += (1 - animationProgress) * 0.2f;
-		transform.modelPosition_ = { 0,-(1 - animationProgress) ,0 };
-		transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,(1 - animationProgress) * 3,0 });
-		transform.modelScale_ = { animationProgress,animationProgress ,animationProgress };
+		GetGameObject()->transform.modelPosition_ = { 0,-(1 - animationProgress) ,0 };
+		GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,(1 - animationProgress) * 3,0 });
+		GetGameObject()->transform.modelScale_ = { animationProgress,animationProgress ,animationProgress };
 
-		isVisible = true;
-
-
-		for (auto& itr : guardersPtr)
-		{
-			itr->Update();
-		}
+		GetGameObject()->isVisible = true;
 
 		if (battling <= 0)
 		{
 			animationProgress += (-1 - animationProgress) * 0.2f; 
 			if (animationProgress <= 0)
 			{
-				isActive = false;
+				GetGameObject()->isActive = false;
 			}
 		}
 		battling--;
 	}
 	else
 	{
-		isVisible = false;
+		GetGameObject()->isVisible = false;
 	}
 }
 
@@ -61,13 +52,13 @@ void BattleFieldBox::FieldOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 	{
 		for (auto& objItr : LiveEntity::GetLiveEntities())
 		{
-			for (auto& colItr : objItr->colliders)
+			for (auto& colItr : objItr->GetGameObject()->GetComponents<ADXCollider>())
 			{
-				if (col == &colItr && objItr->GetTeam() != team)
+				if (col == colItr && objItr->GetTeam() != team)
 				{
 					awake = true;
 
-					guardersPtr = enemySpawnData.Spawn(enemiesPtr, team, &transform);
+					guardersPtr = enemySpawnData.Spawn(team, &GetGameObject()->transform);
 				}
 			}
 		}
@@ -76,9 +67,9 @@ void BattleFieldBox::FieldOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 	{
 		for (auto& objItr : guardersPtr)
 		{
-			for (auto& colItr : objItr->colliders)
+			for (auto& colItr : objItr->GetGameObject()->GetComponents<ADXCollider>())
 			{
-				if (col == &colItr && objItr->IsLive())
+				if (col == colItr && objItr->IsLive())
 				{
 					battling = 10;
 				}

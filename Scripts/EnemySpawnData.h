@@ -17,6 +17,5 @@ private:
 
 public:
 	void SetSpawnList(std::vector<SpawnData> setSpawnList);
-	std::list<Enemy*> Spawn(std::list<std::unique_ptr<Enemy, ADXUtility::NPManager<Enemy>>>* enemiesListPtr,
-		std::string team = "", ADXWorldTransform* tf = nullptr);
+	std::list<Enemy*> Spawn(std::string team = "", ADXWorldTransform* tf = nullptr);
 };

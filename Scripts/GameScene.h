@@ -31,14 +31,14 @@ private:
 	ADXCamera* camera_{};
 
 	//オブジェクト
-	ADXObject* key{};
-	Player* player_{};
+	ADXObject* key = nullptr;
+	Player* player_ = nullptr;
 	std::list<ADXObject*> floors_{};
 	std::list<TutorialArea*> tutorialAreas_{};
 	std::list<FieldBox*> fields_{};
 	std::list<BattleFieldBox*> battleFields_{};
 	std::list<Enemy*> enemies_{};
-	Goal* goal_{};
+	Goal* goal_ = nullptr;
 
 	ADXObject* backGround_{};
 

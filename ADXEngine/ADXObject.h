@@ -34,6 +34,10 @@ public:
 	void InitComponents();
 	template <class Type>
 	Type* AddComponent();
+	template <class Type>
+	Type* GetComponent();
+	template <class Type>
+	std::list<Type*> GetComponents();
 	virtual void OnCollisionHit(ADXCollider* col, ADXCollider* myCol) {};
 
 protected:
@@ -127,4 +131,31 @@ inline Type* ADXObject::AddComponent()
 	std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>> temp(new Type);
 	components.push_back(move(temp));
 	return components.back().get();
+}
+
+template<class Type>
+inline Type* ADXObject::GetComponent()
+{
+	for (auto& itr : components)
+	{
+		if (dynamic_cast<Type*>(itr.get()))
+		{
+			return itr.get();
+		}
+	}
+	return nullptr;
+}
+
+template<class Type>
+inline std::list<Type*> ADXObject::GetComponents()
+{
+	std::list<Type*> ret = {};
+	for (auto& itr : components)
+	{
+		if (dynamic_cast<Type*>(itr.get()))
+		{
+			ret.push_back(itr.get());
+		}
+	}
+	return ret;
 }

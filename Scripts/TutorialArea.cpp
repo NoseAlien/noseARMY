@@ -10,6 +10,10 @@ TutorialArea::TutorialArea()
 
 void TutorialArea::Initialize(uint32_t setTutorialImg)
 {
+	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
+	tempCol->isTrigger = true;
+	tempCol->colType_ = box;
+
 	tutorialImg = setTutorialImg;
 }
 

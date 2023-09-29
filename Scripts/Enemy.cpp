@@ -7,19 +7,19 @@ void Enemy::Initialize()
 {
 	enemyModel = ADXModel::LoadADXModel("model/groundBlock.obj");
 
-	model = &enemyModel;
-	texture = ADXImage::LoadADXImage("battleField.png");
+	GetGameObject()->model = &enemyModel;
+	GetGameObject()->texture = ADXImage::LoadADXImage("battleField.png");
 
-	colliders = {};
-	colliders.push_back(ADXCollider(this));
-	colliders.back().pushable_ = true;
-	colliders.back().colType_ = box;
-	colliders.push_back(ADXCollider(this));
-	colliders.back().isTrigger = true;
-	colliders.back().colType_ = sphere;
-	colliders.back().radius_ = 12;
+	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
+	tempCol->pushable_ = true;
+	tempCol->colType_ = box;
 
-	rigidbody.Initialize(this);
+	tempCol = GetGameObject()->AddComponent<ADXCollider>();
+	tempCol->isTrigger = true;
+	tempCol->colType_ = sphere;
+	tempCol->radius_ = 12;
+
+	rigidbody.Initialize(GetGameObject());
 }
 
 void Enemy::LiveEntitiesUpdate()
@@ -33,15 +33,15 @@ void Enemy::LiveEntitiesUpdate()
 
 	EnemyUpdate();
 
-	rigidbody.Update(this);
+	rigidbody.Update(GetGameObject());
 	targetDetected = false;
 }
 
 void Enemy::DeadUpdate()
 {
-	colliders[0].pushBackPriority = -2;
+	GetGameObject()->GetComponent<ADXCollider>()->pushBackPriority = -2;
 
-	material.ambient = { 0,0,0 };
+	GetGameObject()->material.ambient = { 0,0,0 };
 
 	rigidbody.drag = 0.8f;
 	rigidbody.dragAxis = { true,false,true };
@@ -50,7 +50,7 @@ void Enemy::DeadUpdate()
 
 	rigidbody.VelocityMove();
 
-	rigidbody.Update(this);
+	rigidbody.Update(GetGameObject());
 }
 
 void Enemy::LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
@@ -59,12 +59,12 @@ void Enemy::LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 	{
 		for (auto& objItr : LiveEntity::GetLiveEntities())
 		{
-			for (auto& colItr : objItr->colliders)
+			for (auto& colItr : objItr->GetGameObject()->GetComponents<ADXCollider>())
 			{
-				if (col == &colItr && !colItr.isTrigger && objItr->IsLive() && objItr->GetTeam() != GetTeam())
+				if (col == colItr && !colItr->isTrigger && objItr->IsLive() && objItr->GetTeam() != GetTeam())
 				{
 					targetDetected = true;
-					targetPos = objItr->transform.GetWorldPosition();
+					targetPos = objItr->GetGameObject()->transform.GetWorldPosition();
 				}
 			}
 		}
@@ -73,12 +73,12 @@ void Enemy::LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 	{
 		for (auto& objItr : PlayerMini::GetMinis())
 		{
-			for (auto& colItr : objItr->colliders)
+			for (auto& colItr : objItr->GetGameObject()->GetComponents<ADXCollider>())
 			{
-				if (col == &colItr)
+				if (col == colItr)
 				{
-					transform.SetWorldPosition(transform.GetWorldPosition()
-						+ (col->GetGameObject()->transform.GetWorldPosition() - transform.GetWorldPosition()) * 0.1f);
+					GetGameObject()->transform.SetWorldPosition(GetGameObject()->transform.GetWorldPosition()
+						+ (col->GetGameObject()->transform.GetWorldPosition() - GetGameObject()->transform.GetWorldPosition()) * 0.1f);
 					LiveEntity::SetAttackObj({ myCol,objItr->GetParent(),maxHP });
 				}
 			}

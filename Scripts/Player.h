@@ -38,7 +38,7 @@ private:
 	ADXParticleSystem deadParticle;
 
 
-	std::list<std::unique_ptr<PlayerMini, ADXUtility::NPManager<PlayerMini>>> minis{};
+	std::list<PlayerMini*> minis{};
 	int splitInterval = 0;
 	bool splitable = true;
 	float tutorialWindowExAmount = 0;

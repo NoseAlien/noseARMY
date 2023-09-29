@@ -5,24 +5,23 @@ std::list<FieldBox*> FieldBox::fields{};
 
 void FieldBox::Initialize()
 {
-	colliders = {};
-	colliders.push_back(ADXCollider(this));
-	colliders.back().isTrigger = true;
-	colliders.back().colType_ = box;
+	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
+	tempCol->isTrigger = true;
+	tempCol->colType_ = box;
 }
 
 void FieldBox::UniqueUpdate()
 {
-	for (auto& colItr : colliders)
+	for (auto& colItr : GetGameObject()->GetComponents<ADXCollider>())
 	{
 		for (auto& objItr : insideObjects)
 		{
 			bool pullBack = true;
 			for (auto& fieldItr : adjacentFields)
 			{
-				for (auto& colItr2 : fieldItr->colliders)
+				for (auto& colItr2 : fieldItr->GetGameObject()->GetComponents<ADXCollider>())
 				{
-					if (objItr->transform.GetWorldPosition() == colItr2.ClosestPoint(objItr->transform.GetWorldPosition()))
+					if (objItr->transform.GetWorldPosition() == colItr2->ClosestPoint(objItr->transform.GetWorldPosition()))
 					{
 						pullBack = false;
 						break;
@@ -35,7 +34,7 @@ void FieldBox::UniqueUpdate()
 			}
 			if (pullBack)
 			{
-				objItr->transform.SetWorldPosition(colItr.ClosestPoint(objItr->transform.GetWorldPosition()));
+				objItr->transform.SetWorldPosition(colItr->ClosestPoint(objItr->transform.GetWorldPosition()));
 			}
 		}
 	}
@@ -51,7 +50,7 @@ void FieldBox::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
 	for (auto& objItr : GetFields())
 	{
-		if (col->GetGameObject() == objItr && col->GetGameObject() != this
+		if (col->GetGameObject() == objItr->GetGameObject() && col->GetGameObject() != gameObject
 			&& objItr->fieldLayer == fieldLayer)
 		{
 			adjacentFields.push_back(objItr);
