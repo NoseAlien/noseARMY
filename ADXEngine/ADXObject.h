@@ -121,9 +121,10 @@ private: // Ã“Iƒƒ“ƒo•Ï”
 template<class Type>
 inline Type* ADXObject::AddComponent()
 {
-	std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>> temp(new Type);
+	Type* p = new Type();
+	std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>> temp(p);
 	components.push_back(move(temp));
-	return components.back().get();
+	return p;
 }
 
 template<class Type>
@@ -131,9 +132,11 @@ inline Type* ADXObject::GetComponent()
 {
 	for (auto& itr : components)
 	{
-		if (dynamic_cast<Type*>(itr.get()))
+		Type* p = dynamic_cast<Type*>(itr.get());
+
+		if (p != nullptr)
 		{
-			return itr.get();
+			return p;
 		}
 	}
 	return nullptr;
@@ -145,9 +148,11 @@ inline std::list<Type*> ADXObject::GetComponents()
 	std::list<Type*> ret = {};
 	for (auto& itr : components)
 	{
-		if (dynamic_cast<Type*>(itr.get()))
+		Type* p = dynamic_cast<Type*>(itr.get());
+
+		if (p != nullptr)
 		{
-			ret.push_back(itr.get());
+			ret.push_back(p);
 		}
 	}
 	return ret;

@@ -109,7 +109,7 @@ void Player::Move(float walkSpeed, float jumpPower)
 
 void Player::LiveEntitiesUpdate()
 {
-	GetGameObject()->renderLayer = 0;
+	/*GetGameObject()->renderLayer = 0;
 	nose->renderLayer = 0;
 
 	deadAnimationProgress = 0;
@@ -185,7 +185,7 @@ void Player::LiveEntitiesUpdate()
 		nose->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 });
 		if (minis.size() < maxMinisNum)
 		{
-			ADXObject* miniObj = miniObj = ADXObject::Duplicate(*GetGameObject());
+			ADXObject* miniObj = ADXObject::Duplicate(*GetGameObject());
 			PlayerMini* mini = miniObj->AddComponent<PlayerMini>();
 			mini->GetGameObject()->transform.localScale_ = { 0.5f,0.5f,0.5f };
 			mini->GetGameObject()->transform.localPosition_ = ADXMatrix4::Transform({ 0,0,1 }, GetGameObject()->transform.GetMatWorld());
@@ -302,7 +302,7 @@ void Player::LiveEntitiesUpdate()
 	ImGui::End();
 
 	transform.localPosition_ = { pos[0],pos[1],pos[2] };
-#endif
+#endif*/
 }
 
 void Player::DeadUpdate()
