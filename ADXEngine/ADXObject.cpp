@@ -312,7 +312,6 @@ ADXObject* ADXObject::Create(const ADXVector3& setLocalPosition, const ADXQuater
 	obj->transform.localPosition_ = setLocalPosition;
 	obj->transform.localRotation_ = setLocalRotation;
 	obj->transform.localScale_ = setLocalScale;
-	obj->InitComponents();
 	S_objs.push_back(move(obj));
 	return S_objs.back().get();
 }
@@ -322,7 +321,7 @@ ADXObject* ADXObject::Duplicate(const ADXObject& prefab)
 	std::unique_ptr<ADXObject, ADXUtility::NPManager<ADXObject>> obj(new ADXObject);
 	*obj = prefab;
 	obj->CreateConstBuffer();
-	obj->InitComponents();
+	obj->components.clear();
 	S_objs.push_back(move(obj));
 	return S_objs.back().get();
 }
@@ -570,10 +569,10 @@ void ADXObject::Destroy()
 	deleteFlag = true;
 }
 
-void ADXObject::InitComponents()
+void ADXObject::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
 	for (auto& itr : components)
 	{
-		itr->Initialize(this);
+		itr->OnCollisionHit(col, myCol);
 	}
 }

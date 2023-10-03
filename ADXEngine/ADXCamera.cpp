@@ -30,11 +30,11 @@ void ADXCamera::UniqueUpdate()
 
 void ADXCamera::PrepareToRandering()
 {
-	transform.UpdateMatrix();
+	GetGameObject()->transform.UpdateMatrix();
 
-	eye = ADXMatrix4::Transform({ 0,0,0 }, transform.GetMatWorld()).ConvertToXMFloat3();
-	target = ADXMatrix4::Transform({ 0,0,1 }, transform.GetMatWorld()).ConvertToXMFloat3();
-	up = ADXMatrix4::Transform({ 0,1,0 }, transform.GetMatRot()).ConvertToXMFloat3();
+	eye = ADXMatrix4::Transform({ 0,0,0 }, GetGameObject()->transform.GetMatWorld()).ConvertToXMFloat3();
+	target = ADXMatrix4::Transform({ 0,0,1 }, GetGameObject()->transform.GetMatWorld()).ConvertToXMFloat3();
+	up = ADXMatrix4::Transform({ 0,1,0 }, GetGameObject()->transform.GetMatRot()).ConvertToXMFloat3();
 
 	matView = ADXMatrix4::ConvertToADXMatrix(
 		XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up)));

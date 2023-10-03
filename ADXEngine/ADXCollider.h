@@ -50,7 +50,6 @@ private:
     ADXVector3 pushBackVector = { 0,0,0 };
 
 public:
-    ADXCollider(ADXObject* obj);
     ADXVector3 ClosestPoint(const ADXVector3& pos) const;
     ADXVector3 EdgePoint(const ADXVector3& pos);
     ADXVector3 EdgePoint(const ADXVector3& pos, const ADXVector3& prePos);

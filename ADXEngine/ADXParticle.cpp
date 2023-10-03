@@ -8,9 +8,9 @@ void ADXParticle::Initialize()
 
 void ADXParticle::UniqueUpdate()
 {
-	transform.localPosition_ += moveVec;
+	GetGameObject()->transform.localPosition_ += moveVec;
 	animation.Update();
-	texture = animation.GetNowTex();
+	GetGameObject()->texture = animation.GetNowTex();
 	lifeTime--;
 }
 
@@ -18,6 +18,6 @@ void ADXParticle::OnPreRender()
 {
 	if (billboard)
 	{
-		transform.SetWorldRotation(ADXCamera::GetCurrentCamera()->transform.GetWorldRotation());
+		GetGameObject()->transform.SetWorldRotation(ADXCamera::GetCurrentCamera()->GetGameObject()->transform.GetWorldRotation());
 	}
 }

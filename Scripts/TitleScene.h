@@ -7,19 +7,16 @@ private:
 	uint32_t titleImg = 0;
 	uint32_t keyImg = 0;
 
-	ADXObject title{};
-	ADXObject key{};
+	ADXObject* title = nullptr;
+	ADXObject* key = nullptr;
 
 	ADXModel rect{};
 
 	ADXMaterial unlitMat{};
 
-	ADXCamera camera_{};
-
-	std::list<ADXObject*> objs{};
+	ADXCamera* camera_ = nullptr;
 
 public:
-	TitleScene();
 	void Initialize();
 	void Update();
 };

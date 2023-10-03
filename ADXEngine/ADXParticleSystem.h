@@ -15,7 +15,7 @@ public:
 	int32_t lifeTime = 10;
 	ADXTexAnimation animation{};
 	ADXModel particleModel{};
-	std::list<ADXParticle> particles{};
+	std::list<ADXParticle*> particles{};
 	bool billboard = true;
 
 private:

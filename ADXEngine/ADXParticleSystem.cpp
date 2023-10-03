@@ -4,17 +4,15 @@ void ADXParticleSystem::Emission()
 {
 	if (particles.size() < maxParticleNum)
 	{
-		particles.push_back(ADXParticle());
-		ADXParticle& particle = particles.back();
-		particle.ADXObject::Initialize();
-		particle.Initialize();
-		particle.transform.parent_ = parent;
-		particle.transform.UpdateMatrix();
-		particle.model = &particleModel;
-		particle.animation = animation;
-		particle.maxLifeTime = lifeTime;
-		particle.billboard = billboard;
-		particle.Initialize();
+		ADXObject* temp = ADXObject::Create();
+		particles.push_back(temp->AddComponent<ADXParticle>());
+		ADXParticle* particle = particles.back();
+		temp->transform.parent_ = parent;
+		temp->transform.UpdateMatrix();
+		temp->model = &particleModel;
+		particle->animation = animation;
+		particle->maxLifeTime = lifeTime;
+		particle->billboard = billboard;
 	}
 }
 
@@ -26,10 +24,10 @@ void ADXParticleSystem::UniqueInitialize()
 void ADXParticleSystem::UniqueUpdate()
 {
 	particles.remove_if([=](auto& itr)
-		{ return itr.lifeTime <= 0; });
+		{ return itr = nullptr; });
 
 	for (auto& itr : particles)
 	{
-		itr.Update();
+		itr->Update(GetGameObject());
 	}
 }

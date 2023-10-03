@@ -13,7 +13,6 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 {
 	keyboard = setKeyboard;
 	config = setConfig;
-	rigidbody.Initialize(GetGameObject());
 	jumpSE = ADXAudio::LoadADXAudio("sound/jump.wav");
 	damageSE = ADXAudio::LoadADXAudio("sound/damage.wav");
 	windowOpenSE = ADXAudio::LoadADXAudio("sound/windowOpen.wav");
@@ -27,17 +26,14 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
 	tempCol->pushable_ = true;
 
-	nose->Initialize();
-	nose->transform.localPosition_ = { 0,0,1.01f };
-	nose->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 });
-	nose->transform.localScale_ = { 0.42f,0.35f,0.35f };
+	nose = ADXObject::Create({ 0,0,1.01f }, ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 }), { 0.42f,0.35f,0.35f });
 	nose->transform.parent_ = &GetGameObject()->transform;
 	nose->transform.UpdateMatrix();
 	nose->model = &rect;
 	nose->texture = ADXImage::LoadADXImage("apEGnoSE.png");
 	nose->material = GetGameObject()->material;
 
-	tutorialWindow->Initialize();
+	tutorialWindow = ADXObject::Create();
 	tutorialWindow->transform.rectTransform = true;
 	tutorialWindow->transform.UpdateMatrix();
 	tutorialWindow->model = &rect;
@@ -45,7 +41,7 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 	tutorialWindow->material = GetGameObject()->material;
 	tutorialWindow->renderLayer = 1;
 
-	outOfField->Initialize();
+	outOfField = ADXObject::Create();
 	outOfField->transform.rectTransform = true;
 	outOfField->transform.UpdateMatrix();
 	outOfField->model = &rect;
@@ -161,9 +157,9 @@ void Player::LiveEntitiesUpdate()
 			{
 				for (auto& colListItr : colItr->GetCollideList())
 				{
-					for (auto& colItr2 : itr->GetGameObject()->GetComponent<ADXCollider>())
+					for (auto& colItr2 : itr->GetGameObject()->GetComponents<ADXCollider>())
 					{
-						if (colListItr == &colItr2)
+						if (colListItr == colItr2)
 						{
 							splitable = false;
 							itr->GetGameObject()->Destroy();
@@ -189,14 +185,13 @@ void Player::LiveEntitiesUpdate()
 		nose->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 });
 		if (minis.size() < maxMinisNum)
 		{
-			std::unique_ptr<PlayerMini, ADXUtility::NPManager<PlayerMini>> mini(new PlayerMini);
-			ADXObject* miniObj = mini.get();
-			*miniObj = Duplicate(*GetGameObject());
+			ADXObject* miniObj = miniObj = ADXObject::Duplicate(*GetGameObject());
+			PlayerMini* mini = miniObj->AddComponent<PlayerMini>();
 			mini->GetGameObject()->transform.localScale_ = { 0.5f,0.5f,0.5f };
 			mini->GetGameObject()->transform.localPosition_ = ADXMatrix4::Transform({ 0,0,1 }, GetGameObject()->transform.GetMatWorld());
 
 			mini->Initialize(this, *nose);
-			minis.push_back(move(mini));
+			minis.push_back(mini);
 		}
 		splitInterval = 7;
 	}

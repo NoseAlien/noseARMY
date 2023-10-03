@@ -17,11 +17,6 @@ std::vector<collidePattern> ADXCollider::S_ignorePushBackPatterns = {};
 
 std::list<ADXCollider*> ADXCollider::S_cols = {};
 
-ADXCollider::ADXCollider(ADXObject* obj)
-{
-	Initialize(obj);
-}
-
 void ADXCollider::UniqueInitialize()
 {
 	preTranslation = gameObject->transform.localPosition_;
@@ -440,9 +435,9 @@ void ADXCollider::StaticUpdate()
 {
 	//現在の座標を保存しておく
 	std::vector<ADXVector3> objsTranslation = {};
-	for (int32_t i = 0; i < ADXObject::GetObjs().size(); i++)
+	for (auto& itr : ADXObject::GetObjs())
 	{
-		objsTranslation.push_back(ADXObject::GetObjs()[i]->transform.localPosition_);
+		objsTranslation.push_back(itr->transform.localPosition_);
 	}
 
 	//すべてのコライダーで移動距離÷(最小絶対半径×0.95)を求め、最も大きい値をtranslateDivNumFに入れる
@@ -513,13 +508,16 @@ void ADXCollider::StaticUpdate()
 	//少しづつ移動させながら当たり判定と押し戻し処理を行う
 	for (int32_t i = 0; i < translateDivNumF; i++)
 	{
+		uint32_t index = 0;
 		//移動
-		for (int32_t j = 0; j < ADXObject::GetObjs().size(); j++)
+		for (auto& itr : ADXObject::GetObjs())
 		{
-			ADXVector3 move = objsTranslation[j] - objsPreTranslation[j];
+			ADXVector3 move = objsTranslation[index] - objsPreTranslation[index];
 
-			ADXObject::GetObjs()[j]->transform.localPosition_ += move / translateDivNumF;
-			ADXObject::GetObjs()[j]->transform.UpdateMatrix();
+			itr->transform.localPosition_ += move / translateDivNumF;
+			itr->transform.UpdateMatrix();
+
+			index++;
 		}
 
 		//当たり判定と押し戻しベクトルの算出

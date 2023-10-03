@@ -12,7 +12,7 @@ private:
 	static bool S_sceneChanging;
 	static int32_t S_sceneChangeFrame;
 	static int32_t S_nextSceneNum;
-	static ADXObject S_shutter;
+	static ADXObject* S_shutter;
 	static ADXModel S_rect;
 
 public:

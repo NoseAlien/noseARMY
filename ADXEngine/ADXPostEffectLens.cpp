@@ -15,20 +15,19 @@ ADXPostEffectLens::ADXPostEffectLens()
 
 void ADXPostEffectLens::UniqueInitialize()
 {
-	Initialize();
-	transform.rectTransform = true;
-	//transform.localScale_ = { 0.5f,0.5f,0.5f };
-	transform.UpdateMatrix();
+	GetGameObject()->transform.rectTransform = true;
+	//GetGameObject()->transform.localScale_ = { 0.5f,0.5f,0.5f };
+	GetGameObject()->transform.UpdateMatrix();
 	rect = ADXModel::CreateRect();
-	texture = ADXImage::CreateADXImage(ADXWindow::S_window_width,ADXWindow::S_window_height);
-	renderLayer = 100;
-	model = &rect;
+	GetGameObject()->texture = ADXImage::CreateADXImage(ADXWindow::S_window_width,ADXWindow::S_window_height);
+	GetGameObject()->renderLayer = 100;
+	GetGameObject()->model = &rect;
 
 
 	HRESULT result;
 
 	ID3D12Device* device = ADXCommon::GetCurrentInstance()->GetDevice();
-	ID3D12Resource* texBuff = ADXDataPool::GetImgData(texture)->GetTexBuff();
+	ID3D12Resource* texBuff = ADXDataPool::GetImgData(GetGameObject()->texture)->GetTexBuff();
 
 	//デスクリプタヒープの設定
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
@@ -271,7 +270,7 @@ void ADXPostEffectLens::OnPreRender()
 
 	//リソースバリアで書き込み可能に変更
 	CD3DX12_RESOURCE_BARRIER barrierDesc = CD3DX12_RESOURCE_BARRIER::Transition(
-		ADXDataPool::GetImgData(texture)->GetTexBuff(),
+		ADXDataPool::GetImgData(GetGameObject()->texture)->GetTexBuff(),
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
 		D3D12_RESOURCE_STATE_RENDER_TARGET);
 	cmdList->ResourceBarrier(1, &barrierDesc);
@@ -300,7 +299,7 @@ void ADXPostEffectLens::OnWillRenderObject()
 {
 	//リソースバリアを戻す
 	CD3DX12_RESOURCE_BARRIER barrierDesc = CD3DX12_RESOURCE_BARRIER::Transition(
-		ADXDataPool::GetImgData(texture)->GetTexBuff(),
+		ADXDataPool::GetImgData(GetGameObject()->texture)->GetTexBuff(),
 		D3D12_RESOURCE_STATE_RENDER_TARGET,
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 	ADXCommon::GetCurrentInstance()->GetCommandList()->ResourceBarrier(1, &barrierDesc);

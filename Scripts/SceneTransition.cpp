@@ -3,19 +3,19 @@
 bool SceneTransition::S_sceneChanging = false;
 int32_t SceneTransition::S_sceneChangeFrame = 0;
 int32_t SceneTransition::S_nextSceneNum = 0;
-ADXObject SceneTransition::S_shutter{};
+ADXObject* SceneTransition::S_shutter = nullptr;
 ADXModel SceneTransition::S_rect{};
 
 void SceneTransition::StaticInitialize()
 {
 	S_rect = ADXModel::CreateRect();
 
-	S_shutter.Initialize();
-	S_shutter.transform.rectTransform = true;
-	S_shutter.transform.UpdateMatrix();
-	S_shutter.model = &S_rect;
-	S_shutter.texture = ADXImage::LoadADXImage("apEGnose.png");
-	S_shutter.renderLayer = 10;
+	S_shutter = ADXObject::Create();
+	S_shutter->transform.rectTransform = true;
+	S_shutter->transform.UpdateMatrix();
+	S_shutter->model = &S_rect;
+	S_shutter->texture = ADXImage::LoadADXImage("apEGnose.png");
+	S_shutter->renderLayer = 10;
 }
 
 void SceneTransition::StaticUpdate()
@@ -34,10 +34,9 @@ void SceneTransition::StaticUpdate()
 
 		float shutterScale = sinf(((float)S_sceneChangeFrame / S_MaxSceneChangeFrame) * 3.1415f) * 2;
 
-		S_shutter.transform.localScale_ = { shutterScale ,shutterScale * ADXWindow::GetAspect() ,shutterScale };
+		S_shutter->transform.localScale_ = { shutterScale ,shutterScale * ADXWindow::GetAspect() ,shutterScale };
 
-		S_shutter.transform.UpdateMatrix();
-		S_shutter.Update();
+		S_shutter->transform.UpdateMatrix();
 	}
 	else
 	{

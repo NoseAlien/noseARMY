@@ -2,20 +2,20 @@
 
 void Cub_E::EnemyUpdate()
 {
-	sortingOrder = 1;
+	GetGameObject()->sortingOrder = 1;
 
 	if (targetDetected && attackProgress <= 0)
 	{
 		ADXVector3 targetRelativePos = targetPos;
-		if (transform.parent_ != nullptr)
+		if (GetGameObject()->transform.parent_ != nullptr)
 		{
-			targetRelativePos = ADXMatrix4::Transform(targetPos, transform.parent_->GetMatWorld());
+			targetRelativePos = ADXMatrix4::Transform(targetPos, GetGameObject()->transform.parent_->GetMatWorld());
 		}
 		cursor = targetRelativePos;
 		attackProgress = 1;
 	}
 
-	transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
+	GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
 
 	if (attackProgress > 0)
 	{
@@ -23,16 +23,16 @@ void Cub_E::EnemyUpdate()
 		if (attackProgress > 0.5f)
 		{
 			finalTarget.y += 6;
-			rigidbody.velocity = (finalTarget - transform.localPosition_) * 0.05f;
+			rigidbody.velocity = (finalTarget - GetGameObject()->transform.localPosition_) * 0.05f;
 		}
 		else if (attackProgress > 0.2f)
 		{
-			transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,
+			GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,
 				ADXUtility::EaseIn(ADXUtility::ValueMapping(attackProgress,0.5f,0.2f,1,0),2) * 3.1415f * 6,
 				0 });
 			if (attackProgress > 0.25f)
 			{
-				LiveEntity::SetAttackObj({ &colliders[0],this,10 });
+				LiveEntity::SetAttackObj({ GetGameObject()->GetComponent<ADXCollider>(),this,10});
 			}
 		}
 	}

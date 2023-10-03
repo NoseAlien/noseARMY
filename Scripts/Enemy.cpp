@@ -18,8 +18,6 @@ void Enemy::Initialize()
 	tempCol->isTrigger = true;
 	tempCol->colType_ = sphere;
 	tempCol->radius_ = 12;
-
-	rigidbody.Initialize(GetGameObject());
 }
 
 void Enemy::LiveEntitiesUpdate()

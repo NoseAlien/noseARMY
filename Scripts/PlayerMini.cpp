@@ -6,29 +6,25 @@ std::vector<PlayerMini*> PlayerMini::S_allMiniPtr{};
 
 void PlayerMini::Initialize(Player* setParent, ADXObject setNose)
 {
-	colliders.back().pushBackPriority = -1;
-	colliders.push_back(ADXCollider(this));
-	colliders.back().isTrigger = true;
-	colliders.back().radius_ = 1.1f;
+	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
+	tempCol->pushable_ = true;
+	tempCol->pushBackPriority = -1;
+
+	tempCol = GetGameObject()->AddComponent<ADXCollider>();
+	tempCol->isTrigger = true;
+	tempCol->radius_ = 1.1f;
 
 	parent = setParent;
 
-	nose = Duplicate(setNose);
-	nose.transform.parent_ = &transform;
-
-	rigidbody.Initialize(this);
-
-	for (int i = 0; i < colliders.size(); i++)
-	{
-		colliders[i].Initialize(this);
-	}
+	nose = ADXObject::Duplicate(setNose);
+	nose->transform.parent_ = &GetGameObject()->transform;
 }
 
 void PlayerMini::Move(float walkSpeed, float jumpPower)
 {
-	ADXVector3 cameraRight = parent->GetCamera()->transform.TransformPointOnlyRotation({1,0,0});
+	ADXVector3 cameraRight = parent->GetCamera()->GetGameObject()->transform.TransformPointOnlyRotation({1,0,0});
 	cameraRight = cameraRight.Normalize();
-	ADXVector3 cameraForward = parent->GetCamera()->transform.TransformPointOnlyRotation({ 0,0,1 });
+	ADXVector3 cameraForward = parent->GetCamera()->GetGameObject()->transform.TransformPointOnlyRotation({ 0,0,1 });
 	cameraForward.y = 0;
 	cameraForward = cameraForward.Normalize();
 
@@ -50,7 +46,7 @@ void PlayerMini::Move(float walkSpeed, float jumpPower)
 		{
 			rigidbody.velocity -= cameraRight * walkSpeed;
 		}
-		transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(rigidbody.velocity.x, rigidbody.velocity.z),0 });
+		GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(rigidbody.velocity.x, rigidbody.velocity.z),0 });
 	}
 
 	if (parent->GetInputStatusTrigger(4))
@@ -75,10 +71,9 @@ void PlayerMini::UniqueUpdate()
 
 	Move(0.1f, 0.8f);
 
-	rigidbody.Update(this);
+	rigidbody.Update(GetGameObject());
 
-	nose.transform.parent_ = &transform;
-	nose.Update();
+	nose->transform.parent_ = &GetGameObject()->transform;
 
 	S_allMiniPtr.push_back(this);
 }

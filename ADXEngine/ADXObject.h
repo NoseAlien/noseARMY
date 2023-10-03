@@ -31,14 +31,13 @@ public:
 public:
 	void Draw();
 	void Destroy();
-	void InitComponents();
 	template <class Type>
 	Type* AddComponent();
 	template <class Type>
 	Type* GetComponent();
 	template <class Type>
 	std::list<Type*> GetComponents();
-	virtual void OnCollisionHit(ADXCollider* col, ADXCollider* myCol) {};
+	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol);
 
 protected:
 	virtual void UniqueUpdate() {};
@@ -56,7 +55,6 @@ public:
 	ADXModel* model = nullptr;
 	ADXMaterial material{};
 	uint32_t texture = 0;
-	std::list<std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>>> components{};
 	int32_t renderLayer = 0;
 	int32_t sortingOrder = 0;
 	bool alphaTex = false;
@@ -69,6 +67,7 @@ protected:
 	ConstBufferDataB0* constMapMaterial = nullptr;
 
 private:
+	std::list<std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>>> components{};
 	bool deleteFlag = false;
 
 public: // ê√ìIÉÅÉìÉoä÷êî
