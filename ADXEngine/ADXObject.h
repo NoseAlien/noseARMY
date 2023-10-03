@@ -67,7 +67,7 @@ protected:
 	ConstBufferDataB0* constMapMaterial = nullptr;
 
 private:
-	std::list<std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>>> components{};
+	std::list<ADXComponent*> components{};
 	bool deleteFlag = false;
 
 public: // Ã“Iƒƒ“ƒoŠÖ”

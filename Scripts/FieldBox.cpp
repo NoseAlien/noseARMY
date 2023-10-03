@@ -21,7 +21,7 @@ void FieldBox::UniqueUpdate()
 			{
 				for (auto& colItr2 : fieldItr->GetGameObject()->GetComponents<ADXCollider>())
 				{
-					if (objItr->transform.GetWorldPosition() == colItr2->ClosestPoint(objItr->transform.GetWorldPosition()))
+					if (objItr != nullptr && objItr->transform.GetWorldPosition() == colItr2->ClosestPoint(objItr->transform.GetWorldPosition()))
 					{
 						pullBack = false;
 						break;

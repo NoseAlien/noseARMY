@@ -4,9 +4,12 @@ void ADXComponent::Update(ADXObject* obj)
 {
 	gameObject = obj;
 
-	if (!initialized)
+	if (gameObject != nullptr)
 	{
-		UniqueInitialize();
+		if (!initialized)
+		{
+			UniqueInitialize();
+		}
+		UniqueUpdate();
 	}
-	UniqueUpdate();
 }
