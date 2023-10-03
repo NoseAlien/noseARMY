@@ -20,9 +20,9 @@ private:
 private:
 	ADXCamera* camera = nullptr;
 
-	ADXObject *nose;
-	ADXObject *outOfField;
-	ADXObject *tutorialWindow;
+	ADXObject* nose = nullptr;
+	ADXObject* outOfField = nullptr;
+	ADXObject* tutorialWindow = nullptr;
 
 	ADXModel rect{};
 	ADXModel playerModel{};
@@ -35,7 +35,7 @@ private:
 	std::vector<int> config{};
 
 	ADXRigidbody rigidbody{};
-	ADXParticleSystem deadParticle;
+	ADXParticleSystem deadParticle{};
 
 
 	std::list<PlayerMini*> minis{};
@@ -48,7 +48,6 @@ private:
 	float deadAnimationProgress = 0;
 
 public:
-	Player();
 	void Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfig, ADXCamera* setCamera);
 	bool GetInputStatus(int keyIndex);
 	bool GetInputStatusTrigger(int keyIndex);

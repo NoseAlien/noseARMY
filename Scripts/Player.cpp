@@ -4,11 +4,6 @@
 #include <time.h>
 #include <imgui.h>
 
-Player::Player()
-{
-
-}
-
 void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfig, ADXCamera* setCamera)
 {
 	keyboard = setKeyboard;
