@@ -577,11 +577,6 @@ void ADXObject::Destroy()
 	deleteFlag = true;
 }
 
-void ADXObject::AddComponent(ADXComponent* component)
-{
-	components.push_back(component);
-}
-
 void ADXObject::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
 	for (auto& itr : components)
