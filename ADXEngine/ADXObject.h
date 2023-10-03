@@ -39,12 +39,6 @@ public:
 	std::list<Type*> GetComponents();
 	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol);
 
-protected:
-	virtual void UniqueUpdate() {};
-	virtual void OnPreRender() {};
-	virtual void OnWillRenderObject() {};
-	virtual void Rendered() {};
-
 private:
 	void Initialize();
 	void Update();
@@ -67,7 +61,7 @@ protected:
 	ConstBufferDataB0* constMapMaterial = nullptr;
 
 private:
-	std::list<ADXComponent*> components{};
+	std::list<std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>>> components{};
 	bool deleteFlag = false;
 
 public: // Ã“Iƒƒ“ƒoŠÖ”

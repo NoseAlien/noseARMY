@@ -14,6 +14,9 @@ protected:
 public:
 	void Update(ADXObject* obj);
 	ADXObject* GetGameObject() { return gameObject; };
+	virtual void OnPreRender() {};
+	virtual void OnWillRenderObject() {};
+	virtual void Rendered() {};
 	virtual void OnCollisionHit(ADXCollider* col, ADXCollider* myCol) {};
 
 protected:

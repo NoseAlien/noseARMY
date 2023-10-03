@@ -334,7 +334,6 @@ void ADXObject::Update()
 		{
 			itr->Update(this);
 		}
-		UniqueUpdate();
 	}
 }
 
@@ -400,7 +399,10 @@ void ADXObject::StaticDraw()
 
 	for (auto& itr : allObjPtr)
 	{
-		itr->OnPreRender();
+		for (auto& comItr : itr->components)
+		{
+			comItr->OnPreRender();
+		}
 	}
 
 	int32_t minLayer = 0;
@@ -530,7 +532,10 @@ std::list<ADXObject*> ADXObject::GetObjs()
 
 void ADXObject::Draw()
 {
-	OnWillRenderObject();
+	for (auto& itr : components)
+	{
+		itr->OnWillRenderObject();
+	}
 
 	// nullptrチェック
 	ID3D12Device* device = ADXCommon::GetCurrentInstance()->GetDevice();
@@ -561,12 +566,20 @@ void ADXObject::Draw()
 		model->Draw(S_cmdList, transform);
 	}
 
-	Rendered();
+	for (auto& itr : components)
+	{
+		itr->Rendered();
+	}
 }
 
 void ADXObject::Destroy()
 {
 	deleteFlag = true;
+}
+
+void ADXObject::AddComponent(ADXComponent* component)
+{
+	components.push_back(component);
 }
 
 void ADXObject::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
