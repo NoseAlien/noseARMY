@@ -40,7 +40,7 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 	outOfField->transform.rectTransform = true;
 	outOfField->transform.UpdateMatrix();
 	outOfField->model = &rect;
-	outOfField->texture = ADXImage::LoadADXImage("outOfField->png");
+	outOfField->texture = ADXImage::LoadADXImage("outOfField.png");
 	outOfField->material = GetGameObject()->material;
 	outOfField->renderLayer = 1;
 
