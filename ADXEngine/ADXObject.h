@@ -90,6 +90,9 @@ public: // 静的メンバ関数
 	//既存のオブジェクトを複製
 	static ADXObject* Duplicate(const ADXObject& prefab);
 
+	//シーン切り替え時などに使用、今あるオブジェクトを全部消す
+	static void Annihilate() { S_objs.clear(); };
+
 private: // 静的メンバ変数
 	// ルートシグネチャ
 	static Microsoft::WRL::ComPtr<ID3D12RootSignature> S_rootSignature;
