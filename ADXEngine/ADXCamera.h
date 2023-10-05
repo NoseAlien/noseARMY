@@ -19,10 +19,10 @@ private:
 	static ADXVector3 S_cameraWorldPos;
 
 public:
-	void Initialize();
 	void PrepareToRandering();
 
 private:
+	void UniqueInitialize();
 	void UniqueUpdate();
 
 public:

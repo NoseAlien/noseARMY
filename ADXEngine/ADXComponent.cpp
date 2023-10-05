@@ -13,3 +13,11 @@ void ADXComponent::Update(ADXObject* obj)
 		UniqueUpdate();
 	}
 }
+
+void ADXComponent::SetGameObject(ADXObject* obj)
+{
+	if (gameObject == nullptr)
+	{
+		gameObject = obj;
+	}
+}

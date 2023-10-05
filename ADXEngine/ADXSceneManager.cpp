@@ -24,6 +24,7 @@ void ADXSceneManager::Update()
 	if (currentScene != prevScene || sceneIndex != prevSceneIndex || reload)
 	{
 		*currentScene = {};
+		ADXObject::Annihilate();
 		currentScene->Initialize();
 
 		reload = false;

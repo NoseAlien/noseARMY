@@ -13,6 +13,7 @@ protected:
 
 public:
 	void Update(ADXObject* obj);
+	void SetGameObject(ADXObject* obj);
 	ADXObject* GetGameObject() { return gameObject; };
 	virtual void OnPreRender() {};
 	virtual void OnWillRenderObject() {};

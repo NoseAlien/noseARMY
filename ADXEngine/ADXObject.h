@@ -126,6 +126,7 @@ inline Type* ADXObject::AddComponent()
 {
 	Type* p = new Type();
 	std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>> temp(p);
+	temp->SetGameObject(this);
 	components.push_back(move(temp));
 	return p;
 }

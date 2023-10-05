@@ -16,9 +16,7 @@ void TitleScene::Initialize()
 	//オブジェクト
 
 	ADXObject* temp = ADXObject::Create({ 0,0,-2 });
-	camera_ = temp->AddComponent<ADXCamera>();
-	camera_->GetGameObject()->transform.localPosition_ = { 0,0,-2 };
-	camera_->Initialize();
+	camera_ = temp->AddComponent<ADXCamera>();	camera_->GetGameObject()->transform.localPosition_ = { 0,0,-2 };
 
 	title = ADXObject::Create();
 	title->transform.UpdateMatrix();

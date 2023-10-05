@@ -6,7 +6,7 @@ using namespace DirectX;
 ADXVector3 ADXCamera::S_cameraWorldPos = {};
 ADXCamera* ADXCamera::S_current = nullptr;
 
-void ADXCamera::Initialize()
+void ADXCamera::UniqueInitialize()
 {
 	//Ë‰e•ÏŠ·s—ñi“§‹“Š‰ej
 	matProjection = ADXMatrix4::ConvertToADXMatrix(
