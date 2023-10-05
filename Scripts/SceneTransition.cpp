@@ -9,19 +9,22 @@ ADXModel SceneTransition::S_rect{};
 void SceneTransition::StaticInitialize()
 {
 	S_rect = ADXModel::CreateRect();
-
-	S_shutter = ADXObject::Create();
-	S_shutter->transform.rectTransform = true;
-	S_shutter->transform.UpdateMatrix();
-	S_shutter->model = &S_rect;
-	S_shutter->texture = ADXImage::LoadADXImage("apEGnose.png");
-	S_shutter->renderLayer = 10;
 }
 
 void SceneTransition::StaticUpdate()
 {
 	if (S_sceneChanging)
 	{
+		if (S_shutter == nullptr)
+		{
+			S_shutter = ADXObject::Create({ 0,0,0 }, ADXQuaternion::IdentityQuaternion(), { 0,0,0 });
+			S_shutter->transform.rectTransform = true;
+			S_shutter->transform.UpdateMatrix();
+			S_shutter->model = &S_rect;
+			S_shutter->texture = ADXImage::LoadADXImage("apEGnoSE.png");
+			S_shutter->renderLayer = 10;
+		}
+
 		S_sceneChangeFrame++;
 		if (S_sceneChangeFrame == S_MaxSceneChangeFrame / 2)
 		{

@@ -7,7 +7,7 @@ StageSelectScene::StageSelectScene()
 
 void StageSelectScene::Initialize()
 {
-	player_ = {};
+	player_ = nullptr;
 	floors_ = {};
 	fields_ = {};
 	tutorialAreas_ = {};
