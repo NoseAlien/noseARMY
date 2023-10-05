@@ -55,6 +55,7 @@ public:
 	ADXCamera* GetCamera() { return camera; };
 
 private:
+	void LiveEntitiesInitialize();
 	void LiveEntitiesUpdate();
 	void DeadUpdate();
 	void Move(float walkSpeed, float jumpPower);

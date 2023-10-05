@@ -8,44 +8,6 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 {
 	keyboard = setKeyboard;
 	config = setConfig;
-	jumpSE = ADXAudio::LoadADXAudio("sound/jump.wav");
-	damageSE = ADXAudio::LoadADXAudio("sound/damage.wav");
-	windowOpenSE = ADXAudio::LoadADXAudio("sound/windowOpen.wav");
-
-	rect = ADXModel::CreateRect();
-	playerModel = ADXModel::LoadADXModel("model/sphere.obj");
-
-	GetGameObject()->model = &playerModel;
-	GetGameObject()->texture = ADXImage::LoadADXImage("apEG_fur.png");
-
-	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
-	tempCol->pushable_ = true;
-
-	rigidbody = GetGameObject()->AddComponent<ADXRigidbody>();
-
-	nose = ADXObject::Create({ 0,0,1.01f }, ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 }), { 0.42f,0.35f,0.35f });
-	nose->transform.parent_ = &GetGameObject()->transform;
-	nose->transform.UpdateMatrix();
-	nose->model = &rect;
-	nose->texture = ADXImage::LoadADXImage("apEGnoSE.png");
-	nose->material = GetGameObject()->material;
-
-	tutorialWindow = ADXObject::Create();
-	tutorialWindow->transform.rectTransform = true;
-	tutorialWindow->transform.UpdateMatrix();
-	tutorialWindow->model = &rect;
-	tutorialWindow->texture = ADXImage::LoadADXImage("WhiteDot.png");
-	tutorialWindow->material = GetGameObject()->material;
-	tutorialWindow->renderLayer = 1;
-
-	outOfField = ADXObject::Create();
-	outOfField->transform.rectTransform = true;
-	outOfField->transform.UpdateMatrix();
-	outOfField->model = &rect;
-	outOfField->texture = ADXImage::LoadADXImage("outOfField.png");
-	outOfField->material = GetGameObject()->material;
-	outOfField->renderLayer = 1;
-
 	camera = setCamera;
 }
 
@@ -102,6 +64,44 @@ void Player::Move(float walkSpeed, float jumpPower)
 	{
 		rigidbody->velocity.y *= 0.2f;
 	}
+}
+
+void Player::LiveEntitiesInitialize()
+{
+	jumpSE = ADXAudio::LoadADXAudio("sound/jump.wav");
+	damageSE = ADXAudio::LoadADXAudio("sound/damage.wav");
+	windowOpenSE = ADXAudio::LoadADXAudio("sound/windowOpen.wav");
+
+	rect = ADXModel::CreateRect();
+	playerModel = ADXModel::LoadADXModel("model/sphere.obj");
+
+	GetGameObject()->model = &playerModel;
+	GetGameObject()->texture = ADXImage::LoadADXImage("apEG_fur.png");
+
+	rigidbody = GetGameObject()->AddComponent<ADXRigidbody>();
+
+	nose = ADXObject::Create({ 0,0,1.01f }, ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 }), { 0.42f,0.35f,0.35f });
+	nose->transform.parent_ = &GetGameObject()->transform;
+	nose->transform.UpdateMatrix();
+	nose->model = &rect;
+	nose->texture = ADXImage::LoadADXImage("apEGnoSE.png");
+	nose->material = GetGameObject()->material;
+
+	tutorialWindow = ADXObject::Create();
+	tutorialWindow->transform.rectTransform = true;
+	tutorialWindow->transform.UpdateMatrix();
+	tutorialWindow->model = &rect;
+	tutorialWindow->texture = ADXImage::LoadADXImage("WhiteDot.png");
+	tutorialWindow->material = GetGameObject()->material;
+	tutorialWindow->renderLayer = 1;
+
+	outOfField = ADXObject::Create();
+	outOfField->transform.rectTransform = true;
+	outOfField->transform.UpdateMatrix();
+	outOfField->model = &rect;
+	outOfField->texture = ADXImage::LoadADXImage("outOfField.png");
+	outOfField->material = GetGameObject()->material;
+	outOfField->renderLayer = 1;
 }
 
 void Player::LiveEntitiesUpdate()

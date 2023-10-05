@@ -18,7 +18,7 @@ void ADXSprite::UniqueInitialize()
 
 void ADXSprite::UniqueUpdate()
 {
-	gameObject->model = &rect;
+	GetGameObject()->model = &rect;
 
 	rect.vertices = {
 	{{-1.0f,-1.0f,0.0f},{}, {rectLU.x,rectRD.y}},//¶‰º
@@ -29,8 +29,8 @@ void ADXSprite::UniqueUpdate()
 
 	if (boxControl)
 	{
-		gameObject->transform.localPosition_ = (boxRUF + boxLDB);
-		gameObject->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-		gameObject->transform.localScale_ = boxRUF - boxLDB;
+		GetGameObject()->transform.localPosition_ = (boxRUF + boxLDB);
+		GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
+		GetGameObject()->transform.localScale_ = boxRUF - boxLDB;
 	}
 }

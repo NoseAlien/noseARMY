@@ -3,7 +3,7 @@
 std::list<FieldBox*> FieldBox::allFieldPtr{};
 std::list<FieldBox*> FieldBox::fields{};
 
-void FieldBox::Initialize()
+void FieldBox::UniqueInitialize()
 {
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
 	tempCol->isTrigger = true;
@@ -50,7 +50,7 @@ void FieldBox::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
 	for (auto& objItr : GetFields())
 	{
-		if (col->GetGameObject() == objItr->GetGameObject() && col->GetGameObject() != gameObject
+		if (col->GetGameObject() == objItr->GetGameObject() && col->GetGameObject() != GetGameObject()
 			&& objItr->fieldLayer == fieldLayer)
 		{
 			adjacentFields.push_back(objItr);

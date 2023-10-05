@@ -18,7 +18,7 @@ void ADXParticleSystem::Emission()
 
 void ADXParticleSystem::UniqueInitialize()
 {
-	parent = &gameObject->transform;
+	parent = &GetGameObject()->transform;
 }
 
 void ADXParticleSystem::UniqueUpdate()

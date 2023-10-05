@@ -2,15 +2,16 @@
 
 void ADXRigidbody::UniqueInitialize()
 {
-	prevPos = gameObject->transform.localPosition_;
+	prevPos = GetGameObject()->transform.localPosition_;
+	GetGameObject()->transform.UpdateMatrix();
 }
 
 void ADXRigidbody::VelocityMove()
 {
-	velocity = gameObject->transform.localPosition_ - prevPos;
-	prevPos = gameObject->transform.localPosition_;
+	velocity = GetGameObject()->transform.localPosition_ - prevPos;
+	prevPos = GetGameObject()->transform.localPosition_;
 
-	if (dragAxis.x && dragAxis.y && dragAxis.z )
+	if (dragAxis.x && dragAxis.y && dragAxis.z)
 	{
 		velocity *= drag;
 	}
@@ -35,5 +36,5 @@ void ADXRigidbody::VelocityMove()
 
 void ADXRigidbody::UniqueUpdate()
 {
-	gameObject->transform.localPosition_ += velocity;
+	GetGameObject()->transform.localPosition_ += velocity;
 }

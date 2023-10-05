@@ -40,6 +40,11 @@ void LiveEntity::Initialize(const std::string& setTeam)
 	particle.particleModel = rect;
 }
 
+void LiveEntity::UniqueInitialize()
+{
+	LiveEntitiesInitialize();
+}
+
 void LiveEntity::UniqueUpdate()
 {
 	GetGameObject()->isVisible = true;

@@ -14,11 +14,11 @@ private:
 	static std::list<TutorialArea*> areas;
 
 public:
-	TutorialArea();
-	void Initialize(uint32_t setTutorialImg);
+	void SetTutorialImg(uint32_t setTutorialImg);
 	uint32_t GetTutorialImg() { return tutorialImg; };
 
 private:
+	void UniqueInitialize();
 	void UniqueUpdate();
 
 public:

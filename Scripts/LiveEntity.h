@@ -23,18 +23,21 @@ private:
 
 public:
 	void Initialize(const std::string& setTeam);
-	void UniqueUpdate();
-
 	bool IsLive() { return hpAmount > 0; };
 	std::string GetTeam() { return team; };
 
 protected:
 	void Damage(float damage);
+	virtual void LiveEntitiesInitialize() {};
 	virtual void LiveEntitiesUpdate() {};
 	virtual void DeadUpdate() {};
 	virtual void LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol) {};
 	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol);
 	void OnPreRender();
+
+private:
+	void UniqueInitialize() final;
+	void UniqueUpdate() final;
 
 private:
 	static std::vector<LiveEntity*> S_liveEntities;

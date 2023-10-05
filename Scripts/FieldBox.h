@@ -16,15 +16,13 @@ private:
 	static std::list<FieldBox*> allFieldPtr;
 	static std::list<FieldBox*> fields;
 
-public:
-	void Initialize();
-
 protected:
 	virtual void FieldUpdate() {};
 	virtual void FieldOnCollisionHit(ADXCollider* col, ADXCollider* myCol) {};
 
 
 private:
+	void UniqueInitialize() final;
 	void UniqueUpdate() final;
 	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol) final;
 	std::list<FieldBox*> GetAdjacentFields() { return adjacentFields; };

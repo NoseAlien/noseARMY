@@ -8,13 +8,13 @@ class ADXComponent
 private:
 	bool initialized = false;
 
-protected:
+private:
 	ADXObject* gameObject = nullptr;
 
 public:
 	void Update(ADXObject* obj);
 	void SetGameObject(ADXObject* obj);
-	ADXObject* GetGameObject() { return gameObject; };
+	ADXObject* GetGameObject() const { return gameObject; };
 	virtual void OnPreRender() {};
 	virtual void OnWillRenderObject() {};
 	virtual void Rendered() {};
