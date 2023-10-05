@@ -320,6 +320,10 @@ ADXObject* ADXObject::Duplicate(const ADXObject& prefab)
 {
 	ADXObject* ret = Create(prefab.transform.localPosition_, prefab.transform.localRotation_,
 		prefab.transform.localScale_, prefab.transform.parent_);
+	ret->transform.rectTransform = prefab.transform.rectTransform;
+	ret->transform.modelPosition_ = prefab.transform.modelPosition_;
+	ret->transform.modelRotation_ = prefab.transform.modelRotation_;
+	ret->transform.modelScale_ = prefab.transform.modelScale_;
 	ret->texture = prefab.texture;
 	ret->model = prefab.model;
 

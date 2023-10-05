@@ -21,6 +21,8 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfi
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
 	tempCol->pushable_ = true;
 
+	rigidbody = GetGameObject()->AddComponent<ADXRigidbody>();
+
 	nose = ADXObject::Create({ 0,0,1.01f }, ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 }), { 0.42f,0.35f,0.35f });
 	nose->transform.parent_ = &GetGameObject()->transform;
 	nose->transform.UpdateMatrix();
@@ -74,37 +76,37 @@ void Player::Move(float walkSpeed, float jumpPower)
 	{
 		if (keyboard->KeyPress(config[0]))
 		{
-			rigidbody.velocity += cameraForward * walkSpeed;
+			rigidbody->velocity += cameraForward * walkSpeed;
 		}
 		if (keyboard->KeyPress(config[1]))
 		{
-			rigidbody.velocity -= cameraForward * walkSpeed;
+			rigidbody->velocity -= cameraForward * walkSpeed;
 		}
 		if (keyboard->KeyPress(config[2]))
 		{
-			rigidbody.velocity += cameraRight * walkSpeed;
+			rigidbody->velocity += cameraRight * walkSpeed;
 		}
 		if (keyboard->KeyPress(config[3]))
 		{
-			rigidbody.velocity -= cameraRight * walkSpeed;
+			rigidbody->velocity -= cameraRight * walkSpeed;
 		}
-		GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(rigidbody.velocity.x, rigidbody.velocity.z),0 });
+		GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(rigidbody->velocity.x, rigidbody->velocity.z),0 });
 	}
 
 	if (keyboard->KeyTrigger(config[4]))
 	{
-		rigidbody.velocity.y = jumpPower;
+		rigidbody->velocity.y = jumpPower;
 		jumpSE.Play();
 	}
-	if (keyboard->KeyRelease(config[4]) && rigidbody.velocity.y > 0)
+	if (keyboard->KeyRelease(config[4]) && rigidbody->velocity.y > 0)
 	{
-		rigidbody.velocity.y *= 0.2f;
+		rigidbody->velocity.y *= 0.2f;
 	}
 }
 
 void Player::LiveEntitiesUpdate()
 {
-	/*GetGameObject()->renderLayer = 0;
+	GetGameObject()->renderLayer = 0;
 	nose->renderLayer = 0;
 
 	deadAnimationProgress = 0;
@@ -126,23 +128,23 @@ void Player::LiveEntitiesUpdate()
 	bool moveInput =
 		!keyboard->KeyPress(config[0]) || keyboard->KeyPress(config[1]) || keyboard->KeyPress(config[2]) || keyboard->KeyPress(config[3]);
 
-	rigidbody.drag = 0.8f;
+	rigidbody->drag = 0.8f;
 
-	rigidbody.VelocityMove();
+	rigidbody->VelocityMove();
 
 	if (keyboard->KeyPress(config[5]))
 	{
-		rigidbody.velocity *= 0.8f;
-		rigidbody.gravityScale = 0;
+		rigidbody->velocity *= 0.8f;
+		rigidbody->gravityScale = 0;
 	}
 	else
 	{
-		rigidbody.gravityScale = 0.01f;
-		rigidbody.dragAxis.y = false;
+		rigidbody->gravityScale = 0.01f;
+		rigidbody->dragAxis.y = false;
 		Move(0.05f, 0.4f);
 	}
 
-	rigidbody.Update(GetGameObject());
+	rigidbody->Update(GetGameObject());
 
 	if (splitInterval <= -20)
 	{
@@ -180,13 +182,13 @@ void Player::LiveEntitiesUpdate()
 		nose->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 });
 		if (minis.size() < maxMinisNum)
 		{
-			ADXObject* miniObj = ADXObject::Duplicate(*GetGameObject());
+			/*ADXObject* miniObj = ADXObject::Duplicate(*GetGameObject());
 			PlayerMini* mini = miniObj->AddComponent<PlayerMini>();
 			mini->GetGameObject()->transform.localScale_ = { 0.5f,0.5f,0.5f };
 			mini->GetGameObject()->transform.localPosition_ = ADXMatrix4::Transform({ 0,0,1 }, GetGameObject()->transform.GetMatWorld());
 
 			mini->Initialize(this, *nose);
-			minis.push_back(mini);
+			minis.push_back(mini);*/
 		}
 		splitInterval = 7;
 	}
@@ -297,7 +299,7 @@ void Player::LiveEntitiesUpdate()
 	ImGui::End();
 
 	transform.localPosition_ = { pos[0],pos[1],pos[2] };
-#endif*/
+#endif
 }
 
 void Player::DeadUpdate()

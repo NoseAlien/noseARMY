@@ -34,7 +34,7 @@ private:
 	ADXKeyBoardInput* keyboard = nullptr;
 	std::vector<int> config{};
 
-	ADXRigidbody rigidbody{};
+	ADXRigidbody* rigidbody{};
 	ADXParticleSystem deadParticle{};
 
 

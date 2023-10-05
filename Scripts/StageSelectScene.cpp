@@ -23,8 +23,6 @@ void StageSelectScene::Initialize()
 	//オブジェクト
 
 	ADXObject* temp = ADXObject::Create({ 0,5,-20 }, ADXQuaternion::EulerToQuaternion({ 0.3f,0,0 }));
-	temp->transform.localPosition_ = { 0,5,-20 };
-	temp->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0.3f,0,0 });
 	camera_ = temp->AddComponent<ADXCamera>();
 
 	temp = ADXObject::Create({ 0,2,0 });
@@ -32,7 +30,7 @@ void StageSelectScene::Initialize()
 	player_->Initialize(ADXKeyBoardInput::GetCurrentInstance(), { DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C }, camera_);
 	player_->LiveEntity::Initialize("player");
 
-	floors_.push_back(ADXObject::Create({ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 2,2,2 }));
+	floors_.push_back(ADXObject::Create({0,-1,0}, ADXQuaternion::EulerToQuaternion({0,0,0}), {2,2,2}));
 	floors_.back()->model = &ground;
 	floors_.back()->texture = groundImg;
 	ADXCollider* tempCol = floors_.back()->AddComponent<ADXCollider>();
