@@ -7,6 +7,7 @@
 #include "FieldBox.h"
 #include "ADXTexAnimation.h"
 #include "SceneGate.h"
+#include "SceneTransition.h"
 
 class StageSelectScene : public ADXScene
 {
@@ -24,8 +25,9 @@ private:
 	ADXCamera* camera_ = nullptr;
 
 	//オブジェクト
-	ADXObject* key{};
-	Player* player_{};
+	SceneTransition* shutter_ = nullptr;
+	ADXObject* key_ = nullptr;
+	Player* player_ = nullptr;
 	std::list<ADXObject*> floors_{};
 	std::list<TutorialArea*> tutorialAreas_{};
 	std::list<FieldBox*> fields_{};
@@ -34,7 +36,6 @@ private:
 	ADXObject* backGround_{};
 
 public:
-	StageSelectScene();
 	void Initialize();
 	void Update();
 };

@@ -1,10 +1,6 @@
 #include "StageSelectScene.h"
 #include "SceneTransition.h"
 
-StageSelectScene::StageSelectScene()
-{
-}
-
 void StageSelectScene::Initialize()
 {
 	player_ = nullptr;
@@ -22,7 +18,11 @@ void StageSelectScene::Initialize()
 
 	//オブジェクト
 
-	ADXObject* temp = ADXObject::Create({ 0,5,-20 }, ADXQuaternion::EulerToQuaternion({ 0.3f,0,0 }));
+	ADXObject* temp = ADXObject::Create();
+	shutter_ = temp->AddComponent<SceneTransition>();
+
+
+	temp = ADXObject::Create({ 0,5,-20 }, ADXQuaternion::EulerToQuaternion({ 0.3f,0,0 }));
 	camera_ = temp->AddComponent<ADXCamera>();
 
 	temp = ADXObject::Create({ 0,2,0 });
@@ -68,19 +68,19 @@ void StageSelectScene::Initialize()
 	backGround_->texture = backGroundTex;
 	backGround_->renderLayer = -1;
 
-	key = ADXObject::Duplicate(*backGround_);
-	key->transform.localPosition_ = { -0.65f,0.85f,0 };
-	key->transform.localScale_ = { 0.3f,0.45f,1 };
-	key->transform.UpdateMatrix();
-	key->texture = keyImg;
-	key->renderLayer = 1;
+	key_ = ADXObject::Duplicate(*backGround_);
+	key_->transform.localPosition_ = { -0.65f,0.85f,0 };
+	key_->transform.localScale_ = { 0.3f,0.45f,1 };
+	key_->transform.UpdateMatrix();
+	key_->texture = keyImg;
+	key_->renderLayer = 1;
 }
 
 void StageSelectScene::Update()
 {
-	key->transform.localPosition_ = { -0.65f,0.85f,0 };
-	key->transform.localPosition_.y += sinf(clock() * 0.001f) * 0.01f;
-	key->transform.localScale_ = { 0.45f / ADXWindow::GetAspect(),0.45f,1 };
+	key_->transform.localPosition_ = { -0.65f,0.85f,0 };
+	key_->transform.localPosition_.y += sinf(clock() * 0.001f) * 0.01f;
+	key_->transform.localScale_ = { 0.45f / ADXWindow::GetAspect(),0.45f,1 };
 
 	if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_Q))
 	{

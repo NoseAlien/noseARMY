@@ -1,5 +1,6 @@
 #pragma once
 #include "ADXScene.h"
+#include "SceneTransition.h"
 
 class TitleScene : public ADXScene
 {
@@ -7,13 +8,13 @@ private:
 	uint32_t titleImg = 0;
 	uint32_t keyImg = 0;
 
-	ADXObject* title = nullptr;
-	ADXObject* key = nullptr;
-
 	ADXModel rect{};
 
 	ADXMaterial unlitMat{};
 
+	SceneTransition* shutter_ = nullptr;
+	ADXObject* title = nullptr;
+	ADXObject* key = nullptr;
 	ADXCamera* camera_ = nullptr;
 
 public:

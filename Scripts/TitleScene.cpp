@@ -15,7 +15,10 @@ void TitleScene::Initialize()
 
 	//オブジェクト
 
-	ADXObject* temp = ADXObject::Create({ 0,0,-2 });
+	ADXObject* temp = ADXObject::Create();
+	shutter_ = temp->AddComponent<SceneTransition>();
+
+	temp = ADXObject::Create({ 0,0,-2 });
 	camera_ = temp->AddComponent<ADXCamera>();	camera_->GetGameObject()->transform.localPosition_ = { 0,0,-2 };
 
 	title = ADXObject::Create();
