@@ -18,7 +18,7 @@ private:
 
 protected:
 	virtual void FieldUpdate() {};
-	virtual void FieldOnCollisionHit(ADXCollider* col, ADXCollider* myCol) {};
+	virtual void FieldOnCollisionHit([[maybe_unused]] ADXCollider* col, [[maybe_unused]] ADXCollider* myCol) {};
 
 
 private:

@@ -6,8 +6,8 @@
 class ADXSceneManager
 {
 private:
-	ADXScene* prevScene;
-	ADXScene* currentScene;
+	ADXScene* prevScene = nullptr;
+	ADXScene* currentScene = nullptr;
 
 	std::vector<ADXScene*> scenes{};
 

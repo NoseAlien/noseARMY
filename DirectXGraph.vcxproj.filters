@@ -22,11 +22,17 @@
     <Filter Include="ヘッダー ファイル\HanaBehaviour">
       <UniqueIdentifier>{0bacb6f0-cd8b-44f4-9243-eaa11159dd3d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Enemies">
-      <UniqueIdentifier>{6b885fc5-e784-4f30-935c-904d11c16925}</UniqueIdentifier>
+    <Filter Include="ソース ファイル\GameScript">
+      <UniqueIdentifier>{bafc91d2-57ea-4c7d-8ab6-3c9e7b0c764e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Enemies">
+    <Filter Include="ソース ファイル\GameScript\Enemies">
       <UniqueIdentifier>{22973afb-5fcb-4574-8fa5-a429d989f6a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GameScript">
+      <UniqueIdentifier>{400845be-b8eb-420d-9a55-448ae6664607}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GameScript\Enemies">
+      <UniqueIdentifier>{6b885fc5-e784-4f30-935c-904d11c16925}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -105,71 +111,71 @@
     <ClCompile Include="ADXEngine\ADXWorldTransform.cpp">
       <Filter>ソース ファイル\HanaBehaviour</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\Enemy.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\FieldBox.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\GameScene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\Goal.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\Player.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\PlayerMini.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\LiveEntity.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\TutorialArea.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\SceneTransition.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\TitleScene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\SceneManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="ADXEngine\ADXParticleSystem.cpp">
       <Filter>ソース ファイル\HanaBehaviour</Filter>
     </ClCompile>
     <ClCompile Include="ADXEngine\ADXParticle.cpp">
       <Filter>ソース ファイル\HanaBehaviour</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\BattleFieldBox.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\StageSelectScene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\PushableObject.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\SceneGate.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Scripts\Cub_E.cpp">
-      <Filter>ソース ファイル\Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\EnemySpawnData.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\GameScript\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\Clex.cpp">
-      <Filter>ソース ファイル\Enemies</Filter>
+      <Filter>ソース ファイル\GameScript\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\Projectile.cpp">
-      <Filter>ソース ファイル\Enemies</Filter>
+      <Filter>ソース ファイル\GameScript\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\BattleFieldBox.cpp">
+      <Filter>ソース ファイル\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Enemy.cpp">
+      <Filter>ソース ファイル\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\EnemySpawnData.cpp">
+      <Filter>ソース ファイル\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\FieldBox.cpp">
+      <Filter>ソース ファイル\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\GameScene.cpp">
+      <Filter>ソース ファイル\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Goal.cpp">
+      <Filter>ソース ファイル\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\LiveEntity.cpp">
+      <Filter>ソース ファイル\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\main.cpp">
+      <Filter>ソース ファイル\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Player.cpp">
+      <Filter>ソース ファイル\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\PlayerMini.cpp">
+      <Filter>ソース ファイル\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\PushableObject.cpp">
+      <Filter>ソース ファイル\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\SceneGate.cpp">
+      <Filter>ソース ファイル\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\SceneManager.cpp">
+      <Filter>ソース ファイル\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\SceneTransition.cpp">
+      <Filter>ソース ファイル\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\StageSelectScene.cpp">
+      <Filter>ソース ファイル\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\TitleScene.cpp">
+      <Filter>ソース ファイル\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\TutorialArea.cpp">
+      <Filter>ソース ファイル\GameScript</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -251,71 +257,71 @@
     <ClInclude Include="ADXEngine\ADXWorldTransform.h">
       <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\Enemy.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\FieldBox.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\GameScene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\Goal.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\Player.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\PlayerMini.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\LiveEntity.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\TutorialArea.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\SceneTransition.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\TitleScene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\SceneManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="ADXEngine\ADXParticleSystem.h">
       <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
     </ClInclude>
     <ClInclude Include="ADXEngine\ADXParticle.h">
       <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\BattleFieldBox.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\StageSelectScene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\PushableObject.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\SceneGate.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="ADXEngine\json.hpp">
       <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\Cub_E.h">
-      <Filter>ヘッダー ファイル\Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\EnemySpawnData.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\GameScript\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\Clex.h">
-      <Filter>ヘッダー ファイル\Enemies</Filter>
+      <Filter>ヘッダー ファイル\GameScript\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\Projectile.h">
-      <Filter>ヘッダー ファイル\Enemies</Filter>
+      <Filter>ヘッダー ファイル\GameScript\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\BattleFieldBox.h">
+      <Filter>ヘッダー ファイル\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Enemy.h">
+      <Filter>ヘッダー ファイル\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\EnemySpawnData.h">
+      <Filter>ヘッダー ファイル\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\FieldBox.h">
+      <Filter>ヘッダー ファイル\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\GameScene.h">
+      <Filter>ヘッダー ファイル\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Goal.h">
+      <Filter>ヘッダー ファイル\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\LiveEntity.h">
+      <Filter>ヘッダー ファイル\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Player.h">
+      <Filter>ヘッダー ファイル\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\PlayerMini.h">
+      <Filter>ヘッダー ファイル\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\PushableObject.h">
+      <Filter>ヘッダー ファイル\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\SceneGate.h">
+      <Filter>ヘッダー ファイル\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\SceneManager.h">
+      <Filter>ヘッダー ファイル\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\SceneTransition.h">
+      <Filter>ヘッダー ファイル\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\StageSelectScene.h">
+      <Filter>ヘッダー ファイル\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\TitleScene.h">
+      <Filter>ヘッダー ファイル\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\TutorialArea.h">
+      <Filter>ヘッダー ファイル\GameScript</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

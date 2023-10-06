@@ -4,7 +4,7 @@
 #include <time.h>
 #include <imgui.h>
 
-void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfig, ADXCamera* setCamera)
+void Player::Initialize(ADXKeyBoardInput* setKeyboard, std::vector<BYTE> setConfig, ADXCamera* setCamera)
 {
 	keyboard = setKeyboard;
 	config = setConfig;
@@ -125,9 +125,6 @@ void Player::LiveEntitiesUpdate()
 	camera->GetGameObject()->transform.UpdateMatrix();
 	camera->GetGameObject()->transform.localRotation_ = camera->GetGameObject()->transform.localRotation_ * ADXQuaternion::MakeAxisAngle({ 1,0,0 }, 0.3f);
 
-	bool moveInput =
-		!keyboard->KeyPress(config[0]) || keyboard->KeyPress(config[1]) || keyboard->KeyPress(config[2]) || keyboard->KeyPress(config[3]);
-
 	rigidbody->drag = 0.8f;
 
 	rigidbody->VelocityMove();
@@ -244,7 +241,6 @@ void Player::LiveEntitiesUpdate()
 
 
 	bool prevwindowOpening = windowOpening;
-	bool prevwindowClosing = windowClosing;
 	if (windowExtend)
 	{
 		tutorialWindowExAmount += 0.1f;

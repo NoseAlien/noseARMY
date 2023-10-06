@@ -305,13 +305,14 @@ void ADXObject::SetAllCameraPtr(ADXCamera* camPtr)
 }
 
 ADXObject* ADXObject::Create(const ADXVector3& setLocalPosition, const ADXQuaternion& setLocalRotation,
-	const ADXVector3& setLocalScale, ADXWorldTransform* parent)
+	const ADXVector3& setLocalScale, ADXWorldTransform* setParent)
 {
 	std::unique_ptr<ADXObject, ADXUtility::NPManager<ADXObject>> obj(new ADXObject);
 	obj->Initialize();
 	obj->transform.localPosition_ = setLocalPosition;
 	obj->transform.localRotation_ = setLocalRotation;
 	obj->transform.localScale_ = setLocalScale;
+	obj->transform.parent_ = setParent;
 	S_objs.push_back(move(obj));
 	return S_objs.back().get();
 }
@@ -542,7 +543,7 @@ void ADXObject::Draw()
 	}
 
 	// nullptrチェック
-	ID3D12Device* device = ADXCommon::GetCurrentInstance()->GetDevice();
+	[[maybe_unused]]ID3D12Device* device = ADXCommon::GetCurrentInstance()->GetDevice();
 	assert(device);
 	assert(S_cmdList);
 

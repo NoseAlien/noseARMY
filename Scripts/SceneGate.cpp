@@ -47,7 +47,7 @@ void SceneGate::UniqueUpdate()
 	}
 }
 
-void SceneGate::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
+void SceneGate::OnCollisionHit(ADXCollider* col, [[maybe_unused]] ADXCollider* myCol)
 {
 	for (auto& objItr : LiveEntity::GetLiveEntities())
 	{

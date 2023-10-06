@@ -63,7 +63,7 @@ void Goal::UniqueUpdate()
 	}
 }
 
-void Goal::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
+void Goal::OnCollisionHit(ADXCollider* col, [[maybe_unused]] ADXCollider* myCol)
 {
 	if (sceneTransitionCount == MaxSceneTransitionCount)
 	{

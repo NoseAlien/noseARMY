@@ -20,30 +20,3 @@ void ADXDataPool::SetImgDataPool(const ADXImage& cell)
 {
 	S_imgDataPool.push_back(cell);
 }
-
-ADXAudio* ADXDataPool::GetAudioData(const uint32_t& sHandle)
-{
-	for (uint32_t i = 0; i < S_audioDataPool.size(); i++)
-	{
-		if (S_audioDataPool[i].GetSHandle() == sHandle)
-		{
-			return &S_audioDataPool[i];
-		}
-	}
-	return nullptr;
-}
-
-//void ADXDataPool::SetAudioDataPool(const ADXAudio& cell)
-//{
-//	S_audioDataPool.push_back(cell);
-//}
-
-ADXModel* ADXDataPool::GetModelData(const uint32_t& mHandle)
-{
-	return nullptr;
-}
-
-void ADXDataPool::SetModelDataPool(const ADXModel& cell)
-{
-	S_modelDataPool.push_back(cell);
-}

@@ -46,7 +46,7 @@ void BattleFieldBox::FieldUpdate()
 	}
 }
 
-void BattleFieldBox::FieldOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
+void BattleFieldBox::FieldOnCollisionHit(ADXCollider* col, [[maybe_unused]] ADXCollider* myCol)
 {
 	if (!awake)
 	{

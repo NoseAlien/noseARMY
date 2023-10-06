@@ -16,12 +16,4 @@ public:
 	static std::vector<ADXImage> GetImgDataPool() { return S_imgDataPool; };
 	static ADXImage* GetImgData(const uint32_t& gHandle);
 	static void SetImgDataPool(const ADXImage& cell);
-
-	//static std::vector<ADXAudio> GetAudioDataPool() { return S_audioDataPool; };
-	static ADXAudio* GetAudioData(const uint32_t& sHandle);
-	//static void SetAudioDataPool(const ADXAudio& cell);
-
-	static std::vector<ADXModel> GetModelDataPool() { return S_modelDataPool; };
-	static ADXModel* GetModelData(const uint32_t& mHandle);
-	static void SetModelDataPool(const ADXModel& cell);
 };

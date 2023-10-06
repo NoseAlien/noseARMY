@@ -18,7 +18,7 @@ public:
 	virtual void OnPreRender() {};
 	virtual void OnWillRenderObject() {};
 	virtual void Rendered() {};
-	virtual void OnCollisionHit(ADXCollider* col, ADXCollider* myCol) {};
+	virtual void OnCollisionHit([[maybe_unused]] ADXCollider* col, [[maybe_unused]] ADXCollider* myCol) {};
 
 protected:
 	virtual void UniqueInitialize() {};

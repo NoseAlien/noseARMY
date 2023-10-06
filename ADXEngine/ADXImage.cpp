@@ -2,6 +2,7 @@
 #include "ADXDataPool.h"
 #include "ADXCommon.h"
 #include "ADXUtility.h"
+#include <DirectXTex.h>
 
 using namespace DirectX;
 

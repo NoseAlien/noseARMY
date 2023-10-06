@@ -32,7 +32,7 @@ private:
 	ADXAudio windowOpenSE{};
 
 	ADXKeyBoardInput* keyboard = nullptr;
-	std::vector<int> config{};
+	std::vector<BYTE> config{};
 
 	ADXRigidbody* rigidbody{};
 	ADXParticleSystem deadParticle{};
@@ -48,7 +48,7 @@ private:
 	float deadAnimationProgress = 0;
 
 public:
-	void Initialize(ADXKeyBoardInput* setKeyboard, std::vector<int> setConfig, ADXCamera* setCamera);
+	void Initialize(ADXKeyBoardInput* setKeyboard, std::vector<BYTE> setConfig, ADXCamera* setCamera);
 	bool GetInputStatus(int keyIndex);
 	bool GetInputStatusTrigger(int keyIndex);
 	bool GetInputStatusRelease(int keyIndex);

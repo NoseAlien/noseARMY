@@ -85,7 +85,7 @@ public: // 静的メンバ関数
 	//空のオブジェクトを生成
 	static ADXObject* Create(const ADXVector3& setLocalPosition = { 0,0,0 },
 		const ADXQuaternion& setLocalRotation = ADXQuaternion::IdentityQuaternion(),
-		const ADXVector3& setLocalScale = { 1,1,1 }, ADXWorldTransform* parent = nullptr);
+		const ADXVector3& setLocalScale = { 1,1,1 }, ADXWorldTransform* setParent = nullptr);
 
 	//既存のオブジェクトを複製
 	static ADXObject* Duplicate(const ADXObject& prefab);

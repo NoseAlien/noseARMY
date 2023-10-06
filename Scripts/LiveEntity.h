@@ -31,8 +31,8 @@ protected:
 	virtual void LiveEntitiesInitialize() {};
 	virtual void LiveEntitiesUpdate() {};
 	virtual void DeadUpdate() {};
-	virtual void LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol) {};
-	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol);
+	virtual void LiveEntitiesOnCollisionHit([[maybe_unused]] ADXCollider* col, [[maybe_unused]] ADXCollider* myCol) {};
+	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol) final;
 	void OnPreRender();
 
 private:
