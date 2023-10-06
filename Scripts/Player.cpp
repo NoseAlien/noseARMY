@@ -286,7 +286,7 @@ void Player::LiveEntitiesUpdate()
 	outOfField->transform.localPosition_ = { -0.6f,0.65f + sin(clock() * 0.003f) * 0.01f,0 };
 
 #ifdef _DEBUG
-	float pos[3] = { transform.localPosition_.x,transform.localPosition_.y,transform.localPosition_.z };
+	float pos[3] = { GetGameObject()->transform.localPosition_.x,GetGameObject()->transform.localPosition_.y,GetGameObject()->transform.localPosition_.z };
 
 	bool tool_active = true;
 	ImGui::Begin("My First Tool", &tool_active, ImGuiWindowFlags_MenuBar);
@@ -294,7 +294,7 @@ void Player::LiveEntitiesUpdate()
 
 	ImGui::End();
 
-	transform.localPosition_ = { pos[0],pos[1],pos[2] };
+	GetGameObject()->transform.localPosition_ = { pos[0],pos[1],pos[2] };
 #endif
 }
 
