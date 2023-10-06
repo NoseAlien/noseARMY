@@ -18,9 +18,11 @@ public:
 	void Initialize();
 
 protected:
+	virtual void EnemyInitialize() {};
 	virtual void EnemyUpdate() {};
 
 private:
+	void LiveEntitiesInitialize();
 	void LiveEntitiesUpdate();
 	void DeadUpdate();
 	void LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol);

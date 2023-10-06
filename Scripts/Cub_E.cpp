@@ -1,5 +1,13 @@
 #include "Cub_E.h"
 
+void Cub_E::EnemyInitialize()
+{
+	enemyModel = ADXModel::LoadADXModel("model/Cub_E.obj");
+
+	GetGameObject()->model = &enemyModel;
+	GetGameObject()->texture = ADXImage::LoadADXImage("tex_Cub_E.png");
+}
+
 void Cub_E::EnemyUpdate()
 {
 	GetGameObject()->sortingOrder = 1;

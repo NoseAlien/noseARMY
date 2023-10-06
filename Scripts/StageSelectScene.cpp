@@ -8,7 +8,7 @@ void StageSelectScene::Initialize()
 	fields_ = {};
 	tutorialAreas_ = {};
 
-	//‰æ‘œ
+	//ç”»åƒ
 	keyImg = ADXImage::LoadADXImage("QUIT_TITLE.png");
 	backGroundTex = ADXImage::LoadADXImage("skyBG.png");
 	groundImg = ADXImage::LoadADXImage("GroundBlock.png");
@@ -16,7 +16,7 @@ void StageSelectScene::Initialize()
 	rect = ADXModel::CreateRect();
 	ground = ADXModel::LoadADXModel("model/groundBlock.obj");
 
-	//ƒIƒuƒWƒFƒNƒg
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 
 	ADXObject* temp = ADXObject::Create();
 	shutter_ = temp->AddComponent<SceneTransition>();

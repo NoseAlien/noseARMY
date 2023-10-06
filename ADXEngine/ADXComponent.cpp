@@ -9,6 +9,7 @@ void ADXComponent::Update(ADXObject* obj)
 		if (!initialized)
 		{
 			UniqueInitialize();
+			initialized = true;
 		}
 		UniqueUpdate();
 	}

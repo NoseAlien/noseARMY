@@ -20,6 +20,11 @@ void Enemy::Initialize()
 	tempCol->radius_ = 12;
 }
 
+void Enemy::LiveEntitiesInitialize()
+{
+	EnemyInitialize();
+}
+
 void Enemy::LiveEntitiesUpdate()
 {
 	rigidbody.VelocityMove();
