@@ -179,13 +179,16 @@ void Player::LiveEntitiesUpdate()
 		nose->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 });
 		if (minis.size() < maxMinisNum)
 		{
-			/*ADXObject* miniObj = ADXObject::Duplicate(*GetGameObject());
+			
+			ADXObject* miniObj = nullptr;
+			miniObj = ADXObject::Duplicate(*GetGameObject());
 			PlayerMini* mini = miniObj->AddComponent<PlayerMini>();
+			
 			mini->GetGameObject()->transform.localScale_ = { 0.5f,0.5f,0.5f };
 			mini->GetGameObject()->transform.localPosition_ = ADXMatrix4::Transform({ 0,0,1 }, GetGameObject()->transform.GetMatWorld());
-
-			mini->Initialize(this, *nose);
-			minis.push_back(mini);*/
+			
+			//mini->Initialize(this, *nose);
+			minis.push_back(mini);
 		}
 		splitInterval = 7;
 	}
