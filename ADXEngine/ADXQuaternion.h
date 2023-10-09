@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "ADXVector3.h"
 #include "ADXMatrix4.h"
@@ -10,15 +10,15 @@ public:
 	float w = 1;
 
 public:
-	//‹¤–ğADXQuaternion‚ğ•Ô‚·
+	//å…±å½¹ADXQuaternionã‚’è¿”ã™
 	ADXQuaternion Conjugate() const;
-	//ADXQuaternion‚Ìnorm‚ğ•Ô‚·
+	//ADXQuaternionã®normã‚’è¿”ã™
 	float Length();
-	//³‹K‰»‚µ‚½ADXQuaternion‚ğ•Ô‚·
+	//æ­£è¦åŒ–ã—ãŸADXQuaternionã‚’è¿”ã™
 	ADXQuaternion Normalized() const;
-	//‹tADXQuaternion‚ğ•Ô‚·
+	//é€†ADXQuaternionã‚’è¿”ã™
 	ADXQuaternion Inverse() const;
-	//ADXQuaternion‚©‚ç‰ñ“]s—ñ‚ğ‹‚ß‚é
+	//ADXQuaternionã‹ã‚‰å›è»¢è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹
 	ADXMatrix4 RotateMatrix() const;
 
 	ADXQuaternion operator-() const;
@@ -27,23 +27,23 @@ public:
 	ADXQuaternion& operator*=(float s);
 
 public:
-	//ADXQuaternion‚ÌÏ
+	//ADXQuaternionã®ç©
 	static ADXQuaternion Multiply(const ADXQuaternion& lhs, const ADXQuaternion& rhs);
-	//’PˆÊADXQuaternion‚ğ•Ô‚·
+	//å˜ä½ADXQuaternionã‚’è¿”ã™
 	static ADXQuaternion IdentityQuaternion();
-	//”CˆÓ²‰ñ“]‚ğ•\‚·ADXQuaternion‚Ì¶¬
+	//ä»»æ„è»¸å›è»¢ã‚’è¡¨ã™ADXQuaternionã®ç”Ÿæˆ
 	static ADXQuaternion MakeAxisAngle(const ADXVector3& axis, float angle);
-	//ZXYƒIƒCƒ‰[Šp‚ğQuaternion‚É•ÏŠ·
+	//ZXYã‚ªã‚¤ãƒ©ãƒ¼è§’ã‚’Quaternionã«å¤‰æ›
 	static ADXQuaternion EulerToQuaternion(const ADXVector3& eulerAngles);
-	//Quaternion‚ğZXYƒIƒCƒ‰[Šp‚É•ÏŠ·
+	//Quaternionã‚’ZXYã‚ªã‚¤ãƒ©ãƒ¼è§’ã«å¤‰æ›
 	static ADXVector3 QuaternionToEuler(const ADXQuaternion& quaternion);
-	//ƒxƒNƒgƒ‹‚ğQuarternion‚Å‰ñ“]‚³‚¹‚½Œ‹‰Ê‚ÌƒxƒNƒgƒ‹‚ğ‹‚ß‚é
+	//ãƒ™ã‚¯ãƒˆãƒ«ã‚’Quarternionã§å›è»¢ã•ã›ãŸçµæœã®ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ±‚ã‚ã‚‹
 	static ADXVector3 RotateVector(const ADXVector3& vector, const ADXQuaternion& quaternion);
-	//“àÏ
+	//å†…ç©
 	static float Dot(const ADXQuaternion& q0, const ADXQuaternion& q1);
-	//‹…–ÊüŒ`•âŠ®
+	//çƒé¢ç·šå½¢è£œå®Œ
 	static ADXQuaternion Slerp(const ADXQuaternion& q0, const ADXQuaternion& q1, float t);
-	//u‚©‚çv‚Ö‚Ì‰ñ“]‚ğ¶¬
+	//uã‹ã‚‰vã¸ã®å›è»¢ã‚’ç”Ÿæˆ
 	static ADXQuaternion DirectionToDirection(const ADXVector3& u, const ADXVector3& v);
 };
 

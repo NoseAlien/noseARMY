@@ -1,19 +1,19 @@
-#include "TitleScene.h"
+ï»¿#include "TitleScene.h"
 
 #include "SceneTransition.h"
 
 void TitleScene::Initialize()
 {
-	//‰æ‘œ
+	//ç”»åƒ
 	titleImg = ADXImage::LoadADXImage("noseARMY_logo.png");
 	keyImg = ADXImage::LoadADXImage("PRESS_SPACE.png");
 
-	//ƒ}ƒeƒŠƒAƒ‹
+	//ãƒžãƒ†ãƒªã‚¢ãƒ«
 	unlitMat = ADXMaterial::LoadMaterial("material/unlit.mtl");
 
 	rect = ADXModel::CreateRect();
 
-	//ƒIƒuƒWƒFƒNƒg
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 
 	ADXObject* temp = ADXObject::Create();
 	shutter_ = temp->AddComponent<SceneTransition>();

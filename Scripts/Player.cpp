@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 #include "ADXUtility.h"
 #include "FieldBox.h"
 #include <time.h>

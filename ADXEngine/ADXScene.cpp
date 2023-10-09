@@ -1,4 +1,4 @@
-#include "ADXScene.h"
+ï»¿#include "ADXScene.h"
 #include "ADXSceneManager.h"
 #include "ADXKeyBoardInput.h"
 #include "ADXUtility.h"
@@ -13,7 +13,7 @@ void ADXScene::Initialize()
 {
 	startTime = 0;
 
-	//‰æ‘œ
+	//ç”»åƒ
 	titleImg = ADXImage::LoadADXImage("ADXEngine_logo.png");
 	logoImg_A = ADXImage::LoadADXImage("logo_A.png");
 	logoImg_D = ADXImage::LoadADXImage("logo_D.png");
@@ -22,12 +22,12 @@ void ADXScene::Initialize()
 
 	logoJingle = ADXAudio::LoadADXAudio("sound/ADXJingle.wav");
 
-	//ƒ}ƒeƒŠƒAƒ‹
+	//ãƒžãƒ†ãƒªã‚¢ãƒ«
 	unlitMat = ADXMaterial::LoadMaterial("material/unlit.mtl");
 
 	rect = ADXModel::CreateRect();
 
-	//ƒIƒuƒWƒFƒNƒg
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 
 	ADXObject* temp = ADXObject::Create({0,0,-2});
 	camera_ = temp->AddComponent<ADXCamera>();

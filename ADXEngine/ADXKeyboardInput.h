@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
@@ -15,9 +15,9 @@ private:
 	IDirectInputDevice8* keyboard = nullptr;
 	HRESULT result = {};
 
-	//‘SƒL[‚Ì“ü—Íó‘Ô‚ğ“ü‚ê‚é•Ï”
+	//å…¨ã‚­ãƒ¼ã®å…¥åŠ›çŠ¶æ…‹ã‚’å…¥ã‚Œã‚‹å¤‰æ•°
 	BYTE key[256] = {};
-	//‘O‚ÌƒtƒŒ[ƒ€‚Ì“ü—Íó‘Ô‚ğ“ü‚ê‚é•Ï”
+	//å‰ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã®å…¥åŠ›çŠ¶æ…‹ã‚’å…¥ã‚Œã‚‹å¤‰æ•°
 	BYTE prevKey[256] = {};
 
 public:

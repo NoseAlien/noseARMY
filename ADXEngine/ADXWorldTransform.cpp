@@ -1,4 +1,4 @@
-#include "ADXWorldTransform.h"
+ï»¿#include "ADXWorldTransform.h"
 #include "ADXCamera.h"
 #include <math.h>
 #include <cmath>
@@ -44,18 +44,18 @@ void ADXWorldTransform::Initialize()
 
 void ADXWorldTransform::UpdateMatrix()
 {
-	//////Šgk//////
+	//////æ‹¡ç¸®//////
 	matScale_ =
 	{ localScale_.x,0,0,0,
 	0,localScale_.y,0,0,
 	0,0,localScale_.z,0,
 	0,0,0,1 };
 
-	//////‰ñ“]//////
+	//////å›žè»¢//////
 	matRot_ = localRotation_.RotateMatrix();
 
 
-	//////•½sˆÚ“®//////
+	//////å¹³è¡Œç§»å‹•//////
 	matTrans_ =
 	{ 1,0,0,0,
 	0,1,0,0,
@@ -63,7 +63,7 @@ void ADXWorldTransform::UpdateMatrix()
 	localPosition_.x,localPosition_.y,localPosition_.z,1 };
 
 
-	//////•½sˆÚ“®‹ts—ñ//////
+	//////å¹³è¡Œç§»å‹•é€†è¡Œåˆ—//////
 	ADXMatrix4 matTransInv =
 	{ 1,0,0,0,
 	0,1,0,0,
@@ -71,29 +71,29 @@ void ADXWorldTransform::UpdateMatrix()
 	-localPosition_.x,-localPosition_.y,-localPosition_.z,1 };
 
 
-	//’PˆÊs—ñ‚ð‘ã“ü
+	//å˜ä½è¡Œåˆ—ã‚’ä»£å…¥
 	matWorld_ = IdentityMatrix();
-	//ƒXƒP[ƒŠƒ“ƒOA‰ñ“]AˆÚ“®s—ñ‚ð‡‚ÉŠ|‚¯‚é
+	//ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ã€å›žè»¢ã€ç§»å‹•è¡Œåˆ—ã‚’é †ã«æŽ›ã‘ã‚‹
 	matWorld_ = matWorld_ * matScale_ * matRot_ * matTrans_;
 
-	//’PˆÊs—ñ‚ð‘ã“ü
+	//å˜ä½è¡Œåˆ—ã‚’ä»£å…¥
 	matWorldInverse_ = IdentityMatrix();
-	//ˆÚ“®A‰ñ“]AƒXƒP[ƒŠƒ“ƒO‚Ì‹ts—ñ‚ð‡‚ÉŠ|‚¯‚é
+	//ç§»å‹•ã€å›žè»¢ã€ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ã®é€†è¡Œåˆ—ã‚’é †ã«æŽ›ã‘ã‚‹
 	matWorldInverse_ = matWorldInverse_ * matTransInv * matRot_.Transpose() * matScale_.Inverse();
 
 	if (parent_ != nullptr)
 	{
-		matWorld_ *= parent_->matWorld_;//e‚Ìs—ñ‚ðŠ|‚¯ŽZ‚·‚é
-		matScale_ *= parent_->matScale_;//e‚ÌƒXƒP[ƒŠƒ“ƒOs—ñ‚àŠ|‚¯ŽZ‚·‚é
-		matRot_ *= parent_->matRot_;//e‚Ì‰ñ“]s—ñ‚àŠ|‚¯ŽZ‚·‚é
-		matTrans_ *= parent_->matTrans_;//e‚Ì•½sˆÚ“®s—ñ‚àŠ|‚¯ŽZ‚·‚é
-		matWorldInverse_ = parent_->matWorldInverse_ * matWorldInverse_;//e‚Ì‹ts—ñ‚ðŠ|‚¯‚éi‡”Ô‚Í‹t‚Éj
+		matWorld_ *= parent_->matWorld_;//è¦ªã®è¡Œåˆ—ã‚’æŽ›ã‘ç®—ã™ã‚‹
+		matScale_ *= parent_->matScale_;//è¦ªã®ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°è¡Œåˆ—ã‚‚æŽ›ã‘ç®—ã™ã‚‹
+		matRot_ *= parent_->matRot_;//è¦ªã®å›žè»¢è¡Œåˆ—ã‚‚æŽ›ã‘ç®—ã™ã‚‹
+		matTrans_ *= parent_->matTrans_;//è¦ªã®å¹³è¡Œç§»å‹•è¡Œåˆ—ã‚‚æŽ›ã‘ç®—ã™ã‚‹
+		matWorldInverse_ = parent_->matWorldInverse_ * matWorldInverse_;//è¦ªã®é€†è¡Œåˆ—ã‚’æŽ›ã‘ã‚‹ï¼ˆé †ç•ªã¯é€†ã«ï¼‰
 	}
 }
 
 void ADXWorldTransform::UpdateConstBuffer()
 {
-	//’è”ƒoƒbƒtƒ@‚É“]‘—
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ã«è»¢é€
 	constMapTransform->matWorld = GenerateMatTransform(modelPosition_,modelRotation_,modelScale_) * matWorld_;
 	constMapTransform->matWorldRot = modelRotation_.RotateMatrix() * matRot_;
 	constMapTransform->matMVP = constMapTransform->matWorld;

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <vector>
 #include <d3d12.h>
@@ -12,7 +12,7 @@ public:
 	static ADXModel LoadADXModel(const std::string& filePath);
 
 public:
-	//’¸“_ƒf[ƒ^\‘¢‘Ì
+	//é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 	struct Vertex
 	{
 		DirectX::XMFLOAT3 pos;

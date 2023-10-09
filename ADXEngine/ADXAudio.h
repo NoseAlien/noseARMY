@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <xaudio2.h>
 #include <fstream>
@@ -7,29 +7,29 @@
 class ADXAudio
 {
 private:
-	struct ChunkHeader // ƒ`ƒƒƒ“ƒNƒwƒbƒ_
+	struct ChunkHeader // ãƒãƒ£ãƒ³ã‚¯ãƒ˜ãƒƒãƒ€
 	{
-		char id[4] = "";// ƒ`ƒƒƒ“ƒN–ˆ‚ÌID
-		int32_t size = 0; // ƒ`ƒƒƒ“ƒNƒTƒCƒY
+		char id[4] = "";// ãƒãƒ£ãƒ³ã‚¯æ¯ã®ID
+		int32_t size = 0; // ãƒãƒ£ãƒ³ã‚¯ã‚µã‚¤ã‚º
 	};
 
-	struct RiffHeader // RIFFƒwƒbƒ_ƒ`ƒƒƒ“ƒN
+	struct RiffHeader // RIFFãƒ˜ãƒƒãƒ€ãƒãƒ£ãƒ³ã‚¯
 	{
 		ChunkHeader chunk{}; // "RIFF"
 		char type[4] = ""; // "WAVE"
 	};
 
-	struct FormatChunk // FMTƒ`ƒƒƒ“ƒN
+	struct FormatChunk // FMTãƒãƒ£ãƒ³ã‚¯
 	{
 		ChunkHeader chunk{}; // "fmt "
-		WAVEFORMATEX fmt{}; // ”gŒ`ƒtƒH[ƒ}ƒbƒg
+		WAVEFORMATEX fmt{}; // æ³¢å½¢ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ
 	};
 
-	struct SoundData // ‰¹ºƒf[ƒ^
+	struct SoundData // éŸ³å£°ãƒ‡ãƒ¼ã‚¿
 	{
-		WAVEFORMATEX wfex{}; // ”gŒ`ƒtƒH[ƒ}ƒbƒg
-		std::unique_ptr<BYTE> pBuffer = nullptr; // ƒoƒbƒtƒ@‚Ìæ“ªƒAƒhƒŒƒX
-		uint32_t bufferSize = 0; // ƒoƒbƒtƒ@‚ÌƒTƒCƒY
+		WAVEFORMATEX wfex{}; // æ³¢å½¢ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ
+		std::unique_ptr<BYTE> pBuffer = nullptr; // ãƒãƒƒãƒ•ã‚¡ã®å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹
+		uint32_t bufferSize = 0; // ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚º
 	};
 
 	std::string name = {};

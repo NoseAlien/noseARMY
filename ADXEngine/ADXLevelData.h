@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "ADXObject.h"
 #include "json.hpp"
 

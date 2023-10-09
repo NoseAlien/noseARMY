@@ -1,4 +1,4 @@
-#include "ADXSceneManager.h"
+﻿#include "ADXSceneManager.h"
 
 ADXSceneManager* ADXSceneManager::S_current = nullptr;
 

@@ -1,4 +1,4 @@
-#include "ADXCamera.h"
+﻿#include "ADXCamera.h"
 #include "ADXWindow.h"
 
 using namespace DirectX;

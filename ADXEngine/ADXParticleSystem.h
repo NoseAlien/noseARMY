@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "ADXComponent.h"
 #include "ADXParticle.h"
 #include "ADXTexAnimation.h"

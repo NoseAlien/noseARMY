@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "ADXVector3.h"
 #include <string>
@@ -21,8 +21,8 @@ public:
 	{
 		constexpr NPManager() noexcept = default;
 
-		// �ʂ� Deleter �I�u�W�F�N�g���� Deleter �I�u�W�F�N�g���\�z���܂��B
-		// ���̃R���X�g���N�^�� U* �� T* �ɈÖقɕϊ��\�ȏꍇ�ɂ̂݁A�I�[�o�[���[�h�����ɎQ�����܂��B
+		// 別の Deleter オブジェクトから Deleter オブジェクトを構築します。
+		// このコンストラクタは U* が T* に暗黙に変換可能な場合にのみ、オーバーロード解決に参加します。
 		template<
 			typename U,
 			typename std::enable_if<std::is_convertible<U*, T*>::value, std::nullptr_t>::type = nullptr
@@ -40,8 +40,8 @@ public:
 	{
 		constexpr NPManager() noexcept = default;
 
-		// �ʂ� Deleter �I�u�W�F�N�g���� Deleter �I�u�W�F�N�g���\�z���܂��B
-		// ���̃R���X�g���N�^�� U(*)[] �� T(*)[] �ɈÖقɕϊ��\�ȏꍇ�ɂ̂݁A�I�[�o�[���[�h�����ɎQ�����܂��B
+		// 別の Deleter オブジェクトから Deleter オブジェクトを構築します。
+		// このコンストラクタは U(*)[] が T(*)[] に暗黙に変換可能な場合にのみ、オーバーロード解決に参加します。
 		template<
 			typename U,
 			typename std::enable_if<std::is_convertible<U(*)[], T(*)[]>::value, std::nullptr_t>::type = nullptr

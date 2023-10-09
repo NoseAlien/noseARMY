@@ -1,4 +1,4 @@
-#include "PlayerMini.h"
+﻿#include "PlayerMini.h"
 #include "Player.h"
 
 std::vector<PlayerMini*> PlayerMini::S_minis{};

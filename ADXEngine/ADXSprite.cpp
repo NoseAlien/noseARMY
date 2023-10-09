@@ -1,4 +1,4 @@
-#include "ADXSprite.h"
+Ôªø#include "ADXSprite.h"
 #include "ADXUtility.h"
 
 void ADXSprite::SetClippingStatus(const ADXVector3& maxBoxRUF, const ADXVector3& maxBoxLDB, 
@@ -21,10 +21,10 @@ void ADXSprite::UniqueUpdate()
 	GetGameObject()->model = &rect;
 
 	rect.vertices = {
-	{{-1.0f,-1.0f,0.0f},{}, {rectLU.x,rectRD.y}},//ç∂â∫
-	{{-1.0f,1.0f,0.0f},{},{rectLU.x,rectLU.y}},//ç∂è„
-	{{1.0f,-1.0f,0.0f},{},{rectRD.x,rectRD.y}},//âEâ∫
-	{{1.0f,1.0f,0.0f},{},{rectRD.x,rectLU.y}},//âEè„
+	{{-1.0f,-1.0f,0.0f},{}, {rectLU.x,rectRD.y}},//Â∑¶‰∏ã
+	{{-1.0f,1.0f,0.0f},{},{rectLU.x,rectLU.y}},//Â∑¶‰∏ä
+	{{1.0f,-1.0f,0.0f},{},{rectRD.x,rectRD.y}},//Âè≥‰∏ã
+	{{1.0f,1.0f,0.0f},{},{rectRD.x,rectLU.y}},//Âè≥‰∏ä
 	};
 
 	if (boxControl)
