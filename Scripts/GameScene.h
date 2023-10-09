@@ -9,6 +9,7 @@
 #include "ADXImage.h"
 #include "ADXTexAnimation.h"
 #include "ADXUtility.h"
+#include "SceneTransition.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "FieldBox.h"
@@ -31,7 +32,7 @@ private:
 	ADXCamera* camera_{};
 
 	//オブジェクト
-	ADXObject* key = nullptr;
+	SceneTransition* shutter_ = nullptr;
 	Player* player_ = nullptr;
 	std::list<ADXObject*> floors_{};
 	std::list<TutorialArea*> tutorialAreas_{};
@@ -39,7 +40,7 @@ private:
 	std::list<BattleFieldBox*> battleFields_{};
 	std::list<Enemy*> enemies_{};
 	Goal* goal_ = nullptr;
-
+	ADXObject* key = nullptr;
 	ADXObject* backGround_{};
 
 	EnemySpawnData enemySpawnData{};

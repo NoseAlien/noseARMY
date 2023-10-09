@@ -31,7 +31,7 @@ void Cub_E::EnemyUpdate()
 		if (attackProgress > 0.5f)
 		{
 			finalTarget.y += 6;
-			rigidbody.velocity = (finalTarget - GetGameObject()->transform.localPosition_) * 0.05f;
+			rigidbody->velocity = (finalTarget - GetGameObject()->transform.localPosition_) * 0.05f;
 		}
 		else if (attackProgress > 0.2f)
 		{

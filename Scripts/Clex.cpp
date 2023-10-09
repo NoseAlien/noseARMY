@@ -2,9 +2,9 @@
 
 void Clex::EnemyUpdate()
 {
-	rigidbody.drag = 0.9f;
-	rigidbody.dragAxis = { true,true,true };
-	rigidbody.gravity = { 0,0,0 };
+	rigidbody->drag = 0.9f;
+	rigidbody->dragAxis = { true,true,true };
+	rigidbody->gravity = { 0,0,0 };
 
 	GetGameObject()->sortingOrder = 1;
 
@@ -23,7 +23,7 @@ void Clex::EnemyUpdate()
 
 	if (attackProgress > 0.9f)
 	{
-		rigidbody.velocity = (GetGameObject()->transform.localPosition_ - cursor).Normalize();
+		rigidbody->velocity = (GetGameObject()->transform.localPosition_ - cursor).Normalize();
 	}
 	attackProgress = min(max(0, attackProgress - 0.02f), 1);
 }

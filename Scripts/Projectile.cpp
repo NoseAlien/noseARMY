@@ -8,7 +8,7 @@ void Projectile::EnemyUpdate()
 	}
 	else
 	{
-		rigidbody.velocity = direction;
+		rigidbody->velocity = direction;
 		lifetime--;
 	}
 }

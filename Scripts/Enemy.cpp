@@ -3,7 +3,7 @@
 #include "Player.h"
 #include "ADXUtility.h"
 
-void Enemy::Initialize()
+void Enemy::LiveEntitiesInitialize()
 {
 	enemyModel = ADXModel::LoadADXModel("model/groundBlock.obj");
 
@@ -12,31 +12,27 @@ void Enemy::Initialize()
 
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
 	tempCol->pushable_ = true;
-	tempCol->colType_ = box;
 
 	tempCol = GetGameObject()->AddComponent<ADXCollider>();
 	tempCol->isTrigger = true;
 	tempCol->colType_ = sphere;
 	tempCol->radius_ = 12;
-}
 
-void Enemy::LiveEntitiesInitialize()
-{
+	rigidbody = GetGameObject()->AddComponent<ADXRigidbody>();
 	EnemyInitialize();
 }
 
 void Enemy::LiveEntitiesUpdate()
 {
-	rigidbody.VelocityMove();
+	rigidbody->VelocityMove();
 
-	rigidbody.drag = 0.8f;
-	rigidbody.dragAxis = { true,false,true };
-	rigidbody.gravity = { 0,-1,0 };
-	rigidbody.gravityScale = 0.015f;
+	rigidbody->drag = 0.8f;
+	rigidbody->dragAxis = { true,false,true };
+	rigidbody->gravity = { 0,-1,0 };
+	rigidbody->gravityScale = 0.015f;
 
 	EnemyUpdate();
 
-	rigidbody.Update(GetGameObject());
 	targetDetected = false;
 }
 
@@ -46,14 +42,14 @@ void Enemy::DeadUpdate()
 
 	GetGameObject()->material.ambient = { 0,0,0 };
 
-	rigidbody.drag = 0.8f;
-	rigidbody.dragAxis = { true,false,true };
-	rigidbody.gravity = { 0,-1,0 };
-	rigidbody.gravityScale = 0.015f;
+	rigidbody->drag = 0.8f;
+	rigidbody->dragAxis = { true,false,true };
+	rigidbody->gravity = { 0,-1,0 };
+	rigidbody->gravityScale = 0.015f;
 
-	rigidbody.VelocityMove();
+	rigidbody->VelocityMove();
 
-	rigidbody.Update(GetGameObject());
+	rigidbody->Update(GetGameObject());
 }
 
 void Enemy::LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
