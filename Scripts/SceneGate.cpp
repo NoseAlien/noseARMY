@@ -1,4 +1,4 @@
-﻿#include "SceneGate.h"
+#include "SceneGate.h"
 #include "LiveEntity.h"
 #include "SceneTransition.h"
 #include "ADXCollider.h"
@@ -49,12 +49,10 @@ void SceneGate::UniqueUpdate()
 
 void SceneGate::OnCollisionHit(ADXCollider* col, [[maybe_unused]] ADXCollider* myCol)
 {
-	for (auto& objItr : LiveEntity::GetLiveEntities())
+	if (col->GetGameObject()->GetComponent<LiveEntity>() != nullptr
+		&& col->GetGameObject()->GetComponent<LiveEntity>()->GetTeam() == team)
 	{
-		if (!objItr->GetGameObject()->GetComponents<ADXCollider>().empty() && col == objItr->GetGameObject()->GetComponent<ADXCollider>() && objItr->GetTeam() == team)
-		{
-			hitted = true;
-			return;
-		}
+		hitted = true;
+		return;
 	}
 }

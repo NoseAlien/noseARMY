@@ -1,4 +1,4 @@
-﻿#include "StageSelectScene.h"
+#include "StageSelectScene.h"
 #include "SceneTransition.h"
 
 void StageSelectScene::Initialize()
@@ -8,7 +8,7 @@ void StageSelectScene::Initialize()
 	fields_ = {};
 	tutorialAreas_ = {};
 
-	//画像
+	//画僁E
 	keyImg = ADXImage::LoadADXImage("QUIT_TITLE.png");
 	backGroundTex = ADXImage::LoadADXImage("skyBG.png");
 	groundImg = ADXImage::LoadADXImage("GroundBlock.png");
@@ -16,7 +16,7 @@ void StageSelectScene::Initialize()
 	rect = ADXModel::CreateRect();
 	ground = ADXModel::LoadADXModel("model/groundBlock.obj");
 
-	//オブジェクト
+	//オブジェクチE
 
 	ADXObject* temp = ADXObject::Create();
 	shutter_ = temp->AddComponent<SceneTransition>();

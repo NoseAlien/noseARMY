@@ -1,10 +1,10 @@
-﻿#include "PlayerMini.h"
+#include "PlayerMini.h"
 #include "Player.h"
 
 std::vector<PlayerMini*> PlayerMini::S_minis{};
 std::vector<PlayerMini*> PlayerMini::S_allMiniPtr{};
 
-void PlayerMini::Initialize(Player* setParent, ADXObject setNose)
+void PlayerMini::Initialize(Player* setParent, const ADXObject& setNose)
 {
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
 	tempCol->pushable_ = true;
@@ -13,6 +13,8 @@ void PlayerMini::Initialize(Player* setParent, ADXObject setNose)
 	tempCol = GetGameObject()->AddComponent<ADXCollider>();
 	tempCol->isTrigger = true;
 	tempCol->radius_ = 1.1f;
+
+	rigidbody = GetGameObject()->AddComponent<ADXRigidbody>();
 
 	parent = setParent;
 
@@ -32,46 +34,44 @@ void PlayerMini::Move(float walkSpeed, float jumpPower)
 	{
 		if (parent->GetInputStatus(0))
 		{
-			rigidbody.velocity += cameraForward * walkSpeed;
+			rigidbody->velocity += cameraForward * walkSpeed;
 		}
 		if (parent->GetInputStatus(1))
 		{
-			rigidbody.velocity -= cameraForward * walkSpeed;
+			rigidbody->velocity -= cameraForward * walkSpeed;
 		}
 		if (parent->GetInputStatus(2))
 		{
-			rigidbody.velocity += cameraRight * walkSpeed;
+			rigidbody->velocity += cameraRight * walkSpeed;
 		}
 		if (parent->GetInputStatus(3))
 		{
-			rigidbody.velocity -= cameraRight * walkSpeed;
+			rigidbody->velocity -= cameraRight * walkSpeed;
 		}
-		GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(rigidbody.velocity.x, rigidbody.velocity.z),0 });
+		GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(rigidbody->velocity.x, rigidbody->velocity.z),0 });
 	}
 
 	if (parent->GetInputStatusTrigger(4))
 	{
-		rigidbody.velocity.y = jumpPower;
+		rigidbody->velocity.y = jumpPower;
 	}
-	if (parent->GetInputStatusRelease(4) && rigidbody.velocity.y > 0)
+	if (parent->GetInputStatusRelease(4) && rigidbody->velocity.y > 0)
 	{
-		rigidbody.velocity.y *= 0.2f;
+		rigidbody->velocity.y *= 0.2f;
 	}
 }
 
 void PlayerMini::UniqueUpdate()
 {
-	rigidbody.gravityScale = 0.01f;
-	rigidbody.drag = 0.8f;
+	rigidbody->gravityScale = 0.01f;
+	rigidbody->drag = 0.8f;
 
-	rigidbody.VelocityMove();
+	rigidbody->VelocityMove();
 
-	rigidbody.velocity.y /= 0.8f;
-	rigidbody.velocity.y -= 0.03f;
+	rigidbody->velocity.y /= 0.8f;
+	rigidbody->velocity.y -= 0.03f;
 
 	Move(0.1f, 0.8f);
-
-	rigidbody.Update(GetGameObject());
 
 	nose->transform.parent_ = &GetGameObject()->transform;
 

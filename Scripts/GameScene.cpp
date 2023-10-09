@@ -1,4 +1,4 @@
-Ôªø#include "GameScene.h"
+#include "GameScene.h"
 #include "SceneTransition.h"
 
 #include "Cub_E.h"
@@ -12,7 +12,7 @@ void GameScene::Initialize()
 	tutorialAreas_ = {};
 	player_ = {};
 
-	//ÁîªÂÉè
+	//âÊëú
 	keyImg = ADXImage::LoadADXImage("QUIT_TITLE.png");
 	backGroundTex = ADXImage::LoadADXImage("skyBG.png");
 	groundImg = ADXImage::LoadADXImage("GroundBlock.png");
@@ -20,7 +20,7 @@ void GameScene::Initialize()
 	rect = ADXModel::CreateRect();
 	ground = ADXModel::LoadADXModel("model/groundBlock.obj");
 
-	//„Ç™„Éñ„Ç∏„Çß„ÇØ„Éà
+	//ÉIÉuÉWÉFÉNÉg
 
 	ADXObject* temp = ADXObject::Create({ 0,5,-20 }, ADXQuaternion::EulerToQuaternion({ 0.3f,0,0 }));
 

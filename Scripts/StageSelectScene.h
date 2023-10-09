@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 
 #include "ADXScene.h"
 #include "ADXObject.h"
@@ -12,19 +12,19 @@
 class StageSelectScene : public ADXScene
 {
 private:
-	//ç”»åƒ
+	//‰æ‘œ
 	uint32_t keyImg{};
 	uint32_t backGroundTex{};
 	uint32_t groundImg{};
 
-	//3Dãƒ¢ãƒ‡ãƒ«
+	//3Dƒ‚ƒfƒ‹
 	ADXModel ground{};
 	ADXModel rect{};
 
-	//ã‚«ãƒ¡ãƒ©
+	//ƒJƒƒ‰
 	ADXCamera* camera_ = nullptr;
 
-	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	//ƒIƒuƒWƒFƒNƒg
 	SceneTransition* shutter_ = nullptr;
 	ADXObject* key_ = nullptr;
 	Player* player_ = nullptr;

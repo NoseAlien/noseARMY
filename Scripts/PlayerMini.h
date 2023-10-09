@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXObject.h"
 #include "ADXRigidbody.h"
@@ -12,10 +12,10 @@ private:
 	Player* parent = nullptr;
 
 	bool destroyFlag = false;
-	ADXRigidbody rigidbody{};
+	ADXRigidbody* rigidbody = nullptr;
 
 public:
-	void Initialize(Player* setParent, ADXObject setNose);
+	void Initialize(Player* setParent, const ADXObject& setNose);
 	Player* GetParent() { return parent; };
 		
 private:

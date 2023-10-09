@@ -1,4 +1,4 @@
-﻿#include "TutorialArea.h"
+#include "TutorialArea.h"
 
 std::list<TutorialArea*> TutorialArea::allAreaPtr{};
 std::list<TutorialArea*> TutorialArea::areas{};

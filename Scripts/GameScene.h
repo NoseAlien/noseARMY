@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 
 #include "ADXScene.h"
 #include "ADXModel.h"
@@ -18,19 +18,19 @@
 class GameScene : public ADXScene
 {
 private:
-	//ç”»åƒ
+	//‰æ‘œ
 	uint32_t keyImg{};
 	uint32_t backGroundTex{};
 	uint32_t groundImg{};
 
-	//3Dãƒ¢ãƒ‡ãƒ«
+	//3Dƒ‚ƒfƒ‹
 	ADXModel ground{};
 	ADXModel rect{};
 
-	//ã‚«ãƒ¡ãƒ©
+	//ƒJƒƒ‰
 	ADXCamera* camera_{};
 
-	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	//ƒIƒuƒWƒFƒNƒg
 	ADXObject* key = nullptr;
 	Player* player_ = nullptr;
 	std::list<ADXObject*> floors_{};

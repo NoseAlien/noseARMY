@@ -1,4 +1,4 @@
-﻿#include "FieldBox.h"
+#include "FieldBox.h"
 
 std::list<FieldBox*> FieldBox::allFieldPtr{};
 std::list<FieldBox*> FieldBox::fields{};

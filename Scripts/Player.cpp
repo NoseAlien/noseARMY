@@ -1,4 +1,4 @@
-﻿#include "Player.h"
+#include "Player.h"
 #include "ADXUtility.h"
 #include "FieldBox.h"
 #include <time.h>
@@ -102,6 +102,9 @@ void Player::LiveEntitiesInitialize()
 	outOfField->texture = ADXImage::LoadADXImage("outOfField.png");
 	outOfField->material = GetGameObject()->material;
 	outOfField->renderLayer = 1;
+
+	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
+	tempCol->pushable_ = true;
 }
 
 void Player::LiveEntitiesUpdate()
@@ -140,8 +143,6 @@ void Player::LiveEntitiesUpdate()
 		rigidbody->dragAxis.y = false;
 		Move(0.05f, 0.4f);
 	}
-
-	rigidbody->Update(GetGameObject());
 
 	if (splitInterval <= -20)
 	{
@@ -187,7 +188,7 @@ void Player::LiveEntitiesUpdate()
 			mini->GetGameObject()->transform.localScale_ = { 0.5f,0.5f,0.5f };
 			mini->GetGameObject()->transform.localPosition_ = ADXMatrix4::Transform({ 0,0,1 }, GetGameObject()->transform.GetMatWorld());
 			
-			//mini->Initialize(this, *nose);
+			mini->Initialize(this, *nose);
 			minis.push_back(mini);
 		}
 		splitInterval = 7;
