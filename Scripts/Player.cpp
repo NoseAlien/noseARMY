@@ -102,8 +102,6 @@ void Player::LiveEntitiesInitialize()
 	outOfField->texture = ADXImage::LoadADXImage("outOfField.png");
 	outOfField->material = GetGameObject()->material;
 	outOfField->renderLayer = 1;
-
-	deadParticle = GetGameObject()->AddComponent<ADXParticleSystem>();
 }
 
 void Player::LiveEntitiesUpdate()

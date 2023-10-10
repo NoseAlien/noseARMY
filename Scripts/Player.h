@@ -35,8 +35,6 @@ private:
 	std::vector<BYTE> config{};
 
 	ADXRigidbody* rigidbody{};
-	ADXParticleSystem* deadParticle{};
-
 
 	std::list<PlayerMini*> minis{};
 	int splitInterval = 0;

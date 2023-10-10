@@ -347,6 +347,9 @@ void ADXObject::StaticUpdate()
 	ADXVector3 limitMinPos = { min(S_limitPos1.x,S_limitPos2.x),min(S_limitPos1.y,S_limitPos2.y) ,min(S_limitPos1.z,S_limitPos2.z) };
 	ADXVector3 limitMaxPos = { max(S_limitPos1.x,S_limitPos2.x),max(S_limitPos1.y,S_limitPos2.y) ,max(S_limitPos1.z,S_limitPos2.z) };
 
+	S_objs.remove_if([=](auto& itr)
+		{ return itr->deleteFlag; });
+
 	for (auto& itr : S_objs)
 	{
 		itr->Update();

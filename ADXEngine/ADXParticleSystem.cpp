@@ -24,10 +24,5 @@ void ADXParticleSystem::UniqueInitialize()
 void ADXParticleSystem::UniqueUpdate()
 {
 	particles.remove_if([=](auto& itr)
-		{ return itr = nullptr; });
-
-	for (auto& itr : particles)
-	{
-		itr->Update(GetGameObject());
-	}
+		{ return itr == nullptr; });
 }

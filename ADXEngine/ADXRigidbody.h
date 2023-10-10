@@ -22,6 +22,7 @@ public:
 
 private:
 	ADXVector3 prevPos{};
+	bool initializedThisFrame = false;
 
 public:
 	void VelocityMove();

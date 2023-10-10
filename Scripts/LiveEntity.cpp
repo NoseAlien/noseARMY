@@ -101,11 +101,13 @@ void LiveEntity::UniqueUpdate()
 		}
 	}
 
-	particle->Update(GetGameObject());
 	for (auto& itr : particle->particles)
 	{
-		itr->moveVec *= 0.9f;
-		itr->GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0.01f }) * itr->GetGameObject()->transform.modelRotation_;
+		if (itr->GetGameObject() != nullptr)
+		{
+			itr->moveVec *= 0.9f;
+			itr->GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0.01f }) * itr->GetGameObject()->transform.modelRotation_;
+		}
 	}
 
 	if (attackHitted)

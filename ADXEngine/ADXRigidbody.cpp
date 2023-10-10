@@ -1,9 +1,10 @@
-#include "ADXRigidbody.h"
+﻿#include "ADXRigidbody.h"
 
 void ADXRigidbody::UniqueInitialize()
 {
 	GetGameObject()->transform.UpdateMatrix();
 	prevPos = GetGameObject()->transform.localPosition_;
+	initializedThisFrame = true;
 }
 
 void ADXRigidbody::VelocityMove()
@@ -36,5 +37,9 @@ void ADXRigidbody::VelocityMove()
 
 void ADXRigidbody::UniqueUpdate()
 {
-	GetGameObject()->transform.localPosition_ += velocity;
+	if (!initializedThisFrame)
+	{
+		GetGameObject()->transform.localPosition_ += velocity;
+	}
+	initializedThisFrame = false;
 }

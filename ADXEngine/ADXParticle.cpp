@@ -12,6 +12,10 @@ void ADXParticle::UniqueUpdate()
 	animation.Update();
 	GetGameObject()->texture = animation.GetNowTex();
 	lifeTime--;
+	if (lifeTime <= 0)
+	{
+		GetGameObject()->Destroy();
+	}
 }
 
 void ADXParticle::OnPreRender()
