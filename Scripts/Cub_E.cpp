@@ -1,4 +1,4 @@
-﻿#include "Cub_E.h"
+#include "Cub_E.h"
 
 void Cub_E::EnemyInitialize()
 {
@@ -40,7 +40,13 @@ void Cub_E::EnemyUpdate()
 				0 });
 			if (attackProgress > 0.25f)
 			{
-				LiveEntity::SetAttackObj({ GetGameObject()->GetComponent<ADXCollider>(),this,10});
+				for (auto& itr : GetGameObject()->GetComponents<ADXCollider>())
+				{
+					if (!itr->isTrigger)
+					{
+						LiveEntity::SetAttackObj({ itr,this,10 });
+					}
+				}
 			}
 		}
 	}
