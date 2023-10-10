@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "ADXObject.h"
 #include "ADXParticleSystem.h"
@@ -15,7 +15,7 @@ protected:
 private:
 	ADXModel rect{};
 	uint32_t gaugeTex = 0;
-	ADXParticleSystem particle{};
+	ADXParticleSystem* particle{};
 	ADXObject* hpGauge{};
 	ADXObject* hpGaugeBG{};
 	std::string team = "";

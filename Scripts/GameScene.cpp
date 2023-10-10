@@ -1,4 +1,4 @@
-#include "GameScene.h"
+﻿#include "GameScene.h"
 #include "SceneTransition.h"
 
 #include "Cub_E.h"
@@ -36,95 +36,33 @@ void GameScene::Initialize()
 	player_->Initialize(ADXKeyBoardInput::GetCurrentInstance(), { DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C }, camera_);
 	player_->LiveEntity::Initialize("player");
 
-	floors_.push_back(ADXObject::Create({ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 2,2,2 }));
-	floors_.back()->model = &ground;
-	floors_.back()->texture = groundImg;
-	ADXCollider* tempCol = floors_.back()->AddComponent<ADXCollider>();
-	tempCol->colType_ = box;
 
-	floors_.push_back(ADXObject::Duplicate(*floors_.back()));
-	floors_.back()->transform.localPosition_ = { 0,-2,0 };
-	floors_.back()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	floors_.back()->transform.localScale_ = { 10,1,10 };
-	floors_.back()->transform.UpdateMatrix();
+	floorGenerateData = {
+		{{ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 2,2,2 }},
+		{{ 0,-2,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,1,10 }},
+		{{ 0,-1,15 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,1,5 }},
+		{{ 0,10,25 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,10,5 }},
+		{{ 0,9,40 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,10,10 }},
+		{{ 9.5f,19.5f,40 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 0.5f,0.5f,10 }},
+		{{ -9.5f,19.5f,40 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 0.5f,0.5f,10 }},
+		{{ 0,19,60 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,1,10 }},
+		{{ 0,18,77 }, ADXQuaternion::EulerToQuaternion({ 0.5f,0,0 }), { 10,9,1 }},
+		{{ 4,10,61 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 14,1,11 }},
+		{{ 13.5f,10,93 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 4.5f,1,21 }},
+		{{ 10,11.5f,85 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 1,0.5f,11 }},
+		{{ 3,10,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,1,6 }},
+		{{ -18.5f,-14.8f,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,1 }), { 30,1,2 }},
+		{{ -40,-60,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,1,6 }},
+	};
 
-	floors_.push_back(ADXObject::Duplicate(*floors_.back()));
-	floors_.back()->transform.localPosition_ = { 0,-1,15 };
-	floors_.back()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	floors_.back()->transform.localScale_ = { 10,1,5 };
-	floors_.back()->transform.UpdateMatrix();
-
-	floors_.push_back(ADXObject::Duplicate(*floors_.back()));
-	floors_.back()->transform.localPosition_ = { 0,10,25 };
-	floors_.back()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	floors_.back()->transform.localScale_ = { 10,10,5 };
-	floors_.back()->transform.UpdateMatrix();
-
-	floors_.push_back(ADXObject::Duplicate(*floors_.back()));
-	floors_.back()->transform.localPosition_ = { 0,9,40 };
-	floors_.back()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	floors_.back()->transform.localScale_ = { 10,10,10 };
-	floors_.back()->transform.UpdateMatrix();
-
-	floors_.push_back(ADXObject::Duplicate(*floors_.back()));
-	floors_.back()->transform.localPosition_ = { 9.5,19.5,40 };
-	floors_.back()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	floors_.back()->transform.localScale_ = { 0.5,0.5,10 };
-	floors_.back()->transform.UpdateMatrix();
-
-	floors_.push_back(ADXObject::Duplicate(*floors_.back()));
-	floors_.back()->transform.localPosition_ = { -9.5,19.5,40 };
-	floors_.back()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	floors_.back()->transform.localScale_ = { 0.5,0.5,10 };
-	floors_.back()->transform.UpdateMatrix();
-
-	floors_.push_back(ADXObject::Duplicate(*floors_.back()));
-	floors_.back()->transform.localPosition_ = { 0,19,60 };
-	floors_.back()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	floors_.back()->transform.localScale_ = { 10,1,10 };
-	floors_.back()->transform.UpdateMatrix();
-
-	floors_.push_back(ADXObject::Duplicate(*floors_.back()));
-	floors_.back()->transform.localPosition_ = { 0,18,77 };
-	floors_.back()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0.5,0,0 });
-	floors_.back()->transform.localScale_ = { 10,9,1 };
-	floors_.back()->transform.UpdateMatrix();
-
-	floors_.push_back(ADXObject::Duplicate(*floors_.back()));
-	floors_.back()->transform.localPosition_ = { 4,10,61 };
-	floors_.back()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	floors_.back()->transform.localScale_ = { 14,1,11 };
-	floors_.back()->transform.UpdateMatrix();
-
-	floors_.push_back(ADXObject::Duplicate(*floors_.back()));
-	floors_.back()->transform.localPosition_ = { 13.5f,10,93 };
-	floors_.back()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	floors_.back()->transform.localScale_ = { 4.5f,1,21 };
-	floors_.back()->transform.UpdateMatrix();
-
-	floors_.push_back(ADXObject::Duplicate(*floors_.back()));
-	floors_.back()->transform.localPosition_ = { 10,11.5f,85 };
-	floors_.back()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	floors_.back()->transform.localScale_ = { 1,0.5f,11 };
-	floors_.back()->transform.UpdateMatrix();
-
-	floors_.push_back(ADXObject::Duplicate(*floors_.back()));
-	floors_.back()->transform.localPosition_ = { 3,10,112 };
-	floors_.back()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	floors_.back()->transform.localScale_ = { 6,1,6 };
-	floors_.back()->transform.UpdateMatrix();
-
-	floors_.push_back(ADXObject::Duplicate(*floors_.back()));
-	floors_.back()->transform.localPosition_ = { -18.5f,-14.8f,112 };
-	floors_.back()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,1 });
-	floors_.back()->transform.localScale_ = { 30,1,2 };
-	floors_.back()->transform.UpdateMatrix();
-
-	floors_.push_back(ADXObject::Duplicate(*floors_.back()));
-	floors_.back()->transform.localPosition_ = { -40,-60,112 };
-	floors_.back()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-	floors_.back()->transform.localScale_ = { 6,1,6 };
-	floors_.back()->transform.UpdateMatrix();
+	for (auto& itr : floorGenerateData)
+	{
+		floors_.push_back(ADXObject::Create(itr.localPosition,itr.localRotation, itr.localScale));
+		floors_.back()->model = &ground;
+		floors_.back()->texture = groundImg;
+		ADXCollider* tempCol = floors_.back()->AddComponent<ADXCollider>();
+		tempCol->colType_ = box;
+	}
 
 
 	temp = ADXObject::Create({ 0,3,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 4,4,4 });

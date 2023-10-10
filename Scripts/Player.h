@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "ADXComponent.h"
 #include "ADXKeyBoardInput.h"
@@ -35,7 +35,7 @@ private:
 	std::vector<BYTE> config{};
 
 	ADXRigidbody* rigidbody{};
-	ADXParticleSystem deadParticle{};
+	ADXParticleSystem* deadParticle{};
 
 
 	std::list<PlayerMini*> minis{};

@@ -1,4 +1,4 @@
-#include "SceneTransition.h"
+﻿#include "SceneTransition.h"
 
 bool SceneTransition::S_sceneChanging = false;
 int32_t SceneTransition::S_sceneChangeFrame = 0;

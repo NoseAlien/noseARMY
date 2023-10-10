@@ -11,9 +11,6 @@ void Enemy::LiveEntitiesInitialize()
 	GetGameObject()->texture = ADXImage::LoadADXImage("battleField.png");
 
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
-	tempCol->pushable_ = true;
-
-	tempCol = GetGameObject()->AddComponent<ADXCollider>();
 	tempCol->isTrigger = true;
 	tempCol->colType_ = sphere;
 	tempCol->radius_ = 12;

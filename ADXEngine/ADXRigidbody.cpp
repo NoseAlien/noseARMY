@@ -1,9 +1,9 @@
-﻿#include "ADXRigidbody.h"
+#include "ADXRigidbody.h"
 
 void ADXRigidbody::UniqueInitialize()
 {
-	prevPos = GetGameObject()->transform.localPosition_;
 	GetGameObject()->transform.UpdateMatrix();
+	prevPos = GetGameObject()->transform.localPosition_;
 }
 
 void ADXRigidbody::VelocityMove()

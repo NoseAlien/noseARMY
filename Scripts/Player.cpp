@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 #include "ADXUtility.h"
 #include "FieldBox.h"
 #include <time.h>
@@ -103,8 +103,7 @@ void Player::LiveEntitiesInitialize()
 	outOfField->material = GetGameObject()->material;
 	outOfField->renderLayer = 1;
 
-	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
-	tempCol->pushable_ = true;
+	deadParticle = GetGameObject()->AddComponent<ADXParticleSystem>();
 }
 
 void Player::LiveEntitiesUpdate()

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "LiveEntity.h"
 #include "ADXRigidbody.h"
@@ -19,8 +19,8 @@ protected:
 	virtual void EnemyUpdate() {};
 
 private:
-	void LiveEntitiesInitialize();
-	void LiveEntitiesUpdate();
+	void LiveEntitiesInitialize() final;
+	void LiveEntitiesUpdate() final;
 	void DeadUpdate();
 	void LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol);
 };
