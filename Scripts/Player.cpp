@@ -141,29 +141,17 @@ void Player::LiveEntitiesUpdate()
 		Move(0.05f, 0.4f);
 	}
 
-	if (splitInterval <= -20)
+	minis.remove_if([=](auto& itr)
+		{ return itr == nullptr || itr->GetGameObject() == nullptr; });
+
+	for (auto& itr : minis)
 	{
-		for (auto& itr : minis)
+		if (itr->GetGameObject() != nullptr
+			&& ADXMatrix4::Transform(itr->GetGameObject()->transform.localPosition_, GetGameObject()->transform.GetMatWorldInverse()).Length() > 30 / scale)
 		{
-			for (auto& colItr : GetGameObject()->GetComponents<ADXCollider>())
-			{
-				for (auto& colListItr : colItr->GetCollideList())
-				{
-					for (auto& colItr2 : itr->GetGameObject()->GetComponents<ADXCollider>())
-					{
-						if (colListItr == colItr2)
-						{
-							splitable = false;
-							itr->GetGameObject()->Destroy();
-						}
-					}
-				}
-			}
+			itr->GetGameObject()->Destroy();
 		}
 	}
-
-	minis.remove_if([=](auto& itr)
-		{ return ADXMatrix4::Transform(itr->GetGameObject()->transform.localPosition_, GetGameObject()->transform.GetMatWorldInverse()).Length() > 30 / scale; });
 
 	nose->transform.localScale_ = ADXVector3{ 0.42f,0.35f,0.35f } *(float)fmax(1, 1 + pow(fmax(0, splitInterval), 2) * 0.02f);
 	nose->transform.localPosition_ = { 0,sinf((float)clock() * 0.001f) * 0.03f,1.01f + sinf((float)clock() * 0.001f) * 0.03f };
@@ -303,6 +291,21 @@ void Player::LiveEntitiesUpdate()
 
 	GetGameObject()->transform.localPosition_ = { pos[0],pos[1],pos[2] };
 #endif
+}
+
+void Player::LiveEntitiesOnCollisionHit(ADXCollider* col, [[maybe_unused]]ADXCollider* myCol)
+{
+	if (splitInterval <= -20)
+	{
+		for (auto& itr : minis)
+		{
+			if (col->GetGameObject() == itr->GetGameObject())
+			{
+				splitable = false;
+				itr->GetGameObject()->Destroy();
+			}
+		}
+	}
 }
 
 void Player::DeadUpdate()

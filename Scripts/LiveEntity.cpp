@@ -147,7 +147,8 @@ void LiveEntity::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 	{
 		for (auto& objItr : GetAttackObj())
 		{
-			if (col == objItr.col && objItr.attacker->team != team)
+			if (objItr.col != nullptr && objItr.attacker != nullptr
+				&& col == objItr.col && objItr.attacker->team != team)
 			{
 				Damage(objItr.power);
 			}

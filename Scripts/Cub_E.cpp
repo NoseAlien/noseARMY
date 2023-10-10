@@ -1,4 +1,4 @@
-#include "Cub_E.h"
+﻿#include "Cub_E.h"
 
 void Cub_E::EnemyInitialize()
 {
@@ -23,8 +23,12 @@ void Cub_E::EnemyUpdate()
 		{
 			targetRelativePos = ADXMatrix4::Transform(targetPos, GetGameObject()->transform.parent_->GetMatWorld());
 		}
+
 		cursor = targetRelativePos;
 		attackProgress = 1;
+
+		GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion(
+			{ 0,(float)atan2(-(cursor.x - GetGameObject()->transform.localPosition_.x),-(cursor.z - GetGameObject()->transform.localPosition_.z)),0});
 	}
 
 	GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
@@ -34,6 +38,11 @@ void Cub_E::EnemyUpdate()
 		ADXVector3 finalTarget = cursor;
 		if (attackProgress > 0.5f)
 		{
+			GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({
+				ADXUtility::EaseIn(ADXUtility::ValueMapping(attackProgress,1,0.5f,1,0),6) * 3.1415f * 2,
+				0,
+				0 });
+
 			finalTarget.y += 6;
 			rigidbody->velocity = (finalTarget - GetGameObject()->transform.localPosition_) * 0.05f;
 			GetGameObject()->texture = preAttackTex;
@@ -41,9 +50,6 @@ void Cub_E::EnemyUpdate()
 		}
 		else if (attackProgress > 0.2f)
 		{
-			GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,
-				ADXUtility::EaseIn(ADXUtility::ValueMapping(attackProgress,0.5f,0.2f,1,0),2) * 3.1415f * 6,
-				0 });
 			if (attackProgress > 0.25f)
 			{
 				for (auto& itr : GetGameObject()->GetComponents<ADXCollider>())

@@ -32,7 +32,7 @@ void FieldBox::UniqueUpdate()
 					break;
 				}
 			}
-			if (pullBack)
+			if (objItr != nullptr && pullBack)
 			{
 				objItr->transform.SetWorldPosition(colItr->ClosestPoint(objItr->transform.GetWorldPosition()));
 			}

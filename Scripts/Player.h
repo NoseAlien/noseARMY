@@ -55,6 +55,7 @@ public:
 private:
 	void LiveEntitiesInitialize();
 	void LiveEntitiesUpdate();
+	void LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol);
 	void DeadUpdate();
 	void Move(float walkSpeed, float jumpPower);
 };

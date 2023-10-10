@@ -134,13 +134,21 @@ inline Type* ADXObject::AddComponent()
 template<class Type>
 inline Type* ADXObject::GetComponent()
 {
+	if (this == nullptr)
+	{
+		return nullptr;
+	}
+
 	for (auto& itr : components)
 	{
-		Type* p = dynamic_cast<Type*>(itr.get());
-
-		if (p != nullptr)
+		if (itr)
 		{
-			return p;
+			Type* p = dynamic_cast<Type*>(itr.get());
+
+			if (p != nullptr)
+			{
+				return p;
+			}
 		}
 	}
 	return nullptr;
@@ -149,14 +157,22 @@ inline Type* ADXObject::GetComponent()
 template<class Type>
 inline std::list<Type*> ADXObject::GetComponents()
 {
+	if (this == nullptr)
+	{
+		return std::list<Type*>{};
+	}
+
 	std::list<Type*> ret = {};
 	for (auto& itr : components)
 	{
-		Type* p = dynamic_cast<Type*>(itr.get());
-
-		if (p != nullptr)
+		if (itr)
 		{
-			ret.push_back(p);
+			Type* p = dynamic_cast<Type*>(itr.get());
+
+			if (p != nullptr)
+			{
+				ret.push_back(p);
+			}
 		}
 	}
 	return ret;
