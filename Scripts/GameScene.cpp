@@ -12,7 +12,7 @@ void GameScene::Initialize()
 	tutorialAreas_ = {};
 	player_ = {};
 
-	//画僁E
+	//画像
 	keyImg = ADXImage::LoadADXImage("QUIT_TITLE.png");
 	backGroundTex = ADXImage::LoadADXImage("skyBG.png");
 	groundImg = ADXImage::LoadADXImage("GroundBlock.png");
@@ -20,7 +20,7 @@ void GameScene::Initialize()
 	rect = ADXModel::CreateRect();
 	ground = ADXModel::LoadADXModel("model/groundBlock.obj");
 
-	//オブジェクチE
+	//オブジェクト
 
 	ADXObject* temp = ADXObject::Create();
 	shutter_ = temp->AddComponent<SceneTransition>();
