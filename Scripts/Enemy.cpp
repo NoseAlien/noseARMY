@@ -28,6 +28,8 @@ void Enemy::LiveEntitiesUpdate()
 	rigidbody->gravity = { 0,-1,0 };
 	rigidbody->gravityScale = 0.015f;
 
+	GetGameObject()->texture = nutralTex;
+
 	EnemyUpdate();
 
 	targetDetected = false;
@@ -37,16 +39,14 @@ void Enemy::DeadUpdate()
 {
 	GetGameObject()->GetComponent<ADXCollider>()->pushBackPriority = -2;
 
-	GetGameObject()->material.ambient = { 0,0,0 };
-
 	rigidbody->drag = 0.8f;
 	rigidbody->dragAxis = { true,false,true };
 	rigidbody->gravity = { 0,-1,0 };
 	rigidbody->gravityScale = 0.015f;
 
-	rigidbody->VelocityMove();
+	GetGameObject()->texture = deadTex;
 
-	rigidbody->Update(GetGameObject());
+	rigidbody->VelocityMove();
 }
 
 void Enemy::LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)

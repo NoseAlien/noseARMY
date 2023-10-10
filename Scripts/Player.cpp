@@ -198,7 +198,13 @@ void Player::LiveEntitiesUpdate()
 
 	for (auto& itr : minis)
 	{
-		SetAttackObj({ itr->GetGameObject()->GetComponent<ADXCollider>(), this, (float)minis.size()});
+		for (auto& colItr : itr->GetGameObject()->GetComponents<ADXCollider>())
+		{
+			if (colItr->isTrigger)
+			{
+				SetAttackObj({ colItr, this, (float)minis.size() });
+			}
+		}
 	}
 
 	uint32_t prevTutorialImg = tutorialWindow->texture;

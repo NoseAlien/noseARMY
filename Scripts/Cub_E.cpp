@@ -4,8 +4,12 @@ void Cub_E::EnemyInitialize()
 {
 	enemyModel = ADXModel::LoadADXModel("model/Cub_E.obj");
 
+	nutralTex = ADXImage::LoadADXImage("tex_Cub_E.png");
+	deadTex = ADXImage::LoadADXImage("tex_Cub_E_4.png");
+	preAttackTex = ADXImage::LoadADXImage("tex_Cub_E_2.png");
+	attackTex = ADXImage::LoadADXImage("tex_Cub_E_3.png");
+
 	GetGameObject()->model = &enemyModel;
-	GetGameObject()->texture = ADXImage::LoadADXImage("tex_Cub_E.png");
 }
 
 void Cub_E::EnemyUpdate()
@@ -32,6 +36,8 @@ void Cub_E::EnemyUpdate()
 		{
 			finalTarget.y += 6;
 			rigidbody->velocity = (finalTarget - GetGameObject()->transform.localPosition_) * 0.05f;
+			GetGameObject()->texture = preAttackTex;
+
 		}
 		else if (attackProgress > 0.2f)
 		{
@@ -48,6 +54,7 @@ void Cub_E::EnemyUpdate()
 					}
 				}
 			}
+			GetGameObject()->texture = attackTex;
 		}
 	}
 	attackProgress = min(max(0, attackProgress - 0.006f), 1);

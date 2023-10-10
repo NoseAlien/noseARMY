@@ -9,6 +9,9 @@ protected:
 	ADXRigidbody* rigidbody;
 
 	ADXModel enemyModel{};
+	uint32_t nutralTex = 0;
+	uint32_t deadTex = 0;
+
 	ADXVector3 targetPos{};
 	bool targetDetected = false;
 	ADXVector3 cursor{};
