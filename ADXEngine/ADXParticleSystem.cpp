@@ -21,6 +21,11 @@ void ADXParticleSystem::UniqueInitialize()
 	parent = &GetGameObject()->transform;
 }
 
+void SafetyPhase()
+{
+
+}
+
 void ADXParticleSystem::UniqueUpdate()
 {
 	particles.remove_if([=](auto& itr)

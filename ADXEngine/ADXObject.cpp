@@ -352,6 +352,14 @@ void ADXObject::StaticUpdate()
 
 	for (auto& itr : S_objs)
 	{
+		for (auto& comItr : itr->components)
+		{
+			comItr->SafetyPhase();
+		}
+	}
+
+	for (auto& itr : S_objs)
+	{
 		if (itr->deleteFlag)
 		{
 			itr->components.clear();
