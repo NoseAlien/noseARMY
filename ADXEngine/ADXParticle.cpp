@@ -1,7 +1,7 @@
 ﻿#include "ADXParticle.h"
 #include "ADXCamera.h"
 
-void ADXParticle::Initialize()
+void ADXParticle::UniqueInitialize()
 {
 	lifeTime = maxLifeTime;
 }

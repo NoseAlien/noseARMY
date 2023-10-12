@@ -20,6 +20,9 @@ std::vector<ADXCamera*> ADXObject::S_allCameraPtr{};
 ADXVector3 ADXObject::S_limitPos1 = { -300,-300,-100 };
 ADXVector3 ADXObject::S_limitPos2 = { 100,100,150 };
 bool ADXObject::S_highQualityZSort = false;
+std::list<std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>>> ADXObject::S_usedComponents;
+
+
 
 void ADXObject::StaticInitialize()
 {
@@ -347,8 +350,20 @@ void ADXObject::StaticUpdate()
 	ADXVector3 limitMinPos = { min(S_limitPos1.x,S_limitPos2.x),min(S_limitPos1.y,S_limitPos2.y) ,min(S_limitPos1.z,S_limitPos2.z) };
 	ADXVector3 limitMaxPos = { max(S_limitPos1.x,S_limitPos2.x),max(S_limitPos1.y,S_limitPos2.y) ,max(S_limitPos1.z,S_limitPos2.z) };
 
+	for (auto& itr : S_objs)
+	{
+		if (itr->deleteFlag)
+		{
+			for (auto& comItr : itr->components)
+			{
+				S_usedComponents.push_back(move(comItr));
+			}
+		}
+	}
 	S_objs.remove_if([=](auto& itr)
 		{ return itr->deleteFlag; });
+
+	S_usedComponents.clear();
 
 	for (auto& itr : S_objs)
 	{

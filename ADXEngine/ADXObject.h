@@ -119,6 +119,8 @@ private: // 静的メンバ変数
 	static ADXVector3 S_limitPos2;
 	
 	static bool S_highQualityZSort;
+
+	static std::list<std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>>> S_usedComponents;
 };
 
 template<class Type>

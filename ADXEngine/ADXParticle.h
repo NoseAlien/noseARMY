@@ -12,10 +12,8 @@ public:
 	ADXTexAnimation animation{};
 	bool billboard = true;
 
-public:
-	void Initialize();
-
 private:
+	void UniqueInitialize();
 	void UniqueUpdate();
 	void OnPreRender();
 };
