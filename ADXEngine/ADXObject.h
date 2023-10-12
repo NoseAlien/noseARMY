@@ -12,9 +12,7 @@ class ADXCamera;
 class ADXObject
 {
 public:
-
 	//定数バッファ用データ構造体（マテリアル）
-
 	struct ConstBufferDataB0 {
 		DirectX::XMMATRIX mat;
 	};
@@ -27,22 +25,6 @@ public:
 		DirectX::XMFLOAT3 specular;
 		float alpha;
 	};
-
-public:
-	void Draw();
-	void Destroy();
-	template <class Type>
-	Type* AddComponent();
-	template <class Type>
-	Type* GetComponent();
-	template <class Type>
-	std::list<Type*> GetComponents();
-	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol);
-
-private:
-	void Initialize();
-	void Update();
-	void CreateConstBuffer();
 
 public:
 	ADXWorldTransform transform{};
@@ -63,6 +45,23 @@ protected:
 private:
 	std::list<std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>>> components{};
 	bool deleteFlag = false;
+
+public:
+	void Draw();
+	void Destroy();
+	template <class Type>
+	Type* AddComponent();
+	template <class Type>
+	Type* GetComponent();
+	template <class Type>
+	std::list<Type*> GetComponents();
+	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol);
+	bool GetDeleteFlag() { return deleteFlag; };
+
+private:
+	void Initialize();
+	void Update();
+	void CreateConstBuffer();
 
 public: // 静的メンバ関数
 	//静的初期化

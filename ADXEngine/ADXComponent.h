@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 class ADXObject;
 class ADXCollider;
@@ -7,14 +7,15 @@ class ADXComponent
 {
 private:
 	bool initialized = false;
-
-private:
 	ADXObject* gameObject = nullptr;
 
 public:
 	void Update(ADXObject* obj);
 	void SetGameObject(ADXObject* obj);
+	void SafetyPhase() {};
 	ADXObject* GetGameObject() const { return gameObject; };
+
+public:
 	virtual void OnPreRender() {};
 	virtual void OnWillRenderObject() {};
 	virtual void Rendered() {};
