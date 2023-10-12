@@ -1,4 +1,4 @@
-﻿#include "Enemy.h"
+#include "Enemy.h"
 #include "PlayerMini.h"
 #include "Player.h"
 #include "ADXUtility.h"
@@ -65,19 +65,10 @@ void Enemy::LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 			}
 		}
 	}
-	else if(!myCol->isTrigger && !IsLive())
+	else if(!myCol->isTrigger && !IsLive() && col->GetGameObject()->GetComponent<PlayerMini>())
 	{
-		for (auto& objItr : PlayerMini::GetMinis())
-		{
-			for (auto& colItr : objItr->GetGameObject()->GetComponents<ADXCollider>())
-			{
-				if (col == colItr)
-				{
-					GetGameObject()->transform.SetWorldPosition(GetGameObject()->transform.GetWorldPosition()
-						+ (col->GetGameObject()->transform.GetWorldPosition() - GetGameObject()->transform.GetWorldPosition()) * 0.1f);
-					LiveEntity::SetAttackObj({ myCol,objItr->GetParent(),maxHP });
-				}
-			}
-		}
+		GetGameObject()->transform.SetWorldPosition(GetGameObject()->transform.GetWorldPosition()
+			+ (col->GetGameObject()->transform.GetWorldPosition() - GetGameObject()->transform.GetWorldPosition()) * 0.1f);
+		LiveEntity::SetAttackObj({ myCol,col->GetGameObject()->GetComponent<PlayerMini>()->GetParent(),maxHP });
 	}
 }
