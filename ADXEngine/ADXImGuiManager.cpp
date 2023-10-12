@@ -51,7 +51,7 @@ void ADXImGuiManager::End()
 	ImGui::Render();
 }
 
-void ADXImGuiManager::Draw()
+void ADXImGuiManager::StaticDraw()
 {
 	ID3D12GraphicsCommandList* commandList = ADXCommon::GetCurrentInstance()->GetCommandList();
 

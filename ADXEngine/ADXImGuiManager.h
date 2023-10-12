@@ -11,7 +11,7 @@ public:
 
 	void Begin();
 	void End();
-	void Draw();
+	void StaticDraw();
 
 private:
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap_ = nullptr;

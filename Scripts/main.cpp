@@ -63,10 +63,8 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 			adximgui.End();
 
 			adxcommon.PreDraw();
-			ADXObject::PreDraw();
 			ADXObject::StaticDraw();
-			ADXObject::PostDraw();
-			adximgui.Draw();
+			adximgui.StaticDraw();
 			adxcommon.PostDraw();
 		}
 		ADXAudio::StaticFinalize();

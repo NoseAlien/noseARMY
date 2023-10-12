@@ -375,39 +375,10 @@ void ADXObject::StaticUpdate()
 	}
 }
 
-void ADXObject::PreDraw()
-{
-	// PreDrawとPostDrawがペアで呼ばれていなければエラー
-	assert(ADXObject::S_cmdList == nullptr);
-
-	// コマンドリストをセット
-	ADXObject::S_cmdList = ADXCommon::GetCurrentInstance()->GetCommandList();
-
-	// パイプラインステートの設定
-	ADXObject::S_cmdList->SetPipelineState(S_pipelineState.Get());
-	// ルートシグネチャの設定
-	ADXObject::S_cmdList->SetGraphicsRootSignature(S_rootSignature.Get());
-	// プリミティブ形状を設定
-	ADXObject::S_cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST); // 三角形リスト
-
-
-	ID3D12DescriptorHeap* srvHeap = ADXImage::GetSrvHeap();
-
-	//SRVヒープの設定コマンド
-	ID3D12DescriptorHeap* ppHeaps[] = { srvHeap };
-	ADXObject::S_cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-	//SRVヒープの先頭ハンドルを取得(SRVを指しているはず)
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
-	//SRVヒープの先頭にあるSRVをルートパラメーター1番に設定
-	ADXObject::S_cmdList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
-	S_GpuStartHandle = srvGpuHandle.ptr;
-
-	// ルートシグネチャの設定コマンド
-	ADXObject::S_cmdList->SetGraphicsRootSignature(S_rootSignature.Get());
-}
-
 void ADXObject::StaticDraw()
 {
+	PreDraw();
+
 	std::list<ADXObject*> allObjPtr = GetObjs();
 
 	for (int32_t i = 0; i < S_allCameraPtr.size(); i++)
@@ -526,6 +497,38 @@ void ADXObject::StaticDraw()
 			thisLayerObjPtr.erase(thisLayerObjPtr.begin() + target);
 		}
 	}
+	PostDraw();
+}
+
+void ADXObject::PreDraw()
+{
+	// PreDrawとPostDrawがペアで呼ばれていなければエラー
+	assert(ADXObject::S_cmdList == nullptr);
+
+	// コマンドリストをセット
+	ADXObject::S_cmdList = ADXCommon::GetCurrentInstance()->GetCommandList();
+
+	// パイプラインステートの設定
+	ADXObject::S_cmdList->SetPipelineState(S_pipelineState.Get());
+	// ルートシグネチャの設定
+	ADXObject::S_cmdList->SetGraphicsRootSignature(S_rootSignature.Get());
+	// プリミティブ形状を設定
+	ADXObject::S_cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST); // 三角形リスト
+
+
+	ID3D12DescriptorHeap* srvHeap = ADXImage::GetSrvHeap();
+
+	//SRVヒープの設定コマンド
+	ID3D12DescriptorHeap* ppHeaps[] = { srvHeap };
+	ADXObject::S_cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	//SRVヒープの先頭ハンドルを取得(SRVを指しているはず)
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
+	//SRVヒープの先頭にあるSRVをルートパラメーター1番に設定
+	ADXObject::S_cmdList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+	S_GpuStartHandle = srvGpuHandle.ptr;
+
+	// ルートシグネチャの設定コマンド
+	ADXObject::S_cmdList->SetGraphicsRootSignature(S_rootSignature.Get());
 }
 
 void ADXObject::PostDraw()

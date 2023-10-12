@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "ADXModel.h"
 #include "ADXMaterial.h"
 #include "ADXImage.h"
@@ -71,12 +71,8 @@ public: // 静的メンバ関数
 	static void StaticUpdate();
 	// グラフィックパイプライン生成
 	static void InitializeGraphicsPipeline();
-	// 描画前処理
-	static void PreDraw();
-	// 描画処理
+	// 全オブジェクトに対する描画処理
 	static void StaticDraw();
-	// 描画後処理
-	static void PostDraw();
 
 	static std::list<ADXObject*> GetObjs();
 
@@ -92,6 +88,12 @@ public: // 静的メンバ関数
 
 	//シーン切り替え時などに使用、今あるオブジェクトを全部消す
 	static void Annihilate() { S_objs.clear(); };
+
+private:
+	// 描画前処理
+	static void PreDraw();
+	// 描画後処理
+	static void PostDraw();
 
 private: // 静的メンバ変数
 	// ルートシグネチャ
