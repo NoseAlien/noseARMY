@@ -1,8 +1,5 @@
 ﻿#include "FieldBox.h"
 
-std::list<FieldBox*> FieldBox::allFieldPtr{};
-std::list<FieldBox*> FieldBox::fields{};
-
 void FieldBox::UniqueInitialize()
 {
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
@@ -41,20 +38,16 @@ void FieldBox::UniqueUpdate()
 	insideObjects.clear();
 
 	adjacentFields.clear();
-	allFieldPtr.push_back(this);
 
 	FieldUpdate();
 }
 
 void FieldBox::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
-	for (auto& objItr : GetFields())
+	if (col->GetGameObject()->GetComponent<FieldBox>() != nullptr
+		&& col->GetGameObject()->GetComponent<FieldBox>()->fieldLayer == fieldLayer)
 	{
-		if (col->GetGameObject() == objItr->GetGameObject() && col->GetGameObject() != GetGameObject()
-			&& objItr->fieldLayer == fieldLayer)
-		{
-			adjacentFields.push_back(objItr);
-		}
+		adjacentFields.push_back(col->GetGameObject()->GetComponent<FieldBox>());
 	}
 
 	if (!col->isTrigger && col->pushable_)
@@ -63,10 +56,4 @@ void FieldBox::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 	}
 
 	FieldOnCollisionHit(col, myCol);
-}
-
-void FieldBox::StaticUpdate()
-{
-	fields = allFieldPtr;
-	allFieldPtr.clear();
 }

@@ -196,35 +196,8 @@ void Player::LiveEntitiesUpdate()
 	}
 
 	uint32_t prevTutorialImg = tutorialWindow->texture;
-	uint32_t setTutorialImg = prevTutorialImg;
-	bool windowExtend = false;
-	bool isOutOfField = true;
+	setTutorialImg = prevTutorialImg;
 
-	for (auto& colItr : GetGameObject()->GetComponents<ADXCollider>())
-	{
-		for (auto& colItr2 : colItr->GetCollideList())
-		{
-			for (auto& objItr : TutorialArea::GetAreas())
-			{
-				if (colItr2->GetGameObject() == objItr->GetGameObject())
-				{
-					if (!windowClosing)
-					{
-						windowExtend = true;
-						setTutorialImg = objItr->GetTutorialImg();
-					}
-				}
-			}
-			for (auto& objItr : FieldBox::GetFields())
-			{
-				if (colItr2->GetGameObject() == objItr->GetGameObject()
-					&& (GetGameObject()->transform.GetWorldPosition() - colItr2->ClosestPoint(GetGameObject()->transform.GetWorldPosition())).Length() < 0.1)
-				{
-					isOutOfField = false;
-				}
-			}
-		}
-	}
 	if (prevTutorialImg != setTutorialImg)
 	{
 		windowExtend = false;
@@ -280,6 +253,10 @@ void Player::LiveEntitiesUpdate()
 
 	outOfField->transform.localPosition_ = { -0.6f,0.65f + sin(clock() * 0.003f) * 0.01f,0 };
 
+	isOutOfField = true;
+	windowExtend = false;
+
+
 #ifdef _DEBUG
 	float pos[3] = { GetGameObject()->transform.localPosition_.x,GetGameObject()->transform.localPosition_.y,GetGameObject()->transform.localPosition_.z };
 
@@ -295,6 +272,21 @@ void Player::LiveEntitiesUpdate()
 
 void Player::LiveEntitiesOnCollisionHit(ADXCollider* col, [[maybe_unused]]ADXCollider* myCol)
 {
+	if (col->GetGameObject()->GetComponent<FieldBox>() != nullptr
+		&& (GetGameObject()->transform.GetWorldPosition() - col->ClosestPoint(GetGameObject()->transform.GetWorldPosition())).Length() < 0.1)
+	{
+		isOutOfField = false;
+	}
+
+	if (col->GetGameObject()->GetComponent<TutorialArea>() != nullptr)
+	{
+		if (!windowClosing)
+		{
+			windowExtend = true;
+		}
+		setTutorialImg = col->GetGameObject()->GetComponent<TutorialArea>()->GetTutorialImg();
+	}
+
 	if (splitInterval <= -20)
 	{
 		for (auto& itr : minis)

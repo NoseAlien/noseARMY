@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXObject.h"
 #include "ADXRigidbody.h"
@@ -21,12 +21,4 @@ public:
 private:
 	void UniqueUpdate();
 	void Move(float walkSpeed, float jumpPower);
-
-private:
-	static std::vector<PlayerMini*> S_minis;
-	static std::vector<PlayerMini*> S_allMiniPtr;
-
-public:
-	static void StaticUpdate();
-	static std::vector<PlayerMini*> GetMinis() { return S_minis; };
 };

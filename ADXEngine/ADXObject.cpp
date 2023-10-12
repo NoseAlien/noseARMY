@@ -354,16 +354,11 @@ void ADXObject::StaticUpdate()
 	{
 		if (itr->deleteFlag)
 		{
-			for (auto& comItr : itr->components)
-			{
-				S_usedComponents.push_back(move(comItr));
-			}
+			itr->components.clear();
 		}
 	}
 	S_objs.remove_if([=](auto& itr)
 		{ return itr->deleteFlag; });
-
-	S_usedComponents.clear();
 
 	for (auto& itr : S_objs)
 	{

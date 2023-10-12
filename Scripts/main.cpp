@@ -58,10 +58,7 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 			ADXObject::StaticUpdate();
 			//この下にあるゲーム専用の更新部分は後でまとめる
 			SceneTransition::StaticUpdate();
-			FieldBox::StaticUpdate();
-			TutorialArea::StaticUpdate();
 			LiveEntity::StaticUpdate();
-			PlayerMini::StaticUpdate();
 			ADXCollider::StaticUpdate();
 			adximgui.End();
 

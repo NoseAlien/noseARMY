@@ -45,6 +45,11 @@ private:
 
 	float deadAnimationProgress = 0;
 
+	bool windowExtend = false;
+	bool isOutOfField = false;
+
+	uint32_t setTutorialImg = 0;
+
 public:
 	void Initialize(ADXKeyBoardInput* setKeyboard, std::vector<BYTE> setConfig, ADXCamera* setCamera);
 	bool GetInputStatus(int keyIndex);

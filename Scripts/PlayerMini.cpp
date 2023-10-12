@@ -1,8 +1,5 @@
-﻿#include "PlayerMini.h"
+#include "PlayerMini.h"
 #include "Player.h"
-
-std::vector<PlayerMini*> PlayerMini::S_minis{};
-std::vector<PlayerMini*> PlayerMini::S_allMiniPtr{};
 
 void PlayerMini::Initialize(Player* setParent, const ADXObject& setNose)
 {
@@ -74,12 +71,4 @@ void PlayerMini::UniqueUpdate()
 	Move(0.1f, 0.8f);
 
 	nose->transform.parent_ = &GetGameObject()->transform;
-
-	S_allMiniPtr.push_back(this);
-}
-
-void PlayerMini::StaticUpdate()
-{
-	S_minis = S_allMiniPtr;
-	S_allMiniPtr.clear();
 }
