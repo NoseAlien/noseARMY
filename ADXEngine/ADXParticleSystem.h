@@ -27,5 +27,4 @@ public:
 private:
 	void UniqueInitialize();
 	void SafetyPhase();
-	void UniqueUpdate();
 };
