@@ -1,4 +1,4 @@
-﻿#include "Enemy.h"
+#include "Enemy.h"
 #include "PlayerMini.h"
 #include "Player.h"
 #include "ADXUtility.h"
@@ -53,16 +53,11 @@ void Enemy::LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
 	if(myCol->isTrigger && IsLive())
 	{
-		for (auto& objItr : LiveEntity::GetLiveEntities())
+		LiveEntity* tempLiv = col->GetGameObject()->GetComponent<LiveEntity>();
+		if (!col->isTrigger && tempLiv != nullptr && tempLiv->IsLive() && tempLiv->GetTeam() != GetTeam())
 		{
-			for (auto& colItr : objItr->GetGameObject()->GetComponents<ADXCollider>())
-			{
-				if (col == colItr && !colItr->isTrigger && objItr->IsLive() && objItr->GetTeam() != GetTeam())
-				{
-					targetDetected = true;
-					targetPos = objItr->GetGameObject()->transform.GetWorldPosition();
-				}
-			}
+			targetDetected = true;
+			targetPos = col->GetGameObject()->transform.GetWorldPosition();
 		}
 	}
 	else if(!myCol->isTrigger && !IsLive() && col->GetGameObject()->GetComponent<PlayerMini>())

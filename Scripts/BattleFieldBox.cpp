@@ -1,4 +1,4 @@
-﻿#include "BattleFieldBox.h"
+#include "BattleFieldBox.h"
 #include "LiveEntity.h"
 
 void BattleFieldBox::Initialize(std::vector<SpawnData> setGuarders, std::string setTeam)
@@ -50,17 +50,12 @@ void BattleFieldBox::FieldOnCollisionHit(ADXCollider* col, [[maybe_unused]] ADXC
 {
 	if (!awake)
 	{
-		for (auto& objItr : LiveEntity::GetLiveEntities())
+		LiveEntity* tempLiv = col->GetGameObject()->GetComponent<LiveEntity>();
+		if (tempLiv != nullptr && tempLiv->GetTeam() != team)
 		{
-			for (auto& colItr : objItr->GetGameObject()->GetComponents<ADXCollider>())
-			{
-				if (col == colItr && objItr->GetTeam() != team)
-				{
-					awake = true;
+			awake = true;
 
-					guardersPtr = enemySpawnData.Spawn(team, &GetGameObject()->transform);
-				}
-			}
+			guardersPtr = enemySpawnData.Spawn(team, &GetGameObject()->transform);
 		}
 	}
 	else

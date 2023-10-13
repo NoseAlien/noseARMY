@@ -1,9 +1,7 @@
-﻿#include "LiveEntity.h"
+#include "LiveEntity.h"
 #include "ADXCamera.h"
 #include <time.h>
 
-std::vector<LiveEntity*> LiveEntity::S_liveEntities = {};
-std::vector<LiveEntity*> LiveEntity::S_allLiveEntitiesPtr = {};
 std::vector<AttackObject> LiveEntity::S_attackObjs = {};
 std::vector<AttackObject> LiveEntity::S_allAttackObj = {};
 
@@ -125,8 +123,6 @@ void LiveEntity::UniqueUpdate()
 		hpGaugeBG->transform.localPosition_ = { 0,-1.5f + (float)sin(clock()) * 0.05f,0};
 		attackHitted = false;
 	}
-
-	S_allLiveEntitiesPtr.push_back(this);
 }
 
 void LiveEntity::Damage(float damage)
@@ -161,8 +157,6 @@ void LiveEntity::OnPreRender()
 
 void LiveEntity::StaticUpdate()
 {
-	S_liveEntities = S_allLiveEntitiesPtr;
-	S_allLiveEntitiesPtr.clear();
 	S_attackObjs = S_allAttackObj;
 	S_allAttackObj.clear();
 }

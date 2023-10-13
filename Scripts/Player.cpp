@@ -1,4 +1,4 @@
-﻿#include "Player.h"
+#include "Player.h"
 #include "ADXUtility.h"
 #include "FieldBox.h"
 #include <time.h>
@@ -140,9 +140,6 @@ void Player::LiveEntitiesUpdate()
 		rigidbody->dragAxis.y = false;
 		Move(0.05f, 0.4f);
 	}
-
-	minis.remove_if([=](auto& itr)
-		{ return itr == nullptr || itr->GetGameObject() == nullptr; });
 
 	for (auto& itr : minis)
 	{
@@ -311,4 +308,10 @@ void Player::DeadUpdate()
 	GetGameObject()->isVisible = deadAnimationProgress < 0.1;
 
 	deadAnimationProgress = min(max(0, deadAnimationProgress + 0.001f), 1);
+}
+
+void Player::SafetyPhase()
+{
+	minis.remove_if([=](auto& itr)
+		{ return itr->GetGameObject()->GetDeleteFlag(); });
 }

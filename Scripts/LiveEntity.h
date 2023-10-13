@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXObject.h"
 #include "ADXParticleSystem.h"
@@ -15,9 +15,9 @@ protected:
 private:
 	ADXModel rect{};
 	uint32_t gaugeTex = 0;
-	ADXParticleSystem* particle{};
-	ADXObject* hpGauge{};
-	ADXObject* hpGaugeBG{};
+	ADXParticleSystem* particle = nullptr;
+	ADXObject* hpGauge = nullptr;
+	ADXObject* hpGaugeBG = nullptr;
 	std::string team = "";
 	bool attackHitted = false;
 
@@ -40,8 +40,6 @@ private:
 	void UniqueUpdate() final;
 
 private:
-	static std::vector<LiveEntity*> S_liveEntities;
-	static std::vector<LiveEntity*> S_allLiveEntitiesPtr;
 	static std::vector<AttackObject> S_attackObjs;
 	static std::vector<AttackObject> S_allAttackObj;
 
@@ -49,7 +47,6 @@ public:
 	static void StaticUpdate();
 	static void SetAttackObj(const AttackObject& attackObj);
 	static std::vector<AttackObject> GetAttackObj() { return S_attackObjs; };
-	static std::vector<LiveEntity*> GetLiveEntities() { return S_liveEntities; };
 };
 
 struct AttackObject

@@ -1,4 +1,4 @@
-﻿#include "Goal.h"
+#include "Goal.h"
 #include "LiveEntity.h"
 #include "SceneTransition.h"
 
@@ -65,15 +65,10 @@ void Goal::UniqueUpdate()
 
 void Goal::OnCollisionHit(ADXCollider* col, [[maybe_unused]] ADXCollider* myCol)
 {
-	if (sceneTransitionCount == MaxSceneTransitionCount)
+	LiveEntity* tempLiv = col->GetGameObject()->GetComponent<LiveEntity>();
+	if (sceneTransitionCount == MaxSceneTransitionCount && tempLiv != nullptr && tempLiv->GetTeam() == team)
 	{
-		for (auto& objItr : LiveEntity::GetLiveEntities())
-		{
-			if (!objItr->GetGameObject()->GetComponents<ADXCollider>().empty() && col == objItr->GetGameObject()->GetComponent<ADXCollider>() && objItr->GetTeam() == team)
-			{
-				sceneTransitionCount--;
-				return;
-			}
-		}
+		sceneTransitionCount--;
+		return;
 	}
 }

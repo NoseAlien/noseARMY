@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXComponent.h"
 #include "ADXKeyBoardInput.h"
@@ -62,5 +62,6 @@ private:
 	void LiveEntitiesUpdate();
 	void LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol);
 	void DeadUpdate();
+	void SafetyPhase();
 	void Move(float walkSpeed, float jumpPower);
 };
