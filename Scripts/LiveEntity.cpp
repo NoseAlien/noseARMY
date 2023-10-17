@@ -1,4 +1,4 @@
-﻿#include "LiveEntity.h"
+#include "LiveEntity.h"
 #include "ADXCamera.h"
 #include <time.h>
 
@@ -153,6 +153,7 @@ void LiveEntity::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 void LiveEntity::OnPreRender()
 {
 	hpGaugeBG->transform.SetWorldRotation(ADXCamera::GetCurrentCamera()->GetGameObject()->transform.GetWorldRotation());
+	LiveEntitiesOnPreRender();
 }
 
 void LiveEntity::StaticUpdate()

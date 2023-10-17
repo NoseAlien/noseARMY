@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 #include "SceneTransition.h"
 #include "ADXUtility.h"
 #include "FieldBox.h"
@@ -339,6 +339,7 @@ void Player::DeadUpdate()
 	GetGameObject()->renderLayer = 4;
 	nose->renderLayer = 4;
 
+	GetGameObject()->transform.modelPosition_ = { 0,0,0 };
 	GetGameObject()->transform.localRotation_ = camera->GetGameObject()->transform.localRotation_;
 	GetGameObject()->transform.UpdateMatrix();
 	GetGameObject()->transform.SetWorldRotation(

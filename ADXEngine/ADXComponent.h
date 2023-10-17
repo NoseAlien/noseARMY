@@ -29,6 +29,8 @@ public:
 	/// <para>消えそうなオブジェクトを参照していたらここで切っておけば安全</para>
 	/// </summary>
 	virtual void SafetyPhase() {};
+	//gameObjectのDestroy()が呼ばれた直後に呼ばれる関数
+	virtual void OnDestroy() {};
 	//gameObjectが他のコライダーと接触した瞬間に呼ばれる処理
 	virtual void OnCollisionHit([[maybe_unused]] ADXCollider* col, [[maybe_unused]] ADXCollider* myCol) {};
 

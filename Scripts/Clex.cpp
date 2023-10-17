@@ -1,4 +1,18 @@
-﻿#include "Clex.h"
+#include "Clex.h"
+#include "ADXCamera.h"
+
+void Clex::EnemyInitialize()
+{
+	rect = ADXModel::CreateRect();
+
+	GetGameObject()->model = nullptr;
+
+	body = ADXObject::Create();
+	body->transform.parent_ = &GetGameObject()->transform;
+	body->transform.UpdateMatrix();
+	body->model = &rect;
+	body->texture = ADXImage::LoadADXImage("whiteDot.png");
+}
 
 void Clex::EnemyUpdate()
 {
@@ -26,4 +40,9 @@ void Clex::EnemyUpdate()
 		rigidbody->velocity = (GetGameObject()->transform.localPosition_ - cursor).Normalize();
 	}
 	attackProgress = min(max(0, attackProgress - 0.02f), 1);
+}
+
+void Clex::LiveEntitiesOnPreRender()
+{
+	body->transform.SetWorldRotation(ADXCamera::GetCurrentCamera()->GetGameObject()->transform.GetWorldRotation());
 }

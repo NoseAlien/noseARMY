@@ -604,6 +604,10 @@ void ADXObject::Draw()
 void ADXObject::Destroy()
 {
 	deleteFlag = true;
+	for (auto& itr : components)
+	{
+		itr->OnDestroy();
+	}
 }
 
 void ADXObject::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)

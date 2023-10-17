@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXObject.h"
 #include "ADXAudio.h"
@@ -33,10 +33,11 @@ protected:
 	void Damage(float damage);
 	virtual void LiveEntitiesInitialize() {};
 	virtual void LiveEntitiesUpdate() {};
+	virtual void LiveEntitiesOnPreRender() {};
 	virtual void DeadUpdate() {};
 	virtual void LiveEntitiesOnCollisionHit([[maybe_unused]] ADXCollider* col, [[maybe_unused]] ADXCollider* myCol) {};
 	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol) final;
-	void OnPreRender();
+	void OnPreRender() final;
 
 private:
 	void UniqueInitialize() final;
