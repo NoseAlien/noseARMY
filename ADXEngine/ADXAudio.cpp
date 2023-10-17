@@ -1,4 +1,4 @@
-﻿#include "ADXAudio.h"
+#include "ADXAudio.h"
 #include <cassert>
 
 #pragma comment(lib,"xaudio2.lib")
@@ -98,6 +98,8 @@ ADXAudio ADXAudio::LoadADXAudio(std::string filename)
 
 void ADXAudio::Play(bool loop)
 {
+	Stop();
+
 	HRESULT result;
 
 	//再生する波形データの設定
