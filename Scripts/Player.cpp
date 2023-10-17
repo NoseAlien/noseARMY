@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "SceneTransition.h"
 #include "ADXUtility.h"
 #include "FieldBox.h"
 #include <time.h>
@@ -70,6 +71,7 @@ void Player::LiveEntitiesInitialize()
 {
 	jumpSE = ADXAudio::LoadADXAudio("sound/jump.wav");
 	damageSE = ADXAudio::LoadADXAudio("sound/damage.wav");
+	defeatSE = ADXAudio::LoadADXAudio("sound/despawn.wav");
 	windowOpenSE = ADXAudio::LoadADXAudio("sound/windowOpen.wav");
 
 	rect = ADXModel::CreateRect();
@@ -102,12 +104,39 @@ void Player::LiveEntitiesInitialize()
 	outOfField->texture = ADXImage::LoadADXImage("outOfField.png");
 	outOfField->material = GetGameObject()->material;
 	outOfField->renderLayer = 1;
+
+	gameOverFilter = ADXObject::Create();
+	gameOverFilter->transform.rectTransform = true;
+	gameOverFilter->transform.UpdateMatrix();
+	gameOverFilter->model = &rect;
+	gameOverFilter->texture = ADXImage::LoadADXImage("WhiteDot.png");
+	gameOverFilter->material = GetGameObject()->material;
+	gameOverFilter->renderLayer = 1;
+
+	dead = ADXObject::Create();
+	dead->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 });
+	dead->transform.parent_ = &GetGameObject()->transform;
+	dead->transform.UpdateMatrix();
+	dead->model = &rect;
+	dead->texture = ADXImage::LoadADXImage("apEGnoSE_dead.png");
+	dead->material = GetGameObject()->material;
+	dead->renderLayer = 4;
+
+	keyUI = ADXObject::Create();
+	keyUI->transform.rectTransform = true;
+	keyUI->model = &rect;
+	keyUI->renderLayer = 5;
+	keyUI->texture = ADXImage::LoadADXImage("PRESS_SPACE.png");
 }
 
 void Player::LiveEntitiesUpdate()
 {
 	GetGameObject()->renderLayer = 0;
 	nose->renderLayer = 0;
+
+	gameOverFilter->isVisible =
+	dead->isVisible =
+	keyUI->isVisible = false;
 
 	deadAnimationProgress = 0;
 
@@ -299,15 +328,58 @@ void Player::LiveEntitiesOnCollisionHit(ADXCollider* col, [[maybe_unused]]ADXCol
 
 void Player::DeadUpdate()
 {
+	gameOverFilter->isVisible =
+	dead->isVisible =
+	keyUI->isVisible = true;
+
+	gameOverFilter->renderLayer = 3;
+	gameOverFilter->material.ambient = { 0,0,0 };
+	gameOverFilter->material.alpha = 0.8f;
+
 	GetGameObject()->renderLayer = 4;
 	nose->renderLayer = 4;
+
 	GetGameObject()->transform.localRotation_ = camera->GetGameObject()->transform.localRotation_;
 	GetGameObject()->transform.UpdateMatrix();
-	GetGameObject()->transform.SetWorldRotation(ADXQuaternion::MakeAxisAngle(GetGameObject()->transform.TransformPointOnlyRotation({ 0,1,0 }), 3.1415f) * GetGameObject()->transform.GetWorldRotation());
+	GetGameObject()->transform.SetWorldRotation(
+		ADXQuaternion::MakeAxisAngle(GetGameObject()->transform.TransformPointOnlyRotation({ 0,1,0 }), 3.1415f)
+		* GetGameObject()->transform.GetWorldRotation());
 
-	GetGameObject()->isVisible = deadAnimationProgress < 0.1;
+	nose->transform.localPosition_ = { 0,sin(min(max(0,
+		ADXUtility::ValueMapping(deadAnimationProgress,0.3f,0.8f,0.0f,1.0f)
+		), 1) * 3.1415f) * 4,1.01f };
+	nose->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,3.14159f,min(max(0,
+		ADXUtility::ValueMapping(deadAnimationProgress,0.3f,0.8f,0.0f,1.0f)
+		), 1) * 50 });
 
-	deadAnimationProgress = min(max(0, deadAnimationProgress + 0.001f), 1);
+
+	GetGameObject()->isVisible = deadAnimationProgress < 0.3f;
+	nose->isVisible = deadAnimationProgress < 0.8f;
+	dead->isVisible = !nose->isVisible;
+
+	keyUI->transform.localPosition_ = { 0,-0.5f + sin(clock() * 0.001f - 1) * 0.02f,0 };
+	keyUI->transform.localScale_ = { keyUI->transform.localScale_.x,0.45f,1 };
+	if (deadAnimationProgress >= 1)
+	{
+		keyUI->transform.localScale_.x += (0.45f / ADXWindow::GetAspect() - keyUI->transform.localScale_.x) * 0.3f;
+		if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_SPACE))
+		{
+			SceneTransition::ChangeScene(2);
+		}
+	}
+	else
+	{
+		keyUI->transform.localScale_.x = 0;
+		if (deadAnimationProgress > 0.3f
+			&& ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_SPACE))
+		{
+			deadAnimationProgress = 1;
+		}
+	}
+
+	deadAnimationProgress = min(max(0, deadAnimationProgress + 0.01f), 1);
+
+	rigidbody->velocity = { 0,0,0 };
 }
 
 void Player::SafetyPhase()

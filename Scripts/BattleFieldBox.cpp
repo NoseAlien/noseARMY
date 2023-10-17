@@ -1,4 +1,4 @@
-#include "BattleFieldBox.h"
+﻿#include "BattleFieldBox.h"
 #include "LiveEntity.h"
 
 void BattleFieldBox::Initialize(std::vector<SpawnData> setGuarders, std::string setTeam)

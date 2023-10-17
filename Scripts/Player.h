@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "ADXComponent.h"
 #include "ADXKeyBoardInput.h"
@@ -23,6 +23,9 @@ private:
 	ADXObject* nose = nullptr;
 	ADXObject* outOfField = nullptr;
 	ADXObject* tutorialWindow = nullptr;
+	ADXObject* gameOverFilter = nullptr;
+	ADXObject* dead = nullptr;
+	ADXObject* keyUI = nullptr;
 
 	ADXModel rect{};
 	ADXModel playerModel{};

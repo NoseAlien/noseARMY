@@ -1,6 +1,7 @@
-#pragma once
+﻿#pragma once
 
 #include "ADXObject.h"
+#include "ADXAudio.h"
 #include "ADXParticleSystem.h"
 #include <string>
 
@@ -11,6 +12,8 @@ class LiveEntity : public ADXComponent
 protected:
 	float maxHP = 999;
 	float hpAmount = 1;
+	ADXAudio damageSE{};
+	ADXAudio defeatSE{};
 
 private:
 	ADXModel rect{};

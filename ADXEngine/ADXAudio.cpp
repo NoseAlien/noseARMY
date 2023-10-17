@@ -1,4 +1,4 @@
-#include "ADXAudio.h"
+﻿#include "ADXAudio.h"
 #include <cassert>
 
 #pragma comment(lib,"xaudio2.lib")
