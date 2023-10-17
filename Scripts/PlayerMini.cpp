@@ -1,4 +1,4 @@
-#include "PlayerMini.h"
+﻿#include "PlayerMini.h"
 #include "Player.h"
 
 void PlayerMini::Initialize(Player* setParent, const ADXObject& setNose)

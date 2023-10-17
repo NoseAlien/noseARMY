@@ -1,6 +1,4 @@
 ﻿#include "Enemy.h"
-#include "PlayerMini.h"
-#include "Player.h"
 #include "ADXUtility.h"
 
 void Enemy::LiveEntitiesInitialize()
@@ -44,7 +42,19 @@ void Enemy::DeadUpdate()
 	rigidbody->gravity = { 0,-1,0 };
 	rigidbody->gravityScale = 0.015f;
 
+	for (auto& itr : GetGameObject()->GetComponents<ADXCollider>())
+	{
+		itr->pushBackPriority = -1;
+	}
+
 	GetGameObject()->texture = deadTex;
+
+	if (grabber != nullptr)
+	{
+		GetGameObject()->transform.SetWorldPosition(GetGameObject()->transform.GetWorldPosition()
+			+ (grabber->GetGameObject()->transform.GetWorldPosition() - GetGameObject()->transform.GetWorldPosition()) * 0.1f);
+		LiveEntity::SetAttackObj({ GetGameObject()->GetComponent<ADXCollider>(),grabber->GetGameObject()->GetComponent<PlayerMini>()->GetParent(),maxHP});
+	}
 
 	rigidbody->VelocityMove();
 }
@@ -60,10 +70,17 @@ void Enemy::LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 			targetPos = col->GetGameObject()->transform.GetWorldPosition();
 		}
 	}
-	else if(!myCol->isTrigger && !IsLive() && col->GetGameObject()->GetComponent<PlayerMini>())
+	else if(!myCol->isTrigger && !IsLive() && grabber == nullptr && col->GetGameObject()->GetComponent<PlayerMini>())
 	{
-		GetGameObject()->transform.SetWorldPosition(GetGameObject()->transform.GetWorldPosition()
-			+ (col->GetGameObject()->transform.GetWorldPosition() - GetGameObject()->transform.GetWorldPosition()) * 0.1f);
-		LiveEntity::SetAttackObj({ myCol,col->GetGameObject()->GetComponent<PlayerMini>()->GetParent(),maxHP });
+		grabber = col->GetGameObject()->GetComponent<PlayerMini>();
 	}
+}
+
+void Enemy::SafetyPhase()
+{
+	if (grabber != nullptr && grabber->GetGameObject()->GetDeleteFlag())
+	{
+		grabber = nullptr;
+	}
+	EnemySafetyPhase();
 }

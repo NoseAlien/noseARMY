@@ -1,17 +1,37 @@
-#include "Clex.h"
+﻿#include "Clex.h"
 #include "ADXCamera.h"
+#include "ADXUtility.h"
 
 void Clex::EnemyInitialize()
 {
 	rect = ADXModel::CreateRect();
+	enemyModel = ADXModel::LoadADXModel("model/Clex.obj");
 
-	GetGameObject()->model = nullptr;
+	nutralTex = ADXImage::LoadADXImage("tex_Clex.png");
+	deadTex = ADXImage::LoadADXImage("tex_Clex_3.png");
+	attackTex = ADXImage::LoadADXImage("tex_Clex_2.png");
+
+	GetGameObject()->model = &enemyModel;
+
+	face = ADXObject::Create();
+	face->transform.parent_ = &GetGameObject()->transform;
+	face->transform.localPosition_ = { 0,-0.4f,0.9f };
+	face->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0.4f,0,0 });
+	face->model = &rect;
+	face->texture = ADXImage::LoadADXImage("Clex_face.png");
 
 	body = ADXObject::Create();
 	body->transform.parent_ = &GetGameObject()->transform;
-	body->transform.UpdateMatrix();
 	body->model = &rect;
-	body->texture = ADXImage::LoadADXImage("whiteDot.png");
+	body->texture = ADXImage::LoadADXImage("Clex_projectile.png");
+
+	antennaRig = ADXObject::Create();
+	antennaRig->transform.parent_ = &GetGameObject()->transform;
+
+	antenna = ADXObject::Create();
+	antenna->transform.parent_ = &antennaRig->transform;
+	antenna->model = &rect;
+	antenna->texture = ADXImage::LoadADXImage("Clex_antenna.png");
 }
 
 void Clex::EnemyUpdate()
@@ -21,6 +41,9 @@ void Clex::EnemyUpdate()
 	rigidbody->gravity = { 0,0,0 };
 
 	GetGameObject()->sortingOrder = 1;
+
+	bodyScale = ADXUtility::Lerp(bodyScale, 1, 0.4f);
+	antennaAngle = ADXUtility::Lerp(antennaAngle, 0, 0.05f);
 
 	if (targetDetected && attackProgress <= 0)
 	{
@@ -35,14 +58,50 @@ void Clex::EnemyUpdate()
 
 	GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
 
-	if (attackProgress > 0.9f)
+	if (attackProgress > 0)
 	{
-		rigidbody->velocity = (GetGameObject()->transform.localPosition_ - cursor).Normalize();
+		GetGameObject()->texture = attackTex;
+
+		ADXQuaternion targetRot = ADXQuaternion::EulerToQuaternion(
+			{ 0,(float)atan2(cursor.x - GetGameObject()->transform.localPosition_.x,cursor.z - GetGameObject()->transform.localPosition_.z),0 });
+
+		GetGameObject()->transform.localRotation_ = ADXQuaternion::Slerp(GetGameObject()->transform.localRotation_, targetRot, 0.3f);
+		GetGameObject()->transform.localRotation_ = GetGameObject()->transform.localRotation_.Normalized();
+		if (attackProgress > 0.7f)
+		{
+
+		}
+		else if (attackProgress > 0.6f)
+		{
+			rigidbody->velocity = (GetGameObject()->transform.localPosition_ - cursor).Normalize() * 0.5f;
+			bodyScale = 0;
+			antennaAngle = 1;
+		}
+		else
+		{
+			bodyScale = 0;
+		}
 	}
 	attackProgress = min(max(0, attackProgress - 0.02f), 1);
+
+	body->transform.localScale_ = { bodyScale,bodyScale,bodyScale };
+	antennaRig->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ antennaAngle,0,0 });
+
 }
 
 void Clex::LiveEntitiesOnPreRender()
 {
 	body->transform.SetWorldRotation(ADXCamera::GetCurrentCamera()->GetGameObject()->transform.GetWorldRotation());
+
+	antennaRig->transform.localPosition_ = ADXQuaternion::RotateVector({ 0,1,0 }, GetGameObject()->transform.modelRotation_);
+
+	antenna->transform.localPosition_ = { 0,1,0 };
+	antenna->transform.localRotation_ = ADXQuaternion::IdentityQuaternion();
+
+	ADXVector3 cameraRelativePos = ADXMatrix4::Transform(
+		ADXCamera::GetCurrentCamera()->GetGameObject()->transform.GetWorldPosition(),
+		antennaRig->transform.GetMatWorldInverse());
+	antenna->transform.localRotation_ = ADXQuaternion::MakeAxisAngle(
+		{ 0,2,0 }, (float)atan2(cameraRelativePos.x - antenna->transform.localPosition_.x, cameraRelativePos.z - antenna->transform.localPosition_.z))
+		* antenna->transform.localRotation_;
 }

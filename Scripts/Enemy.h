@@ -1,7 +1,8 @@
-﻿#pragma once
+#pragma once
 
 #include "LiveEntity.h"
 #include "ADXRigidbody.h"
+#include "PlayerMini.h"
 
 class Enemy : public LiveEntity
 {
@@ -17,13 +18,17 @@ protected:
 	ADXVector3 cursor{};
 	float attackProgress = 0;
 
+	PlayerMini* grabber = nullptr;
+
 protected:
 	virtual void EnemyInitialize() {};
 	virtual void EnemyUpdate() {};
+	virtual void EnemySafetyPhase() {};
 
 private:
 	void LiveEntitiesInitialize() final;
 	void LiveEntitiesUpdate() final;
-	void DeadUpdate();
+	void DeadUpdate() final;
 	void LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol);
+	void SafetyPhase() final;
 };
