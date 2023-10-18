@@ -1,6 +1,7 @@
-﻿#include "Clex.h"
+#include "Clex.h"
 #include "ADXCamera.h"
 #include "ADXUtility.h"
+#include "Projectile.h"
 
 void Clex::EnemyInitialize()
 {
@@ -76,10 +77,27 @@ void Clex::EnemyUpdate()
 			rigidbody->velocity = (GetGameObject()->transform.localPosition_ - cursor).Normalize() * 0.5f;
 			bodyScale = 0;
 			antennaAngle = 1;
+			if (!shotted)
+			{
+				ADXObject* projectileObj = ADXObject::Create(
+					GetGameObject()->transform.GetWorldPosition(),
+					GetGameObject()->transform.GetWorldRotation(),
+					{1,1,1},
+					GetGameObject()->transform.parent_);
+				Projectile* projectile = projectileObj->AddComponent<Projectile>();
+
+				projectile->SetData((GetGameObject()->transform.localPosition_ - cursor).Normalize() * -0.7f, ADXImage::LoadADXImage("Clex_projectile.png"));
+				projectile->LiveEntity::Initialize(GetTeam());
+
+				projectiles.push_back(projectile);
+
+				shotted = true;
+			}
 		}
 		else
 		{
 			bodyScale = 0;
+			shotted = false;
 		}
 	}
 	attackProgress = min(max(0, attackProgress - 0.02f), 1);

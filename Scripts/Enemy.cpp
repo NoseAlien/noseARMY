@@ -55,7 +55,14 @@ void Enemy::DeadUpdate()
 	{
 		GetGameObject()->transform.SetWorldPosition(GetGameObject()->transform.GetWorldPosition()
 			+ (grabber->GetGameObject()->transform.GetWorldPosition() - GetGameObject()->transform.GetWorldPosition()) * 0.1f);
-		LiveEntity::SetAttackObj({ GetGameObject()->GetComponent<ADXCollider>(),(LiveEntity*)grabber->GetParent(),maxHP });
+
+		for (auto& itr : GetGameObject()->GetComponents<ADXCollider>())
+		{
+			if (!itr->isTrigger)
+			{
+				LiveEntity::SetAttackObj({ itr,(LiveEntity*)grabber->GetParent(),maxHP });
+			}
+		}
 	}
 }
 

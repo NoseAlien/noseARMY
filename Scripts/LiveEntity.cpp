@@ -1,4 +1,4 @@
-﻿#include "LiveEntity.h"
+#include "LiveEntity.h"
 #include "ADXCamera.h"
 #include <time.h>
 
@@ -123,6 +123,13 @@ void LiveEntity::UniqueUpdate()
 		hpGaugeBG->transform.localPosition_ = { 0,-1.5f + (float)sin(clock()) * 0.05f,0};
 		attackHitted = false;
 	}
+}
+
+void LiveEntity::OnDestroy()
+{
+	hpGauge->Destroy();
+	hpGaugeBG->Destroy();
+	LiveEntityOnDestroy();
 }
 
 void LiveEntity::Damage(float damage)

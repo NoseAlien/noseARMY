@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Enemy.h"
 
 class Clex : public Enemy
@@ -15,6 +15,8 @@ private:
 
 	float bodyScale = 1;
 	float antennaAngle = 0;
+
+	bool shotted = false;
 
 private:
 	void EnemyInitialize() final;

@@ -1,4 +1,4 @@
-﻿#include "GameScene.h"
+#include "GameScene.h"
 #include "SceneTransition.h"
 
 #include "Cub_E.h"
@@ -8,7 +8,6 @@ void GameScene::Initialize()
 	floors_ = {};
 	fields_ = {};
 	battleFields_ = {};
-	enemies_ = {};
 	tutorialAreas_ = {};
 	player_ = {};
 

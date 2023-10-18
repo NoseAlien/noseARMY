@@ -1,4 +1,4 @@
-﻿#include "Player.h"
+#include "Player.h"
 #include "SceneTransition.h"
 #include "ADXUtility.h"
 #include "FieldBox.h"
@@ -70,8 +70,8 @@ void Player::Move(float walkSpeed, float jumpPower)
 void Player::LiveEntitiesInitialize()
 {
 	jumpSE = ADXAudio::LoadADXAudio("sound/jump.wav");
-	damageSE = ADXAudio::LoadADXAudio("sound/damage.wav");
-	defeatSE = ADXAudio::LoadADXAudio("sound/despawn.wav");
+	//damageSE = ADXAudio::LoadADXAudio("sound/damage.wav");
+	//defeatSE = ADXAudio::LoadADXAudio("sound/despawn.wav");
 	windowOpenSE = ADXAudio::LoadADXAudio("sound/windowOpen.wav");
 
 	rect = ADXModel::CreateRect();

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXObject.h"
 #include "ADXAudio.h"
@@ -34,6 +34,7 @@ protected:
 	virtual void LiveEntitiesInitialize() {};
 	virtual void LiveEntitiesUpdate() {};
 	virtual void LiveEntitiesOnPreRender() {};
+	virtual void LiveEntityOnDestroy() {};
 	virtual void DeadUpdate() {};
 	virtual void LiveEntitiesOnCollisionHit([[maybe_unused]] ADXCollider* col, [[maybe_unused]] ADXCollider* myCol) {};
 	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol) final;
@@ -42,6 +43,7 @@ protected:
 private:
 	void UniqueInitialize() final;
 	void UniqueUpdate() final;
+	void OnDestroy() final;
 
 private:
 	static std::vector<AttackObject> S_attackObjs;

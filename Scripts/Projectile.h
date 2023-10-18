@@ -1,18 +1,27 @@
-﻿#pragma once
+#pragma once
 #include "Enemy.h"
 #include "Projectile.h"
 
 class Projectile : public Enemy
 {
 private:
+	ADXModel rect{};
+	uint32_t visual = 0;
+
 	LiveEntity* parent = nullptr;
 	ADXObject* billBoard = nullptr;
 	uint32_t billBoardTex = 0;
-	uint32_t maxLifeTime = 60;
-	int32_t lifetime = 0;
+	uint32_t maxLifeTime = 30;
+	int32_t lifeTime = 0;
 
 	ADXVector3 direction = { 0,0,0 };
 
+public:
+	void SetData(const ADXVector3& setDirection, uint32_t setVisual);
+
 private:
-	void EnemyUpdate();
+	void EnemyInitialize() final;
+	void EnemyUpdate() final;
+	void LiveEntitiesOnPreRender() final;
+	void LiveEntityOnDestroy() final;
 };

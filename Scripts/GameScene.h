@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXScene.h"
 #include "ADXModel.h"
@@ -46,7 +46,6 @@ private:
 	std::list<TutorialArea*> tutorialAreas_{};
 	std::list<FieldBox*> fields_{};
 	std::list<BattleFieldBox*> battleFields_{};
-	std::list<Enemy*> enemies_{};
 	Goal* goal_ = nullptr;
 	ADXObject* key = nullptr;
 	ADXObject* backGround_{};
