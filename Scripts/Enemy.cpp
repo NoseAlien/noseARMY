@@ -44,19 +44,19 @@ void Enemy::DeadUpdate()
 
 	for (auto& itr : GetGameObject()->GetComponents<ADXCollider>())
 	{
-		itr->pushBackPriority = -1;
+		itr->pushBackPriority = -2;
 	}
 
 	GetGameObject()->texture = deadTex;
+
+	rigidbody->VelocityMove();
 
 	if (grabber != nullptr)
 	{
 		GetGameObject()->transform.SetWorldPosition(GetGameObject()->transform.GetWorldPosition()
 			+ (grabber->GetGameObject()->transform.GetWorldPosition() - GetGameObject()->transform.GetWorldPosition()) * 0.1f);
-		LiveEntity::SetAttackObj({ GetGameObject()->GetComponent<ADXCollider>(),grabber->GetGameObject()->GetComponent<PlayerMini>()->GetParent(),maxHP});
+		LiveEntity::SetAttackObj({ GetGameObject()->GetComponent<ADXCollider>(),(LiveEntity*)grabber->GetParent(),maxHP });
 	}
-
-	rigidbody->VelocityMove();
 }
 
 void Enemy::LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
