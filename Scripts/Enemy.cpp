@@ -1,4 +1,4 @@
-﻿#include "Enemy.h"
+#include "Enemy.h"
 #include "ADXUtility.h"
 
 void Enemy::LiveEntitiesInitialize()
