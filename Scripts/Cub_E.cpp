@@ -1,4 +1,4 @@
-﻿#include "Cub_E.h"
+#include "Cub_E.h"
 #include "ADXCamera.h"
 
 void Cub_E::EnemyInitialize()
@@ -45,6 +45,8 @@ void Cub_E::EnemyUpdate()
 
 	GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
 
+	rigidbody->gravity = { 0,-2,0 };
+
 	if (attackProgress > 0)
 	{
 		ADXVector3 finalTarget = cursor;
@@ -72,14 +74,11 @@ void Cub_E::EnemyUpdate()
 		}
 		else if (attackProgress > 0.2f)
 		{
-			if (attackProgress > 0.25f)
+			for (auto& itr : GetGameObject()->GetComponents<ADXCollider>())
 			{
-				for (auto& itr : GetGameObject()->GetComponents<ADXCollider>())
+				if (!itr->isTrigger)
 				{
-					if (!itr->isTrigger)
-					{
-						LiveEntity::SetAttackObj({ itr,this,10 });
-					}
+					LiveEntity::SetAttackObj({ itr,this,10 });
 				}
 			}
 			GetGameObject()->texture = attackTex;

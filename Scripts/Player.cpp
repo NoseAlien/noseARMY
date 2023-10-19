@@ -1,4 +1,4 @@
-﻿#include "Player.h"
+#include "Player.h"
 #include "SceneTransition.h"
 #include "ADXUtility.h"
 #include "FieldBox.h"
@@ -222,7 +222,6 @@ void Player::LiveEntitiesUpdate()
 	}
 
 	uint32_t prevTutorialImg = tutorialWindow->texture;
-	setTutorialImg = prevTutorialImg;
 
 	if (prevTutorialImg != setTutorialImg)
 	{

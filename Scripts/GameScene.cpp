@@ -8,7 +8,6 @@ void GameScene::Initialize()
 	floors_ = {};
 	fields_ = {};
 	battleFields_ = {};
-	tutorialAreas_ = {};
 	player_ = {};
 
 	//画像
@@ -65,24 +64,24 @@ void GameScene::Initialize()
 
 
 	temp = ADXObject::Create({ 0,3,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 4,4,4 });
-	tutorialAreas_.push_back(temp->AddComponent<TutorialArea>());
-	tutorialAreas_.back()->SetTutorialImg(ADXImage::LoadADXImage("tutorial_move.png"));
+	TutorialArea* tempTutorialArea = temp->AddComponent<TutorialArea>();
+	tempTutorialArea->SetTutorialImg(ADXImage::LoadADXImage("tutorial_move.png"));
 
-	temp = ADXObject::Create({ 0,0,8 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,1,2 });
-	tutorialAreas_.push_back(temp->AddComponent<TutorialArea>());
-	tutorialAreas_.back()->SetTutorialImg(ADXImage::LoadADXImage("tutorial_jump.png"));
+	temp = ADXObject::Create({ 0,-1.5f,16 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,1,10 });
+	tempTutorialArea = temp->AddComponent<TutorialArea>();
+	tempTutorialArea->SetTutorialImg(ADXImage::LoadADXImage("tutorial_jump.png"));
 
-	temp = ADXObject::Create({ 0,10,15 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,10,15 });
-	tutorialAreas_.push_back(temp->AddComponent<TutorialArea>());
-	tutorialAreas_.back()->SetTutorialImg(ADXImage::LoadADXImage("tutorial_jump_2.png"));
+	temp = ADXObject::Create({ 0,10,15.5f }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,10,4 });
+	tempTutorialArea = temp->AddComponent<TutorialArea>();
+	tempTutorialArea->SetTutorialImg(ADXImage::LoadADXImage("tutorial_jump_2.png"));
 
 	temp = ADXObject::Create({ 0,23,38 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,4,15 });
-	tutorialAreas_.push_back(temp->AddComponent<TutorialArea>());
-	tutorialAreas_.back()->SetTutorialImg(ADXImage::LoadADXImage("tutorial_army.png"));
+	tempTutorialArea = temp->AddComponent<TutorialArea>();
+	tempTutorialArea->SetTutorialImg(ADXImage::LoadADXImage("tutorial_army.png"));
 
 	temp = ADXObject::Create({ 3,15.5,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,5,6 });
-	tutorialAreas_.push_back(temp->AddComponent<TutorialArea>());
-	tutorialAreas_.back()->SetTutorialImg(ADXImage::LoadADXImage("tutorial_army_2.png"));
+	tempTutorialArea = temp->AddComponent<TutorialArea>();
+	tempTutorialArea->SetTutorialImg(ADXImage::LoadADXImage("tutorial_army_2.png"));
 
 
 	temp = ADXObject::Create({ 0,13,35 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,14,45 });
@@ -112,8 +111,9 @@ void GameScene::Initialize()
 	battleFields_.back()->fieldLayer = 2;
 
 	enemySpawnData.SetSpawnList({
-		{ 2,{2,24,40},ADXQuaternion::EulerToQuaternion({0,3.1415f,0})},
-		{ 1,{-2,24,40},ADXQuaternion::EulerToQuaternion({0,3.1415f,0}) },
+		{ 1,{2,20,40},ADXQuaternion::EulerToQuaternion({0,3.1415f,0}) },
+		{ 1,{-2,20,44},ADXQuaternion::EulerToQuaternion({0,3.1415f,0})},
+		{ 2,{0,21,55},ADXQuaternion::EulerToQuaternion({0,3.1415f,0})},
 		});
 
 	enemySpawnData.Spawn("enemy");

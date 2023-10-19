@@ -9,6 +9,14 @@ std::vector<AttackObject> LiveEntity::S_allAttackObj = {};
 void LiveEntity::Initialize(const std::string& setTeam)
 {
 	team = setTeam;
+}
+
+void LiveEntity::UniqueInitialize()
+{
+	LiveEntitiesInitialize();
+
+	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
+	tempCol->pushable_ = true;
 
 	rect = ADXModel::CreateRect();
 	gaugeTex = ADXImage::LoadADXImage("whiteDot.png");
@@ -37,14 +45,6 @@ void LiveEntity::Initialize(const std::string& setTeam)
 		ADXImage::LoadADXImage("particle_defeat/010.png"), }, 0, false);
 	particle->lifeTime = particle->animation.GetLength();
 	particle->particleModel = rect;
-}
-
-void LiveEntity::UniqueInitialize()
-{
-	LiveEntitiesInitialize();
-
-	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
-	tempCol->pushable_ = true;
 }
 
 void LiveEntity::UniqueUpdate()

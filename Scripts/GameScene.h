@@ -43,7 +43,6 @@ private:
 	SceneTransition* shutter_ = nullptr;
 	Player* player_ = nullptr;
 	std::list<ADXObject*> floors_{};
-	std::list<TutorialArea*> tutorialAreas_{};
 	std::list<FieldBox*> fields_{};
 	std::list<BattleFieldBox*> battleFields_{};
 	Goal* goal_ = nullptr;

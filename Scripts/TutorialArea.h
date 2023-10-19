@@ -5,7 +5,6 @@
 class TutorialArea : public ADXComponent
 {
 private:
-	ADXObject* tutorialWindow = nullptr;
 	uint32_t tutorialImg = 0;
 
 public:
