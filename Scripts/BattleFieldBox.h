@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "FieldBox.h"
 #include "Enemy.h"
@@ -19,6 +19,7 @@ public:
 	void Initialize(std::vector<SpawnData> setGuarders, std::string setTeam = "");
 
 private:
+	void FieldInitialize();
 	void FieldUpdate();
 	void FieldOnCollisionHit(ADXCollider* col, ADXCollider* myCol);
 };

@@ -1,10 +1,11 @@
-﻿#include "FieldBox.h"
+#include "FieldBox.h"
 
 void FieldBox::UniqueInitialize()
 {
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
 	tempCol->isTrigger = true;
 	tempCol->colType_ = box;
+	FieldInitialize();
 }
 
 void FieldBox::UniqueUpdate()

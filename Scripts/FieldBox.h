@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXObject.h"
 #include <list>
@@ -14,6 +14,7 @@ private:
 
 protected:
 	virtual void FieldUpdate() {};
+	virtual void FieldInitialize() {};
 	virtual void FieldOnCollisionHit([[maybe_unused]] ADXCollider* col, [[maybe_unused]] ADXCollider* myCol) {};
 
 private:

@@ -1,20 +1,19 @@
-﻿#include "BattleFieldBox.h"
+#include "BattleFieldBox.h"
 #include "LiveEntity.h"
 
 void BattleFieldBox::Initialize(std::vector<SpawnData> setGuarders, std::string setTeam)
 {
-	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
-	tempCol->isTrigger = true;
-	tempCol->colType_ = box;
+	enemySpawnData.SetSpawnList(setGuarders);
+	team = setTeam;
+}
 
+void BattleFieldBox::FieldInitialize()
+{
 	boxModel = ADXModel::LoadADXModel("model/battleBox.obj");
 	GetGameObject()->model = &boxModel;
 	GetGameObject()->texture = ADXImage::LoadADXImage("battleField.png");
 
 	GetGameObject()->sortingOrder = 2;
-
-	enemySpawnData.SetSpawnList(setGuarders);
-	team = setTeam;
 
 	animationProgress = 0;
 }
