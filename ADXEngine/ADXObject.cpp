@@ -498,7 +498,7 @@ void ADXObject::StaticDraw()
 					lowestSortingOrder = thisLayerObjPtr[j]->sortingOrder;
 				}
 			}
-			if (thisLayerObjPtr[target]->isVisible)
+			if (thisLayerObjPtr[target]->isVisible && thisLayerObjPtr[target]->isActive)
 			{
 				thisLayerObjPtr[target]->Draw();
 			}

@@ -1,4 +1,4 @@
-#include "BattleFieldBox.h"
+﻿#include "BattleFieldBox.h"
 #include "LiveEntity.h"
 
 void BattleFieldBox::Initialize(std::vector<SpawnData> setGuarders, std::string setTeam)
@@ -22,6 +22,12 @@ void BattleFieldBox::FieldUpdate()
 {
 	if (awake)
 	{
+		if (!guarderSpawned)
+		{
+			guardersPtr = enemySpawnData.Spawn(team, &GetGameObject()->transform);
+			guarderSpawned = true;
+		}
+
 		animationProgress += (1 - animationProgress) * 0.2f;
 		GetGameObject()->transform.modelPosition_ = { 0,-(1 - animationProgress) ,0 };
 		GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,(1 - animationProgress) * 3,0 });
@@ -53,8 +59,6 @@ void BattleFieldBox::FieldOnCollisionHit(ADXCollider* col, [[maybe_unused]] ADXC
 		if (tempLiv != nullptr && tempLiv->GetTeam() != team)
 		{
 			awake = true;
-
-			guardersPtr = enemySpawnData.Spawn(team, &GetGameObject()->transform);
 		}
 	}
 	else

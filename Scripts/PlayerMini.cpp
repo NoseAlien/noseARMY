@@ -1,4 +1,4 @@
-﻿#include "PlayerMini.h"
+#include "PlayerMini.h"
 #include "Player.h"
 
 void PlayerMini::Initialize(Player* setParent, const ADXObject& setNose)
@@ -60,15 +60,22 @@ void PlayerMini::Move(float walkSpeed, float jumpPower)
 
 void PlayerMini::UniqueUpdate()
 {
-	rigidbody->gravityScale = 0.01f;
 	rigidbody->drag = 0.8f;
 
 	rigidbody->VelocityMove();
 
-	rigidbody->velocity.y /= 0.8f;
-	rigidbody->velocity.y -= 0.03f;
+	rigidbody->dragAxis.y = false;
 
-	Move(0.1f, 0.8f);
+	if (parent->GetInputStatus(5))
+	{
+		Move(0.1f, 0.8f);
+		rigidbody->gravityScale = 0.02f;
+	}
+	else
+	{
+		Move(0.05f, 0.4f);
+		rigidbody->gravityScale = 0.01f;
+	}
 
 	nose->transform.parent_ = &GetGameObject()->transform;
 }

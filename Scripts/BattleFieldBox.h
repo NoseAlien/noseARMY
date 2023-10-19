@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "FieldBox.h"
 #include "Enemy.h"
@@ -10,6 +10,7 @@ private:
 	EnemySpawnData enemySpawnData{};
 	std::list<Enemy*> guardersPtr = {};
 	bool awake = false;
+	bool guarderSpawned = false;
 	int32_t battling = 10;
 	std::string team = "";
 	ADXModel boxModel{};
