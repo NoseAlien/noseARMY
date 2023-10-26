@@ -1,4 +1,4 @@
-﻿#include "Player.h"
+#include "Player.h"
 #include "SceneTransition.h"
 #include "ADXUtility.h"
 #include "FieldBox.h"
@@ -143,7 +143,13 @@ void Player::LiveEntitiesUpdate()
 	float scale = ADXUtility::ValueMapping((float)minis.size(), 0, (float)maxMinisNum, 1, 0.25f);
 	GetGameObject()->transform.localScale_ = { scale,scale,scale };
 
-	GetGameObject()->transform.modelScale_ = { 1 + sinf((float)clock() * 0.002f) * 0.03f,1 + cosf((float)clock() * 0.002f) * 0.03f,1 + sinf((float)clock() * 0.002f) * 0.03f };
+	float modelScalingTime = (float)clock() * 0.002f;
+	if (!keyboard->KeyPress(4) && (keyboard->KeyPress(config[0]) || keyboard->KeyPress(config[1]) || keyboard->KeyPress(config[2]) || keyboard->KeyPress(config[3])))
+	{
+		modelScalingTime = (float)clock() * 0.015f;
+	}
+
+	GetGameObject()->transform.modelScale_ = { 1 + sinf(modelScalingTime) * 0.03f,1 + cosf(modelScalingTime) * 0.03f,1 + sinf(modelScalingTime) * 0.03f };
 
 	ADXVector3 cameraVec = camera->GetGameObject()->transform.GetWorldPosition() - GetGameObject()->transform.GetWorldPosition();
 	cameraVec.y = 0;
@@ -180,7 +186,7 @@ void Player::LiveEntitiesUpdate()
 	}
 
 	nose->transform.localScale_ = ADXVector3{ 0.42f,0.35f,0.35f } *(float)fmax(1, 1 + pow(fmax(0, splitInterval), 2) * 0.02f);
-	nose->transform.localPosition_ = { 0,sinf((float)clock() * 0.002f) * 0.03f,1.01f + sinf((float)clock() * 0.002f) * 0.03f };
+	nose->transform.localPosition_ = { 0,sinf(modelScalingTime) * 0.03f,1.01f + sinf(modelScalingTime) * 0.03f };
 
 	splitInterval--;
 	splitInterval = max(-20, splitInterval);
