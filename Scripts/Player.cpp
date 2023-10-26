@@ -144,7 +144,7 @@ void Player::LiveEntitiesUpdate()
 	GetGameObject()->transform.localScale_ = { scale,scale,scale };
 
 	float modelScalingTime = (float)clock() * 0.002f;
-	if (!keyboard->KeyPress(4) && (keyboard->KeyPress(config[0]) || keyboard->KeyPress(config[1]) || keyboard->KeyPress(config[2]) || keyboard->KeyPress(config[3])))
+	if (!keyboard->KeyPress(config[5]) && (keyboard->KeyPress(config[0]) || keyboard->KeyPress(config[1]) || keyboard->KeyPress(config[2]) || keyboard->KeyPress(config[3])))
 	{
 		modelScalingTime = (float)clock() * 0.015f;
 	}
@@ -186,7 +186,7 @@ void Player::LiveEntitiesUpdate()
 	}
 
 	nose->transform.localScale_ = ADXVector3{ 0.42f,0.35f,0.35f } *(float)fmax(1, 1 + pow(fmax(0, splitInterval), 2) * 0.02f);
-	nose->transform.localPosition_ = { 0,sinf(modelScalingTime) * 0.03f,1.01f + sinf(modelScalingTime) * 0.03f };
+	nose->transform.localPosition_ = { 0,sinf(modelScalingTime) * 0.03f,1.01f + sinf(modelScalingTime) * 0.04f };
 
 	splitInterval--;
 	splitInterval = max(-20, splitInterval);
