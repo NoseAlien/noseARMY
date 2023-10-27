@@ -5,7 +5,7 @@
 
 void SceneGate::Initialize(std::string setTeam)
 {
-	GetGameObject()->texture = ADXImage::LoadADXImage("goalField.png");
+	GetGameObject()->texture = ADXImage::LoadADXImage("texture/goalField.png");
 	GetGameObject()->sortingOrder = 1;
 
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
@@ -22,7 +22,7 @@ void SceneGate::Initialize(std::string setTeam)
 	keyUI = ADXObject::Create();
 	keyUI->transform.rectTransform = true;
 	keyUI->model = &rectModel;
-	keyUI->texture = ADXImage::LoadADXImage("PRESS_SPACE.png");
+	keyUI->texture = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
 	keyUI->renderLayer = 5;
 }
 

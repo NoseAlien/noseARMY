@@ -11,7 +11,7 @@ void BattleFieldBox::FieldInitialize()
 {
 	boxModel = ADXModel::LoadADXModel("model/battleBox.obj");
 	GetGameObject()->model = &boxModel;
-	GetGameObject()->texture = ADXImage::LoadADXImage("battleField.png");
+	GetGameObject()->texture = ADXImage::LoadADXImage("texture/battleField.png");
 
 	GetGameObject()->sortingOrder = 2;
 

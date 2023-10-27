@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 #include "SceneTransition.h"
 #include "ADXUtility.h"
 #include "FieldBox.h"
@@ -78,7 +78,7 @@ void Player::LiveEntitiesInitialize()
 	playerModel = ADXModel::LoadADXModel("model/sphere.obj");
 
 	GetGameObject()->model = &playerModel;
-	GetGameObject()->texture = ADXImage::LoadADXImage("apEG_fur.png");
+	GetGameObject()->texture = ADXImage::LoadADXImage("texture/apEG_fur.png");
 
 	rigidbody = GetGameObject()->AddComponent<ADXRigidbody>();
 
@@ -86,14 +86,14 @@ void Player::LiveEntitiesInitialize()
 	nose->transform.parent_ = &GetGameObject()->transform;
 	nose->transform.UpdateMatrix();
 	nose->model = &rect;
-	nose->texture = ADXImage::LoadADXImage("apEGnoSE.png");
+	nose->texture = ADXImage::LoadADXImage("texture/apEGnoSE.png");
 	nose->material = GetGameObject()->material;
 
 	tutorialWindow = ADXObject::Create();
 	tutorialWindow->transform.rectTransform = true;
 	tutorialWindow->transform.UpdateMatrix();
 	tutorialWindow->model = &rect;
-	tutorialWindow->texture = ADXImage::LoadADXImage("WhiteDot.png");
+	tutorialWindow->texture = ADXImage::LoadADXImage("texture/WhiteDot.png");
 	tutorialWindow->material = GetGameObject()->material;
 	tutorialWindow->renderLayer = 1;
 
@@ -101,7 +101,7 @@ void Player::LiveEntitiesInitialize()
 	outOfField->transform.rectTransform = true;
 	outOfField->transform.UpdateMatrix();
 	outOfField->model = &rect;
-	outOfField->texture = ADXImage::LoadADXImage("outOfField.png");
+	outOfField->texture = ADXImage::LoadADXImage("texture/outOfField.png");
 	outOfField->material = GetGameObject()->material;
 	outOfField->renderLayer = 1;
 
@@ -109,7 +109,7 @@ void Player::LiveEntitiesInitialize()
 	gameOverFilter->transform.rectTransform = true;
 	gameOverFilter->transform.UpdateMatrix();
 	gameOverFilter->model = &rect;
-	gameOverFilter->texture = ADXImage::LoadADXImage("WhiteDot.png");
+	gameOverFilter->texture = ADXImage::LoadADXImage("texture/WhiteDot.png");
 	gameOverFilter->material = GetGameObject()->material;
 	gameOverFilter->renderLayer = 1;
 
@@ -118,7 +118,7 @@ void Player::LiveEntitiesInitialize()
 	dead->transform.parent_ = &GetGameObject()->transform;
 	dead->transform.UpdateMatrix();
 	dead->model = &rect;
-	dead->texture = ADXImage::LoadADXImage("apEGnoSE_dead.png");
+	dead->texture = ADXImage::LoadADXImage("texture/apEGnoSE_dead.png");
 	dead->material = GetGameObject()->material;
 	dead->renderLayer = 4;
 
@@ -126,7 +126,7 @@ void Player::LiveEntitiesInitialize()
 	keyUI->transform.rectTransform = true;
 	keyUI->model = &rect;
 	keyUI->renderLayer = 5;
-	keyUI->texture = ADXImage::LoadADXImage("PRESS_SPACE.png");
+	keyUI->texture = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
 }
 
 void Player::LiveEntitiesUpdate()

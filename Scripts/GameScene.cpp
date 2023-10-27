@@ -11,9 +11,9 @@ void GameScene::Initialize()
 	player_ = {};
 
 	//画像
-	keyImg = ADXImage::LoadADXImage("QUIT_TITLE.png");
-	backGroundTex = ADXImage::LoadADXImage("skyBG.png");
-	groundImg = ADXImage::LoadADXImage("GroundBlock.png");
+	keyImg = ADXImage::LoadADXImage("texture/QUIT_TITLE.png");
+	backGroundTex = ADXImage::LoadADXImage("texture/skyBG.png");
+	groundImg = ADXImage::LoadADXImage("texture/GroundBlock.png");
 
 	rect = ADXModel::CreateRect();
 	ground = ADXModel::LoadADXModel("model/groundBlock.obj");
@@ -65,23 +65,23 @@ void GameScene::Initialize()
 
 	temp = ADXObject::Create({ 0,3,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 4,4,4 });
 	TutorialArea* tempTutorialArea = temp->AddComponent<TutorialArea>();
-	tempTutorialArea->SetTutorialImg(ADXImage::LoadADXImage("tutorial_move.png"));
+	tempTutorialArea->SetTutorialImg(ADXImage::LoadADXImage("texture/tutorial_move.png"));
 
 	temp = ADXObject::Create({ 0,-1.5f,16 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,1,10 });
 	tempTutorialArea = temp->AddComponent<TutorialArea>();
-	tempTutorialArea->SetTutorialImg(ADXImage::LoadADXImage("tutorial_jump.png"));
+	tempTutorialArea->SetTutorialImg(ADXImage::LoadADXImage("texture/tutorial_jump.png"));
 
 	temp = ADXObject::Create({ 0,10,15.5f }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,10,4 });
 	tempTutorialArea = temp->AddComponent<TutorialArea>();
-	tempTutorialArea->SetTutorialImg(ADXImage::LoadADXImage("tutorial_jump_2.png"));
+	tempTutorialArea->SetTutorialImg(ADXImage::LoadADXImage("texture/tutorial_jump_2.png"));
 
 	temp = ADXObject::Create({ 0,23,38 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,4,15 });
 	tempTutorialArea = temp->AddComponent<TutorialArea>();
-	tempTutorialArea->SetTutorialImg(ADXImage::LoadADXImage("tutorial_army.png"));
+	tempTutorialArea->SetTutorialImg(ADXImage::LoadADXImage("texture/tutorial_army.png"));
 
 	temp = ADXObject::Create({ 3,15.5,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,5,6 });
 	tempTutorialArea = temp->AddComponent<TutorialArea>();
-	tempTutorialArea->SetTutorialImg(ADXImage::LoadADXImage("tutorial_army_2.png"));
+	tempTutorialArea->SetTutorialImg(ADXImage::LoadADXImage("texture/tutorial_army_2.png"));
 
 
 	temp = ADXObject::Create({ 0,13,35 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,14,45 });

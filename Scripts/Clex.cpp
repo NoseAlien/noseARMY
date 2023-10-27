@@ -8,9 +8,9 @@ void Clex::EnemyInitialize()
 	rect = ADXModel::CreateRect();
 	enemyModel = ADXModel::LoadADXModel("model/Clex.obj");
 
-	nutralTex = ADXImage::LoadADXImage("tex_Clex.png");
-	deadTex = ADXImage::LoadADXImage("tex_Clex_3.png");
-	attackTex = ADXImage::LoadADXImage("tex_Clex_2.png");
+	nutralTex = ADXImage::LoadADXImage("texture/tex_Clex.png");
+	deadTex = ADXImage::LoadADXImage("texture/tex_Clex_3.png");
+	attackTex = ADXImage::LoadADXImage("texture/tex_Clex_2.png");
 
 	GetGameObject()->model = &enemyModel;
 
@@ -19,12 +19,12 @@ void Clex::EnemyInitialize()
 	face->transform.localPosition_ = { 0,-0.4f,0.9f };
 	face->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0.4f,0,0 });
 	face->model = &rect;
-	face->texture = ADXImage::LoadADXImage("Clex_face.png");
+	face->texture = ADXImage::LoadADXImage("texture/Clex_face.png");
 
 	body = ADXObject::Create();
 	body->transform.parent_ = &GetGameObject()->transform;
 	body->model = &rect;
-	body->texture = ADXImage::LoadADXImage("Clex_projectile.png");
+	body->texture = ADXImage::LoadADXImage("texture/Clex_projectile.png");
 
 	antennaRig = ADXObject::Create();
 	antennaRig->transform.parent_ = &GetGameObject()->transform;
@@ -32,7 +32,7 @@ void Clex::EnemyInitialize()
 	antenna = ADXObject::Create();
 	antenna->transform.parent_ = &antennaRig->transform;
 	antenna->model = &rect;
-	antenna->texture = ADXImage::LoadADXImage("Clex_antenna.png");
+	antenna->texture = ADXImage::LoadADXImage("texture/Clex_antenna.png");
 }
 
 void Clex::EnemyUpdate()
@@ -86,7 +86,7 @@ void Clex::EnemyUpdate()
 					GetGameObject()->transform.parent_);
 				Projectile* projectile = projectileObj->AddComponent<Projectile>();
 
-				projectile->SetData((GetGameObject()->transform.localPosition_ - cursor).Normalize() * -0.7f, ADXImage::LoadADXImage("Clex_projectile.png"));
+				projectile->SetData((GetGameObject()->transform.localPosition_ - cursor).Normalize() * -0.7f, ADXImage::LoadADXImage("texture/Clex_projectile.png"));
 				projectile->LiveEntity::Initialize(GetTeam());
 
 				projectiles.push_back(projectile);

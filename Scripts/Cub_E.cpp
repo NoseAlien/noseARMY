@@ -6,17 +6,17 @@ void Cub_E::EnemyInitialize()
 	rect = ADXModel::CreateRect();
 	enemyModel = ADXModel::LoadADXModel("model/Cub_E.obj");
 
-	nutralTex = ADXImage::LoadADXImage("tex_Cub_E.png");
-	deadTex = ADXImage::LoadADXImage("tex_Cub_E_4.png");
-	preAttackTex = ADXImage::LoadADXImage("tex_Cub_E_2.png");
-	attackTex = ADXImage::LoadADXImage("tex_Cub_E_3.png");
+	nutralTex = ADXImage::LoadADXImage("texture/tex_Cub_E.png");
+	deadTex = ADXImage::LoadADXImage("texture/tex_Cub_E_4.png");
+	preAttackTex = ADXImage::LoadADXImage("texture/tex_Cub_E_2.png");
+	attackTex = ADXImage::LoadADXImage("texture/tex_Cub_E_3.png");
 
 	GetGameObject()->model = &enemyModel;
 
 	hair = ADXObject::Create();
 	hair->transform.parent_ = &GetGameObject()->transform;
 	hair->model = &rect;
-	hair->texture = ADXImage::LoadADXImage("Cub_E_hair.png");
+	hair->texture = ADXImage::LoadADXImage("texture/Cub_E_hair.png");
 
 	tailRig = ADXObject::Create();
 	tailRig->transform.parent_ = &GetGameObject()->transform;
@@ -24,7 +24,7 @@ void Cub_E::EnemyInitialize()
 	tail = ADXObject::Create();
 	tail->transform.parent_ = &tailRig->transform;
 	tail->model = &rect;
-	tail->texture = ADXImage::LoadADXImage("Cub_E_tail.png");
+	tail->texture = ADXImage::LoadADXImage("texture/Cub_E_tail.png");
 }
 
 void Cub_E::EnemyUpdate()

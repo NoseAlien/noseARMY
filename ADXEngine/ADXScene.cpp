@@ -14,11 +14,11 @@ void ADXScene::Initialize()
 	startTime = 0;
 
 	//画像
-	titleImg = ADXImage::LoadADXImage("ADXEngine_logo.png");
-	logoImg_A = ADXImage::LoadADXImage("logo_A.png");
-	logoImg_D = ADXImage::LoadADXImage("logo_D.png");
-	logoImg_X = ADXImage::LoadADXImage("logo_X.png");
-	logoImg_Engine = ADXImage::LoadADXImage("logo_Engine.png");
+	titleImg = ADXImage::LoadADXImage("texture/ADXEngine_logo.png");
+	logoImg_A = ADXImage::LoadADXImage("texture/logo_A.png");
+	logoImg_D = ADXImage::LoadADXImage("texture/logo_D.png");
+	logoImg_X = ADXImage::LoadADXImage("texture/logo_X.png");
+	logoImg_Engine = ADXImage::LoadADXImage("texture/logo_Engine.png");
 
 	logoJingle = ADXAudio::LoadADXAudio("sound/ADXJingle.wav");
 
