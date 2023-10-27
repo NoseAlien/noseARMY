@@ -1,4 +1,4 @@
-﻿#include "LiveEntity.h"
+#include "LiveEntity.h"
 #include "ADXCamera.h"
 #include <time.h>
 
@@ -96,6 +96,7 @@ void LiveEntity::UniqueUpdate()
 				particle->particles.back()->GetGameObject()->transform.localScale_ = { particleScale ,particleScale ,particleScale };
 				particle->particles.back()->GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 			}
+			damageSE.Play();
 		}
 	}
 
@@ -122,6 +123,7 @@ void LiveEntity::UniqueUpdate()
 		GetGameObject()->transform.modelPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5)}.Normalize() * 0.3f;
 		hpGaugeBG->transform.localPosition_ = { 0,-1.5f + (float)sin(clock()) * 0.05f,0};
 		attackHitted = false;
+		damageSE.Play();
 	}
 }
 

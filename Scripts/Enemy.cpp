@@ -1,8 +1,11 @@
-﻿#include "Enemy.h"
+#include "Enemy.h"
 #include "ADXUtility.h"
 
 void Enemy::LiveEntitiesInitialize()
 {
+	damageSE = ADXAudio::LoadADXAudio("sound/hit.wav");
+	defeatSE = ADXAudio::LoadADXAudio("sound/slap.wav");
+
 	enemyModel = ADXModel::LoadADXModel("model/groundBlock.obj");
 
 	GetGameObject()->model = &enemyModel;
@@ -77,9 +80,17 @@ void Enemy::LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 			targetPos = col->GetGameObject()->transform.GetWorldPosition();
 		}
 	}
-	else if(!myCol->isTrigger && !IsLive() && grabber == nullptr && col->GetGameObject()->GetComponent<PlayerMini>())
+	else if(!myCol->isTrigger && !IsLive() && grabber == nullptr)
 	{
-		grabber = col->GetGameObject()->GetComponent<PlayerMini>();
+		if (col->GetGameObject()->GetComponent<PlayerMini>())
+		{
+			grabber = col->GetGameObject()->GetComponent<PlayerMini>();
+		}
+		if (!col->isTrigger && col->GetGameObject()->GetComponent<Enemy>()
+			&& col->GetGameObject()->GetComponent<Enemy>()->grabber != nullptr)
+		{
+			grabber = col->GetGameObject()->GetComponent<Enemy>()->grabber;
+		}
 	}
 }
 

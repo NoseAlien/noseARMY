@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXComponent.h"
 #include "ADXKeyBoardInput.h"
@@ -31,7 +31,6 @@ private:
 	ADXModel playerModel{};
 
 	ADXAudio jumpSE{};
-	ADXAudio damageSE{};
 	ADXAudio windowOpenSE{};
 
 	ADXKeyBoardInput* keyboard = nullptr;
