@@ -1,6 +1,6 @@
 ﻿#include "ADXTexAnimation.h"
 
-ADXTexAnimation ADXTexAnimation::Initialize(const std::vector<uint32_t>& setTextures, const uint32_t& setDelayFrame, bool setLoop)
+ADXTexAnimation ADXTexAnimation::Initialize(const std::vector<uint32_t>& setTextures, uint32_t setDelayFrame, bool setLoop)
 {
 	textures = setTextures;
 	loop = setLoop;
@@ -38,7 +38,7 @@ uint32_t ADXTexAnimation::GetNowTex()
 	return textures[nowTexIndex];
 }
 
-void ADXTexAnimation::SetIndex(const uint32_t& index)
+void ADXTexAnimation::SetIndex(uint32_t index)
 {
 	nowTexIndex = index;
 }

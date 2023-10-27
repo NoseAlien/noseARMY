@@ -1,7 +1,7 @@
 ﻿#include "BattleFieldBox.h"
 #include "LiveEntity.h"
 
-void BattleFieldBox::Initialize(std::vector<SpawnData> setGuarders, std::string setTeam)
+void BattleFieldBox::Initialize(const std::vector<SpawnData>& setGuarders, const std::string& setTeam)
 {
 	enemySpawnData.SetSpawnList(setGuarders);
 	team = setTeam;

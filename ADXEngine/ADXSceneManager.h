@@ -30,5 +30,5 @@ public:
 protected:
 	virtual void UniqueInitialize() {};
 
-	void SetScenes(std::vector<ADXScene*> setScenes);
+	void SetScenes(const std::vector<ADXScene*>& setScenes);
 };

@@ -2,7 +2,7 @@
 #include "LiveEntity.h"
 #include "SceneTransition.h"
 
-void Goal::Initialize(std::string setTeam)
+void Goal::Initialize(const std::string& setTeam)
 {
 	GetGameObject()->texture = ADXImage::LoadADXImage("texture/goalField.png");
 	GetGameObject()->sortingOrder = 1;

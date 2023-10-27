@@ -3,6 +3,7 @@
 #include <xaudio2.h>
 #include <fstream>
 #include <wrl.h>
+#include <string>
 
 class ADXAudio
 {
@@ -56,5 +57,5 @@ private:
 public:
 	static void StaticInitialize();
 	static void StaticFinalize();
-	static ADXAudio LoadADXAudio(std::string filename);
+	static ADXAudio LoadADXAudio(const std::string& filename);
 };

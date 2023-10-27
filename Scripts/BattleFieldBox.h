@@ -17,7 +17,7 @@ private:
 	float animationProgress = 0;
 
 public:
-	void Initialize(std::vector<SpawnData> setGuarders, std::string setTeam = "");
+	void Initialize(const std::vector<SpawnData>& setGuarders, const std::string& setTeam = "");
 
 private:
 	void FieldInitialize();

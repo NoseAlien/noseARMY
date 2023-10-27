@@ -23,7 +23,7 @@ void ADXAudio::StaticFinalize()
 	S_xAudio2.Reset();
 }
 
-ADXAudio ADXAudio::LoadADXAudio(std::string filename)
+ADXAudio ADXAudio::LoadADXAudio(const std::string& filename)
 {
 	//ファイル入力ストリームのインスタンス
 	std::ifstream file;

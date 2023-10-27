@@ -54,7 +54,7 @@ private:
 	uint32_t setTutorialImg = 0;
 
 public:
-	void Initialize(ADXKeyBoardInput* setKeyboard, std::vector<BYTE> setConfig, ADXCamera* setCamera);
+	void Initialize(ADXKeyBoardInput* setKeyboard, const std::vector<BYTE>& setConfig, ADXCamera* setCamera);
 	bool GetInputStatus(int keyIndex);
 	bool GetInputStatusTrigger(int keyIndex);
 	bool GetInputStatusRelease(int keyIndex);

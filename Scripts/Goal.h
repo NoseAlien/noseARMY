@@ -16,7 +16,7 @@ private:
 	ADXModel rectModel{};
 
 public:
-	void Initialize(std::string setTeam);
+	void Initialize(const std::string& setTeam);
 
 private:
 	void UniqueUpdate();

@@ -3,7 +3,7 @@
 #include "Cub_E.h"
 #include "Clex.h"
 
-void EnemySpawnData::SetSpawnList(std::vector<SpawnData> setSpawnList)
+void EnemySpawnData::SetSpawnList(const std::vector<SpawnData>& setSpawnList)
 {
 	if (spawnList.empty())
 	{
@@ -11,7 +11,7 @@ void EnemySpawnData::SetSpawnList(std::vector<SpawnData> setSpawnList)
 	}
 }
 
-std::list<Enemy*> EnemySpawnData::Spawn(std::string team, ADXWorldTransform* tf)
+std::list<Enemy*> EnemySpawnData::Spawn(const std::string& team, ADXWorldTransform* tf)
 {
 	std::list<Enemy*> ret = {};
 

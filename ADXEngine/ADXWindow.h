@@ -8,6 +8,10 @@ class ADXWindow
 public:
 	RECT wrc{};
 
+private:
+	HWND hwnd;
+	WNDCLASSEX w{};
+
 public:
 	ADXWindow(
 		const LPCTSTR& window_title);
@@ -17,10 +21,6 @@ public:
 	bool ProcessMessage();
 
 	void Finalize();
-
-private:
-	HWND hwnd;
-	WNDCLASSEX w{};
 
 public:
 	static uint32_t S_window_width;

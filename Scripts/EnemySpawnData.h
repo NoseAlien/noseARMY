@@ -16,6 +16,6 @@ private:
 	std::vector<SpawnData> spawnList{};
 
 public:
-	void SetSpawnList(std::vector<SpawnData> setSpawnList);
-	std::list<Enemy*> Spawn(std::string team = "", ADXWorldTransform* tf = nullptr);
+	void SetSpawnList(const std::vector<SpawnData>& setSpawnList);
+	std::list<Enemy*> Spawn(const std::string& team, ADXWorldTransform* tf = nullptr);
 };

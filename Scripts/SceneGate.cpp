@@ -3,7 +3,7 @@
 #include "SceneTransition.h"
 #include "ADXCollider.h"
 
-void SceneGate::Initialize(std::string setTeam)
+void SceneGate::Initialize(const std::string& setTeam)
 {
 	GetGameObject()->texture = ADXImage::LoadADXImage("texture/goalField.png");
 	GetGameObject()->sortingOrder = 1;
