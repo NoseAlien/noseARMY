@@ -34,6 +34,7 @@ void Enemy::LiveEntitiesUpdate()
 	EnemyUpdate();
 
 	targetDetected = false;
+	carcassLifeTime = maxCarcassLifeTime;
 }
 
 void Enemy::DeadUpdate()
@@ -51,7 +52,7 @@ void Enemy::DeadUpdate()
 
 	GetGameObject()->texture = deadTex;
 
-	if (clock() % 1000 < 100)
+	if (clock() % 1000 < 100 || (carcassLifeTime <= (int32_t)maxCarcassLifeTime / 4 && clock() % 200 < 100))
 	{
 		GetGameObject()->material.ambient = {0.2f,0.2f,0.2f};
 	}
@@ -68,6 +69,12 @@ void Enemy::DeadUpdate()
 				LiveEntity::SetAttackObj({ itr,(LiveEntity*)grabber->GetParent(),maxHP });
 			}
 		}
+	}
+
+	carcassLifeTime--;
+	if (carcassLifeTime <= 0)
+	{
+		GetGameObject()->Destroy();
 	}
 }
 

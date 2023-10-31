@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "LiveEntity.h"
 #include "ADXRigidbody.h"
@@ -6,6 +6,12 @@
 
 class Enemy : public LiveEntity
 {
+private:
+	const uint32_t maxCarcassLifeTime = 1800;
+
+private:
+	int32_t carcassLifeTime = maxCarcassLifeTime;
+
 protected:
 	ADXRigidbody* rigidbody;
 
