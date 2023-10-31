@@ -38,12 +38,11 @@ void Enemy::LiveEntitiesUpdate()
 
 void Enemy::DeadUpdate()
 {
-	GetGameObject()->GetComponent<ADXCollider>()->pushBackPriority = -2;
-
 	rigidbody->drag = 0.8f;
 	rigidbody->dragAxis = { true,false,true };
 	rigidbody->gravity = { 0,-1,0 };
 	rigidbody->gravityScale = 0.015f;
+	rigidbody->VelocityMove();
 
 	for (auto& itr : GetGameObject()->GetComponents<ADXCollider>())
 	{
@@ -52,7 +51,10 @@ void Enemy::DeadUpdate()
 
 	GetGameObject()->texture = deadTex;
 
-	rigidbody->VelocityMove();
+	if (clock() % 1000 < 100)
+	{
+		GetGameObject()->material.ambient = {0.2f,0.2f,0.2f};
+	}
 
 	if (grabber != nullptr)
 	{
