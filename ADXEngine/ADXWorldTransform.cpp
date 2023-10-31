@@ -1,10 +1,27 @@
 ﻿#include "ADXWorldTransform.h"
 #include "ADXCamera.h"
+#include "ADXObject.h"
 #include <math.h>
 #include <cmath>
 
 ADXMatrix4* ADXWorldTransform::S_matView = nullptr;
 ADXMatrix4* ADXWorldTransform::S_matProjection = nullptr;
+
+
+std::list<ADXWorldTransform*> ADXWorldTransform::GetChilds()
+{
+	std::list<ADXWorldTransform*> ret = {};
+
+	for (auto& itr : ADXObject::GetObjs())
+	{
+		if (itr->transform.parent_ == this)
+		{
+			ret.push_back(&itr->transform);
+		}
+	}
+
+	return ret;
+}
 
 void ADXWorldTransform::SetViewProjection(ADXMatrix4* matView, ADXMatrix4* matProjection)
 {
@@ -37,9 +54,14 @@ ADXMatrix4 ADXWorldTransform::GenerateMatTransform(const ADXVector3& localPositi
 	return matWorld;
 }
 
-void ADXWorldTransform::Initialize()
+void ADXWorldTransform::CreateConstBuffer()
+{
+}
+
+void ADXWorldTransform::Initialize(ADXObject* obj)
 {
 	matWorld_ = IdentityMatrix();
+	gameObject = obj;
 }
 
 void ADXWorldTransform::UpdateMatrix()

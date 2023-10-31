@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXObject.h"
 #include "ADXRigidbody.h"
@@ -20,6 +20,5 @@ public:
 		
 private:
 	void UniqueUpdate();
-	void OnDestroy();
 	void Move(float walkSpeed, float jumpPower);
 };

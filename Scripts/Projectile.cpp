@@ -1,4 +1,4 @@
-﻿#include "Projectile.h"
+#include "Projectile.h"
 #include "ADXCamera.h"
 
 void Projectile::SetData(const ADXVector3& setDirection, uint32_t setVisual)
@@ -44,9 +44,4 @@ void Projectile::EnemyUpdate()
 void Projectile::LiveEntitiesOnPreRender()
 {
 	billBoard->transform.SetWorldRotation(ADXCamera::GetCurrentCamera()->GetGameObject()->transform.GetWorldRotation());
-}
-
-void Projectile::LiveEntityOnDestroy()
-{
-	billBoard->Destroy();
 }

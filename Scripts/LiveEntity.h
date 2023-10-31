@@ -43,7 +43,6 @@ protected:
 private:
 	void UniqueInitialize() final;
 	void UniqueUpdate() final;
-	void OnDestroy() final;
 
 private:
 	static std::vector<AttackObject> S_attackObjs;

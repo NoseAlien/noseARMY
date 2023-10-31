@@ -5,6 +5,9 @@
 #include "ADXQuaternion.h"
 #include <d3d12.h>
 #include <wrl.h>
+#include <list>
+
+class ADXObject;
 
 // 定数バッファ用データ構造体
 struct ConstBufferDataTransform {
@@ -19,11 +22,22 @@ struct ConstBufferDataTransform {
 /// </summary>
 class ADXWorldTransform {
 
+private:
+	// このWorldTransformを持つオブジェクト
+	ADXObject* gameObject = nullptr;
+	// ローカル → ワールド変換行列
+	ADXMatrix4 matTrans_;
+	ADXMatrix4 matRot_;
+	ADXMatrix4 matScale_;
+	ADXMatrix4 matWorld_;
+	ADXMatrix4 matWorldInverse_;
+
 public:
 	// 定数バッファ
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform = nullptr;
 	// マッピング済みアドレス
 	ConstBufferDataTransform* constMapTransform = nullptr;
+
 	// ローカル座標
 	ADXVector3 localPosition_ = { 0, 0, 0 };
 	// ローカル回転を表すクオータニオン
@@ -40,47 +54,28 @@ public:
 	ADXVector3 modelScale_ = { 1, 1, 1 };
 
 private:
-	// ローカル → ワールド変換行列
-	ADXMatrix4 matTrans_;
-	ADXMatrix4 matRot_;
-	ADXMatrix4 matScale_;
-	ADXMatrix4 matWorld_;
-	ADXMatrix4 matWorldInverse_;
+	void CreateConstBuffer();
 
 public:
-	/// <summary>
-	/// 初期化
-	/// </summary>
-	void Initialize();
+	//初期化
+	void Initialize(ADXObject* obj);
 
-	/// <summary>
-	/// 行列を更新する
-	/// </summary>
+	//行列を更新する
 	void UpdateMatrix();
 
-	/// <summary>
-	///定数バッファを更新する
-	/// </summary>
+	//定数バッファを更新する
 	void UpdateConstBuffer();
 
-	/// <summary>
-	///ワールド座標を取得する
-	/// </summary>
+	//ワールド座標を取得する
 	ADXVector3 GetWorldPosition();
 
-	/// <summary>
-	///ワールド座標を代入する
-	/// </summary>
+	//ワールド座標を代入する
 	void SetWorldPosition(const ADXVector3& worldPos);
 
-	/// <summary>
-	///ワールド回転角を取得する
-	/// </summary>
+	//ワールド回転角を取得する
 	ADXQuaternion GetWorldRotation() const;
 
-	/// <summary>
-	///ワールド回転角を代入する
-	/// </summary>
+	//ワールド回転角を代入する
 	void SetWorldRotation(const ADXQuaternion& worldRot);
 
 	ADXVector3 TransformPointWithoutTranslation(const ADXVector3& pos) const;
@@ -95,30 +90,28 @@ public:
 
 	ADXQuaternion InverseTransformRotation(const ADXQuaternion& rot) const;
 
-	/// <summary>
-	///ワールド変換行列を取得する
-	/// </summary>
+	//ワールド変換行列を取得する
 	ADXMatrix4 GetMatWorld() { return matWorld_; };
 
-	/// <summary>
-	///ワールド変換行列を取得する
-	/// </summary>
+	//ワールド変換行列を取得する
 	ADXMatrix4 GetMatWorldInverse();
 
-	/// <summary>
-	///ワールド回転行列を取得する
-	/// </summary>
+	//ワールド回転行列を取得する
 	ADXMatrix4 GetMatRot() { return matRot_; };
 
-	/// <summary>
-	///ワールドスケール行列を取得する
-	/// </summary>
+	//ワールドスケール行列を取得する
 	ADXMatrix4 GetMatScale() { return matScale_; };
 
+	//このWorldTransformを持つオブジェクトを取得する
+	ADXObject* GetGameObject() { return gameObject; };
+
+	//子を全て取得
+	std::list<ADXWorldTransform*> GetChilds();
+
 private:
-	// ビュー変換行列
+	//ビュー変換行列
 	static ADXMatrix4* S_matView;
-	// 射影変換行列（透視投影）
+	//射影変換行列（透視投影）
 	static ADXMatrix4* S_matProjection;
 
 public:

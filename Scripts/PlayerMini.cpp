@@ -1,4 +1,4 @@
-﻿#include "PlayerMini.h"
+#include "PlayerMini.h"
 #include "Player.h"
 
 void PlayerMini::Initialize(Player* setParent, const ADXObject& setNose)
@@ -78,9 +78,4 @@ void PlayerMini::UniqueUpdate()
 	}
 
 	nose->transform.parent_ = &GetGameObject()->transform;
-}
-
-void PlayerMini::OnDestroy()
-{
-	nose->Destroy();
 }

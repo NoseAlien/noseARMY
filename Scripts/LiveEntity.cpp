@@ -127,13 +127,6 @@ void LiveEntity::UniqueUpdate()
 	}
 }
 
-void LiveEntity::OnDestroy()
-{
-	hpGauge->Destroy();
-	hpGaugeBG->Destroy();
-	LiveEntityOnDestroy();
-}
-
 void LiveEntity::Damage(float damage)
 {
 	if (IsLive() && !attackHitted)

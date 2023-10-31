@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Enemy.h"
 #include "Projectile.h"
 
@@ -23,5 +23,4 @@ private:
 	void EnemyInitialize() final;
 	void EnemyUpdate() final;
 	void LiveEntitiesOnPreRender() final;
-	void LiveEntityOnDestroy() final;
 };

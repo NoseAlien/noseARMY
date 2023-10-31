@@ -33,8 +33,8 @@ void ADXObject::StaticInitialize()
 void ADXObject::Initialize()
 {
 	*this = {};
-	transform.Initialize();
 	CreateConstBuffer();
+	transform.Initialize(this);
 }
 
 void ADXObject::CreateConstBuffer()
@@ -360,7 +360,7 @@ void ADXObject::StaticUpdate()
 
 	for (auto& itr : S_objs)
 	{
-		if (itr->deleteFlag)
+		if (itr->deleteFlag || (itr->transform.parent_ != nullptr && itr->transform.parent_->GetGameObject()->deleteFlag))
 		{
 			itr->components.clear();
 		}
@@ -607,6 +607,10 @@ void ADXObject::Destroy()
 	for (auto& itr : components)
 	{
 		itr->OnDestroy();
+	}
+	for (auto& itr : transform.GetChilds())
+	{
+		itr->GetGameObject()->Destroy();
 	}
 }
 
