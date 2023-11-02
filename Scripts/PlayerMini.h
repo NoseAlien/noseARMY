@@ -9,16 +9,21 @@ class PlayerMini : public ADXComponent
 {
 private:
 	ADXObject* nose = nullptr;
+	ADXObject* body = nullptr;
+	ADXModel rect{};
+
 	Player* parent = nullptr;
 
-	bool destroyFlag = false;
 	ADXRigidbody* rigidbody = nullptr;
+	bool destroyFlag = false;
 
 public:
-	void Initialize(Player* setParent, const ADXObject& setNose);
+	void Initialize(Player* setParent);
 	Player* GetParent() { return parent; };
 		
 private:
-	void UniqueUpdate();
+	void UniqueInitialize() final;
+	void UniqueUpdate() final;
+	void OnPreRender() final;
 	void Move(float walkSpeed, float jumpPower);
 };

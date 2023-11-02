@@ -199,13 +199,14 @@ void Player::LiveEntitiesUpdate()
 		{
 			
 			ADXObject* miniObj = nullptr;
-			miniObj = ADXObject::Duplicate(*GetGameObject());
+			miniObj = ADXObject::Create();
 			PlayerMini* mini = miniObj->AddComponent<PlayerMini>();
 			
 			mini->GetGameObject()->transform.localScale_ = { 0.5f,0.5f,0.5f };
+			mini->GetGameObject()->transform.SetWorldRotation(GetGameObject()->transform.GetWorldRotation());
 			mini->GetGameObject()->transform.localPosition_ = ADXMatrix4::Transform({ 0,0,1 }, GetGameObject()->transform.GetMatWorld());
 			
-			mini->Initialize(this, *nose);
+			mini->Initialize(this);
 			minis.push_back(mini);
 		}
 		splitInterval = 7;

@@ -1,22 +1,9 @@
 #include "PlayerMini.h"
 #include "Player.h"
 
-void PlayerMini::Initialize(Player* setParent, const ADXObject& setNose)
+void PlayerMini::Initialize(Player* setParent)
 {
-	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
-	tempCol->pushable_ = true;
-	tempCol->pushBackPriority = -1;
-
-	tempCol = GetGameObject()->AddComponent<ADXCollider>();
-	tempCol->isTrigger = true;
-	tempCol->radius_ = 1.1f;
-
-	rigidbody = GetGameObject()->AddComponent<ADXRigidbody>();
-
 	parent = setParent;
-
-	nose = ADXObject::Duplicate(setNose);
-	nose->transform.parent_ = &GetGameObject()->transform;
 }
 
 void PlayerMini::Move(float walkSpeed, float jumpPower)
@@ -58,6 +45,33 @@ void PlayerMini::Move(float walkSpeed, float jumpPower)
 	}
 }
 
+void PlayerMini::UniqueInitialize()
+{
+	rect = ADXModel::CreateRect();
+
+	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
+	tempCol->pushable_ = true;
+	tempCol->pushBackPriority = -1;
+
+	tempCol = GetGameObject()->AddComponent<ADXCollider>();
+	tempCol->isTrigger = true;
+	tempCol->radius_ = 1.1f;
+
+	rigidbody = GetGameObject()->AddComponent<ADXRigidbody>();
+
+	nose = ADXObject::Create({ 0,0,0.7f }, ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 }), { 0.42f,0.35f,0.35f });
+	nose->transform.parent_ = &GetGameObject()->transform;
+	nose->model = &rect;
+	nose->texture = ADXImage::LoadADXImage("texture/apEGnoSE.png");
+	nose->material = GetGameObject()->material;
+
+	body = ADXObject::Create();
+	body->transform.parent_ = &GetGameObject()->transform;
+	body->model = &rect;
+	body->texture = ADXImage::LoadADXImage("texture/apEGopTIon_fur.png");
+	body->material = GetGameObject()->material;
+}
+
 void PlayerMini::UniqueUpdate()
 {
 	rigidbody->drag = 0.8f;
@@ -78,4 +92,11 @@ void PlayerMini::UniqueUpdate()
 	}
 
 	nose->transform.parent_ = &GetGameObject()->transform;
+}
+
+void PlayerMini::OnPreRender()
+{
+	body->transform.SetWorldRotation(ADXCamera::GetCurrentCamera()->GetGameObject()->transform.GetWorldRotation());
+	body->transform.UpdateMatrix();
+	body->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)clock() * 0.001f });
 }

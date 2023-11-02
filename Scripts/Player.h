@@ -60,10 +60,10 @@ public:
 	ADXCamera* GetCamera() { return camera; };
 
 private:
-	void LiveEntitiesInitialize();
-	void LiveEntitiesUpdate();
-	void LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol);
-	void DeadUpdate();
-	void SafetyPhase();
+	void LiveEntitiesInitialize() final;
+	void LiveEntitiesUpdate() final;
+	void LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol) final;
+	void DeadUpdate() final;
+	void SafetyPhase() final;
 	void Move(float walkSpeed, float jumpPower);
 };
