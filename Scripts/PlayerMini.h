@@ -15,6 +15,7 @@ private:
 	Player* parent = nullptr;
 
 	ADXRigidbody* rigidbody = nullptr;
+	float bodyRotAngle = 0;
 	bool destroyFlag = false;
 
 public:

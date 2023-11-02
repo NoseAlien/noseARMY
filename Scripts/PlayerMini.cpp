@@ -91,12 +91,12 @@ void PlayerMini::UniqueUpdate()
 		rigidbody->gravityScale = 0.01f;
 	}
 
-	nose->transform.parent_ = &GetGameObject()->transform;
+	bodyRotAngle = fmodf(bodyRotAngle + 0.01f + rigidbody->velocity.Length(), 3.141592f);
 }
 
 void PlayerMini::OnPreRender()
 {
 	body->transform.SetWorldRotation(ADXCamera::GetCurrentCamera()->GetGameObject()->transform.GetWorldRotation());
 	body->transform.UpdateMatrix();
-	body->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)clock() * 0.001f });
+	body->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,bodyRotAngle });
 }
