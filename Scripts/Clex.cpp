@@ -1,4 +1,4 @@
-﻿#include "Clex.h"
+#include "Clex.h"
 #include "ADXCamera.h"
 #include "ADXUtility.h"
 #include "Projectile.h"
@@ -12,22 +12,22 @@ void Clex::EnemyInitialize()
 	deadTex = ADXImage::LoadADXImage("texture/tex_Clex_3.png");
 	attackTex = ADXImage::LoadADXImage("texture/tex_Clex_2.png");
 
-	GetGameObject()->model = &enemyModel;
+	visual->model = &enemyModel;
 
 	face = ADXObject::Create();
-	face->transform.parent_ = &GetGameObject()->transform;
+	face->transform.parent_ = &visual->transform;
 	face->transform.localPosition_ = { 0,-0.4f,0.9f };
 	face->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0.4f,0,0 });
 	face->model = &rect;
 	face->texture = ADXImage::LoadADXImage("texture/Clex_face.png");
 
 	body = ADXObject::Create();
-	body->transform.parent_ = &GetGameObject()->transform;
+	body->transform.parent_ = &visual->transform;
 	body->model = &rect;
 	body->texture = ADXImage::LoadADXImage("texture/Clex_projectile.png");
 
 	antennaRig = ADXObject::Create();
-	antennaRig->transform.parent_ = &GetGameObject()->transform;
+	antennaRig->transform.parent_ = &visual->transform;
 
 	antenna = ADXObject::Create();
 	antenna->transform.parent_ = &antennaRig->transform;
@@ -61,7 +61,7 @@ void Clex::EnemyUpdate()
 
 	if (attackProgress > 0)
 	{
-		GetGameObject()->texture = attackTex;
+		visual->texture = attackTex;
 
 		ADXQuaternion targetRot = ADXQuaternion::EulerToQuaternion(
 			{ 0,(float)atan2(cursor.x - GetGameObject()->transform.localPosition_.x,cursor.z - GetGameObject()->transform.localPosition_.z),0 });

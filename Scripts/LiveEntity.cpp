@@ -13,13 +13,14 @@ void LiveEntity::Initialize(const std::string& setTeam)
 
 void LiveEntity::UniqueInitialize()
 {
-	LiveEntitiesInitialize();
-
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
 	tempCol->pushable_ = true;
 
 	rect = ADXModel::CreateRect();
 	gaugeTex = ADXImage::LoadADXImage("texture/whiteDot.png");
+
+	visual = ADXObject::Create();
+	visual->transform.parent_ = &GetGameObject()->transform;
 
 	hpGaugeBG = ADXObject::Create();
 	hpGaugeBG->transform.parent_ = &GetGameObject()->transform;
@@ -45,6 +46,8 @@ void LiveEntity::UniqueInitialize()
 		ADXImage::LoadADXImage("texture/particle_defeat/010.png"), }, 0, false);
 	particle->lifeTime = particle->animation.GetLength();
 	particle->particleModel = rect;
+
+	LiveEntitiesInitialize();
 }
 
 void LiveEntity::UniqueUpdate()
@@ -58,9 +61,9 @@ void LiveEntity::UniqueUpdate()
 	hpGauge->transform.localPosition_ = { (1 - hpAmount),0,0 };
 	hpGauge->transform.localScale_ = { hpAmount,1,1 };
 
-	GetGameObject()->material.ambient = { 1,1,1 };
+	visual->material.ambient = { 1,1,1 };
 
-	GetGameObject()->transform.modelPosition_ *= 0.8f;
+	visual->transform.localPosition_ *= 0.8f;
 
 	if (IsLive())
 	{
@@ -119,8 +122,8 @@ void LiveEntity::UniqueUpdate()
 			particle->particles.back()->GetGameObject()->transform.localScale_ = { particleScale ,particleScale ,particleScale };
 			particle->particles.back()->GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 		}
-		GetGameObject()->material.ambient = { 1,0,0 };
-		GetGameObject()->transform.modelPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5)}.Normalize() * 0.3f;
+		visual->material.ambient = { 1,0,0 };
+		visual->transform.localPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5)}.Normalize() * 0.3f;
 		hpGaugeBG->transform.localPosition_ = { 0,-1.5f + (float)sin(clock()) * 0.05f,0};
 		attackHitted = false;
 		damageSE.Play();

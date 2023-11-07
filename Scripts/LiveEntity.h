@@ -14,6 +14,7 @@ protected:
 	float hpAmount = 1;
 	ADXAudio damageSE{};
 	ADXAudio defeatSE{};
+	ADXObject* visual = nullptr;
 
 private:
 	ADXModel rect{};

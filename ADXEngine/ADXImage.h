@@ -13,7 +13,7 @@ private:
 	static uint64_t S_incrementSize;
 
 public:
-	static uint32_t LoadADXImage(const std::string& imgName);
+	static uint32_t LoadADXImage(const std::string& imgName, bool generateMipMaps = false);
 	static uint32_t CreateADXImage(const uint64_t& width, const uint64_t& height, const std::string& imgName = "");
 
 public:

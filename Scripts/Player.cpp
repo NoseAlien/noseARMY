@@ -77,13 +77,13 @@ void Player::LiveEntitiesInitialize()
 	rect = ADXModel::CreateRect();
 	playerModel = ADXModel::LoadADXModel("model/sphere.obj");
 
-	GetGameObject()->model = &playerModel;
-	GetGameObject()->texture = ADXImage::LoadADXImage("texture/apEG_fur.png");
-
 	rigidbody = GetGameObject()->AddComponent<ADXRigidbody>();
 
+	visual->model = &playerModel;
+	visual->texture = ADXImage::LoadADXImage("texture/apEG_fur.png");
+
 	nose = ADXObject::Create({ 0,0,1.01f }, ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 }), { 0.42f,0.35f,0.35f });
-	nose->transform.parent_ = &GetGameObject()->transform;
+	nose->transform.parent_ = &visual->transform;
 	nose->transform.UpdateMatrix();
 	nose->model = &rect;
 	nose->texture = ADXImage::LoadADXImage("texture/apEGnoSE.png");
@@ -131,12 +131,15 @@ void Player::LiveEntitiesInitialize()
 
 void Player::LiveEntitiesUpdate()
 {
-	GetGameObject()->renderLayer = 0;
+	visual->renderLayer = 0;
 	nose->renderLayer = 0;
 
 	gameOverFilter->isVisible =
-	dead->isVisible =
-	keyUI->isVisible = false;
+		dead->isVisible =
+		keyUI->isVisible = false;
+
+	visual->isVisible =
+		nose->isVisible = true;
 
 	deadAnimationProgress = 0;
 
@@ -149,7 +152,7 @@ void Player::LiveEntitiesUpdate()
 		modelScalingTime = (float)clock() * 0.015f;
 	}
 
-	GetGameObject()->transform.modelScale_ = { 1 + sinf(modelScalingTime) * 0.03f,1 + cosf(modelScalingTime) * 0.03f,1 + sinf(modelScalingTime) * 0.03f };
+	visual->transform.localScale_ = { 1 + sinf(modelScalingTime) * 0.03f,1 + cosf(modelScalingTime) * 0.03f,1 + sinf(modelScalingTime) * 0.03f };
 
 	ADXVector3 cameraVec = camera->GetGameObject()->transform.GetWorldPosition() - GetGameObject()->transform.GetWorldPosition();
 	cameraVec.y = 0;
@@ -186,7 +189,7 @@ void Player::LiveEntitiesUpdate()
 	}
 
 	nose->transform.localScale_ = ADXVector3{ 0.42f,0.35f,0.35f } *(float)fmax(1, 1 + pow(fmax(0, splitInterval), 2) * 0.02f);
-	nose->transform.localPosition_ = { 0,sinf(modelScalingTime) * 0.03f,1.01f + sinf(modelScalingTime) * 0.04f };
+	nose->transform.localPosition_ = { 0,sinf(modelScalingTime) * 0.03f,1.01f };
 
 	splitInterval--;
 	splitInterval = max(-20, splitInterval);
@@ -335,18 +338,18 @@ void Player::LiveEntitiesOnCollisionHit(ADXCollider* col, [[maybe_unused]]ADXCol
 void Player::DeadUpdate()
 {
 	gameOverFilter->isVisible =
-	dead->isVisible =
-	keyUI->isVisible = true;
+		dead->isVisible =
+		keyUI->isVisible = true;
 
 	gameOverFilter->renderLayer = 3;
 	gameOverFilter->material.ambient = { 0,0,0 };
 	gameOverFilter->material.alpha = 0.8f;
 
-	GetGameObject()->renderLayer = 4;
+	visual->renderLayer = 4;
 	nose->renderLayer = 4;
 
 	GetGameObject()->transform.modelPosition_ = { 0,0,0 };
-	GetGameObject()->transform.localRotation_ = camera->GetGameObject()->transform.localRotation_;
+	GetGameObject()->transform.SetWorldRotation(camera->GetGameObject()->transform.GetWorldRotation());
 	GetGameObject()->transform.UpdateMatrix();
 	GetGameObject()->transform.SetWorldRotation(
 		ADXQuaternion::MakeAxisAngle(GetGameObject()->transform.TransformPointOnlyRotation({ 0,1,0 }), 3.1415f)
@@ -360,7 +363,7 @@ void Player::DeadUpdate()
 		), 1) * 50 });
 
 
-	GetGameObject()->isVisible = deadAnimationProgress < 0.3f;
+	visual->isVisible = deadAnimationProgress < 0.3f;
 	nose->isVisible = deadAnimationProgress < 0.8f;
 	dead->isVisible = !nose->isVisible;
 

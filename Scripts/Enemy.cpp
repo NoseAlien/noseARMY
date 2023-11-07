@@ -8,8 +8,8 @@ void Enemy::LiveEntitiesInitialize()
 
 	enemyModel = ADXModel::LoadADXModel("model/groundBlock.obj");
 
-	GetGameObject()->model = &enemyModel;
-	GetGameObject()->texture = ADXImage::LoadADXImage("texture/battleField.png");
+	visual->model = &enemyModel;
+	visual->texture = ADXImage::LoadADXImage("texture/battleField.png");
 
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
 	tempCol->isTrigger = true;
@@ -29,7 +29,7 @@ void Enemy::LiveEntitiesUpdate()
 	rigidbody->gravity = { 0,-1,0 };
 	rigidbody->gravityScale = 0.015f;
 
-	GetGameObject()->texture = nutralTex;
+	visual->texture = nutralTex;
 
 	EnemyUpdate();
 
@@ -50,11 +50,11 @@ void Enemy::DeadUpdate()
 		itr->pushBackPriority = -2;
 	}
 
-	GetGameObject()->texture = deadTex;
+	visual->texture = deadTex;
 
 	if (clock() % 1000 < 100 || (carcassLifeTime <= (int32_t)maxCarcassLifeTime / 4 && clock() % 200 < 100))
 	{
-		GetGameObject()->material.ambient = {0.2f,0.2f,0.2f};
+		visual->material.ambient = {0.2f,0.2f,0.2f};
 	}
 
 	if (grabber != nullptr)

@@ -1,4 +1,4 @@
-﻿#include "Cub_E.h"
+#include "Cub_E.h"
 #include "ADXCamera.h"
 
 void Cub_E::EnemyInitialize()
@@ -11,15 +11,15 @@ void Cub_E::EnemyInitialize()
 	preAttackTex = ADXImage::LoadADXImage("texture/tex_Cub_E_2.png");
 	attackTex = ADXImage::LoadADXImage("texture/tex_Cub_E_3.png");
 
-	GetGameObject()->model = &enemyModel;
+	visual->model = &enemyModel;
 
 	hair = ADXObject::Create();
-	hair->transform.parent_ = &GetGameObject()->transform;
+	hair->transform.parent_ = &visual->transform;
 	hair->model = &rect;
 	hair->texture = ADXImage::LoadADXImage("texture/Cub_E_hair.png");
 
 	tailRig = ADXObject::Create();
-	tailRig->transform.parent_ = &GetGameObject()->transform;
+	tailRig->transform.parent_ = &visual->transform;
 
 	tail = ADXObject::Create();
 	tail->transform.parent_ = &tailRig->transform;
@@ -43,7 +43,7 @@ void Cub_E::EnemyUpdate()
 		attackProgress = 1;
 	}
 
-	GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
+	visual->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
 
 	rigidbody->gravity = { 0,-2,0 };
 
@@ -58,18 +58,18 @@ void Cub_E::EnemyUpdate()
 			GetGameObject()->transform.localRotation_ = ADXQuaternion::Slerp(GetGameObject()->transform.localRotation_,targetRot,0.3f);
 			GetGameObject()->transform.localRotation_ = GetGameObject()->transform.localRotation_.Normalized();
 
-			GetGameObject()->texture = preAttackTex;
+			visual->texture = preAttackTex;
 		}
 		else if (attackProgress > 0.5f)
 		{
-			GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({
+			visual->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({
 				ADXUtility::EaseIn(ADXUtility::ValueMapping(attackProgress,0.9f,0.5f,1,0),6) * 3.1415f * -2,
 				0,
 				0 });
 
 			finalTarget.y += 6;
 			rigidbody->velocity = (finalTarget - GetGameObject()->transform.localPosition_) * 0.05f;
-			GetGameObject()->texture = preAttackTex;
+			visual->texture = preAttackTex;
 
 		}
 		else if (attackProgress > 0.2f)
@@ -81,26 +81,24 @@ void Cub_E::EnemyUpdate()
 					LiveEntity::SetAttackObj({ itr,this,10 });
 				}
 			}
-			GetGameObject()->texture = attackTex;
+			visual->texture = attackTex;
 		}
 	}
 	attackProgress = min(max(0, attackProgress - 0.006f), 1);
 
-	tailRig->transform.localPosition_ = ADXQuaternion::RotateVector({ 0,-0.8f,-1 }, GetGameObject()->transform.modelRotation_);
-	tailRig->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ -1,0,0 }) * GetGameObject()->transform.modelRotation_;
+	tailRig->transform.localPosition_ = { 0,-0.8f,-1 };
+	tailRig->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ -1,0,0 });
 }
 
 void Cub_E::LiveEntitiesOnPreRender()
 {
-	hair->transform.localPosition_ = ADXQuaternion::RotateVector({0,2,0}, GetGameObject()->transform.modelRotation_);
-	hair->transform.localRotation_ = GetGameObject()->transform.modelRotation_;
+	hair->transform.localPosition_ = {0,2,0};
+	hair->transform.localRotation_ = ADXQuaternion::IdentityQuaternion();
 
-	ADXVector3 cameraRelativePos = ADXQuaternion::RotateVector(ADXMatrix4::Transform(
+	ADXVector3 cameraRelativePos = ADXMatrix4::Transform(
 		ADXCamera::GetCurrentCamera()->GetGameObject()->transform.GetWorldPosition(),
-		GetGameObject()->transform.GetMatWorldInverse()),
-		GetGameObject()->transform.modelRotation_.Inverse());
-	hair->transform.localRotation_ = ADXQuaternion::MakeAxisAngle(
-		ADXQuaternion::RotateVector({ 0,2,0 }, GetGameObject()->transform.modelRotation_),
+		GetGameObject()->transform.GetMatWorldInverse());
+	hair->transform.localRotation_ = ADXQuaternion::MakeAxisAngle({ 0,2,0 },
 		(float)atan2(cameraRelativePos.x - hair->transform.localPosition_.x, cameraRelativePos.z - hair->transform.localPosition_.z))
 		* hair->transform.localRotation_;
 

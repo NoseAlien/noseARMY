@@ -4,7 +4,7 @@
 void Projectile::SetData(const ADXVector3& setDirection, uint32_t setVisual)
 {
 	direction = setDirection;
-	visual = setVisual;
+	billBoardTex = setVisual;
 }
 
 void Projectile::EnemyInitialize()
@@ -13,10 +13,12 @@ void Projectile::EnemyInitialize()
 
 	GetGameObject()->material.alpha = 0;
 
+	visual->model = nullptr;
+
 	billBoard = ADXObject::Create();
-	billBoard->transform.parent_ = &GetGameObject()->transform;
+	billBoard->transform.parent_ = &visual->transform;
 	billBoard->model = &rect;
-	billBoard->texture = visual;
+	billBoard->texture = billBoardTex;
 
 	lifeTime = maxLifeTime;
 }

@@ -42,7 +42,7 @@ void ADXImage::StaticInitialize()
 	S_incrementSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 }
 
-uint32_t ADXImage::LoadADXImage(const std::string& imgName)
+uint32_t ADXImage::LoadADXImage(const std::string& imgName, bool generateMipMaps)
 {
 	HRESULT result;
 	ID3D12Device* device = ADXCommon::GetCurrentInstance()->GetDevice();
@@ -73,15 +73,19 @@ uint32_t ADXImage::LoadADXImage(const std::string& imgName)
 		WIC_FLAGS_NONE,
 		&metadata, scratchImg);
 
-	//ミップマップ生成
-	result = GenerateMipMaps(
-		scratchImg.GetImages(), scratchImg.GetImageCount(), scratchImg.GetMetadata(),
-		TEX_FILTER_DEFAULT, 0, mipChain);
-	if (SUCCEEDED(result))
+	if (generateMipMaps)
 	{
-		scratchImg = std::move(mipChain);
-		metadata = scratchImg.GetMetadata();
+		//ミップマップ生成
+		result = GenerateMipMaps(
+			scratchImg.GetImages(), scratchImg.GetImageCount(), scratchImg.GetMetadata(),
+			TEX_FILTER_DEFAULT, 0, mipChain);
+		if (SUCCEEDED(result))
+		{
+			scratchImg = std::move(mipChain);
+			metadata = scratchImg.GetMetadata();
+		}
 	}
+
 	//読み込んだディフューズテクスチャをSRGBとして扱う
 	metadata.format = MakeSRGB(metadata.format);
 
