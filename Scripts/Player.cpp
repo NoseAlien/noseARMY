@@ -349,6 +349,8 @@ void Player::LiveEntitiesOnCollisionHit(ADXCollider* col, [[maybe_unused]]ADXCol
 
 void Player::DeadUpdate()
 {
+	bool prevDeadIsVisible = dead->isVisible;
+
 	gameOverFilter->isVisible =
 		dead->isVisible =
 		keyUI->isVisible = true;
@@ -359,8 +361,6 @@ void Player::DeadUpdate()
 
 	visual->renderLayer = 4;
 	nose->renderLayer = 4;
-
-	bool prevDeadIsVisible = dead->isVisible;
 
 	GetGameObject()->transform.modelPosition_ = { 0,0,0 };
 	GetGameObject()->transform.SetWorldRotation(camera->GetGameObject()->transform.GetWorldRotation());
@@ -401,7 +401,7 @@ void Player::DeadUpdate()
 		}
 	}
 
-	if (dead->isVisible != prevDeadIsVisible)
+	if (dead->isVisible && !prevDeadIsVisible)
 	{
 		deadParticle->animation.delayFrame = 0;
 		deadParticle->lifeTime = deadParticle->animation.GetLength();
@@ -409,11 +409,11 @@ void Player::DeadUpdate()
 		{
 			deadParticle->Emission();
 			deadParticle->particles.back()->GetGameObject()->transform.localPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize();
-			deadParticle->particles.back()->moveVec = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize() * 0.1f;
-			float particleScale = 0.1f + (float)(rand() % 3) * 0.1f;
+			deadParticle->particles.back()->moveVec = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize() * 0.2f;
+			float particleScale = 0.3f + (float)(rand() % 3) * 0.2f;
 			deadParticle->particles.back()->GetGameObject()->transform.localScale_ = { particleScale ,particleScale ,particleScale };
 			deadParticle->particles.back()->GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
-			deadParticle->particles.back()->GetGameObject()->renderLayer = 4;
+			deadParticle->particles.back()->GetGameObject()->renderLayer = 5;
 		}
 	}
 
