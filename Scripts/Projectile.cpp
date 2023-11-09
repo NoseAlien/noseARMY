@@ -19,6 +19,7 @@ void Projectile::EnemyInitialize()
 	billBoard->transform.parent_ = &visual->transform;
 	billBoard->model = &rect;
 	billBoard->texture = billBoardTex;
+	bodyParts.push_back(billBoard);
 
 	lifeTime = maxLifeTime;
 }

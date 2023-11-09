@@ -15,6 +15,7 @@ protected:
 	ADXAudio damageSE{};
 	ADXAudio defeatSE{};
 	ADXObject* visual = nullptr;
+	std::vector<ADXObject*> bodyParts{};
 
 private:
 	ADXModel rect{};

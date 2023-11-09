@@ -20,11 +20,13 @@ void Clex::EnemyInitialize()
 	face->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0.4f,0,0 });
 	face->model = &rect;
 	face->texture = ADXImage::LoadADXImage("texture/Clex_face.png");
+	bodyParts.push_back(face);
 
 	body = ADXObject::Create();
 	body->transform.parent_ = &visual->transform;
 	body->model = &rect;
 	body->texture = ADXImage::LoadADXImage("texture/Clex_projectile.png");
+	bodyParts.push_back(body);
 
 	antennaRig = ADXObject::Create();
 	antennaRig->transform.parent_ = &visual->transform;
@@ -33,6 +35,7 @@ void Clex::EnemyInitialize()
 	antenna->transform.parent_ = &antennaRig->transform;
 	antenna->model = &rect;
 	antenna->texture = ADXImage::LoadADXImage("texture/Clex_antenna.png");
+	bodyParts.push_back(antenna);
 }
 
 void Clex::EnemyUpdate()

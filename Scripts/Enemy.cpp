@@ -54,7 +54,11 @@ void Enemy::DeadUpdate()
 
 	if (clock() % 1000 < 100 || (carcassLifeTime <= (int32_t)maxCarcassLifeTime / 4 && clock() % 200 < 100))
 	{
-		visual->material.ambient = {0.2f,0.2f,0.2f};
+		visual->material.ambient = { 0.2f,0.2f,0.2f };
+		for (auto& itr : bodyParts)
+		{
+			itr->material.ambient = { 0.2f,0.2f,0.2f };
+		}
 	}
 
 	if (grabber != nullptr)

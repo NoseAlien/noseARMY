@@ -17,6 +17,7 @@ void Cub_E::EnemyInitialize()
 	hair->transform.parent_ = &visual->transform;
 	hair->model = &rect;
 	hair->texture = ADXImage::LoadADXImage("texture/Cub_E_hair.png");
+	bodyParts.push_back(hair);
 
 	tailRig = ADXObject::Create();
 	tailRig->transform.parent_ = &visual->transform;
@@ -25,6 +26,7 @@ void Cub_E::EnemyInitialize()
 	tail->transform.parent_ = &tailRig->transform;
 	tail->model = &rect;
 	tail->texture = ADXImage::LoadADXImage("texture/Cub_E_tail.png");
+	bodyParts.push_back(tail);
 }
 
 void Cub_E::EnemyUpdate()

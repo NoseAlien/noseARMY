@@ -62,6 +62,10 @@ void LiveEntity::UniqueUpdate()
 	hpGauge->transform.localScale_ = { hpAmount,1,1 };
 
 	visual->material.ambient = { 1,1,1 };
+	for (auto& itr : bodyParts)
+	{
+		itr->material.ambient = { 1,1,1 };
+	}
 
 	visual->transform.localPosition_ *= 0.8f;
 
@@ -123,6 +127,11 @@ void LiveEntity::UniqueUpdate()
 			particle->particles.back()->GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 		}
 		visual->material.ambient = { 1,0,0 };
+		for (auto& itr : bodyParts)
+		{
+			itr->material.ambient = { 1,0,0 };
+		}
+
 		visual->transform.localPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5)}.Normalize() * 0.3f;
 		hpGaugeBG->transform.localPosition_ = { 0,-1.5f + (float)sin(clock()) * 0.05f,0};
 		attackHitted = false;

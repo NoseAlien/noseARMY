@@ -88,6 +88,7 @@ void Player::LiveEntitiesInitialize()
 	nose->model = &rect;
 	nose->texture = ADXImage::LoadADXImage("texture/apEGnoSE.png");
 	nose->material = GetGameObject()->material;
+	bodyParts.push_back(nose);
 
 	tutorialWindow = ADXObject::Create();
 	tutorialWindow->transform.rectTransform = true;
