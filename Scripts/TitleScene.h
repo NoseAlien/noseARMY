@@ -6,6 +6,7 @@ class TitleScene : public ADXScene
 {
 private:
 	uint32_t titleImg = 0;
+	uint32_t backGroundTex = 0;
 	uint32_t keyImg = 0;
 
 	ADXModel rect{};
@@ -15,6 +16,7 @@ private:
 	SceneTransition* shutter_ = nullptr;
 	ADXObject* title = nullptr;
 	ADXObject* key = nullptr;
+	ADXObject* backGround_ = nullptr;
 	ADXCamera* camera_ = nullptr;
 
 public:

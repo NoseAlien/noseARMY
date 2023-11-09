@@ -28,9 +28,9 @@ private:
 
 private:
 	//画像
-	uint32_t keyImg{};
-	uint32_t backGroundTex{};
-	uint32_t groundImg{};
+	uint32_t keyImg = 0;
+	uint32_t backGroundTex = 0;
+	uint32_t groundImg = 0;
 
 	//3Dモデル
 	ADXModel ground{};
@@ -47,7 +47,7 @@ private:
 	std::list<BattleFieldBox*> battleFields_{};
 	Goal* goal_ = nullptr;
 	ADXObject* key = nullptr;
-	ADXObject* backGround_{};
+	ADXObject* backGround_ = nullptr;
 
 	EnemySpawnData enemySpawnData{};
 	std::list<TransformData> floorGenerateData{};

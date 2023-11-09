@@ -38,6 +38,8 @@ private:
 
 	ADXRigidbody* rigidbody{};
 
+	ADXParticleSystem* deadParticle = nullptr;
+
 	std::list<PlayerMini*> minis{};
 	int splitInterval = 0;
 	bool splitable = true;

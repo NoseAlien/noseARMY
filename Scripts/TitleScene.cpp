@@ -6,6 +6,7 @@ void TitleScene::Initialize()
 {
 	//画像
 	titleImg = ADXImage::LoadADXImage("texture/noseARMY_logo.png");
+	backGroundTex = ADXImage::LoadADXImage("texture/skyBG.png");
 	keyImg = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
 
 	//マテリアル
@@ -26,10 +27,19 @@ void TitleScene::Initialize()
 	title->texture = titleImg;
 	title->model = &rect;
 	title->material = unlitMat;
+	title->renderLayer = 1;
 
 	key = ADXObject::Duplicate(*title);
 	key->transform.localScale_ = { 0.5,0.5,0.5 };
 	key->texture = keyImg;
+	key->renderLayer = 1;
+
+	backGround_ = ADXObject::Create();
+	backGround_->transform.rectTransform = true;
+	backGround_->transform.UpdateMatrix();
+	backGround_->model = &rect;
+	backGround_->texture = backGroundTex;
+	backGround_->renderLayer = -1;
 }
 
 void TitleScene::Update()

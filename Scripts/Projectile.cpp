@@ -1,4 +1,4 @@
-#include "Projectile.h"
+﻿#include "Projectile.h"
 #include "ADXCamera.h"
 
 void Projectile::SetData(const ADXVector3& setDirection, uint32_t setVisual)
