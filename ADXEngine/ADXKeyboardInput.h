@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
@@ -10,15 +10,17 @@
 class ADXKeyBoardInput
 {
 private:
-	ADXWindow* adxwindow = nullptr;
-	Microsoft::WRL::ComPtr<IDirectInput8> directInput = nullptr;
-	IDirectInputDevice8* keyboard = nullptr;
-	HRESULT result = {};
+	ADXWindow* window_ = nullptr;
+	Microsoft::WRL::ComPtr<IDirectInput8> directInput_ = nullptr;
+	IDirectInputDevice8* keyboard_ = nullptr;
 
 	//全キーの入力状態を入れる変数
-	BYTE key[256] = {};
+	BYTE key_[256] = {};
 	//前のフレームの入力状態を入れる変数
-	BYTE prevKey[256] = {};
+	BYTE prevKey_[256] = {};
+
+private:
+	static ADXKeyBoardInput* S_current;
 
 public:
 	ADXKeyBoardInput(ADXWindow* setWindow);
@@ -26,9 +28,6 @@ public:
 	bool KeyPress(const BYTE& keyNum);
 	bool KeyTrigger(const BYTE& keyNum);
 	bool KeyRelease(const BYTE& keyNum);
-
-private:
-	static ADXKeyBoardInput* S_current;
 
 public:
 	static ADXKeyBoardInput* GetCurrentInstance() { return S_current; };

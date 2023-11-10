@@ -1,13 +1,13 @@
-﻿#pragma once
+#pragma once
 
 #include <DirectXMath.h>
 
 class ADXVector3
 {
 public:
-	float x;
-	float y;
-	float z;
+	float x_;
+	float y_;
+	float z_;
 
 public:
 	ADXVector3();

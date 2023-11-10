@@ -35,7 +35,7 @@ void ADXObject::Initialize()
 {
 	*this = {};
 	CreateConstBuffer();
-	transform.Initialize(this);
+	transform_.Initialize(this);
 }
 
 void ADXObject::CreateConstBuffer()
@@ -65,10 +65,10 @@ void ADXObject::CreateConstBuffer()
 			&cbResourceDesc,
 			D3D12_RESOURCE_STATE_GENERIC_READ,
 			nullptr,
-			IID_PPV_ARGS(&transform.constBuffTransform));
+			IID_PPV_ARGS(&transform_.constBuffTransform_));
 		assert(SUCCEEDED(result));
 		//定数バッファのマッピング
-		result = transform.constBuffTransform->Map(0, nullptr, (void**)&transform.constMapTransform);//マッピング
+		result = transform_.constBuffTransform_->Map(0, nullptr, (void**)&transform_.constMapTransform_);//マッピング
 		assert(SUCCEEDED(result));
 
 
@@ -88,7 +88,7 @@ void ADXObject::CreateConstBuffer()
 			&cbResourceDesc,
 			D3D12_RESOURCE_STATE_GENERIC_READ,
 			nullptr,
-			IID_PPV_ARGS(&constBuffB1));
+			IID_PPV_ARGS(&constBuffB1_));
 		assert(SUCCEEDED(result));
 	}
 }
@@ -313,31 +313,31 @@ ADXObject* ADXObject::Create(const ADXVector3& setLocalPosition, const ADXQuater
 {
 	std::unique_ptr<ADXObject, ADXUtility::NPManager<ADXObject>> obj(new ADXObject);
 	obj->Initialize();
-	obj->transform.localPosition_ = setLocalPosition;
-	obj->transform.localRotation_ = setLocalRotation;
-	obj->transform.localScale_ = setLocalScale;
-	obj->transform.parent_ = setParent;
+	obj->transform_.localPosition_ = setLocalPosition;
+	obj->transform_.localRotation_ = setLocalRotation;
+	obj->transform_.localScale_ = setLocalScale;
+	obj->transform_.parent_ = setParent;
 	S_objs.push_back(move(obj));
 	return S_objs.back().get();
 }
 
 ADXObject* ADXObject::Duplicate(const ADXObject& prefab)
 {
-	ADXObject* ret = Create(prefab.transform.localPosition_, prefab.transform.localRotation_,
-		prefab.transform.localScale_, prefab.transform.parent_);
-	ret->transform.rectTransform = prefab.transform.rectTransform;
-	ret->transform.modelPosition_ = prefab.transform.modelPosition_;
-	ret->transform.modelRotation_ = prefab.transform.modelRotation_;
-	ret->transform.modelScale_ = prefab.transform.modelScale_;
-	ret->texture = prefab.texture;
-	ret->model = prefab.model;
+	ADXObject* ret = Create(prefab.transform_.localPosition_, prefab.transform_.localRotation_,
+		prefab.transform_.localScale_, prefab.transform_.parent_);
+	ret->transform_.rectTransform_ = prefab.transform_.rectTransform_;
+	ret->transform_.modelPosition_ = prefab.transform_.modelPosition_;
+	ret->transform_.modelRotation_ = prefab.transform_.modelRotation_;
+	ret->transform_.modelScale_ = prefab.transform_.modelScale_;
+	ret->texture_ = prefab.texture_;
+	ret->model_ = prefab.model_;
 
 	return ret;
 }
 
 void ADXObject::Update()
 {
-	if (isActive)
+	if (isActive_)
 	{
 		for (auto& itr : components)
 		{
@@ -348,8 +348,8 @@ void ADXObject::Update()
 
 void ADXObject::StaticUpdate()
 {
-	ADXVector3 limitMinPos = { min(S_limitPos1.x,S_limitPos2.x),min(S_limitPos1.y,S_limitPos2.y) ,min(S_limitPos1.z,S_limitPos2.z) };
-	ADXVector3 limitMaxPos = { max(S_limitPos1.x,S_limitPos2.x),max(S_limitPos1.y,S_limitPos2.y) ,max(S_limitPos1.z,S_limitPos2.z) };
+	ADXVector3 limitMinPos = { min(S_limitPos1.x_,S_limitPos2.x_),min(S_limitPos1.y_,S_limitPos2.y_) ,min(S_limitPos1.z_,S_limitPos2.z_) };
+	ADXVector3 limitMaxPos = { max(S_limitPos1.x_,S_limitPos2.x_),max(S_limitPos1.y_,S_limitPos2.y_) ,max(S_limitPos1.z_,S_limitPos2.z_) };
 
 	for (auto& itr : S_objs)
 	{
@@ -361,13 +361,13 @@ void ADXObject::StaticUpdate()
 
 	for (auto& itr : S_objs)
 	{
-		if (itr->deleteFlag || (itr->transform.parent_ != nullptr && itr->transform.parent_->GetGameObject()->deleteFlag))
+		if (itr->deleteFlag_ || (itr->transform_.parent_ != nullptr && itr->transform_.parent_->GetGameObject()->deleteFlag_))
 		{
 			itr->components.clear();
 		}
 	}
 	S_objs.remove_if([=](auto& itr)
-		{ return itr->deleteFlag; });
+		{ return itr->deleteFlag_; });
 
 	for (auto& itr : S_objs)
 	{
@@ -384,13 +384,13 @@ void ADXObject::StaticUpdate()
 		#endif
 
 		itr->Update();
-		if (itr->transform.parent_ == nullptr && !itr->transform.rectTransform)
+		if (itr->transform_.parent_ == nullptr && !itr->transform_.rectTransform_)
 		{
-			ADXVector3 itrWorldPos = itr->transform.GetWorldPosition();
-			itr->transform.SetWorldPosition({
-				max(limitMinPos.x, min(itrWorldPos.x, limitMaxPos.x)),
-				max(limitMinPos.y, min(itrWorldPos.y, limitMaxPos.y)),
-				max(limitMinPos.z, min(itrWorldPos.z, limitMaxPos.z))
+			ADXVector3 itrWorldPos = itr->transform_.GetWorldPosition();
+			itr->transform_.SetWorldPosition({
+				max(limitMinPos.x_, min(itrWorldPos.x_, limitMaxPos.x_)),
+				max(limitMinPos.y_, min(itrWorldPos.y_, limitMaxPos.y_)),
+				max(limitMinPos.z_, min(itrWorldPos.z_, limitMaxPos.z_))
 				});
 		}
 	}
@@ -422,31 +422,31 @@ void ADXObject::StaticDraw()
 
 	if (allObjPtr.size() > 0)
 	{
-		minLayer = allObjPtr.front()->renderLayer;
-		maxLayer = allObjPtr.front()->renderLayer;
-		minSortingOrder = allObjPtr.front()->sortingOrder;
-		maxSortingOrder = allObjPtr.front()->sortingOrder;
+		minLayer = allObjPtr.front()->renderLayer_;
+		maxLayer = allObjPtr.front()->renderLayer_;
+		minSortingOrder = allObjPtr.front()->sortingOrder_;
+		maxSortingOrder = allObjPtr.front()->sortingOrder_;
 	}
 
 	//RenderLayerの範囲を読み取る
 	for (auto& itr : allObjPtr)
 	{
-		if (itr->renderLayer < minLayer)
+		if (itr->renderLayer_ < minLayer)
 		{
-			minLayer = itr->renderLayer;
+			minLayer = itr->renderLayer_;
 		}
-		if (itr->renderLayer > maxLayer)
+		if (itr->renderLayer_ > maxLayer)
 		{
-			maxLayer = itr->renderLayer;
+			maxLayer = itr->renderLayer_;
 		}
 
-		if (itr->sortingOrder < minSortingOrder)
+		if (itr->sortingOrder_ < minSortingOrder)
 		{
-			minSortingOrder = itr->sortingOrder;
+			minSortingOrder = itr->sortingOrder_;
 		}
-		if (itr->sortingOrder > maxSortingOrder)
+		if (itr->sortingOrder_ > maxSortingOrder)
 		{
-			maxSortingOrder = itr->sortingOrder;
+			maxSortingOrder = itr->sortingOrder_;
 		}
 	}
 
@@ -461,7 +461,7 @@ void ADXObject::StaticDraw()
 
 		for (auto& itr : allObjPtr)
 		{
-			if (itr->renderLayer == nowLayer)
+			if (itr->renderLayer_ == nowLayer)
 			{
 				thisLayerObjPtr.push_back(itr);
 			}
@@ -475,20 +475,20 @@ void ADXObject::StaticDraw()
 			int32_t target = 0;
 			for (int32_t j = 0; j < thisLayerObjPtr.size(); j++)
 			{
-				thisLayerObjPtr[j]->transform.UpdateMatrix();
+				thisLayerObjPtr[j]->transform_.UpdateMatrix();
 				float zDepth;
 
 				if (S_highQualityZSort)
 				{
 					float nearestVertDepth = 999;
 
-					if (thisLayerObjPtr[j]->model != nullptr)
+					if (thisLayerObjPtr[j]->model_ != nullptr)
 					{
-						for (int32_t k = 0; k < thisLayerObjPtr[j]->model->vertices.size(); k++)
+						for (int32_t k = 0; k < thisLayerObjPtr[j]->model_->vertices_.size(); k++)
 						{
 							float VertDepth;
-							ADXVector3 vertLocalPos = { thisLayerObjPtr[j]->model->vertices[k].pos.x,thisLayerObjPtr[j]->model->vertices[k].pos.y,thisLayerObjPtr[j]->model->vertices[k].pos.z };
-							VertDepth = ADXMatrix4::Transform(ADXMatrix4::Transform(vertLocalPos, thisLayerObjPtr[j]->transform.GetMatWorld()), ADXWorldTransform::GetViewProjection()).Length();
+							ADXVector3 vertLocalPos = { thisLayerObjPtr[j]->model_->vertices_[k].pos.x,thisLayerObjPtr[j]->model_->vertices_[k].pos.y,thisLayerObjPtr[j]->model_->vertices_[k].pos.z };
+							VertDepth = ADXMatrix4::Transform(ADXMatrix4::Transform(vertLocalPos, thisLayerObjPtr[j]->transform_.GetMatWorld()), ADXWorldTransform::GetViewProjection()).Length();
 
 							if (VertDepth <= nearestVertDepth)
 							{
@@ -501,17 +501,17 @@ void ADXObject::StaticDraw()
 				}
 				else
 				{
-					zDepth = ADXMatrix4::Transform(thisLayerObjPtr[j]->transform.GetWorldPosition(), ADXWorldTransform::GetViewProjection()).Length();
+					zDepth = ADXMatrix4::Transform(thisLayerObjPtr[j]->transform_.GetWorldPosition(), ADXWorldTransform::GetViewProjection()).Length();
 				}
 
-				if (thisLayerObjPtr[j]->sortingOrder < lowestSortingOrder || thisLayerObjPtr[j]->sortingOrder == lowestSortingOrder && zDepth >= dist)
+				if (thisLayerObjPtr[j]->sortingOrder_ < lowestSortingOrder || thisLayerObjPtr[j]->sortingOrder_ == lowestSortingOrder && zDepth >= dist)
 				{
 					dist = zDepth;
 					target = j;
-					lowestSortingOrder = thisLayerObjPtr[j]->sortingOrder;
+					lowestSortingOrder = thisLayerObjPtr[j]->sortingOrder_;
 				}
 			}
-			if (thisLayerObjPtr[target]->isVisible && thisLayerObjPtr[target]->isActive)
+			if (thisLayerObjPtr[target]->isVisible_ && thisLayerObjPtr[target]->isActive_)
 			{
 				thisLayerObjPtr[target]->Draw();
 			}
@@ -584,28 +584,28 @@ void ADXObject::Draw()
 	assert(device);
 	assert(S_cmdList);
 
-	if (useDefaultDraw && model != nullptr)
+	if (useDefaultDraw_ && model_ != nullptr)
 	{
 		HRESULT result = S_FALSE;
 		//定数バッファへデータ転送
 		ConstBufferDataB1* constMap1 = nullptr;
-		result = constBuffB1->Map(0, nullptr, (void**)&constMap1);
-		constMap1->ambient = material.ambient;
-		constMap1->diffuse = material.diffuse;
-		constMap1->specular = material.specular;
-		constMap1->alpha = material.alpha;
-		constBuffB1->Unmap(0, nullptr);
+		result = constBuffB1_->Map(0, nullptr, (void**)&constMap1);
+		constMap1->ambient = material_.ambient_;
+		constMap1->diffuse = material_.diffuse_;
+		constMap1->specular = material_.specular_;
+		constMap1->alpha = material_.alpha_;
+		constBuffB1_->Unmap(0, nullptr);
 
-		S_gpuDescHandleSRV.ptr = S_GpuStartHandle + texture;
+		S_gpuDescHandleSRV.ptr = S_GpuStartHandle + texture_;
 		S_cmdList->SetGraphicsRootDescriptorTable(1, S_gpuDescHandleSRV);
 
 		//定数バッファビュー(CBV)の設定コマンド
-		S_cmdList->SetGraphicsRootConstantBufferView(2, constBuffB1->GetGPUVirtualAddress());
+		S_cmdList->SetGraphicsRootConstantBufferView(2, constBuffB1_->GetGPUVirtualAddress());
 		
-		transform.UpdateConstBuffer();
+		transform_.UpdateConstBuffer();
 
 		// 描画コマンド
-		model->Draw(S_cmdList, transform);
+		model_->Draw(S_cmdList, transform_);
 	}
 
 	for (auto& itr : components)
@@ -616,12 +616,12 @@ void ADXObject::Draw()
 
 void ADXObject::Destroy()
 {
-	deleteFlag = true;
+	deleteFlag_ = true;
 	for (auto& itr : components)
 	{
 		itr->OnDestroy();
 	}
-	for (auto& itr : transform.GetChilds())
+	for (auto& itr : transform_.GetChilds())
 	{
 		itr->GetGameObject()->Destroy();
 	}

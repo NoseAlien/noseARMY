@@ -11,14 +11,14 @@ void Projectile::EnemyInitialize()
 {
 	rect = ADXModel::CreateRect();
 
-	GetGameObject()->material.alpha = 0;
+	GetGameObject()->material_.alpha_ = 0;
 
-	visual->model = nullptr;
+	visual->model_ = nullptr;
 
 	billBoard = ADXObject::Create();
-	billBoard->transform.parent_ = &visual->transform;
-	billBoard->model = &rect;
-	billBoard->texture = billBoardTex;
+	billBoard->transform_.parent_ = &visual->transform_;
+	billBoard->model_ = &rect;
+	billBoard->texture_ = billBoardTex;
 	bodyParts.push_back(billBoard);
 
 	lifeTime = maxLifeTime;
@@ -32,10 +32,10 @@ void Projectile::EnemyUpdate()
 	}
 	else
 	{
-		rigidbody->velocity = direction;
+		rigidbody->velocity_ = direction;
 		for (auto& itr : GetGameObject()->GetComponents<ADXCollider>())
 		{
-			if (!itr->isTrigger)
+			if (!itr->isTrigger_)
 			{
 				LiveEntity::SetAttackObj({ itr,this,10 });
 			}
@@ -46,5 +46,5 @@ void Projectile::EnemyUpdate()
 
 void Projectile::LiveEntitiesOnPreRender()
 {
-	billBoard->transform.SetWorldRotation(ADXCamera::GetCurrentCamera()->GetGameObject()->transform.GetWorldRotation());
+	billBoard->transform_.SetWorldRotation(ADXCamera::GetCurrentCamera()->GetGameObject()->transform_.GetWorldRotation());
 }

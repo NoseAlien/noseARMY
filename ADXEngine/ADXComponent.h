@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 class ADXObject;
 class ADXCollider;
@@ -6,8 +6,8 @@ class ADXCollider;
 class ADXComponent
 {
 private:
-	bool initialized = false;
-	ADXObject* gameObject = nullptr;
+	bool initialized_ = false;
+	ADXObject* gameObject_ = nullptr;
 
 public:
 	//更新処理
@@ -15,7 +15,7 @@ public:
 	//Update()より前にgameObjectを代入する
 	void SetGameObject(ADXObject* obj);
 	//gameObjectを取得
-	ADXObject* GetGameObject() const { return gameObject; };
+	ADXObject* GetGameObject() const { return gameObject_; };
 
 public:
 	//全オブジェクトで一斉に呼ばれる描画前処理

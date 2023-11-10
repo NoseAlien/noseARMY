@@ -15,26 +15,26 @@ ADXPostEffectLens::ADXPostEffectLens()
 
 void ADXPostEffectLens::UniqueInitialize()
 {
-	GetGameObject()->transform.rectTransform = true;
+	GetGameObject()->transform_.rectTransform_ = true;
 	//GetGameObject()->transform.localScale_ = { 0.5f,0.5f,0.5f };
-	GetGameObject()->transform.UpdateMatrix();
-	rect = ADXModel::CreateRect();
-	GetGameObject()->texture = ADXImage::CreateADXImage(ADXWindow::S_window_width,ADXWindow::S_window_height);
-	GetGameObject()->renderLayer = 100;
-	GetGameObject()->model = &rect;
+	GetGameObject()->transform_.UpdateMatrix();
+	rect_ = ADXModel::CreateRect();
+	GetGameObject()->texture_ = ADXImage::CreateADXImage(ADXWindow::S_window_width,ADXWindow::S_window_height);
+	GetGameObject()->renderLayer_ = 100;
+	GetGameObject()->model_ = &rect_;
 
 
 	HRESULT result;
 
 	ID3D12Device* device = ADXCommon::GetCurrentInstance()->GetDevice();
-	ID3D12Resource* texBuff = ADXDataPool::GetImgData(GetGameObject()->texture)->GetTexBuff();
+	ID3D12Resource* texBuff = ADXDataPool::GetImgData(GetGameObject()->texture_)->GetTexBuff();
 
 	//デスクリプタヒープの設定
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
 	rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 	rtvHeapDesc.NumDescriptors = 1;
 	//デスクリプタヒープの生成
-	result = device->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&descHeapRTV));
+	result = device->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&descHeapRTV_));
 	assert(SUCCEEDED(result));
 
 	//レンダーターゲットビューの設定
@@ -42,7 +42,7 @@ void ADXPostEffectLens::UniqueInitialize()
 	rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 	//レンダーターゲットビューの生成
-	device->CreateRenderTargetView(texBuff, &rtvDesc, descHeapRTV->GetCPUDescriptorHandleForHeapStart());
+	device->CreateRenderTargetView(texBuff, &rtvDesc, descHeapRTV_->GetCPUDescriptorHandleForHeapStart());
 
 	//深度バッファの設定
 	CD3DX12_RESOURCE_DESC depthResDesc =
@@ -62,7 +62,7 @@ void ADXPostEffectLens::UniqueInitialize()
 		&depthResDesc,
 		D3D12_RESOURCE_STATE_DEPTH_WRITE,
 		&clearValue,
-		IID_PPV_ARGS(&depthBuff)
+		IID_PPV_ARGS(&depthBuff_)
 		);
 	assert(SUCCEEDED(result));
 
@@ -71,7 +71,7 @@ void ADXPostEffectLens::UniqueInitialize()
 	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
 	descHeapDesc.NumDescriptors = 1;
 	//DSV用デスクリプタヒープ作成
-	result = device->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeapDSV));
+	result = device->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeapDSV_));
 	assert(SUCCEEDED(result));
 
 	//デスクリプタヒープにDSV作成
@@ -79,9 +79,9 @@ void ADXPostEffectLens::UniqueInitialize()
 	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
 	device->CreateDepthStencilView(
-		depthBuff.Get(),
+		depthBuff_.Get(),
 		&dsvDesc,
-		descHeapDSV->GetCPUDescriptorHandleForHeapStart());
+		descHeapDSV_->GetCPUDescriptorHandleForHeapStart());
 
 	CreateGraphicsPipelineState();
 }
@@ -253,14 +253,14 @@ void ADXPostEffectLens::CreateGraphicsPipelineState()
 
 	//ルートシグネチャの生成
 	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
-		IID_PPV_ARGS(&rootSignature));
+		IID_PPV_ARGS(&rootSignature_));
 	assert(SUCCEEDED(result));
 
 	//パイプラインにルートシグネチャをセット
-	pipelineDesc.pRootSignature = rootSignature.Get();
+	pipelineDesc.pRootSignature = rootSignature_.Get();
 
 	// パイプラインステートの生成
-	result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
+	result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState_));
 	assert(SUCCEEDED(result));
 }
 
@@ -270,14 +270,14 @@ void ADXPostEffectLens::OnPreRender()
 
 	//リソースバリアで書き込み可能に変更
 	CD3DX12_RESOURCE_BARRIER barrierDesc = CD3DX12_RESOURCE_BARRIER::Transition(
-		ADXDataPool::GetImgData(GetGameObject()->texture)->GetTexBuff(),
+		ADXDataPool::GetImgData(GetGameObject()->texture_)->GetTexBuff(),
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
 		D3D12_RESOURCE_STATE_RENDER_TARGET);
 	cmdList->ResourceBarrier(1, &barrierDesc);
 
 	//描画先の変更
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = descHeapRTV->GetCPUDescriptorHandleForHeapStart();
-	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = descHeapDSV->GetCPUDescriptorHandleForHeapStart();
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = descHeapRTV_->GetCPUDescriptorHandleForHeapStart();
+	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = descHeapDSV_->GetCPUDescriptorHandleForHeapStart();
 	cmdList->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
 
 	// ビューポート設定
@@ -299,7 +299,7 @@ void ADXPostEffectLens::OnWillRenderObject()
 {
 	//リソースバリアを戻す
 	CD3DX12_RESOURCE_BARRIER barrierDesc = CD3DX12_RESOURCE_BARRIER::Transition(
-		ADXDataPool::GetImgData(GetGameObject()->texture)->GetTexBuff(),
+		ADXDataPool::GetImgData(GetGameObject()->texture_)->GetTexBuff(),
 		D3D12_RESOURCE_STATE_RENDER_TARGET,
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 	ADXCommon::GetCurrentInstance()->GetCommandList()->ResourceBarrier(1, &barrierDesc);

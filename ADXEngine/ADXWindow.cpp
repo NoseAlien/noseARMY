@@ -8,31 +8,31 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 
 ADXWindow::ADXWindow(const LPCTSTR& window_title)
 {
-	w.cbSize = sizeof(WNDCLASSEX);
-	w.lpfnWndProc = (WNDPROC)WindowProc;
-	w.lpszClassName = window_title;
-	w.hInstance = GetModuleHandle(nullptr);
-	w.hCursor = LoadCursor(NULL, IDC_ARROW);
+	w_.cbSize = sizeof(WNDCLASSEX);
+	w_.lpfnWndProc = (WNDPROC)WindowProc;
+	w_.lpszClassName = window_title;
+	w_.hInstance = GetModuleHandle(nullptr);
+	w_.hCursor = LoadCursor(NULL, IDC_ARROW);
 
-	RegisterClassEx(&w);
+	RegisterClassEx(&w_);
 
-	wrc = { 0,0,(LONG)S_window_width,(LONG)S_window_height };
+	wrc_ = { 0,0,(LONG)S_window_width,(LONG)S_window_height };
 
-	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
+	AdjustWindowRect(&wrc_, WS_OVERLAPPEDWINDOW, false);
 
-	hwnd = CreateWindow(w.lpszClassName,
+	hwnd_ = CreateWindow(w_.lpszClassName,
 		window_title,
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
-		wrc.right - wrc.left,
-		wrc.bottom - wrc.top,
+		wrc_.right - wrc_.left,
+		wrc_.bottom - wrc_.top,
 		nullptr,
 		nullptr,
-		w.hInstance,
+		w_.hInstance,
 		nullptr);
 
-	ShowWindow(hwnd, SW_SHOW);
+	ShowWindow(hwnd_, SW_SHOW);
 }
 
 LRESULT ADXWindow::WindowProc(HWND hwnd, uint32_t msg, WPARAM wparam, LPARAM lparam)
@@ -75,5 +75,5 @@ bool ADXWindow::ProcessMessage()
 
 void ADXWindow::Finalize()
 {
-	UnregisterClass(w.lpszClassName, w.hInstance);
+	UnregisterClass(w_.lpszClassName, w_.hInstance);
 }

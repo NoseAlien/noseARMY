@@ -5,11 +5,11 @@
 
 void SceneGate::Initialize(const std::string& setTeam)
 {
-	GetGameObject()->texture = ADXImage::LoadADXImage("texture/goalField.png");
-	GetGameObject()->sortingOrder = 1;
+	GetGameObject()->texture_ = ADXImage::LoadADXImage("texture/goalField.png");
+	GetGameObject()->sortingOrder_ = 1;
 
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
-	tempCol->isTrigger = true;
+	tempCol->isTrigger_ = true;
 	tempCol->colType_ = box;
 
 	team = setTeam;
@@ -17,23 +17,23 @@ void SceneGate::Initialize(const std::string& setTeam)
 	rectModel = ADXModel::CreateRect();
 	boxModel = ADXModel::LoadADXModel("model/battleBox.obj");
 
-	GetGameObject()->model = &boxModel;
+	GetGameObject()->model_ = &boxModel;
 
 	keyUI = ADXObject::Create();
-	keyUI->transform.rectTransform = true;
-	keyUI->model = &rectModel;
-	keyUI->texture = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
-	keyUI->renderLayer = 5;
+	keyUI->transform_.rectTransform_ = true;
+	keyUI->model_ = &rectModel;
+	keyUI->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
+	keyUI->renderLayer_ = 5;
 }
 
 void SceneGate::UniqueUpdate()
 {
-	keyUI->transform.localPosition_ = { 0,-0.5f + sin(clock() * 0.001f - 1) * 0.02f,0 };
-	keyUI->transform.localScale_ = { keyUI->transform.localScale_.x,0.45f,1 };
+	keyUI->transform_.localPosition_ = { 0,-0.5f + sin(clock() * 0.001f - 1) * 0.02f,0 };
+	keyUI->transform_.localScale_ = { keyUI->transform_.localScale_.x_,0.45f,1 };
 
 	if (hitted)
 	{
-		keyUI->transform.localScale_.x += (0.45f / ADXWindow::GetAspect() - keyUI->transform.localScale_.x) * 0.3f;
+		keyUI->transform_.localScale_.x_ += (0.45f / ADXWindow::GetAspect() - keyUI->transform_.localScale_.x_) * 0.3f;
 		if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_SPACE))
 		{
 			SceneTransition::ChangeScene(3);
@@ -43,7 +43,7 @@ void SceneGate::UniqueUpdate()
 	}
 	else
 	{
-		keyUI->transform.localScale_.x = 0;
+		keyUI->transform_.localScale_.x_ = 0;
 	}
 }
 

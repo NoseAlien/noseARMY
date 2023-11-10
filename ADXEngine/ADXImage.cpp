@@ -53,10 +53,10 @@ uint32_t ADXImage::LoadADXImage(const std::string& imgName, bool generateMipMaps
 
 	for (int32_t i = 0; i < imgDataPool.size(); i++)
 	{
-		if (imgDataPool[i].name == imgName)
+		if (imgDataPool[i].name_ == imgName)
 		{
-			image.Ghandle = imgDataPool[i].Ghandle;
-			return image.Ghandle;
+			image.Ghandle_ = imgDataPool[i].Ghandle_;
+			return image.Ghandle_;
 		}
 	}
 
@@ -110,14 +110,14 @@ uint32_t ADXImage::LoadADXImage(const std::string& imgName, bool generateMipMaps
 		&textureResourceDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&image.texBuff));
+		IID_PPV_ARGS(&image.texBuff_));
 	//全ミップマップについて
 	for (uint32_t i = 0; i < metadata.mipLevels; i++)
 	{
 		//ミップマップレベルを指定してイメージを取得
 		const Image* img = scratchImg.GetImage(i, 0, 0);
 		//テクスチャバッファにデータ転送
-		result = image.texBuff->WriteToSubresource(
+		result = image.texBuff_->WriteToSubresource(
 			(uint32_t)i,
 			nullptr,//全領域へコピー
 			img->pixels,//元データアドレス
@@ -136,18 +136,18 @@ uint32_t ADXImage::LoadADXImage(const std::string& imgName, bool generateMipMaps
 	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
 
 	//ハンドルの指す位置にシェーダーリソースビュー作成
-	device->CreateShaderResourceView(image.texBuff.Get(), &srvDesc, S_srvHandle);
+	device->CreateShaderResourceView(image.texBuff_.Get(), &srvDesc, S_srvHandle);
 
-	image.Ghandle = (int32_t)(S_srvHandle.ptr - S_CpuStartHandle);
+	image.Ghandle_ = (int32_t)(S_srvHandle.ptr - S_CpuStartHandle);
 
-	image.name = imgName;
+	image.name_ = imgName;
 
 	//一つハンドルを進める
 	S_srvHandle.ptr += S_incrementSize;
 
 	ADXDataPool::SetImgDataPool(image);
 
-	return image.Ghandle;
+	return image.Ghandle_;
 }
 
 uint32_t ADXImage::CreateADXImage(const uint64_t& width, const uint64_t& height, const std::string& imgName)
@@ -186,7 +186,7 @@ uint32_t ADXImage::CreateADXImage(const uint64_t& width, const uint64_t& height,
 		&textureResourceDesc,
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
 		nullptr,
-		IID_PPV_ARGS(&image.texBuff));
+		IID_PPV_ARGS(&image.texBuff_));
 
 	const uint32_t pixelCount = (uint32_t)(width * height);
 	const uint32_t rowPitch = sizeof(uint32_t) * (uint32_t)width;
@@ -197,7 +197,7 @@ uint32_t ADXImage::CreateADXImage(const uint64_t& width, const uint64_t& height,
 		img.push_back(0xff0000ff);
 	}
 
-	result = image.texBuff->WriteToSubresource(
+	result = image.texBuff_->WriteToSubresource(
 		0,
 		nullptr,//全領域へコピー
 		&img.front(),//元データアドレス
@@ -214,16 +214,16 @@ uint32_t ADXImage::CreateADXImage(const uint64_t& width, const uint64_t& height,
 	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
 
 	//ハンドルの指す位置にシェーダーリソースビュー作成
-	device->CreateShaderResourceView(image.texBuff.Get(), &srvDesc, S_srvHandle);
+	device->CreateShaderResourceView(image.texBuff_.Get(), &srvDesc, S_srvHandle);
 
-	image.Ghandle = (uint32_t)(S_srvHandle.ptr - S_CpuStartHandle);
+	image.Ghandle_ = (uint32_t)(S_srvHandle.ptr - S_CpuStartHandle);
 
-	image.name = imgName;
+	image.name_ = imgName;
 
 	//一つハンドルを進める
 	S_srvHandle.ptr += S_incrementSize;
 
 	ADXDataPool::SetImgDataPool(image);
 
-	return image.Ghandle;
+	return image.Ghandle_;
 }

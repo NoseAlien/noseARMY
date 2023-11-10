@@ -38,28 +38,28 @@ ADXMaterial ADXMaterial::LoadMaterial(const std::string& filePath)
 		//先頭文字列がnewmtlならマテリアル名
 		if (key == "newmtl")
 		{
-			line_stream >> material.name;
+			line_stream >> material.name_;
 		}
 		//先頭文字列がKaならアンビエント色
 		if (key == "Ka")
 		{
-			line_stream >> material.ambient.x;
-			line_stream >> material.ambient.y;
-			line_stream >> material.ambient.z;
+			line_stream >> material.ambient_.x;
+			line_stream >> material.ambient_.y;
+			line_stream >> material.ambient_.z;
 		}
 		//先頭文字列がKdならディフューズ色
 		if (key == "Kd")
 		{
-			line_stream >> material.diffuse.x;
-			line_stream >> material.diffuse.y;
-			line_stream >> material.diffuse.z;
+			line_stream >> material.diffuse_.x;
+			line_stream >> material.diffuse_.y;
+			line_stream >> material.diffuse_.z;
 		}
 		//先頭文字列がKsならスペキュラー色
 		if (key == "Ks")
 		{
-			line_stream >> material.specular.x;
-			line_stream >> material.specular.y;
-			line_stream >> material.specular.z;
+			line_stream >> material.specular_.x;
+			line_stream >> material.specular_.y;
+			line_stream >> material.specular_.z;
 		}
 		//先頭文字列がmap_Kdならテクスチャファイル名
 		/*if (key == "map_Kd")

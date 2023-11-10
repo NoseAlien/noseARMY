@@ -5,35 +5,35 @@ ADXSceneManager* ADXSceneManager::S_current = nullptr;
 
 void ADXSceneManager::Initialize()
 {
-	if (!initializable)
+	if (!initializable_)
 	{
 		return;
 	}
-	sceneIndex = 0;
+	sceneIndex_ = 0;
 	S_current = this;
 
 	UniqueInitialize();
-	initializable = false;
+	initializable_ = false;
 }
 
 void ADXSceneManager::Update()
 {
-	initializable = false;
-	currentScene = scenes[sceneIndex];
+	initializable_ = false;
+	currentScene_ = scenes_[sceneIndex_];
 
-	if (currentScene != prevScene || sceneIndex != prevSceneIndex || reload)
+	if (currentScene_ != prevScene_ || sceneIndex_ != prevSceneIndex_ || reload_)
 	{
-		*currentScene = {};
+		*currentScene_ = {};
 		ADXObject::Annihilate();
-		currentScene->Initialize();
+		currentScene_->Initialize();
 
-		reload = false;
-		prevSceneIndex = sceneIndex;
-		prevScene = currentScene;
+		reload_ = false;
+		prevSceneIndex_ = sceneIndex_;
+		prevScene_ = currentScene_;
 	}
 	else
 	{
-		currentScene->Update();
+		currentScene_->Update();
 	}
 
 	S_current = this;
@@ -41,9 +41,9 @@ void ADXSceneManager::Update()
 
 void ADXSceneManager::SetScenes(const std::vector<ADXScene*>& setScenes)
 {
-	if (!initializable)
+	if (!initializable_)
 	{
 		return;
 	}
-	scenes = setScenes;
+	scenes_ = setScenes;
 }

@@ -3,16 +3,16 @@
 
 void ADXParticle::UniqueInitialize()
 {
-	lifeTime = maxLifeTime;
+	lifeTime_ = maxLifeTime_;
 }
 
 void ADXParticle::UniqueUpdate()
 {
-	GetGameObject()->transform.localPosition_ += moveVec;
-	animation.Update();
-	GetGameObject()->texture = animation.GetNowTex();
-	lifeTime--;
-	if (lifeTime <= 0)
+	GetGameObject()->transform_.localPosition_ += moveVec_;
+	animation_.Update();
+	GetGameObject()->texture_ = animation_.GetNowTex();
+	lifeTime_--;
+	if (lifeTime_ <= 0)
 	{
 		GetGameObject()->Destroy();
 	}
@@ -20,8 +20,8 @@ void ADXParticle::UniqueUpdate()
 
 void ADXParticle::OnPreRender()
 {
-	if (billboard)
+	if (billboard_)
 	{
-		GetGameObject()->transform.SetWorldRotation(ADXCamera::GetCurrentCamera()->GetGameObject()->transform.GetWorldRotation());
+		GetGameObject()->transform_.SetWorldRotation(ADXCamera::GetCurrentCamera()->GetGameObject()->transform_.GetWorldRotation());
 	}
 }

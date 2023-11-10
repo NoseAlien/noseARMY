@@ -8,11 +8,11 @@ void Enemy::LiveEntitiesInitialize()
 
 	enemyModel = ADXModel::LoadADXModel("model/groundBlock.obj");
 
-	visual->model = &enemyModel;
-	visual->texture = ADXImage::LoadADXImage("texture/battleField.png");
+	visual->model_ = &enemyModel;
+	visual->texture_ = ADXImage::LoadADXImage("texture/battleField.png");
 
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
-	tempCol->isTrigger = true;
+	tempCol->isTrigger_ = true;
 	tempCol->colType_ = sphere;
 	tempCol->radius_ = 12;
 
@@ -24,12 +24,12 @@ void Enemy::LiveEntitiesUpdate()
 {
 	rigidbody->VelocityMove();
 
-	rigidbody->drag = 0.8f;
-	rigidbody->dragAxis = { true,false,true };
-	rigidbody->gravity = { 0,-1,0 };
-	rigidbody->gravityScale = 0.015f;
+	rigidbody->drag_ = 0.8f;
+	rigidbody->dragAxis_ = { true,false,true };
+	rigidbody->gravity_ = { 0,-1,0 };
+	rigidbody->gravityScale_ = 0.015f;
 
-	visual->texture = nutralTex;
+	visual->texture_ = nutralTex;
 
 	EnemyUpdate();
 
@@ -39,36 +39,36 @@ void Enemy::LiveEntitiesUpdate()
 
 void Enemy::DeadUpdate()
 {
-	rigidbody->drag = 0.8f;
-	rigidbody->dragAxis = { true,false,true };
-	rigidbody->gravity = { 0,-1,0 };
-	rigidbody->gravityScale = 0.015f;
+	rigidbody->drag_ = 0.8f;
+	rigidbody->dragAxis_ = { true,false,true };
+	rigidbody->gravity_ = { 0,-1,0 };
+	rigidbody->gravityScale_ = 0.015f;
 	rigidbody->VelocityMove();
 
 	for (auto& itr : GetGameObject()->GetComponents<ADXCollider>())
 	{
-		itr->pushBackPriority = -2;
+		itr->pushBackPriority_ = -2;
 	}
 
-	visual->texture = deadTex;
+	visual->texture_ = deadTex;
 
 	if (clock() % 1000 < 100 || (carcassLifeTime <= (int32_t)maxCarcassLifeTime / 4 && clock() % 200 < 100))
 	{
-		visual->material.ambient = { 0.2f,0.2f,0.2f };
+		visual->material_.ambient_ = { 0.2f,0.2f,0.2f };
 		for (auto& itr : bodyParts)
 		{
-			itr->material.ambient = { 0.2f,0.2f,0.2f };
+			itr->material_.ambient_ = { 0.2f,0.2f,0.2f };
 		}
 	}
 
 	if (grabber != nullptr)
 	{
-		GetGameObject()->transform.SetWorldPosition(GetGameObject()->transform.GetWorldPosition()
-			+ (grabber->GetGameObject()->transform.GetWorldPosition() - GetGameObject()->transform.GetWorldPosition()) * 0.1f);
+		GetGameObject()->transform_.SetWorldPosition(GetGameObject()->transform_.GetWorldPosition()
+			+ (grabber->GetGameObject()->transform_.GetWorldPosition() - GetGameObject()->transform_.GetWorldPosition()) * 0.1f);
 
 		for (auto& itr : GetGameObject()->GetComponents<ADXCollider>())
 		{
-			if (!itr->isTrigger)
+			if (!itr->isTrigger_)
 			{
 				LiveEntity::SetAttackObj({ itr,(LiveEntity*)grabber->GetParent(),maxHP });
 			}
@@ -84,22 +84,22 @@ void Enemy::DeadUpdate()
 
 void Enemy::LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
-	if(myCol->isTrigger && IsLive())
+	if(myCol->isTrigger_ && IsLive())
 	{
 		LiveEntity* tempLiv = col->GetGameObject()->GetComponent<LiveEntity>();
-		if (!col->isTrigger && tempLiv != nullptr && tempLiv->IsLive() && tempLiv->GetTeam() != GetTeam())
+		if (!col->isTrigger_ && tempLiv != nullptr && tempLiv->IsLive() && tempLiv->GetTeam() != GetTeam())
 		{
 			targetDetected = true;
-			targetPos = col->GetGameObject()->transform.GetWorldPosition();
+			targetPos = col->GetGameObject()->transform_.GetWorldPosition();
 		}
 	}
-	else if(!myCol->isTrigger && !IsLive() && grabber == nullptr)
+	else if(!myCol->isTrigger_ && !IsLive() && grabber == nullptr)
 	{
 		if (col->GetGameObject()->GetComponent<PlayerMini>())
 		{
 			grabber = col->GetGameObject()->GetComponent<PlayerMini>();
 		}
-		if (!col->isTrigger && col->GetGameObject()->GetComponent<Enemy>()
+		if (!col->isTrigger_ && col->GetGameObject()->GetComponent<Enemy>()
 			&& col->GetGameObject()->GetComponent<Enemy>()->grabber != nullptr)
 		{
 			grabber = col->GetGameObject()->GetComponent<Enemy>()->grabber;

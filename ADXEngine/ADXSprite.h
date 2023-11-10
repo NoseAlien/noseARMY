@@ -1,18 +1,18 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXObject.h"
 
 class ADXSprite : public ADXComponent
 {
 public:
-    bool boxControl = false;
-    ADXVector3 boxRUF = { 0.5f,0.5f,0.5f };
-    ADXVector3 boxLDB = { -0.5f,-0.5f,-0.5f };
-    ADXVector3 rectLU = { 0,0,0 };
-    ADXVector3 rectRD = { 1,1,0 };
+    bool boxControl_ = false;
+    ADXVector3 boxRUF_ = { 0.5f,0.5f,0.5f };
+    ADXVector3 boxLDB_ = { -0.5f,-0.5f,-0.5f };
+    ADXVector3 rectLU_ = { 0,0,0 };
+    ADXVector3 rectRD_ = { 1,1,0 };
 
 private:
-    ADXModel rect{};
+    ADXModel rect_{};
 
 public:
     void SetClippingStatus(const ADXVector3& maxBoxRUF, const ADXVector3& maxBoxLDB, 

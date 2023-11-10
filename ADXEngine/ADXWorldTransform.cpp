@@ -14,9 +14,9 @@ std::list<ADXWorldTransform*> ADXWorldTransform::GetChilds()
 
 	for (auto& itr : ADXObject::GetObjs())
 	{
-		if (itr->transform.parent_ == this)
+		if (itr->transform_.parent_ == this)
 		{
-			ret.push_back(&itr->transform);
+			ret.push_back(&itr->transform_);
 		}
 	}
 
@@ -37,16 +37,16 @@ ADXMatrix4 ADXWorldTransform::GetViewProjection()
 ADXMatrix4 ADXWorldTransform::GenerateMatTransform(const ADXVector3& localPosition, const ADXQuaternion& localRotation, const ADXVector3& localScale)
 {
 	ADXMatrix4 matScale =
-	{ localScale.x,0,0,0,
-	0,localScale.y,0,0,
-	0,0,localScale.z,0,
+	{ localScale.x_,0,0,0,
+	0,localScale.y_,0,0,
+	0,0,localScale.z_,0,
 	0,0,0,1 };
 	ADXMatrix4 matRot = localRotation.RotateMatrix();
 	ADXMatrix4 matTrans =
 	{ 1,0,0,0,
 	0,1,0,0,
 	0,0,1,0,
-	localPosition.x,localPosition.y,localPosition.z,1 };
+	localPosition.x_,localPosition.y_,localPosition.z_,1 };
 
 	ADXMatrix4 matWorld = IdentityMatrix();
 	matWorld = matWorld * matScale * matRot * matTrans;
@@ -61,16 +61,16 @@ void ADXWorldTransform::CreateConstBuffer()
 void ADXWorldTransform::Initialize(ADXObject* obj)
 {
 	matWorld_ = IdentityMatrix();
-	gameObject = obj;
+	gameObject_ = obj;
 }
 
 void ADXWorldTransform::UpdateMatrix()
 {
 	//////拡縮//////
 	matScale_ =
-	{ localScale_.x,0,0,0,
-	0,localScale_.y,0,0,
-	0,0,localScale_.z,0,
+	{ localScale_.x_,0,0,0,
+	0,localScale_.y_,0,0,
+	0,0,localScale_.z_,0,
 	0,0,0,1 };
 
 	//////回転//////
@@ -82,7 +82,7 @@ void ADXWorldTransform::UpdateMatrix()
 	{ 1,0,0,0,
 	0,1,0,0,
 	0,0,1,0,
-	localPosition_.x,localPosition_.y,localPosition_.z,1 };
+	localPosition_.x_,localPosition_.y_,localPosition_.z_,1 };
 
 
 	//////平行移動逆行列//////
@@ -90,7 +90,7 @@ void ADXWorldTransform::UpdateMatrix()
 	{ 1,0,0,0,
 	0,1,0,0,
 	0,0,1,0,
-	-localPosition_.x,-localPosition_.y,-localPosition_.z,1 };
+	-localPosition_.x_,-localPosition_.y_,-localPosition_.z_,1 };
 
 
 	//単位行列を代入
@@ -116,14 +116,14 @@ void ADXWorldTransform::UpdateMatrix()
 void ADXWorldTransform::UpdateConstBuffer()
 {
 	//定数バッファに転送
-	constMapTransform->matWorld = GenerateMatTransform(modelPosition_,modelRotation_,modelScale_) * matWorld_;
-	constMapTransform->matWorldRot = modelRotation_.RotateMatrix() * matRot_;
-	constMapTransform->matMVP = constMapTransform->matWorld;
-	if (!rectTransform)
+	constMapTransform_->matWorld = GenerateMatTransform(modelPosition_,modelRotation_,modelScale_) * matWorld_;
+	constMapTransform_->matWorldRot = modelRotation_.RotateMatrix() * matRot_;
+	constMapTransform_->matMVP = constMapTransform_->matWorld;
+	if (!rectTransform_)
 	{
-		constMapTransform->matMVP = constMapTransform->matMVP * *S_matView * *S_matProjection;
+		constMapTransform_->matMVP = constMapTransform_->matMVP * *S_matView * *S_matProjection;
 	}
-	constMapTransform->cameraWorldPos = ADXCamera::GetCameraWorldPos();
+	constMapTransform_->cameraWorldPos = ADXCamera::GetCameraWorldPos();
 }
 
 ADXVector3 ADXWorldTransform::GetWorldPosition()
@@ -229,9 +229,9 @@ ADXMatrix4 ADXWorldTransform::GetMatWorldInverse()
 {
 	ADXMatrix4 ret = matWorld_.Inverse();
 	
-	if (std::isnan(ret.m[0][0])
-	|| std::isnan(ret.m[1][1])
-	|| std::isnan(ret.m[2][2]))
+	if (std::isnan(ret.m_[0][0])
+	|| std::isnan(ret.m_[1][1])
+	|| std::isnan(ret.m_[2][2]))
 	{
 		ret = matWorldInverse_;
 	}

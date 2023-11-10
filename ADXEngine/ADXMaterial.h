@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <d3d12.h>
 #include <wrl.h>
 #include <string>
@@ -7,12 +7,13 @@
 class ADXMaterial
 {
 public:
-	std::string name = "";
-	DirectX::XMFLOAT3 ambient = { 1.0f,1.0f,1.0f };
-	DirectX::XMFLOAT3 diffuse = { 0.0f,0.0f,0.0f };
-	DirectX::XMFLOAT3 specular = { 0.0f,0.0f,0.0f };
-	float alpha = 1.0f;
-	std::string textureFilename = "";
+	DirectX::XMFLOAT3 ambient_ = { 1.0f,1.0f,1.0f };
+	DirectX::XMFLOAT3 diffuse_ = { 0.0f,0.0f,0.0f };
+	DirectX::XMFLOAT3 specular_ = { 0.0f,0.0f,0.0f };
+	float alpha_ = 1.0f;
+
+private:
+	std::string name_ = "";
 
 public:
 	static ADXMaterial LoadMaterial(const std::string& filePath);

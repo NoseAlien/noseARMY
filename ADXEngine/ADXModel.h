@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <vector>
 #include <d3d12.h>
@@ -9,9 +9,6 @@
 class ADXModel
 {
 public:
-	static ADXModel LoadADXModel(const std::string& filePath);
-
-public:
 	//頂点データ構造体
 	struct Vertex
 	{
@@ -20,16 +17,17 @@ public:
 		DirectX::XMFLOAT2 uv;
 	};
 
-	std::vector<Vertex> vertices{};
-	std::vector <uint16_t> indices{};
+public:
+	std::string name_ = {};
 
-	D3D12_VERTEX_BUFFER_VIEW vbView{};
-	D3D12_INDEX_BUFFER_VIEW ibView{};
+	std::vector<Vertex> vertices_{};
+	std::vector <uint16_t> indices_{};
 
-	Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff = nullptr;
-	Microsoft::WRL::ComPtr<ID3D12Resource> indexBuff = nullptr;
+	D3D12_VERTEX_BUFFER_VIEW vbView_{};
+	D3D12_INDEX_BUFFER_VIEW ibView_{};
 
-	std::string name = {};
+	Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff_ = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Resource> indexBuff_ = nullptr;
 
 public:
 	ADXModel();
@@ -47,5 +45,6 @@ private:
 	void Update();
 
 public:
+	static ADXModel LoadADXModel(const std::string& filePath);
 	static ADXModel CreateRect();
 };

@@ -34,15 +34,15 @@ std::list<Enemy*> EnemySpawnData::Spawn(const std::string& team, ADXWorldTransfo
 
 		if (tf == nullptr)
 		{
-			temp->transform.localPosition_ = spawnItr.position;
-			temp->transform.localRotation_ = spawnItr.rotation;
+			temp->transform_.localPosition_ = spawnItr.position;
+			temp->transform_.localRotation_ = spawnItr.rotation;
 		}
 		else
 		{
-			temp->transform.localPosition_ = ADXMatrix4::Transform(spawnItr.position, tf->GetMatWorld());
-			temp->transform.localRotation_ = tf->TransformRotation(spawnItr.rotation);
+			temp->transform_.localPosition_ = ADXMatrix4::Transform(spawnItr.position, tf->GetMatWorld());
+			temp->transform_.localRotation_ = tf->TransformRotation(spawnItr.rotation);
 		}
-		temp->transform.UpdateMatrix();
+		temp->transform_.UpdateMatrix();
 		ret.back()->LiveEntity::Initialize(team);
 
 	}

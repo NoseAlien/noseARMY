@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXComponent.h"
 #include "ADXVector3.h"
@@ -14,19 +14,19 @@ struct bool3
 class ADXRigidbody : public ADXComponent
 {
 public:
-	float drag = 1;
-	ADXVector3 gravity = { 0,-1,0 };
-	float gravityScale = 0;
-	bool3 dragAxis = { true,true,true };
-	ADXVector3 velocity = { 0,0,0 };
+	float drag_ = 1;
+	ADXVector3 gravity_ = { 0,-1,0 };
+	float gravityScale_ = 0;
+	bool3 dragAxis_ = { true,true,true };
+	ADXVector3 velocity_ = { 0,0,0 };
 
 private:
-	ADXVector3 prevPos{};
-	bool initializedThisFrame = false;
+	ADXVector3 prevPos_{};
+	bool initializedThisFrame_ = false;
 
 public:
 	void VelocityMove();
-	ADXVector3 GetPrevPos() { return prevPos; };
+	ADXVector3 GetPrevPos() { return prevPos_; };
 
 private:
 	void UniqueInitialize();

@@ -2,14 +2,14 @@
 
 void ADXComponent::Update(ADXObject* obj)
 {
-	gameObject = obj;
+	gameObject_ = obj;
 
-	if (gameObject != nullptr)
+	if (gameObject_ != nullptr)
 	{
-		if (!initialized)
+		if (!initialized_)
 		{
 			UniqueInitialize();
-			initialized = true;
+			initialized_ = true;
 		}
 		UniqueUpdate();
 	}
@@ -17,8 +17,8 @@ void ADXComponent::Update(ADXObject* obj)
 
 void ADXComponent::SetGameObject(ADXObject* obj)
 {
-	if (gameObject == nullptr)
+	if (gameObject_ == nullptr)
 	{
-		gameObject = obj;
+		gameObject_ = obj;
 	}
 }

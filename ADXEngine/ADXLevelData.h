@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "ADXObject.h"
 #include "json.hpp"
 
@@ -16,7 +16,7 @@ class ADXLevelData
 	};
 
 public:
-	std::vector<levelDataCell> objs{};
+	std::vector<levelDataCell> objs_{};
 
 public:
 	static ADXLevelData Load(const std::string& filename);

@@ -57,9 +57,9 @@ void ADXLevelData::LoadTreeData(ADXLevelData* levelData,
 		if (type.compare("MESH") == 0)
 		{
 			//要素追加
-			levelData->objs.emplace_back();
+			levelData->objs_.emplace_back();
 			//今追加した要素の参照を得る
-			levelDataCell& obj = levelData->objs.back();
+			levelDataCell& obj = levelData->objs_.back();
 
 			if (object.contains("file_name"))
 			{
@@ -107,7 +107,7 @@ void ADXLevelData::LoadTreeData(ADXLevelData* levelData,
 
 		if (object.contains("children"))
 		{
-			LoadTreeData(levelData, object["children"], (int32_t)levelData->objs.size() - 1);
+			LoadTreeData(levelData, object["children"], (int32_t)levelData->objs_.size() - 1);
 		}
 	}
 }

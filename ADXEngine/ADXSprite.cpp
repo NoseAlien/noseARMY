@@ -4,33 +4,33 @@
 void ADXSprite::SetClippingStatus(const ADXVector3& maxBoxRUF, const ADXVector3& maxBoxLDB, 
 	const ADXVector3& nowBoxRUF, const ADXVector3& nowBoxLDB)
 {
-	boxRUF = nowBoxRUF;
-	boxLDB = nowBoxLDB;
+	boxRUF_ = nowBoxRUF;
+	boxLDB_ = nowBoxLDB;
 
-	rectRD = { ADXUtility::LerpInverse(boxRUF.x,maxBoxLDB.x,maxBoxRUF.x),ADXUtility::LerpInverse(boxLDB.y,maxBoxRUF.y,maxBoxLDB.y),0 };
-	rectLU = { ADXUtility::LerpInverse(boxLDB.x,maxBoxLDB.x,maxBoxRUF.x),ADXUtility::LerpInverse(boxRUF.y,maxBoxRUF.y,maxBoxLDB.y),0 };
+	rectRD_ = { ADXUtility::LerpInverse(boxRUF_.x_,maxBoxLDB.x_,maxBoxRUF.x_),ADXUtility::LerpInverse(boxLDB_.y_,maxBoxRUF.y_,maxBoxLDB.y_),0 };
+	rectLU_ = { ADXUtility::LerpInverse(boxLDB_.x_,maxBoxLDB.x_,maxBoxRUF.x_),ADXUtility::LerpInverse(boxRUF_.y_,maxBoxRUF.y_,maxBoxLDB.y_),0 };
 }
 
 void ADXSprite::UniqueInitialize()
 {
-	rect = ADXModel::CreateRect();
+	rect_ = ADXModel::CreateRect();
 }
 
 void ADXSprite::UniqueUpdate()
 {
-	GetGameObject()->model = &rect;
+	GetGameObject()->model_ = &rect_;
 
-	rect.vertices = {
-	{{-1.0f,-1.0f,0.0f},{}, {rectLU.x,rectRD.y}},//左下
-	{{-1.0f,1.0f,0.0f},{},{rectLU.x,rectLU.y}},//左上
-	{{1.0f,-1.0f,0.0f},{},{rectRD.x,rectRD.y}},//右下
-	{{1.0f,1.0f,0.0f},{},{rectRD.x,rectLU.y}},//右上
+	rect_.vertices_ = {
+	{{-1.0f,-1.0f,0.0f},{}, {rectLU_.x_,rectRD_.y_}},//左下
+	{{-1.0f,1.0f,0.0f},{},{rectLU_.x_,rectLU_.y_}},//左上
+	{{1.0f,-1.0f,0.0f},{},{rectRD_.x_,rectRD_.y_}},//右下
+	{{1.0f,1.0f,0.0f},{},{rectRD_.x_,rectLU_.y_}},//右上
 	};
 
-	if (boxControl)
+	if (boxControl_)
 	{
-		GetGameObject()->transform.localPosition_ = (boxRUF + boxLDB);
-		GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-		GetGameObject()->transform.localScale_ = boxRUF - boxLDB;
+		GetGameObject()->transform_.localPosition_ = (boxRUF_ + boxLDB_);
+		GetGameObject()->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
+		GetGameObject()->transform_.localScale_ = boxRUF_ - boxLDB_;
 	}
 }

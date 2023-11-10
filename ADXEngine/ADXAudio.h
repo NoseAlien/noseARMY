@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <xaudio2.h>
 #include <fstream>
@@ -33,12 +33,12 @@ private:
 		uint32_t bufferSize = 0; // バッファのサイズ
 	};
 
-	std::string name = {};
-	uint32_t SHandle = 0;
-	SoundData data{};
-	XAUDIO2_BUFFER buf{};
-	float volume = 1.0f;
-	IXAudio2SourceVoice* pSourceVoice = nullptr;
+	std::string name_ = {};
+	uint32_t sHandle_ = 0;
+	SoundData data_{};
+	XAUDIO2_BUFFER buf_{};
+	float volume_ = 1.0f;
+	IXAudio2SourceVoice* pSourceVoice_ = nullptr;
 
 public:
 	ADXAudio();
@@ -47,7 +47,7 @@ public:
 	bool IsPlaying();
 	void SetVolume(float setVolume);
 	float GetVolume();
-	uint32_t GetSHandle() { return SHandle; };
+	uint32_t GetSHandle() { return sHandle_; };
 
 private:
 	static Microsoft::WRL::ComPtr<IXAudio2> S_xAudio2;

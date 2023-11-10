@@ -10,10 +10,10 @@ void BattleFieldBox::Initialize(const std::vector<SpawnData>& setGuarders, const
 void BattleFieldBox::FieldInitialize()
 {
 	boxModel = ADXModel::LoadADXModel("model/battleBox.obj");
-	GetGameObject()->model = &boxModel;
-	GetGameObject()->texture = ADXImage::LoadADXImage("texture/battleField.png");
+	GetGameObject()->model_ = &boxModel;
+	GetGameObject()->texture_ = ADXImage::LoadADXImage("texture/battleField.png");
 
-	GetGameObject()->sortingOrder = 2;
+	GetGameObject()->sortingOrder_ = 2;
 
 	animationProgress = 0;
 }
@@ -24,30 +24,30 @@ void BattleFieldBox::FieldUpdate()
 	{
 		if (!guarderSpawned)
 		{
-			guardersPtr = enemySpawnData.Spawn(team, &GetGameObject()->transform);
+			guardersPtr = enemySpawnData.Spawn(team, &GetGameObject()->transform_);
 			guarderSpawned = true;
 		}
 
 		animationProgress += (1 - animationProgress) * 0.2f;
-		GetGameObject()->transform.modelPosition_ = { 0,-(1 - animationProgress) ,0 };
-		GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,(1 - animationProgress) * 3,0 });
-		GetGameObject()->transform.modelScale_ = { animationProgress,animationProgress ,animationProgress };
+		GetGameObject()->transform_.modelPosition_ = { 0,-(1 - animationProgress) ,0 };
+		GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,(1 - animationProgress) * 3,0 });
+		GetGameObject()->transform_.modelScale_ = { animationProgress,animationProgress ,animationProgress };
 
-		GetGameObject()->isVisible = true;
+		GetGameObject()->isVisible_ = true;
 
 		if (battling <= 0)
 		{
 			animationProgress += (-1 - animationProgress) * 0.2f; 
 			if (animationProgress <= 0)
 			{
-				GetGameObject()->isActive = false;
+				GetGameObject()->isActive_ = false;
 			}
 		}
 		battling--;
 	}
 	else
 	{
-		GetGameObject()->isVisible = false;
+		GetGameObject()->isVisible_ = false;
 	}
 }
 

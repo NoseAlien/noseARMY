@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXVector3.h"
 
@@ -8,8 +8,9 @@
 class ADXMatrix4 {
 public:
 	// 行x列
-	float m[4][4]{};
+	float m_[4][4]{};
 
+public:
 	// コンストラクタ
 	ADXMatrix4();
 	// 成分を指定しての生成

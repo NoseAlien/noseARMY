@@ -7,16 +7,16 @@ ADXModel SceneTransition::S_rect{};
 
 void SceneTransition::UniqueInitialize()
 {
-	GetGameObject()->transform.rectTransform = true;
-	GetGameObject()->model = &S_rect;
-	GetGameObject()->texture = ADXImage::LoadADXImage("texture/apEGnoSE.png");
-	GetGameObject()->renderLayer = 10;
+	GetGameObject()->transform_.rectTransform_ = true;
+	GetGameObject()->model_ = &S_rect;
+	GetGameObject()->texture_ = ADXImage::LoadADXImage("texture/apEGnoSE.png");
+	GetGameObject()->renderLayer_ = 10;
 }
 
 void SceneTransition::UniqueUpdate()
 {
 	float shutterScale = sinf(((float)S_sceneChangeFrame / S_MaxSceneChangeFrame) * ADXUtility::Pi) * 2;
-	GetGameObject()->transform.localScale_ = { shutterScale ,shutterScale * ADXWindow::GetAspect() ,shutterScale };
+	GetGameObject()->transform_.localScale_ = { shutterScale ,shutterScale * ADXWindow::GetAspect() ,shutterScale };
 }
 
 void SceneTransition::StaticInitialize()

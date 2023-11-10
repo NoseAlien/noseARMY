@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "ADXObject.h"
 
 class ADXCamera : public ADXComponent
@@ -6,13 +6,13 @@ class ADXCamera : public ADXComponent
 
 private:
 	//射影変換行列
-	ADXMatrix4 matProjection{};
+	ADXMatrix4 matProjection_{};
 
 	//ビュー変換行列
-	ADXMatrix4 matView{};
-	DirectX::XMFLOAT3 eye{};
-	DirectX::XMFLOAT3 target{};
-	DirectX::XMFLOAT3 up{};
+	ADXMatrix4 matView_{};
+	DirectX::XMFLOAT3 eye_{};
+	DirectX::XMFLOAT3 target_{};
+	DirectX::XMFLOAT3 up_{};
 
 private:
 	static ADXCamera* S_current;

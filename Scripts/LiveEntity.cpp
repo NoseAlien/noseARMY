@@ -20,120 +20,120 @@ void LiveEntity::UniqueInitialize()
 	gaugeTex = ADXImage::LoadADXImage("texture/whiteDot.png");
 
 	visual = ADXObject::Create();
-	visual->transform.parent_ = &GetGameObject()->transform;
+	visual->transform_.parent_ = &GetGameObject()->transform_;
 
 	hpGaugeBG = ADXObject::Create();
-	hpGaugeBG->transform.parent_ = &GetGameObject()->transform;
-	hpGaugeBG->transform.UpdateMatrix();
-	hpGaugeBG->model = &rect;
-	hpGaugeBG->texture = gaugeTex;
-	hpGaugeBG->renderLayer = 1;
+	hpGaugeBG->transform_.parent_ = &GetGameObject()->transform_;
+	hpGaugeBG->transform_.UpdateMatrix();
+	hpGaugeBG->model_ = &rect;
+	hpGaugeBG->texture_ = gaugeTex;
+	hpGaugeBG->renderLayer_ = 1;
 
 	hpGauge = ADXObject::Create();
-	hpGauge->transform.parent_ = &hpGaugeBG->transform;
-	hpGauge->transform.UpdateMatrix();
-	hpGauge->model = &rect;
-	hpGauge->texture = gaugeTex;
-	hpGauge->renderLayer = 2;
+	hpGauge->transform_.parent_ = &hpGaugeBG->transform_;
+	hpGauge->transform_.UpdateMatrix();
+	hpGauge->model_ = &rect;
+	hpGauge->texture_ = gaugeTex;
+	hpGauge->renderLayer_ = 2;
 
 	particle = GetGameObject()->AddComponent<ADXParticleSystem>();
-	particle->animation.Initialize({
+	particle->animation_.Initialize({
 		ADXImage::LoadADXImage("texture/particle_defeat/000.png"), ADXImage::LoadADXImage("texture/particle_defeat/001.png"),
 		ADXImage::LoadADXImage("texture/particle_defeat/002.png"), ADXImage::LoadADXImage("texture/particle_defeat/003.png"),
 		ADXImage::LoadADXImage("texture/particle_defeat/004.png"), ADXImage::LoadADXImage("texture/particle_defeat/005.png"),
 		ADXImage::LoadADXImage("texture/particle_defeat/006.png"), ADXImage::LoadADXImage("texture/particle_defeat/007.png"),
 		ADXImage::LoadADXImage("texture/particle_defeat/008.png"), ADXImage::LoadADXImage("texture/particle_defeat/009.png"),
 		ADXImage::LoadADXImage("texture/particle_defeat/010.png"), }, 0, false);
-	particle->lifeTime = particle->animation.GetLength();
-	particle->particleModel = rect;
+	particle->lifeTime_ = particle->animation_.GetLength();
+	particle->particleModel_ = rect;
 
 	LiveEntitiesInitialize();
 }
 
 void LiveEntity::UniqueUpdate()
 {
-	GetGameObject()->isVisible = true;
+	GetGameObject()->isVisible_ = true;
 
-	hpGaugeBG->material.ambient = { 0.1f,0.1f,0.1f };
-	hpGauge->material.ambient = { 0.1f,1,0.3f };
+	hpGaugeBG->material_.ambient_ = { 0.1f,0.1f,0.1f };
+	hpGauge->material_.ambient_ = { 0.1f,1,0.3f };
 
-	hpGaugeBG->transform.localPosition_ = { 0,-1.5f,0 };
-	hpGauge->transform.localPosition_ = { (1 - hpAmount),0,0 };
-	hpGauge->transform.localScale_ = { hpAmount,1,1 };
+	hpGaugeBG->transform_.localPosition_ = { 0,-1.5f,0 };
+	hpGauge->transform_.localPosition_ = { (1 - hpAmount),0,0 };
+	hpGauge->transform_.localScale_ = { hpAmount,1,1 };
 
-	visual->material.ambient = { 1,1,1 };
+	visual->material_.ambient_ = { 1,1,1 };
 	for (auto& itr : bodyParts)
 	{
-		itr->material.ambient = { 1,1,1 };
+		itr->material_.ambient_ = { 1,1,1 };
 	}
 
-	visual->transform.localPosition_ *= 0.8f;
+	visual->transform_.localPosition_ *= 0.8f;
 
 	if (IsLive())
 	{
 		LiveEntitiesUpdate();
-		hpGaugeBG->transform.localScale_ = { 0.5,0.2f,1 };
+		hpGaugeBG->transform_.localScale_ = { 0.5,0.2f,1 };
 	}
 	else
 	{
 		DeadUpdate();
-		hpGaugeBG->transform.localScale_ = { 0.5,max(0,hpGaugeBG->transform.localScale_.y - 0.03f),1};
+		hpGaugeBG->transform_.localScale_ = { 0.5,max(0,hpGaugeBG->transform_.localScale_.y_ - 0.03f),1};
 
 		if (attackHitted)
 		{
-			particle->animation.delayFrame = 0;
-			particle->lifeTime = particle->animation.GetLength();
+			particle->animation_.delayFrame_ = 0;
+			particle->lifeTime_ = particle->animation_.GetLength();
 			for (int i = 0; i < 10; i++)
 			{
 				particle->Emission();
-				particle->particles.back()->GetGameObject()->transform.localPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize();
-				particle->particles.back()->moveVec = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize() * 0.3f;
+				particle->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize();
+				particle->particles_.back()->moveVec_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize() * 0.3f;
 				float particleScale = 1.5f + (float)(rand() % 5) * 0.1f;
-				particle->particles.back()->GetGameObject()->transform.localScale_ = { particleScale ,particleScale ,particleScale };
-				particle->particles.back()->GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
+				particle->particles_.back()->GetGameObject()->transform_.localScale_ = { particleScale ,particleScale ,particleScale };
+				particle->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 			}
-			particle->animation.delayFrame = 3;
-			particle->lifeTime = particle->animation.GetLength() * 4;
+			particle->animation_.delayFrame_ = 3;
+			particle->lifeTime_ = particle->animation_.GetLength() * 4;
 			for (int i = 0; i < 30; i++)
 			{
 				particle->Emission();
-				particle->particles.back()->GetGameObject()->transform.localPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize();
-				particle->particles.back()->moveVec = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize() * 0.6f;
+				particle->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize();
+				particle->particles_.back()->moveVec_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize() * 0.6f;
 				float particleScale = 0.1f + (float)(rand() % 3) * 0.1f;
-				particle->particles.back()->GetGameObject()->transform.localScale_ = { particleScale ,particleScale ,particleScale };
-				particle->particles.back()->GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
+				particle->particles_.back()->GetGameObject()->transform_.localScale_ = { particleScale ,particleScale ,particleScale };
+				particle->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 			}
 			damageSE.Play();
 		}
 	}
 
-	for (auto& itr : particle->particles)
+	for (auto& itr : particle->particles_)
 	{
-		itr->moveVec *= 0.9f;
-		itr->GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0.01f }) * itr->GetGameObject()->transform.modelRotation_;
+		itr->moveVec_ *= 0.9f;
+		itr->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0.01f }) * itr->GetGameObject()->transform_.modelRotation_;
 	}
 
 	if (attackHitted)
 	{
-		particle->animation.delayFrame = 0;
-		particle->lifeTime = particle->animation.GetLength();
+		particle->animation_.delayFrame_ = 0;
+		particle->lifeTime_ = particle->animation_.GetLength();
 		for (int i = 0; i < 3; i++)
 		{
 			particle->Emission();
-			particle->particles.back()->GetGameObject()->transform.localPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize();
-			particle->particles.back()->moveVec = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize() * 0.1f;
+			particle->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize();
+			particle->particles_.back()->moveVec_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize() * 0.1f;
 			float particleScale = 0.1f + (float)(rand() % 3) * 0.1f;
-			particle->particles.back()->GetGameObject()->transform.localScale_ = { particleScale ,particleScale ,particleScale };
-			particle->particles.back()->GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
+			particle->particles_.back()->GetGameObject()->transform_.localScale_ = { particleScale ,particleScale ,particleScale };
+			particle->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 		}
-		visual->material.ambient = { 1,0,0 };
+		visual->material_.ambient_ = { 1,0,0 };
 		for (auto& itr : bodyParts)
 		{
-			itr->material.ambient = { 1,0,0 };
+			itr->material_.ambient_ = { 1,0,0 };
 		}
 
-		visual->transform.localPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5)}.Normalize() * 0.3f;
-		hpGaugeBG->transform.localPosition_ = { 0,-1.5f + (float)sin(clock()) * 0.05f,0};
+		visual->transform_.localPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5)}.Normalize() * 0.3f;
+		hpGaugeBG->transform_.localPosition_ = { 0,-1.5f + (float)sin(clock()) * 0.05f,0};
 		attackHitted = false;
 		damageSE.Play();
 	}
@@ -150,7 +150,7 @@ void LiveEntity::Damage(float damage)
 
 void LiveEntity::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
-	if (!myCol->isTrigger)
+	if (!myCol->isTrigger_)
 	{
 		for (auto& objItr : GetAttackObj())
 		{
@@ -166,7 +166,7 @@ void LiveEntity::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 
 void LiveEntity::OnPreRender()
 {
-	hpGaugeBG->transform.SetWorldRotation(ADXCamera::GetCurrentCamera()->GetGameObject()->transform.GetWorldRotation());
+	hpGaugeBG->transform_.SetWorldRotation(ADXCamera::GetCurrentCamera()->GetGameObject()->transform_.GetWorldRotation());
 	LiveEntitiesOnPreRender();
 }
 

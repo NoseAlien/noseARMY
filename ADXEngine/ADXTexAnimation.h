@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <vector>
 #include "ADXImage.h"
@@ -6,13 +6,13 @@
 class ADXTexAnimation
 {
 public:
-	std::vector<uint32_t> textures{};
-	bool loop = true;
-	uint32_t delayFrame = 0;
+	std::vector<uint32_t> textures_{};
+	bool loop_ = true;
+	uint32_t delayFrame_ = 0;
 
 private:
-	uint32_t nowDelayFrame = 0;
-	uint32_t nowTexIndex = 0;
+	uint32_t nowDelayFrame_ = 0;
+	uint32_t nowTexIndex_ = 0;
 
 public:
 	ADXTexAnimation Initialize(const std::vector<uint32_t>& setTextures, uint32_t setDelayFrame, bool setLoop);

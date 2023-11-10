@@ -25,8 +25,8 @@ void GameScene::Initialize()
 
 	temp = ADXObject::Create({ 0,5,-20 }, ADXQuaternion::EulerToQuaternion({ 0.3f,0,0 }));
 
-	temp->transform.localPosition_ = { 0,5,-20 };
-	temp->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0.3f,0,0 });
+	temp->transform_.localPosition_ = { 0,5,-20 };
+	temp->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0.3f,0,0 });
 	camera_ = temp->AddComponent<ADXCamera>();
 
 	temp = ADXObject::Create({ 0,2,0 });
@@ -56,8 +56,8 @@ void GameScene::Initialize()
 	for (auto& itr : floorGenerateData)
 	{
 		floors_.push_back(ADXObject::Create(itr.localPosition,itr.localRotation, itr.localScale));
-		floors_.back()->model = &ground;
-		floors_.back()->texture = groundImg;
+		floors_.back()->model_ = &ground;
+		floors_.back()->texture_ = groundImg;
 		ADXCollider* tempCol = floors_.back()->AddComponent<ADXCollider>();
 		tempCol->colType_ = box;
 	}
@@ -123,25 +123,25 @@ void GameScene::Initialize()
 	goal_->Initialize("player");
 
 	backGround_ = ADXObject::Create();
-	backGround_->transform.rectTransform = true;
-	backGround_->transform.UpdateMatrix();
-	backGround_->model = &rect;
-	backGround_->texture = backGroundTex;
-	backGround_->renderLayer = -1;
+	backGround_->transform_.rectTransform_ = true;
+	backGround_->transform_.UpdateMatrix();
+	backGround_->model_ = &rect;
+	backGround_->texture_ = backGroundTex;
+	backGround_->renderLayer_ = -1;
 
 	key = ADXObject::Duplicate(*backGround_);
-	key->transform.localPosition_ = { -0.65f,0.85f,0 };
-	key->transform.localScale_ = { 0.3f,0.45f,1 };
-	key->transform.UpdateMatrix();
-	key->texture = keyImg;
-	key->renderLayer = 1;
+	key->transform_.localPosition_ = { -0.65f,0.85f,0 };
+	key->transform_.localScale_ = { 0.3f,0.45f,1 };
+	key->transform_.UpdateMatrix();
+	key->texture_ = keyImg;
+	key->renderLayer_ = 1;
 }
 
 void GameScene::Update()
 {
-	key->transform.localPosition_ = { -0.65f,0.85f,0 };
-	key->transform.localPosition_.y += sinf(clock() * 0.001f) * 0.01f;
-	key->transform.localScale_ = { 0.45f / ADXWindow::GetAspect(),0.45f,1 };
+	key->transform_.localPosition_ = { -0.65f,0.85f,0 };
+	key->transform_.localPosition_.y_ += sinf(clock() * 0.001f) * 0.01f;
+	key->transform_.localScale_ = { 0.45f / ADXWindow::GetAspect(),0.45f,1 };
 
 	if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_Q))
 	{

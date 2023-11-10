@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "ADXModel.h"
 #include "ADXMaterial.h"
 #include "ADXObject.h"
@@ -10,34 +10,34 @@ class ADXScene
 {
 private:
 	//画像
-	uint32_t engineLogoImg = 0;
-	uint32_t logoImg_A = 0;
-	uint32_t logoImg_D = 0;
-	uint32_t logoImg_X = 0;
-	uint32_t logoImg_Engine = 0;
-	uint32_t titleImg = 0;
+	uint32_t engineLogoImg_ = 0;
+	uint32_t logoImg_A_ = 0;
+	uint32_t logoImg_D_ = 0;
+	uint32_t logoImg_X_ = 0;
+	uint32_t logoImg_Engine_ = 0;
+	uint32_t titleImg_ = 0;
 
 	//音声データ
-	ADXAudio logoJingle{};
+	ADXAudio logoJingle_{};
 
 	//3Dモデル
-	ADXModel rect{};
+	ADXModel rect_{};
 
 	//マテリアル
-	ADXMaterial unlitMat{};
+	ADXMaterial unlitMat_{};
 
 	//カメラ
 	ADXCamera* camera_ = nullptr;
 
 	//オブジェクト
-	ADXObject* engineLogo = nullptr;
-	ADXObject* logo_A = nullptr;
-	ADXObject* logo_D = nullptr;
-	ADXObject* logo_X = nullptr;
-	ADXObject* logo_Engine = nullptr;
-	ADXObject* title = nullptr;
+	ADXObject* engineLogo_ = nullptr;
+	ADXObject* logo_A_ = nullptr;
+	ADXObject* logo_D_ = nullptr;
+	ADXObject* logo_X_ = nullptr;
+	ADXObject* logo_Engine_ = nullptr;
+	ADXObject* title_ = nullptr;
 
-	int32_t startTime = 0;
+	int32_t startTime_ = 0;
 
 public:
 	ADXScene();

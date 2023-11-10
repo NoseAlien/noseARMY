@@ -95,14 +95,14 @@ ADXModel ADXModel::LoadADXModel(const std::string& filePath)
 				vertex.pos = positions[indexPosition - 1];
 				vertex.normal = normals[indexNormal - 1];
 				vertex.uv = texcoords[indexTexcoord - 1];
-				model.vertices.emplace_back(vertex);
+				model.vertices_.emplace_back(vertex);
 				//インデックスデータの追加
-				unsigned short nowIndex = (unsigned short)model.vertices.size() - 1;
-				model.indices.emplace_back(nowIndex);
+				unsigned short nowIndex = (unsigned short)model.vertices_.size() - 1;
+				model.indices_.emplace_back(nowIndex);
 				if (polyCount >= 3)
 				{
-					model.indices.emplace_back(firstIndex);
-					model.indices.emplace_back(lastIndex);
+					model.indices_.emplace_back(firstIndex);
+					model.indices_.emplace_back(lastIndex);
 				}
 				if (polyCount == 0)
 				{
@@ -122,16 +122,16 @@ ADXModel ADXModel::LoadADXModel(const std::string& filePath)
 
 void ADXModel::SetNormal()
 {
-	for (int32_t i = 0; i < indices.size() / 3; i++)
+	for (int32_t i = 0; i < indices_.size() / 3; i++)
 	{//三角形一つごとに計算していく
 		//三角形のインデックスを取り出して、一時的な変数に入れる
-		unsigned short index0 = indices[i * 3];
-		unsigned short index1 = indices[i * 3 + 1];
-		unsigned short index2 = indices[i * 3 + 2];
+		unsigned short index0 = indices_[i * 3];
+		unsigned short index1 = indices_[i * 3 + 1];
+		unsigned short index2 = indices_[i * 3 + 2];
 		//三角形を構成する頂点座標をベクトルに代入
-		XMVECTOR p0 = XMLoadFloat3(&vertices[index0].pos);
-		XMVECTOR p1 = XMLoadFloat3(&vertices[index1].pos);
-		XMVECTOR p2 = XMLoadFloat3(&vertices[index2].pos);
+		XMVECTOR p0 = XMLoadFloat3(&vertices_[index0].pos);
+		XMVECTOR p1 = XMLoadFloat3(&vertices_[index1].pos);
+		XMVECTOR p2 = XMLoadFloat3(&vertices_[index2].pos);
 		//p0→p1ベクトル、p0→p2ベクトルを計算（ベクトルの減算）
 		XMVECTOR v1 = XMVectorSubtract(p1, p0);
 		XMVECTOR v2 = XMVectorSubtract(p2, p0);
@@ -140,9 +140,9 @@ void ADXModel::SetNormal()
 		//正規化
 		normal = XMVector3Normalize(normal);
 		//求めた法線を頂点データに代入
-		XMStoreFloat3(&vertices[index0].normal, normal);
-		XMStoreFloat3(&vertices[index1].normal, normal);
-		XMStoreFloat3(&vertices[index2].normal, normal);
+		XMStoreFloat3(&vertices_[index0].normal, normal);
+		XMStoreFloat3(&vertices_[index1].normal, normal);
+		XMStoreFloat3(&vertices_[index2].normal, normal);
 	}
 }
 
@@ -154,7 +154,7 @@ void ADXModel::CreateVertexBufferView()
 	HRESULT result;
 
 	//頂点データ全体のサイズ = 一つの頂点データのサイズ * 頂点データの要素数
-	uint32_t sizeVB = static_cast<uint32_t>(sizeof(vertices[0]) * vertices.size());
+	uint32_t sizeVB = static_cast<uint32_t>(sizeof(vertices_[0]) * vertices_.size());
 	//頂点バッファの設定
 	D3D12_HEAP_PROPERTIES heapProp{};
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
@@ -175,27 +175,27 @@ void ADXModel::CreateVertexBufferView()
 			&resDesc,
 			D3D12_RESOURCE_STATE_GENERIC_READ,
 			nullptr,
-			IID_PPV_ARGS(&vertBuff));
+			IID_PPV_ARGS(&vertBuff_));
 	assert(SUCCEEDED(result));
 
 	//GPU上のバッファに対応した仮想メモリ（メインメモリ上）を取得
 	Vertex* vertMap = nullptr;
-	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
 	//全頂点に対し座標をコピー
-	for (int32_t i = 0; i < vertices.size(); i++)
+	for (int32_t i = 0; i < vertices_.size(); i++)
 	{
-		vertMap[i] = vertices[i];
+		vertMap[i] = vertices_[i];
 	}
 	//つながりを削除
-	vertBuff->Unmap(0, nullptr);
+	vertBuff_->Unmap(0, nullptr);
 
 	//GPU仮想アドレス
-	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
+	vbView_.BufferLocation = vertBuff_->GetGPUVirtualAddress();
 	//頂点バッファのサイズ
-	vbView.SizeInBytes = sizeVB;
+	vbView_.SizeInBytes = sizeVB;
 	//頂点一つ分のデータサイズ
-	vbView.StrideInBytes = sizeof(vertices[0]);
+	vbView_.StrideInBytes = sizeof(vertices_[0]);
 }
 
 ///<summary>
@@ -206,7 +206,7 @@ void ADXModel::CreateIndexBufferView()
 	HRESULT result;
 
 	//インデックスデータ全体のサイズ
-	uint32_t sizeIB = static_cast<uint32_t>(sizeof(uint16_t) * indices.size());
+	uint32_t sizeIB = static_cast<uint32_t>(sizeof(uint16_t) * indices_.size());
 	//インデックスバッファの設定
 	D3D12_HEAP_PROPERTIES heapProp{};
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
@@ -227,23 +227,23 @@ void ADXModel::CreateIndexBufferView()
 			&resDesc,
 			D3D12_RESOURCE_STATE_GENERIC_READ,
 			nullptr,
-			IID_PPV_ARGS(&indexBuff));
+			IID_PPV_ARGS(&indexBuff_));
 
 	//インデックスバッファをマッピング
 	uint16_t* indexMap = nullptr;
-	result = indexBuff->Map(0, nullptr, (void**)&indexMap);
+	result = indexBuff_->Map(0, nullptr, (void**)&indexMap);
 	//全インデックスに対しインデックスをコピー
-	for (int32_t i = 0; i < indices.size(); i++)
+	for (int32_t i = 0; i < indices_.size(); i++)
 	{
-		indexMap[i] = indices[i];
+		indexMap[i] = indices_[i];
 	}
 	//つながりを削除
-	indexBuff->Unmap(0, nullptr);
+	indexBuff_->Unmap(0, nullptr);
 
 	//インデックスバッファビューの作成
-	ibView.BufferLocation = indexBuff->GetGPUVirtualAddress();
-	ibView.Format = DXGI_FORMAT_R16_UINT;
-	ibView.SizeInBytes = sizeIB;
+	ibView_.BufferLocation = indexBuff_->GetGPUVirtualAddress();
+	ibView_.Format = DXGI_FORMAT_R16_UINT;
+	ibView_.SizeInBytes = sizeIB;
 }
 
 void ADXModel::Initialize()
@@ -264,16 +264,16 @@ void ADXModel::Draw(ID3D12GraphicsCommandList* commandList, const ADXWorldTransf
 	Update();
 
 	// 頂点バッファビューの設定コマンド
-	commandList->IASetVertexBuffers(0, 1, &vbView);
+	commandList->IASetVertexBuffers(0, 1, &vbView_);
 
 	// インデックスバッファビューの設定コマンド
-	commandList->IASetIndexBuffer(&ibView);
+	commandList->IASetIndexBuffer(&ibView_);
 
 	//定数バッファビュー(CBV)の設定コマンド
-	commandList->SetGraphicsRootConstantBufferView(0, wtf_.constBuffTransform->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(0, wtf_.constBuffTransform_->GetGPUVirtualAddress());
 
 	// 描画コマンド
-	commandList->DrawIndexedInstanced((uint32_t)indices.size(), 1, 0, 0, 0); // 全ての頂点を使って描画
+	commandList->DrawIndexedInstanced((uint32_t)indices_.size(), 1, 0, 0, 0); // 全ての頂点を使って描画
 }
 
 void ADXModel::Update()
@@ -284,59 +284,59 @@ void ADXModel::Update()
 	HRESULT result;
 
 	//頂点データ全体のサイズ = 一つの頂点データのサイズ * 頂点データの要素数
-	uint32_t sizeVB = static_cast<uint32_t>(sizeof(vertices[0]) * vertices.size());
+	uint32_t sizeVB = static_cast<uint32_t>(sizeof(vertices_[0]) * vertices_.size());
 
 	//GPU上のバッファに対応した仮想メモリ（メインメモリ上）を取得
 	Vertex* vertMap = nullptr;
-	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
 	//全頂点に対し座標をコピー
-	for (int32_t i = 0; i < vertices.size(); i++)
+	for (int32_t i = 0; i < vertices_.size(); i++)
 	{
-		vertMap[i] = vertices[i];
+		vertMap[i] = vertices_[i];
 	}
 	//つながりを削除
-	vertBuff->Unmap(0, nullptr);
+	vertBuff_->Unmap(0, nullptr);
 
 	//GPU仮想アドレス
-	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
+	vbView_.BufferLocation = vertBuff_->GetGPUVirtualAddress();
 	//頂点バッファのサイズ
-	vbView.SizeInBytes = sizeVB;
+	vbView_.SizeInBytes = sizeVB;
 	//頂点一つ分のデータサイズ
-	vbView.StrideInBytes = sizeof(vertices[0]);
+	vbView_.StrideInBytes = sizeof(vertices_[0]);
 
 
 	//インデックスデータ全体のサイズ
-	uint32_t sizeIB = static_cast<uint32_t>(sizeof(uint16_t) * indices.size());
+	uint32_t sizeIB = static_cast<uint32_t>(sizeof(uint16_t) * indices_.size());
 
 	//インデックスバッファをマッピング
 	uint16_t* indexMap = nullptr;
-	result = indexBuff->Map(0, nullptr, (void**)&indexMap);
+	result = indexBuff_->Map(0, nullptr, (void**)&indexMap);
 	//全インデックスに対しインデックスをコピー
-	for (int32_t i = 0; i < indices.size(); i++)
+	for (int32_t i = 0; i < indices_.size(); i++)
 	{
-		indexMap[i] = indices[i];
+		indexMap[i] = indices_[i];
 	}
 	//つながりを削除
-	indexBuff->Unmap(0, nullptr);
+	indexBuff_->Unmap(0, nullptr);
 
 	//インデックスバッファビューの作成
-	ibView.BufferLocation = indexBuff->GetGPUVirtualAddress();
-	ibView.Format = DXGI_FORMAT_R16_UINT;
-	ibView.SizeInBytes = sizeIB;
+	ibView_.BufferLocation = indexBuff_->GetGPUVirtualAddress();
+	ibView_.Format = DXGI_FORMAT_R16_UINT;
+	ibView_.SizeInBytes = sizeIB;
 }
 
 ADXModel ADXModel::CreateRect()
 {
 	ADXModel rect;
-	rect.vertices = {
+	rect.vertices_ = {
 	{{-1.0f,-1.0f,0.0f},{}, {0.0f,1.0f}},//左下
 	{{-1.0f,1.0f,0.0f},{},{0.0f,0.0f}},//左上
 	{{1.0f,-1.0f,0.0f},{},{1.0f,1.0f}},//右下
 	{{1.0f,1.0f,0.0f},{},{1.0f,0.0f}},//右上
 	};
 	//インデックスデータ
-	rect.indices =
+	rect.indices_ =
 	{
 		0,1,2,
 		2,1,3,

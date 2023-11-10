@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "ADXModel.h"
 #include "ADXMaterial.h"
 #include "ADXImage.h"
@@ -27,24 +27,53 @@ public:
 	};
 
 public:
-	ADXWorldTransform transform{};
-	ADXModel* model = nullptr;
-	ADXMaterial material{};
-	uint32_t texture = 0;
-	int32_t renderLayer = 0;
-	int32_t sortingOrder = 0;
-	bool alphaTex = false;
-	bool isVisible = true;
-	bool isActive = true;
-	bool useDefaultDraw = true;
+	ADXWorldTransform transform_{};
+	ADXModel* model_ = nullptr;
+	ADXMaterial material_{};
+	uint32_t texture_ = 0;
+	int32_t renderLayer_ = 0;
+	int32_t sortingOrder_ = 0;
+	bool alphaTex_ = false;
+	bool isVisible_ = true;
+	bool isActive_ = true;
+	bool useDefaultDraw_ = true;
 
 protected:
-	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffB1 = nullptr;
-	ConstBufferDataB0* constMapMaterial = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffB1_ = nullptr;
+	ConstBufferDataB0* constMapMaterial_ = nullptr;
 
 private:
-	std::list<std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>>> components{};
-	bool deleteFlag = false;
+	std::list<std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>>> components_{};
+	bool deleteFlag_ = false;
+
+private: // 静的メンバ変数
+	// ルートシグネチャ
+	static Microsoft::WRL::ComPtr<ID3D12RootSignature> S_rootSignature;
+	// パイプラインステートオブジェクト（不透明オブジェクト用）
+	static Microsoft::WRL::ComPtr<ID3D12PipelineState> S_pipelineState;
+	// パイプラインステートオブジェクト（半透明オブジェクト用）
+	static Microsoft::WRL::ComPtr<ID3D12PipelineState> S_pipelineStateAlpha;
+	// デスクリプタサイズ
+	static uint64_t S_descriptorHandleIncrementSize;
+	// コマンドリスト
+	static ID3D12GraphicsCommandList* S_cmdList;
+	// シェーダリソースビューのハンドル(CPU)
+	static D3D12_CPU_DESCRIPTOR_HANDLE S_cpuDescHandleSRV;
+	// シェーダリソースビューのハンドル(CPU)
+	static D3D12_GPU_DESCRIPTOR_HANDLE S_gpuDescHandleSRV;
+
+	static uint64_t S_GpuStartHandle;
+	// 全てのオブジェクトが入った配列
+	static std::list<std::unique_ptr<ADXObject, ADXUtility::NPManager<ADXObject>>> S_objs;
+	// 全てのカメラを入れる配列
+	static std::vector<ADXCamera*> S_allCameraPtr;
+	// オブジェクトが存在できる領域を制限するための変数
+	static ADXVector3 S_limitPos1;
+	static ADXVector3 S_limitPos2;
+
+	static bool S_highQualityZSort;
+
+	static std::list<std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>>> S_usedComponents;
 
 public:
 	void Draw();
@@ -56,7 +85,7 @@ public:
 	template <class Type>
 	std::list<Type*> GetComponents();
 	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol);
-	bool GetDeleteFlag() { return deleteFlag; };
+	bool GetDeleteFlag() { return deleteFlag_; };
 
 private:
 	void Initialize();
@@ -93,35 +122,6 @@ private:
 	static void PreDraw();
 	// 描画後処理
 	static void PostDraw();
-
-private: // 静的メンバ変数
-	// ルートシグネチャ
-	static Microsoft::WRL::ComPtr<ID3D12RootSignature> S_rootSignature;
-	// パイプラインステートオブジェクト（不透明オブジェクト用）
-	static Microsoft::WRL::ComPtr<ID3D12PipelineState> S_pipelineState;
-	// パイプラインステートオブジェクト（半透明オブジェクト用）
-	static Microsoft::WRL::ComPtr<ID3D12PipelineState> S_pipelineStateAlpha;
-	// デスクリプタサイズ
-	static uint64_t S_descriptorHandleIncrementSize;
-	// コマンドリスト
-	static ID3D12GraphicsCommandList* S_cmdList;
-	// シェーダリソースビューのハンドル(CPU)
-	static D3D12_CPU_DESCRIPTOR_HANDLE S_cpuDescHandleSRV;
-	// シェーダリソースビューのハンドル(CPU)
-	static D3D12_GPU_DESCRIPTOR_HANDLE S_gpuDescHandleSRV;
-
-	static uint64_t S_GpuStartHandle;
-	// 全てのオブジェクトが入った配列
-	static std::list<std::unique_ptr<ADXObject, ADXUtility::NPManager<ADXObject>>> S_objs;
-	// 全てのカメラを入れる配列
-	static std::vector<ADXCamera*> S_allCameraPtr;
-	// オブジェクトが存在できる領域を制限するための変数
-	static ADXVector3 S_limitPos1;
-	static ADXVector3 S_limitPos2;
-	
-	static bool S_highQualityZSort;
-
-	static std::list<std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>>> S_usedComponents;
 };
 
 template<class Type>
@@ -130,7 +130,7 @@ inline Type* ADXObject::AddComponent()
 	Type* p = new Type();
 	std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>> temp(p);
 	temp->SetGameObject(this);
-	components.push_back(move(temp));
+	components_.push_back(move(temp));
 	return p;
 }
 
@@ -142,7 +142,7 @@ inline Type* ADXObject::GetComponent()
 		return nullptr;
 	}
 
-	for (auto& itr : components)
+	for (auto& itr : components_)
 	{
 		if (itr)
 		{
@@ -166,7 +166,7 @@ inline std::list<Type*> ADXObject::GetComponents()
 	}
 
 	std::list<Type*> ret = {};
-	for (auto& itr : components)
+	for (auto& itr : components_)
 	{
 		if (itr)
 		{

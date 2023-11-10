@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXVector3.h"
 #include "ADXMatrix4.h"
@@ -6,8 +6,8 @@
 class ADXQuaternion
 {
 public:
-	ADXVector3 v = ADXVector3{ 0,0,0 };
-	float w = 1;
+	ADXVector3 v_ = ADXVector3{ 0,0,0 };
+	float w_ = 1;
 
 public:
 	//共役ADXQuaternionを返す

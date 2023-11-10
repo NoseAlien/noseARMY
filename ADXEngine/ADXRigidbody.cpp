@@ -2,44 +2,44 @@
 
 void ADXRigidbody::UniqueInitialize()
 {
-	GetGameObject()->transform.UpdateMatrix();
-	prevPos = GetGameObject()->transform.localPosition_;
-	initializedThisFrame = true;
+	GetGameObject()->transform_.UpdateMatrix();
+	prevPos_ = GetGameObject()->transform_.localPosition_;
+	initializedThisFrame_ = true;
 }
 
 void ADXRigidbody::VelocityMove()
 {
-	velocity = GetGameObject()->transform.localPosition_ - prevPos;
-	prevPos = GetGameObject()->transform.localPosition_;
+	velocity_ = GetGameObject()->transform_.localPosition_ - prevPos_;
+	prevPos_ = GetGameObject()->transform_.localPosition_;
 
-	if (dragAxis.x && dragAxis.y && dragAxis.z)
+	if (dragAxis_.x && dragAxis_.y && dragAxis_.z)
 	{
-		velocity *= drag;
+		velocity_ *= drag_;
 	}
 	else
 	{
-		if (dragAxis.x)
+		if (dragAxis_.x)
 		{
-			velocity.x *= drag;
+			velocity_.x_ *= drag_;
 		}
-		if (dragAxis.y)
+		if (dragAxis_.y)
 		{
-			velocity.y *= drag;
+			velocity_.y_ *= drag_;
 		}
-		if (dragAxis.z)
+		if (dragAxis_.z)
 		{
-			velocity.z *= drag;
+			velocity_.z_ *= drag_;
 		}
 	}
 
-	velocity += gravity * gravityScale;
+	velocity_ += gravity_ * gravityScale_;
 }
 
 void ADXRigidbody::UniqueUpdate()
 {
-	if (!initializedThisFrame)
+	if (!initializedThisFrame_)
 	{
-		GetGameObject()->transform.localPosition_ += velocity;
+		GetGameObject()->transform_.localPosition_ += velocity_;
 	}
-	initializedThisFrame = false;
+	initializedThisFrame_ = false;
 }
