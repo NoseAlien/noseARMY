@@ -132,7 +132,7 @@ void Player::LiveEntitiesInitialize()
 	dead->transform.parent_ = &GetGameObject()->transform;
 	dead->transform.UpdateMatrix();
 	dead->model = &rect;
-	dead->texture = ADXImage::LoadADXImage("texture/apEGnoSE_dead.png");
+	dead->texture = ADXImage::LoadADXImage("texture/apEG_dead.png");
 	dead->material = GetGameObject()->material;
 	dead->renderLayer = 4;
 
