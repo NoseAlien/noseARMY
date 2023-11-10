@@ -3,80 +3,80 @@
 
 void Enemy::LiveEntitiesInitialize()
 {
-	damageSE = ADXAudio::LoadADXAudio("sound/hit.wav");
-	defeatSE = ADXAudio::LoadADXAudio("sound/slap.wav");
+	damageSE_ = ADXAudio::LoadADXAudio("sound/hit.wav");
+	defeatSE_ = ADXAudio::LoadADXAudio("sound/slap.wav");
 
-	enemyModel = ADXModel::LoadADXModel("model/groundBlock.obj");
+	enemyModel_ = ADXModel::LoadADXModel("model/groundBlock.obj");
 
-	visual->model_ = &enemyModel;
-	visual->texture_ = ADXImage::LoadADXImage("texture/battleField.png");
+	visual_->model_ = &enemyModel_;
+	visual_->texture_ = ADXImage::LoadADXImage("texture/battleField.png");
 
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
 	tempCol->isTrigger_ = true;
 	tempCol->colType_ = sphere;
 	tempCol->radius_ = 12;
 
-	rigidbody = GetGameObject()->AddComponent<ADXRigidbody>();
+	rigidbody_ = GetGameObject()->AddComponent<ADXRigidbody>();
 	EnemyInitialize();
 }
 
 void Enemy::LiveEntitiesUpdate()
 {
-	rigidbody->VelocityMove();
+	rigidbody_->VelocityMove();
 
-	rigidbody->drag_ = 0.8f;
-	rigidbody->dragAxis_ = { true,false,true };
-	rigidbody->gravity_ = { 0,-1,0 };
-	rigidbody->gravityScale_ = 0.015f;
+	rigidbody_->drag_ = 0.8f;
+	rigidbody_->dragAxis_ = { true,false,true };
+	rigidbody_->gravity_ = { 0,-1,0 };
+	rigidbody_->gravityScale_ = 0.015f;
 
-	visual->texture_ = nutralTex;
+	visual_->texture_ = nutralTex_;
 
 	EnemyUpdate();
 
-	targetDetected = false;
-	carcassLifeTime = maxCarcassLifeTime;
+	targetDetected_ = false;
+	carcassLifeTime_ = maxCarcassLifeTime;
 }
 
 void Enemy::DeadUpdate()
 {
-	rigidbody->drag_ = 0.8f;
-	rigidbody->dragAxis_ = { true,false,true };
-	rigidbody->gravity_ = { 0,-1,0 };
-	rigidbody->gravityScale_ = 0.015f;
-	rigidbody->VelocityMove();
+	rigidbody_->drag_ = 0.8f;
+	rigidbody_->dragAxis_ = { true,false,true };
+	rigidbody_->gravity_ = { 0,-1,0 };
+	rigidbody_->gravityScale_ = 0.015f;
+	rigidbody_->VelocityMove();
 
 	for (auto& itr : GetGameObject()->GetComponents<ADXCollider>())
 	{
 		itr->pushBackPriority_ = -2;
 	}
 
-	visual->texture_ = deadTex;
+	visual_->texture_ = deadTex_;
 
-	if (clock() % 1000 < 100 || (carcassLifeTime <= (int32_t)maxCarcassLifeTime / 4 && clock() % 200 < 100))
+	if (clock() % 1000 < 100 || (carcassLifeTime_ <= (int32_t)maxCarcassLifeTime / 4 && clock() % 200 < 100))
 	{
-		visual->material_.ambient_ = { 0.2f,0.2f,0.2f };
-		for (auto& itr : bodyParts)
+		visual_->material_.ambient_ = { 0.2f,0.2f,0.2f };
+		for (auto& itr : bodyParts_)
 		{
 			itr->material_.ambient_ = { 0.2f,0.2f,0.2f };
 		}
 	}
 
-	if (grabber != nullptr)
+	if (grabber_ != nullptr)
 	{
 		GetGameObject()->transform_.SetWorldPosition(GetGameObject()->transform_.GetWorldPosition()
-			+ (grabber->GetGameObject()->transform_.GetWorldPosition() - GetGameObject()->transform_.GetWorldPosition()) * 0.1f);
+			+ (grabber_->GetGameObject()->transform_.GetWorldPosition() - GetGameObject()->transform_.GetWorldPosition()) * 0.1f);
 
 		for (auto& itr : GetGameObject()->GetComponents<ADXCollider>())
 		{
 			if (!itr->isTrigger_)
 			{
-				LiveEntity::SetAttackObj({ itr,(LiveEntity*)grabber->GetParent(),maxHP });
+				LiveEntity::SetAttackObj({ itr,(LiveEntity*)grabber_->GetParent(),maxHP_ });
 			}
 		}
 	}
 
-	carcassLifeTime--;
-	if (carcassLifeTime <= 0)
+	carcassLifeTime_--;
+	if (carcassLifeTime_ <= 0)
 	{
 		GetGameObject()->Destroy();
 	}
@@ -89,29 +89,29 @@ void Enemy::LiveEntitiesOnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 		LiveEntity* tempLiv = col->GetGameObject()->GetComponent<LiveEntity>();
 		if (!col->isTrigger_ && tempLiv != nullptr && tempLiv->IsLive() && tempLiv->GetTeam() != GetTeam())
 		{
-			targetDetected = true;
-			targetPos = col->GetGameObject()->transform_.GetWorldPosition();
+			targetDetected_ = true;
+			targetPos_ = col->GetGameObject()->transform_.GetWorldPosition();
 		}
 	}
-	else if(!myCol->isTrigger_ && !IsLive() && grabber == nullptr)
+	else if(!myCol->isTrigger_ && !IsLive() && grabber_ == nullptr)
 	{
 		if (col->GetGameObject()->GetComponent<PlayerMini>())
 		{
-			grabber = col->GetGameObject()->GetComponent<PlayerMini>();
+			grabber_ = col->GetGameObject()->GetComponent<PlayerMini>();
 		}
 		if (!col->isTrigger_ && col->GetGameObject()->GetComponent<Enemy>()
-			&& col->GetGameObject()->GetComponent<Enemy>()->grabber != nullptr)
+			&& col->GetGameObject()->GetComponent<Enemy>()->grabber_ != nullptr)
 		{
-			grabber = col->GetGameObject()->GetComponent<Enemy>()->grabber;
+			grabber_ = col->GetGameObject()->GetComponent<Enemy>()->grabber_;
 		}
 	}
 }
 
 void Enemy::SafetyPhase()
 {
-	if (grabber != nullptr && grabber->GetGameObject()->GetDeleteFlag())
+	if (grabber_ != nullptr && grabber_->GetGameObject()->GetDeleteFlag())
 	{
-		grabber = nullptr;
+		grabber_ = nullptr;
 	}
 	EnemySafetyPhase();
 }

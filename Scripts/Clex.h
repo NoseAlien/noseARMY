@@ -4,11 +4,11 @@
 class Clex : public Enemy
 {
 private:
-	ADXModel rect{};
+	ADXModel rect_{};
 	uint32_t attackTex = 0;
 
 	ADXObject* face = nullptr;
-	ADXObject* body = nullptr;
+	ADXObject* body_ = nullptr;
 	ADXObject* antennaRig = nullptr;
 	ADXObject* antenna = nullptr;
 	std::list<Enemy*> projectiles{};

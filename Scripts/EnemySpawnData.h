@@ -13,9 +13,9 @@ struct SpawnData
 class EnemySpawnData
 {
 private:
-	std::vector<SpawnData> spawnList{};
+	std::vector<SpawnData> spawnList_{};
 
 public:
 	void SetSpawnList(const std::vector<SpawnData>& setSpawnList);
-	std::list<Enemy*> Spawn(const std::string& team, ADXWorldTransform* tf = nullptr);
+	std::list<Enemy*> Spawn(const std::string& team_, ADXWorldTransform* tf = nullptr);
 };

@@ -1,8 +1,8 @@
 ﻿#include "TutorialArea.h"
 
-void TutorialArea::SetTutorialImg(uint32_t setTutorialImg)
+void TutorialArea::SetTutorialImg(uint32_t setTutorialImg_)
 {
-	tutorialImg = setTutorialImg;
+	tutorialImg_ = setTutorialImg_;
 }
 
 void TutorialArea::UniqueInitialize()

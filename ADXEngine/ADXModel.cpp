@@ -32,11 +32,11 @@ ADXModel ADXModel::LoadADXModel(const std::string& filePath)
 	while (std::getline(file, line))
 	{
 		std::istringstream line_stream(line);
-		std::string key;
-		std::getline(line_stream, key, ' ');
+		std::string key_;
+		std::getline(line_stream, key_, ' ');
 
 		//先頭文字列がvなら頂点座標
-		if (key == "v")
+		if (key_ == "v")
 		{
 			//XYZ座標読み込み
 			XMFLOAT3 position{};
@@ -48,7 +48,7 @@ ADXModel ADXModel::LoadADXModel(const std::string& filePath)
 		}
 
 		//先頭文字列がvtならテクスチャ
-		if (key == "vt")
+		if (key_ == "vt")
 		{
 			//UV成分読み込み
 			XMFLOAT2 texcoord{};
@@ -61,7 +61,7 @@ ADXModel ADXModel::LoadADXModel(const std::string& filePath)
 		}
 
 		//先頭文字列がvnなら法線ベクトル
-		if (key == "vn")
+		if (key_ == "vn")
 		{
 			//XYZ成分読み込み
 			XMFLOAT3 normal{};
@@ -73,7 +73,7 @@ ADXModel ADXModel::LoadADXModel(const std::string& filePath)
 		}
 
 		//先頭文字列がfならポリゴン
-		if (key == "f")
+		if (key_ == "f")
 		{
 			int32_t polyCount = 0;
 			unsigned short firstIndex{};
@@ -328,15 +328,15 @@ void ADXModel::Update()
 
 ADXModel ADXModel::CreateRect()
 {
-	ADXModel rect;
-	rect.vertices_ = {
+	ADXModel rect_;
+	rect_.vertices_ = {
 	{{-1.0f,-1.0f,0.0f},{}, {0.0f,1.0f}},//左下
 	{{-1.0f,1.0f,0.0f},{},{0.0f,0.0f}},//左上
 	{{1.0f,-1.0f,0.0f},{},{1.0f,1.0f}},//右下
 	{{1.0f,1.0f,0.0f},{},{1.0f,0.0f}},//右上
 	};
 	//インデックスデータ
-	rect.indices_ =
+	rect_.indices_ =
 	{
 		0,1,2,
 		2,1,3,
@@ -344,6 +344,6 @@ ADXModel ADXModel::CreateRect()
 		1,0,2,
 		1,2,3,
 	};
-	rect.Initialize();
-	return rect;
+	rect_.Initialize();
+	return rect_;
 }

@@ -8,12 +8,12 @@ public:
 	const int32_t MaxSceneTransitionCount = 60;
 
 private:
-	std::string team = "";
-	int32_t sceneTransitionCount = MaxSceneTransitionCount;
-	ADXObject *clearUI = nullptr;
-	ADXObject *keyUI = nullptr;
-	ADXModel boxModel{};
-	ADXModel rectModel{};
+	std::string team_ = "";
+	int32_t sceneTransitionCount_ = MaxSceneTransitionCount;
+	ADXObject *clearUI_ = nullptr;
+	ADXObject *keyUI_ = nullptr;
+	ADXModel boxModel_{};
+	ADXModel rectModel_{};
 
 public:
 	void Initialize(const std::string& setTeam);

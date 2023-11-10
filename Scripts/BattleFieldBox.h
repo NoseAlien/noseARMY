@@ -7,14 +7,14 @@
 class BattleFieldBox : public FieldBox
 {
 private:
-	EnemySpawnData enemySpawnData{};
-	std::list<Enemy*> guardersPtr = {};
-	bool awake = false;
-	bool guarderSpawned = false;
-	int32_t battling = 10;
-	std::string team = "";
-	ADXModel boxModel{};
-	float animationProgress = 0;
+	EnemySpawnData enemySpawnData_{};
+	std::list<Enemy*> guardersPtr_ = {};
+	bool awake_ = false;
+	bool guarderSpawned_ = false;
+	int32_t battling_ = 10;
+	std::string team_ = "";
+	ADXModel boxModel_{};
+	float animationProgress_ = 0;
 
 public:
 	void Initialize(const std::vector<SpawnData>& setGuarders, const std::string& setTeam = "");

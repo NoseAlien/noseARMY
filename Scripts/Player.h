@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "ADXComponent.h"
 #include "ADXKeyBoardInput.h"
@@ -18,50 +18,50 @@ private:
 	static const uint32_t maxMinisNum = 20;
 
 private:
-	ADXCamera* camera = nullptr;
+	ADXCamera* camera_ = nullptr;
 
-	ADXObject* nose = nullptr;
-	ADXObject* outOfField = nullptr;
-	ADXObject* tutorialWindow = nullptr;
-	ADXObject* gameOverFilter = nullptr;
-	ADXObject* dead = nullptr;
-	ADXObject* keyUI = nullptr;
+	ADXObject* nose_ = nullptr;
+	ADXObject* outOfField_ = nullptr;
+	ADXObject* tutorialWindow_ = nullptr;
+	ADXObject* gameOverFilter_ = nullptr;
+	ADXObject* dead_ = nullptr;
+	ADXObject* keyUI_ = nullptr;
 
-	ADXModel rect{};
-	ADXModel playerModel{};
+	ADXModel rect_{};
+	ADXModel playerModel_{};
 
-	ADXAudio jumpSE{};
-	ADXAudio windowOpenSE{};
+	ADXAudio jumpSE_{};
+	ADXAudio windowOpenSE_{};
 
-	ADXKeyBoardInput* keyboard = nullptr;
-	std::vector<BYTE> config{};
+	ADXKeyBoardInput* keyboard_ = nullptr;
+	std::vector<BYTE> config_{};
 
-	ADXRigidbody* rigidbody{};
+	ADXRigidbody* rigidbody_{};
 
-	ADXParticleSystem* deadParticle = nullptr;
+	ADXParticleSystem* deadParticle_ = nullptr;
 
-	std::list<PlayerMini*> minis{};
-	int splitInterval = 0;
-	bool splitable = true;
-	float tutorialWindowExAmount = 0;
-	bool windowOpening = false;
-	bool windowClosing = false;
+	std::list<PlayerMini*> minis_{};
+	int splitInterval_ = 0;
+	bool splitable_ = true;
+	float tutorialWindowExAmount_ = 0;
+	bool windowOpening_ = false;
+	bool windowClosing_ = false;
 
-	float deadAnimationProgress = 0;
-	bool restartAnimationAble = false;
-	float restartAnimationProgress = 0;
+	float deadAnimationProgress_ = 0;
+	bool restartAnimationAble_ = false;
+	float restartAnimationProgress_ = 0;
 
-	bool windowExtend = false;
-	bool isOutOfField = false;
+	bool windowExtend_ = false;
+	bool isOutOfField_ = false;
 
-	uint32_t setTutorialImg = 0;
+	uint32_t setTutorialImg_ = 0;
 
 public:
 	void Initialize(ADXKeyBoardInput* setKeyboard, const std::vector<BYTE>& setConfig, ADXCamera* setCamera);
 	bool GetInputStatus(int keyIndex);
 	bool GetInputStatusTrigger(int keyIndex);
 	bool GetInputStatusRelease(int keyIndex);
-	ADXCamera* GetCamera() { return camera; };
+	ADXCamera* GetCamera() { return camera_; };
 
 private:
 	void LiveEntitiesInitialize() final;

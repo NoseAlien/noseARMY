@@ -7,10 +7,10 @@
 class SceneManager : public ADXSceneManager
 {
 private:
-	ADXScene logoScene{};
-	TitleScene titleScene{};
-	StageSelectScene stageSelectScene{};
-	GameScene gameScene{};
+	ADXScene logoScene_{};
+	TitleScene titleScene_{};
+	StageSelectScene stageSelectScene_{};
+	GameScene gameScene_{};
 
 private:
 	void UniqueInitialize();

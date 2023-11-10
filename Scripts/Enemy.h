@@ -9,22 +9,22 @@ class Enemy : public LiveEntity
 private:
 	const uint32_t maxCarcassLifeTime = 1800;
 
-private:
-	int32_t carcassLifeTime = maxCarcassLifeTime;
-
 protected:
-	ADXRigidbody* rigidbody;
+	ADXRigidbody* rigidbody_;
 
-	ADXModel enemyModel{};
-	uint32_t nutralTex = 0;
-	uint32_t deadTex = 0;
+	ADXModel enemyModel_{};
+	uint32_t nutralTex_ = 0;
+	uint32_t deadTex_ = 0;
 
-	ADXVector3 targetPos{};
-	bool targetDetected = false;
-	ADXVector3 cursor{};
-	float attackProgress = 0;
+	ADXVector3 targetPos_{};
+	bool targetDetected_ = false;
+	ADXVector3 cursor_{};
+	float attackProgress_ = 0;
 
-	PlayerMini* grabber = nullptr;
+	PlayerMini* grabber_ = nullptr;
+
+private:
+	int32_t carcassLifeTime_ = maxCarcassLifeTime;
 
 protected:
 	virtual void EnemyInitialize() {};

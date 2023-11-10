@@ -339,7 +339,7 @@ void ADXObject::Update()
 {
 	if (isActive_)
 	{
-		for (auto& itr : components)
+		for (auto& itr : components_)
 		{
 			itr->Update(this);
 		}
@@ -353,7 +353,7 @@ void ADXObject::StaticUpdate()
 
 	for (auto& itr : S_objs)
 	{
-		for (auto& comItr : itr->components)
+		for (auto& comItr : itr->components_)
 		{
 			comItr->SafetyPhase();
 		}
@@ -363,7 +363,7 @@ void ADXObject::StaticUpdate()
 	{
 		if (itr->deleteFlag_ || (itr->transform_.parent_ != nullptr && itr->transform_.parent_->GetGameObject()->deleteFlag_))
 		{
-			itr->components.clear();
+			itr->components_.clear();
 		}
 	}
 	S_objs.remove_if([=](auto& itr)
@@ -409,7 +409,7 @@ void ADXObject::StaticDraw()
 
 	for (auto& itr : allObjPtr)
 	{
-		for (auto& comItr : itr->components)
+		for (auto& comItr : itr->components_)
 		{
 			comItr->OnPreRender();
 		}
@@ -574,7 +574,7 @@ std::list<ADXObject*> ADXObject::GetObjs()
 
 void ADXObject::Draw()
 {
-	for (auto& itr : components)
+	for (auto& itr : components_)
 	{
 		itr->OnWillRenderObject();
 	}
@@ -608,7 +608,7 @@ void ADXObject::Draw()
 		model_->Draw(S_cmdList, transform_);
 	}
 
-	for (auto& itr : components)
+	for (auto& itr : components_)
 	{
 		itr->Rendered();
 	}
@@ -617,7 +617,7 @@ void ADXObject::Draw()
 void ADXObject::Destroy()
 {
 	deleteFlag_ = true;
-	for (auto& itr : components)
+	for (auto& itr : components_)
 	{
 		itr->OnDestroy();
 	}
@@ -629,7 +629,7 @@ void ADXObject::Destroy()
 
 void ADXObject::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
-	for (auto& itr : components)
+	for (auto& itr : components_)
 	{
 		itr->OnCollisionHit(col, myCol);
 	}

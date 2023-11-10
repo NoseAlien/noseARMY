@@ -26,36 +26,36 @@ ADXMaterial ADXMaterial::LoadMaterial(const std::string& filePath)
 		std::istringstream line_stream(line);
 
 		//半角スペース区切りで行の先頭文字列を取得
-		std::string key;
-		getline(line_stream, key, ' ');
+		std::string key_;
+		getline(line_stream, key_, ' ');
 
 		//先頭のタブは無視する
-		if (key[0] == *"\t")
+		if (key_[0] == *"\t")
 		{
-			key.erase(key.begin());
+			key_.erase(key_.begin());
 		}
 
 		//先頭文字列がnewmtlならマテリアル名
-		if (key == "newmtl")
+		if (key_ == "newmtl")
 		{
 			line_stream >> material.name_;
 		}
 		//先頭文字列がKaならアンビエント色
-		if (key == "Ka")
+		if (key_ == "Ka")
 		{
 			line_stream >> material.ambient_.x;
 			line_stream >> material.ambient_.y;
 			line_stream >> material.ambient_.z;
 		}
 		//先頭文字列がKdならディフューズ色
-		if (key == "Kd")
+		if (key_ == "Kd")
 		{
 			line_stream >> material.diffuse_.x;
 			line_stream >> material.diffuse_.y;
 			line_stream >> material.diffuse_.z;
 		}
 		//先頭文字列がKsならスペキュラー色
-		if (key == "Ks")
+		if (key_ == "Ks")
 		{
 			line_stream >> material.specular_.x;
 			line_stream >> material.specular_.y;

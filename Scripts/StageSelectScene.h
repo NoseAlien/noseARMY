@@ -13,13 +13,13 @@ class StageSelectScene : public ADXScene
 {
 private:
 	//画像
-	uint32_t keyImg{};
-	uint32_t backGroundTex{};
-	uint32_t groundImg{};
+	uint32_t keyImg_{};
+	uint32_t backGroundTex_{};
+	uint32_t groundImg_{};
 
 	//3Dモデル
-	ADXModel ground{};
-	ADXModel rect{};
+	ADXModel ground_{};
+	ADXModel rect_{};
 
 	//カメラ
 	ADXCamera* camera_ = nullptr;

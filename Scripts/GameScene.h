@@ -28,13 +28,13 @@ private:
 
 private:
 	//画像
-	uint32_t keyImg = 0;
-	uint32_t backGroundTex = 0;
-	uint32_t groundImg = 0;
+	uint32_t keyImg_ = 0;
+	uint32_t backGroundTex_ = 0;
+	uint32_t groundImg_ = 0;
 
 	//3Dモデル
-	ADXModel ground{};
-	ADXModel rect{};
+	ADXModel ground_{};
+	ADXModel rect_{};
 
 	//カメラ
 	ADXCamera* camera_{};
@@ -46,11 +46,11 @@ private:
 	std::list<FieldBox*> fields_{};
 	std::list<BattleFieldBox*> battleFields_{};
 	Goal* goal_ = nullptr;
-	ADXObject* key = nullptr;
+	ADXObject* key_ = nullptr;
 	ADXObject* backGround_ = nullptr;
 
-	EnemySpawnData enemySpawnData{};
-	std::list<TransformData> floorGenerateData{};
+	EnemySpawnData enemySpawnData_{};
+	std::list<TransformData> floorGenerateData_{};
 
 public:
 	void Initialize();

@@ -5,11 +5,11 @@
 class TutorialArea : public ADXComponent
 {
 private:
-	uint32_t tutorialImg = 0;
+	uint32_t tutorialImg_ = 0;
 
 public:
-	void SetTutorialImg(uint32_t setTutorialImg);
-	uint32_t GetTutorialImg() { return tutorialImg; };
+	void SetTutorialImg(uint32_t setTutorialImg_);
+	uint32_t GetTutorialImg() { return tutorialImg_; };
 
 private:
 	void UniqueInitialize();

@@ -3,78 +3,78 @@
 
 void Cub_E::EnemyInitialize()
 {
-	rect = ADXModel::CreateRect();
-	enemyModel = ADXModel::LoadADXModel("model/Cub_E.obj");
+	rect_ = ADXModel::CreateRect();
+	enemyModel_ = ADXModel::LoadADXModel("model/Cub_E.obj");
 
-	nutralTex = ADXImage::LoadADXImage("texture/tex_Cub_E.png");
-	deadTex = ADXImage::LoadADXImage("texture/tex_Cub_E_4.png");
+	nutralTex_ = ADXImage::LoadADXImage("texture/tex_Cub_E.png");
+	deadTex_ = ADXImage::LoadADXImage("texture/tex_Cub_E_4.png");
 	preAttackTex = ADXImage::LoadADXImage("texture/tex_Cub_E_2.png");
 	attackTex = ADXImage::LoadADXImage("texture/tex_Cub_E_3.png");
 
-	visual->model_ = &enemyModel;
+	visual_->model_ = &enemyModel_;
 
 	hair = ADXObject::Create();
-	hair->transform_.parent_ = &visual->transform_;
-	hair->model_ = &rect;
+	hair->transform_.parent_ = &visual_->transform_;
+	hair->model_ = &rect_;
 	hair->texture_ = ADXImage::LoadADXImage("texture/Cub_E_hair.png");
-	bodyParts.push_back(hair);
+	bodyParts_.push_back(hair);
 
 	tailRig = ADXObject::Create();
-	tailRig->transform_.parent_ = &visual->transform_;
+	tailRig->transform_.parent_ = &visual_->transform_;
 
 	tail = ADXObject::Create();
 	tail->transform_.parent_ = &tailRig->transform_;
-	tail->model_ = &rect;
+	tail->model_ = &rect_;
 	tail->texture_ = ADXImage::LoadADXImage("texture/Cub_E_tail.png");
-	bodyParts.push_back(tail);
+	bodyParts_.push_back(tail);
 }
 
 void Cub_E::EnemyUpdate()
 {
 	GetGameObject()->sortingOrder_ = 1;
 
-	if (targetDetected && attackProgress <= 0)
+	if (targetDetected_ && attackProgress_ <= 0)
 	{
-		ADXVector3 targetRelativePos = targetPos;
+		ADXVector3 targetRelativePos = targetPos_;
 		if (GetGameObject()->transform_.parent_ != nullptr)
 		{
-			targetRelativePos = ADXMatrix4::Transform(targetPos, GetGameObject()->transform_.parent_->GetMatWorld());
+			targetRelativePos = ADXMatrix4::Transform(targetPos_, GetGameObject()->transform_.parent_->GetMatWorld());
 		}
 
-		cursor = targetRelativePos;
-		attackProgress = 1;
+		cursor_ = targetRelativePos;
+		attackProgress_ = 1;
 	}
 
-	visual->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
+	visual_->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
 
-	rigidbody->gravity_ = { 0,-2,0 };
+	rigidbody_->gravity_ = { 0,-2,0 };
 
-	if (attackProgress > 0)
+	if (attackProgress_ > 0)
 	{
-		ADXVector3 finalTarget = cursor;
-		if (attackProgress > 0.9f)
+		ADXVector3 finalTarget = cursor_;
+		if (attackProgress_ > 0.9f)
 		{
 			ADXQuaternion targetRot = ADXQuaternion::EulerToQuaternion(
-				{ 0,(float)atan2(cursor.x_ - GetGameObject()->transform_.localPosition_.x_,cursor.z_ - GetGameObject()->transform_.localPosition_.z_),0 });
+				{ 0,(float)atan2(cursor_.x_ - GetGameObject()->transform_.localPosition_.x_,cursor_.z_ - GetGameObject()->transform_.localPosition_.z_),0 });
 
 			GetGameObject()->transform_.localRotation_ = ADXQuaternion::Slerp(GetGameObject()->transform_.localRotation_,targetRot,0.3f);
 			GetGameObject()->transform_.localRotation_ = GetGameObject()->transform_.localRotation_.Normalized();
 
-			visual->texture_ = preAttackTex;
+			visual_->texture_ = preAttackTex;
 		}
-		else if (attackProgress > 0.5f)
+		else if (attackProgress_ > 0.5f)
 		{
-			visual->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({
-				ADXUtility::EaseIn(ADXUtility::ValueMapping(attackProgress,0.9f,0.5f,1,0),6) * ADXUtility::Pi * -2,
+			visual_->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({
+				ADXUtility::EaseIn(ADXUtility::ValueMapping(attackProgress_,0.9f,0.5f,1,0),6) * ADXUtility::Pi * -2,
 				0,
 				0 });
 
 			finalTarget.y_ += 6;
-			rigidbody->velocity_ = (finalTarget - GetGameObject()->transform_.localPosition_) * 0.05f;
-			visual->texture_ = preAttackTex;
+			rigidbody_->velocity_ = (finalTarget - GetGameObject()->transform_.localPosition_) * 0.05f;
+			visual_->texture_ = preAttackTex;
 
 		}
-		else if (attackProgress > 0.2f)
+		else if (attackProgress_ > 0.2f)
 		{
 			for (auto& itr : GetGameObject()->GetComponents<ADXCollider>())
 			{
@@ -83,10 +83,10 @@ void Cub_E::EnemyUpdate()
 					LiveEntity::SetAttackObj({ itr,this,10 });
 				}
 			}
-			visual->texture_ = attackTex;
+			visual_->texture_ = attackTex;
 		}
 	}
-	attackProgress = min(max(0, attackProgress - 0.006f), 1);
+	attackProgress_ = min(max(0, attackProgress_ - 0.006f), 1);
 
 	tailRig->transform_.localPosition_ = { 0,-0.8f,-1 };
 	tailRig->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ -1,0,0 });

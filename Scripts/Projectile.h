@@ -5,10 +5,10 @@
 class Projectile : public Enemy
 {
 private:
-	ADXModel rect{};
+	ADXModel rect_{};
 	uint32_t billBoardTex = 0;
 
-	LiveEntity* parent = nullptr;
+	LiveEntity* parent_ = nullptr;
 	ADXObject* billBoard = nullptr;
 	uint32_t maxLifeTime = 30;
 	int32_t lifeTime = 0;

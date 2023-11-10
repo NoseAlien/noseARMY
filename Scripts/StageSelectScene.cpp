@@ -9,12 +9,12 @@ void StageSelectScene::Initialize()
 	tutorialAreas_ = {};
 
 	//画僁E
-	keyImg = ADXImage::LoadADXImage("texture/QUIT_TITLE.png");
-	backGroundTex = ADXImage::LoadADXImage("texture/skyBG.png");
-	groundImg = ADXImage::LoadADXImage("texture/GroundBlock.png");
+	keyImg_ = ADXImage::LoadADXImage("texture/QUIT_TITLE.png");
+	backGroundTex_ = ADXImage::LoadADXImage("texture/skyBG.png");
+	groundImg_ = ADXImage::LoadADXImage("texture/GroundBlock.png");
 
-	rect = ADXModel::CreateRect();
-	ground = ADXModel::LoadADXModel("model/groundBlock.obj");
+	rect_ = ADXModel::CreateRect();
+	ground_ = ADXModel::LoadADXModel("model/groundBlock.obj");
 
 	//オブジェクチE
 
@@ -31,14 +31,14 @@ void StageSelectScene::Initialize()
 	player_->LiveEntity::Initialize("player");
 
 	floors_.push_back(ADXObject::Create({ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 2,2,2 }));
-	floors_.back()->model_ = &ground;
-	floors_.back()->texture_ = groundImg;
+	floors_.back()->model_ = &ground_;
+	floors_.back()->texture_ = groundImg_;
 	ADXCollider* tempCol = floors_.back()->AddComponent<ADXCollider>();
 	tempCol->colType_ = box;
 
 	floors_.push_back(ADXObject::Create({ 0,-2,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 50,1,50 }));
-	floors_.back()->model_ = &ground;
-	floors_.back()->texture_ = groundImg;
+	floors_.back()->model_ = &ground_;
+	floors_.back()->texture_ = groundImg_;
 	tempCol = floors_.back()->AddComponent<ADXCollider>();
 	tempCol->colType_ = box;
 
@@ -59,15 +59,15 @@ void StageSelectScene::Initialize()
 	backGround_ = ADXObject::Create();
 	backGround_->transform_.rectTransform_ = true;
 	backGround_->transform_.UpdateMatrix();
-	backGround_->model_ = &rect;
-	backGround_->texture_ = backGroundTex;
+	backGround_->model_ = &rect_;
+	backGround_->texture_ = backGroundTex_;
 	backGround_->renderLayer_ = -1;
 
 	key_ = ADXObject::Duplicate(*backGround_);
 	key_->transform_.localPosition_ = { -0.65f,0.85f,0 };
 	key_->transform_.localScale_ = { 0.3f,0.45f,1 };
 	key_->transform_.UpdateMatrix();
-	key_->texture_ = keyImg;
+	key_->texture_ = keyImg_;
 	key_->renderLayer_ = 1;
 }
 

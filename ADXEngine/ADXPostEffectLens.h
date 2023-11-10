@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "ADXObject.h"
 
 class ADXPostEffectLens : public ADXComponent

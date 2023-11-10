@@ -11,41 +11,41 @@ void Goal::Initialize(const std::string& setTeam)
 	tempCol->isTrigger_ = true;
 	tempCol->colType_ = box;
 
-	team = setTeam;
-	sceneTransitionCount = MaxSceneTransitionCount;
+	team_ = setTeam;
+	sceneTransitionCount_ = MaxSceneTransitionCount;
 
-	rectModel = ADXModel::CreateRect();
-	boxModel = ADXModel::LoadADXModel("model/battleBox.obj");
+	rectModel_ = ADXModel::CreateRect();
+	boxModel_ = ADXModel::LoadADXModel("model/battleBox.obj");
 
-	GetGameObject()->model_ = &boxModel;
+	GetGameObject()->model_ = &boxModel_;
 
-	clearUI = ADXObject::Create();
-	clearUI->transform_.rectTransform_ = true;
-	clearUI->model_ = &rectModel;
-	clearUI->texture_ = ADXImage::LoadADXImage("texture/clear.png");
-	clearUI->renderLayer_ = 5;
+	clearUI_ = ADXObject::Create();
+	clearUI_->transform_.rectTransform_ = true;
+	clearUI_->model_ = &rectModel_;
+	clearUI_->texture_ = ADXImage::LoadADXImage("texture/clear.png");
+	clearUI_->renderLayer_ = 5;
 
-	keyUI = ADXObject::Duplicate(*clearUI);
-	keyUI->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
+	keyUI_ = ADXObject::Duplicate(*clearUI_);
+	keyUI_->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
 }
 
 void Goal::UniqueUpdate()
 {
-	clearUI->transform_.localPosition_ = { 0,0.5f + sin(clock() * 0.001f) * 0.02f,0 };
-	clearUI->transform_.localScale_ = { clearUI->transform_.localScale_.x_,0.7f,1 };
+	clearUI_->transform_.localPosition_ = { 0,0.5f + sin(clock() * 0.001f) * 0.02f,0 };
+	clearUI_->transform_.localScale_ = { clearUI_->transform_.localScale_.x_,0.7f,1 };
 
-	keyUI->transform_.localPosition_ = { 0,-0.5f + sin(clock() * 0.001f - 1) * 0.02f,0 };
-	keyUI->transform_.localScale_ = { keyUI->transform_.localScale_.x_,0.45f,1 };
+	keyUI_->transform_.localPosition_ = { 0,-0.5f + sin(clock() * 0.001f - 1) * 0.02f,0 };
+	keyUI_->transform_.localScale_ = { keyUI_->transform_.localScale_.x_,0.45f,1 };
 
-	if (sceneTransitionCount != MaxSceneTransitionCount)
+	if (sceneTransitionCount_ != MaxSceneTransitionCount)
 	{
-		clearUI->transform_.localScale_.x_ += (0.7f / ADXWindow::GetAspect() - clearUI->transform_.localScale_.x_) * 0.3f;
-		clearUI->transform_.UpdateMatrix();
+		clearUI_->transform_.localScale_.x_ += (0.7f / ADXWindow::GetAspect() - clearUI_->transform_.localScale_.x_) * 0.3f;
+		clearUI_->transform_.UpdateMatrix();
 
-		sceneTransitionCount--;
-		if (sceneTransitionCount <= 0)
+		sceneTransitionCount_--;
+		if (sceneTransitionCount_ <= 0)
 		{
-			keyUI->transform_.localScale_.x_ += (0.45f / ADXWindow::GetAspect() - keyUI->transform_.localScale_.x_) * 0.3f;
+			keyUI_->transform_.localScale_.x_ += (0.45f / ADXWindow::GetAspect() - keyUI_->transform_.localScale_.x_) * 0.3f;
 			if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_SPACE))
 			{
 				SceneTransition::ChangeScene(2);
@@ -53,22 +53,22 @@ void Goal::UniqueUpdate()
 		}
 		else
 		{
-			keyUI->transform_.localScale_.x_ = 0;
+			keyUI_->transform_.localScale_.x_ = 0;
 		}
 	}
 	else
 	{
-		clearUI->transform_.localScale_.x_ = 0;
-		keyUI->transform_.localScale_.x_ = 0;
+		clearUI_->transform_.localScale_.x_ = 0;
+		keyUI_->transform_.localScale_.x_ = 0;
 	}
 }
 
 void Goal::OnCollisionHit(ADXCollider* col, [[maybe_unused]] ADXCollider* myCol)
 {
 	LiveEntity* tempLiv = col->GetGameObject()->GetComponent<LiveEntity>();
-	if (sceneTransitionCount == MaxSceneTransitionCount && tempLiv != nullptr && tempLiv->GetTeam() == team)
+	if (sceneTransitionCount_ == MaxSceneTransitionCount && tempLiv != nullptr && tempLiv->GetTeam() == team_)
 	{
-		sceneTransitionCount--;
+		sceneTransitionCount_--;
 		return;
 	}
 }

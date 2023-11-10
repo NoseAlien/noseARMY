@@ -12,10 +12,10 @@ void FieldBox::UniqueUpdate()
 {
 	for (auto& colItr : GetGameObject()->GetComponents<ADXCollider>())
 	{
-		for (auto& objItr : insideObjects)
+		for (auto& objItr : insideObjects_)
 		{
 			bool pullBack = true;
-			for (auto& fieldItr : adjacentFields)
+			for (auto& fieldItr : adjacentFields_)
 			{
 				for (auto& colItr2 : fieldItr->GetGameObject()->GetComponents<ADXCollider>())
 				{
@@ -36,9 +36,9 @@ void FieldBox::UniqueUpdate()
 			}
 		}
 	}
-	insideObjects.clear();
+	insideObjects_.clear();
 
-	adjacentFields.clear();
+	adjacentFields_.clear();
 
 	FieldUpdate();
 }
@@ -46,14 +46,14 @@ void FieldBox::UniqueUpdate()
 void FieldBox::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
 	if (col->GetGameObject()->GetComponent<FieldBox>() != nullptr
-		&& col->GetGameObject()->GetComponent<FieldBox>()->fieldLayer == fieldLayer)
+		&& col->GetGameObject()->GetComponent<FieldBox>()->fieldLayer_ == fieldLayer_)
 	{
-		adjacentFields.push_back(col->GetGameObject()->GetComponent<FieldBox>());
+		adjacentFields_.push_back(col->GetGameObject()->GetComponent<FieldBox>());
 	}
 
 	if (!col->isTrigger_ && col->pushable_)
 	{
-		insideObjects.push_back(col->GetGameObject());
+		insideObjects_.push_back(col->GetGameObject());
 	}
 
 	FieldOnCollisionHit(col, myCol);

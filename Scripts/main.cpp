@@ -30,7 +30,7 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 		adxcommon.Initialize(&adxwindow);
 
 		//キーボードデバイスの生成
-		ADXKeyBoardInput keyboard(&adxwindow);
+		ADXKeyBoardInput keyboard_(&adxwindow);
 
 		ADXImGuiManager adximgui;
 		adximgui.Initialize(&adxwindow);
@@ -47,13 +47,13 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 		//ゲームループ
 		while (true)
 		{
-			if (adxwindow.ProcessMessage() || keyboard.KeyTrigger(DIK_ESCAPE))
+			if (adxwindow.ProcessMessage() || keyboard_.KeyTrigger(DIK_ESCAPE))
 			{
 				break;
 			}
 
 			adximgui.Begin();
-			keyboard.Update();
+			keyboard_.Update();
 			sceneMan.Update();
 			ADXObject::StaticUpdate();
 			//この下にあるゲーム専用の更新部分は後でまとめる

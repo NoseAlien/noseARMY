@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "ADXModel.h"
 #include "ADXMaterial.h"
 #include "ADXImage.h"

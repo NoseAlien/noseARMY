@@ -11,12 +11,12 @@ void GameScene::Initialize()
 	player_ = {};
 
 	//画像
-	keyImg = ADXImage::LoadADXImage("texture/QUIT_TITLE.png");
-	backGroundTex = ADXImage::LoadADXImage("texture/skyBG.png");
-	groundImg = ADXImage::LoadADXImage("texture/GroundBlock.png");
+	keyImg_ = ADXImage::LoadADXImage("texture/QUIT_TITLE.png");
+	backGroundTex_ = ADXImage::LoadADXImage("texture/skyBG.png");
+	groundImg_ = ADXImage::LoadADXImage("texture/GroundBlock.png");
 
-	rect = ADXModel::CreateRect();
-	ground = ADXModel::LoadADXModel("model/groundBlock.obj");
+	rect_ = ADXModel::CreateRect();
+	ground_ = ADXModel::LoadADXModel("model/groundBlock.obj");
 
 	//オブジェクト
 
@@ -35,7 +35,7 @@ void GameScene::Initialize()
 	player_->LiveEntity::Initialize("player");
 
 
-	floorGenerateData = {
+	floorGenerateData_ = {
 		{{ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 2,2,2 }},
 		{{ 0,-2,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,1,10 }},
 		{{ 0,-1,15 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,1,5 }},
@@ -53,11 +53,11 @@ void GameScene::Initialize()
 		{{ -40,-60,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,1,6 }},
 	};
 
-	for (auto& itr : floorGenerateData)
+	for (auto& itr : floorGenerateData_)
 	{
 		floors_.push_back(ADXObject::Create(itr.localPosition,itr.localRotation, itr.localScale));
-		floors_.back()->model_ = &ground;
-		floors_.back()->texture_ = groundImg;
+		floors_.back()->model_ = &ground_;
+		floors_.back()->texture_ = groundImg_;
 		ADXCollider* tempCol = floors_.back()->AddComponent<ADXCollider>();
 		tempCol->colType_ = box;
 	}
@@ -108,15 +108,15 @@ void GameScene::Initialize()
 		{1,{-0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
 		{2,{-0.5f,0,-0.5f},ADXQuaternion::IdentityQuaternion()},
 		}, "enemy");
-	battleFields_.back()->fieldLayer = 2;
+	battleFields_.back()->fieldLayer_ = 2;
 
-	enemySpawnData.SetSpawnList({
+	enemySpawnData_.SetSpawnList({
 		{ 1,{2,20,40},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
 		{ 1,{-2,20,44},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0})},
 		{ 2,{0,21,55},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0})},
 		});
 
-	enemySpawnData.Spawn("enemy");
+	enemySpawnData_.Spawn("enemy");
 
 	temp = ADXObject::Create({ -40,-50,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,10,6 });
 	goal_ = temp->AddComponent<Goal>();
@@ -125,23 +125,23 @@ void GameScene::Initialize()
 	backGround_ = ADXObject::Create();
 	backGround_->transform_.rectTransform_ = true;
 	backGround_->transform_.UpdateMatrix();
-	backGround_->model_ = &rect;
-	backGround_->texture_ = backGroundTex;
+	backGround_->model_ = &rect_;
+	backGround_->texture_ = backGroundTex_;
 	backGround_->renderLayer_ = -1;
 
-	key = ADXObject::Duplicate(*backGround_);
-	key->transform_.localPosition_ = { -0.65f,0.85f,0 };
-	key->transform_.localScale_ = { 0.3f,0.45f,1 };
-	key->transform_.UpdateMatrix();
-	key->texture_ = keyImg;
-	key->renderLayer_ = 1;
+	key_ = ADXObject::Duplicate(*backGround_);
+	key_->transform_.localPosition_ = { -0.65f,0.85f,0 };
+	key_->transform_.localScale_ = { 0.3f,0.45f,1 };
+	key_->transform_.UpdateMatrix();
+	key_->texture_ = keyImg_;
+	key_->renderLayer_ = 1;
 }
 
 void GameScene::Update()
 {
-	key->transform_.localPosition_ = { -0.65f,0.85f,0 };
-	key->transform_.localPosition_.y_ += sinf(clock() * 0.001f) * 0.01f;
-	key->transform_.localScale_ = { 0.45f / ADXWindow::GetAspect(),0.45f,1 };
+	key_->transform_.localPosition_ = { -0.65f,0.85f,0 };
+	key_->transform_.localPosition_.y_ += sinf(clock() * 0.001f) * 0.01f;
+	key_->transform_.localScale_ = { 0.45f / ADXWindow::GetAspect(),0.45f,1 };
 
 	if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_Q))
 	{

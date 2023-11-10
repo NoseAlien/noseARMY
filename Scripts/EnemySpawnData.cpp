@@ -5,17 +5,17 @@
 
 void EnemySpawnData::SetSpawnList(const std::vector<SpawnData>& setSpawnList)
 {
-	if (spawnList.empty())
+	if (spawnList_.empty())
 	{
-		spawnList = setSpawnList;
+		spawnList_ = setSpawnList;
 	}
 }
 
-std::list<Enemy*> EnemySpawnData::Spawn(const std::string& team, ADXWorldTransform* tf)
+std::list<Enemy*> EnemySpawnData::Spawn(const std::string& team_, ADXWorldTransform* tf)
 {
 	std::list<Enemy*> ret = {};
 
-	for (auto& spawnItr : spawnList)
+	for (auto& spawnItr : spawnList_)
 	{
 		ADXObject* temp = ADXObject::Create();
 
@@ -43,7 +43,7 @@ std::list<Enemy*> EnemySpawnData::Spawn(const std::string& team, ADXWorldTransfo
 			temp->transform_.localRotation_ = tf->TransformRotation(spawnItr.rotation);
 		}
 		temp->transform_.UpdateMatrix();
-		ret.back()->LiveEntity::Initialize(team);
+		ret.back()->LiveEntity::Initialize(team_);
 
 	}
 

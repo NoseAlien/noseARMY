@@ -4,7 +4,7 @@
 class Cub_E : public Enemy
 {
 private:
-	ADXModel rect{};
+	ADXModel rect_{};
 	uint32_t preAttackTex = 0;
 	uint32_t attackTex = 0;
 

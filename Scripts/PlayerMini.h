@@ -8,19 +8,19 @@ class Player;
 class PlayerMini : public ADXComponent
 {
 private:
-	ADXObject* nose = nullptr;
-	ADXObject* body = nullptr;
-	ADXModel rect{};
+	ADXObject* nose_ = nullptr;
+	ADXObject* body_ = nullptr;
+	ADXModel rect_{};
 
-	Player* parent = nullptr;
+	Player* parent_ = nullptr;
 
-	ADXRigidbody* rigidbody = nullptr;
-	float bodyRotAngle = 0;
-	bool destroyFlag = false;
+	ADXRigidbody* rigidbody_ = nullptr;
+	float bodyRotAngle_ = 0;
+	bool destroyFlag_ = false;
 
 public:
 	void Initialize(Player* setParent);
-	Player* GetParent() { return parent; };
+	Player* GetParent() { return parent_; };
 		
 private:
 	void UniqueInitialize() final;

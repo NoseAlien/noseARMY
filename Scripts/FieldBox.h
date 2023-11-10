@@ -6,11 +6,11 @@
 class FieldBox : public ADXComponent
 {
 public:
-	int fieldLayer = 0;
+	int fieldLayer_ = 0;
 
 private:
-	std::list<FieldBox*> adjacentFields{};
-	std::list<ADXObject*> insideObjects{};
+	std::list<FieldBox*> adjacentFields_{};
+	std::list<ADXObject*> insideObjects_{};
 
 protected:
 	virtual void FieldUpdate() {};
@@ -21,5 +21,5 @@ private:
 	void UniqueInitialize() final;
 	void UniqueUpdate() final;
 	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol) final;
-	std::list<FieldBox*> GetAdjacentFields() { return adjacentFields; };
+	std::list<FieldBox*> GetAdjacentFields() { return adjacentFields_; };
 };

@@ -9,17 +9,17 @@ void Projectile::SetData(const ADXVector3& setDirection, uint32_t setVisual)
 
 void Projectile::EnemyInitialize()
 {
-	rect = ADXModel::CreateRect();
+	rect_ = ADXModel::CreateRect();
 
 	GetGameObject()->material_.alpha_ = 0;
 
-	visual->model_ = nullptr;
+	visual_->model_ = nullptr;
 
 	billBoard = ADXObject::Create();
-	billBoard->transform_.parent_ = &visual->transform_;
-	billBoard->model_ = &rect;
+	billBoard->transform_.parent_ = &visual_->transform_;
+	billBoard->model_ = &rect_;
 	billBoard->texture_ = billBoardTex;
-	bodyParts.push_back(billBoard);
+	bodyParts_.push_back(billBoard);
 
 	lifeTime = maxLifeTime;
 }
@@ -32,7 +32,7 @@ void Projectile::EnemyUpdate()
 	}
 	else
 	{
-		rigidbody->velocity_ = direction;
+		rigidbody_->velocity_ = direction;
 		for (auto& itr : GetGameObject()->GetComponents<ADXCollider>())
 		{
 			if (!itr->isTrigger_)

@@ -10,26 +10,30 @@ struct AttackObject;
 class LiveEntity : public ADXComponent
 {
 protected:
-	float maxHP = 999;
-	float hpAmount = 1;
-	ADXAudio damageSE{};
-	ADXAudio defeatSE{};
-	ADXObject* visual = nullptr;
-	std::vector<ADXObject*> bodyParts{};
+	float maxHP_ = 999;
+	float hpAmount_ = 1;
+	ADXAudio damageSE_{};
+	ADXAudio defeatSE_{};
+	ADXObject* visual_ = nullptr;
+	std::vector<ADXObject*> bodyParts_{};
 
 private:
-	ADXModel rect{};
-	uint32_t gaugeTex = 0;
-	ADXParticleSystem* particle = nullptr;
-	ADXObject* hpGauge = nullptr;
-	ADXObject* hpGaugeBG = nullptr;
-	std::string team = "";
-	bool attackHitted = false;
+	ADXModel rect_{};
+	uint32_t gaugeTex_ = 0;
+	ADXParticleSystem* particle_ = nullptr;
+	ADXObject* hpGauge_ = nullptr;
+	ADXObject* hpGaugeBG_ = nullptr;
+	std::string team_ = "";
+	bool attackHitted_ = false;
+
+private:
+	static std::vector<AttackObject> S_attackObjs;
+	static std::vector<AttackObject> S_allAttackObj;
 
 public:
 	void Initialize(const std::string& setTeam);
-	bool IsLive() { return hpAmount > 0; };
-	std::string GetTeam() { return team; };
+	bool IsLive() { return hpAmount_ > 0; };
+	std::string GetTeam() { return team_; };
 
 protected:
 	void Damage(float damage);
@@ -45,10 +49,6 @@ protected:
 private:
 	void UniqueInitialize() final;
 	void UniqueUpdate() final;
-
-private:
-	static std::vector<AttackObject> S_attackObjs;
-	static std::vector<AttackObject> S_allAttackObj;
 
 public:
 	static void StaticUpdate();
