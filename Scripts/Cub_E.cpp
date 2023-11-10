@@ -65,7 +65,7 @@ void Cub_E::EnemyUpdate()
 		else if (attackProgress > 0.5f)
 		{
 			visual->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({
-				ADXUtility::EaseIn(ADXUtility::ValueMapping(attackProgress,0.9f,0.5f,1,0),6) * 3.1415f * -2,
+				ADXUtility::EaseIn(ADXUtility::ValueMapping(attackProgress,0.9f,0.5f,1,0),6) * ADXUtility::Pi * -2,
 				0,
 				0 });
 

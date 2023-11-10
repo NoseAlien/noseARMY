@@ -111,9 +111,9 @@ void GameScene::Initialize()
 	battleFields_.back()->fieldLayer = 2;
 
 	enemySpawnData.SetSpawnList({
-		{ 1,{2,20,40},ADXQuaternion::EulerToQuaternion({0,3.1415f,0}) },
-		{ 1,{-2,20,44},ADXQuaternion::EulerToQuaternion({0,3.1415f,0})},
-		{ 2,{0,21,55},ADXQuaternion::EulerToQuaternion({0,3.1415f,0})},
+		{ 1,{2,20,40},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
+		{ 1,{-2,20,44},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0})},
+		{ 2,{0,21,55},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0})},
 		});
 
 	enemySpawnData.Spawn("enemy");

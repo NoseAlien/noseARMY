@@ -3,6 +3,7 @@
 #include "ADXCommon.h"
 #include "ADXSceneManager.h"
 #include "ADXCamera.h"
+#include <imgui.h>
 
 #pragma comment(lib, "d3dcompiler.lib")
 
@@ -370,6 +371,18 @@ void ADXObject::StaticUpdate()
 
 	for (auto& itr : S_objs)
 	{
+		#ifdef _DEBUG
+		float pos[3] = { itr->transform.localPosition_.x,itr->transform.localPosition_.y,itr->transform.localPosition_.z };
+
+		bool tool_active = true;
+		ImGui::Begin("My First Tool", &tool_active, ImGuiWindowFlags_MenuBar);
+		ImGui::InputFloat3("Position", pos);
+
+		ImGui::End();
+
+		itr->transform.localPosition_ = { pos[0],pos[1],pos[2] };
+		#endif
+
 		itr->Update();
 		if (itr->transform.parent_ == nullptr && !itr->transform.rectTransform)
 		{

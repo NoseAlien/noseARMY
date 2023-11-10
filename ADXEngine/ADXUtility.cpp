@@ -2,6 +2,8 @@
 #include <math.h>
 #include <wrl.h>
 
+const float ADXUtility::Pi = 3.1415f;
+
 ADXVector3 ADXUtility::Lerp(const ADXVector3& startValue, const ADXVector3& endValue, float progress)
 {
 	ADXVector3 ret;
@@ -39,10 +41,10 @@ float ADXUtility::EaseOut(float progress, float powNum)
 //角度の差を求める　目的の角度へゆっくり向ける時に使ってみよう
 float ADXUtility::AngleDiff(float angle1, float angle2)
 {
-	float angle1Current = fmodf(angle1, 2 * 3.1415f);
-	float angle2Current = fmodf(angle2, 2 * 3.1415f);
-	float angle3 = angle2Current - 2 * 3.1415f;
-	float angle4 = angle2Current + 2 * 3.1415f;
+	float angle1Current = fmodf(angle1, 2 * ADXUtility::Pi);
+	float angle2Current = fmodf(angle2, 2 * ADXUtility::Pi);
+	float angle3 = angle2Current - 2 * ADXUtility::Pi;
+	float angle4 = angle2Current + 2 * ADXUtility::Pi;
 
 	float nearestAngleDiff = angle2Current - angle1Current;
 	if (fabsf(nearestAngleDiff) > fabsf(angle3 - angle1Current))

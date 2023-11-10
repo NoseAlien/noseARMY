@@ -1,4 +1,4 @@
-﻿#include "PlayerMini.h"
+#include "PlayerMini.h"
 #include "Player.h"
 
 void PlayerMini::Initialize(Player* setParent)
@@ -59,7 +59,7 @@ void PlayerMini::UniqueInitialize()
 
 	rigidbody = GetGameObject()->AddComponent<ADXRigidbody>();
 
-	nose = ADXObject::Create({ 0,0,0.7f }, ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 }), { 0.42f,0.35f,0.35f });
+	nose = ADXObject::Create({ 0,0,0.7f }, ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi,0 }), { 0.42f,0.35f,0.35f });
 	nose->transform.parent_ = &GetGameObject()->transform;
 	nose->model = &rect;
 	nose->texture = ADXImage::LoadADXImage("texture/apEGnoSE.png");
@@ -91,7 +91,7 @@ void PlayerMini::UniqueUpdate()
 		rigidbody->gravityScale = 0.01f;
 	}
 
-	bodyRotAngle = fmodf(bodyRotAngle + 0.01f + rigidbody->velocity.Length(), 3.141592f);
+	bodyRotAngle = fmodf(bodyRotAngle + 0.01f + rigidbody->velocity.Length(), ADXUtility::Pi);
 }
 
 void PlayerMini::OnPreRender()

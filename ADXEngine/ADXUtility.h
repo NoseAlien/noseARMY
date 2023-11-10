@@ -6,6 +6,9 @@
 class ADXUtility
 {
 public:
+	static const float Pi;
+
+public:
 	static ADXVector3 Lerp(const ADXVector3& startValue, const ADXVector3& endValue, float progress);
 	static float Lerp(float startValue, float endValue, float progress);
 	static float EaseIn(float progress, float pow);

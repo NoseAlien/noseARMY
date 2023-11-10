@@ -3,7 +3,6 @@
 #include "ADXUtility.h"
 #include "FieldBox.h"
 #include <time.h>
-#include <imgui.h>
 
 void Player::Initialize(ADXKeyBoardInput* setKeyboard, const std::vector<BYTE>& setConfig, ADXCamera* setCamera)
 {
@@ -94,7 +93,7 @@ void Player::LiveEntitiesInitialize()
 	visual->model = &playerModel;
 	visual->texture = ADXImage::LoadADXImage("texture/apEG_fur.png");
 
-	nose = ADXObject::Create({ 0,0,1.01f }, ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 }), { 0.42f,0.35f,0.35f });
+	nose = ADXObject::Create({ 0,0,1.01f }, ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi,0 }), { 0.42f,0.35f,0.35f });
 	nose->transform.parent_ = &visual->transform;
 	nose->transform.UpdateMatrix();
 	nose->model = &rect;
@@ -127,7 +126,7 @@ void Player::LiveEntitiesInitialize()
 	gameOverFilter->renderLayer = 1;
 
 	dead = ADXObject::Create();
-	dead->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 });
+	dead->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi,0 });
 	dead->transform.localScale_ = { 1.5f,1.5f,1.5f };
 	dead->transform.parent_ = &GetGameObject()->transform;
 	dead->transform.UpdateMatrix();
@@ -215,7 +214,7 @@ void Player::LiveEntitiesUpdate()
 	if (splitable && keyboard->KeyRelease(config[5]) && splitInterval <= 0)
 	{
 		nose->transform.localScale_ = { 0.42f,0.35f,0.35f };
-		nose->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 });
+		nose->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi,0 });
 		if (minis.size() < maxMinisNum)
 		{
 			
@@ -308,19 +307,6 @@ void Player::LiveEntitiesUpdate()
 
 	isOutOfField = true;
 	windowExtend = false;
-
-
-#ifdef _DEBUG
-	float pos[3] = { GetGameObject()->transform.localPosition_.x,GetGameObject()->transform.localPosition_.y,GetGameObject()->transform.localPosition_.z };
-
-	bool tool_active = true;
-	ImGui::Begin("My First Tool", &tool_active, ImGuiWindowFlags_MenuBar);
-	ImGui::InputFloat3("Position", pos);
-
-	ImGui::End();
-
-	GetGameObject()->transform.localPosition_ = { pos[0],pos[1],pos[2] };
-#endif
 }
 
 void Player::LiveEntitiesOnCollisionHit(ADXCollider* col, [[maybe_unused]]ADXCollider* myCol)
@@ -373,13 +359,13 @@ void Player::DeadUpdate()
 	GetGameObject()->transform.SetWorldRotation(camera->GetGameObject()->transform.GetWorldRotation());
 	GetGameObject()->transform.UpdateMatrix();
 	GetGameObject()->transform.SetWorldRotation(
-		ADXQuaternion::MakeAxisAngle(GetGameObject()->transform.TransformPointOnlyRotation({ 0,1,0 }), 3.1415f)
+		ADXQuaternion::MakeAxisAngle(GetGameObject()->transform.TransformPointOnlyRotation({ 0,1,0 }), ADXUtility::Pi)
 		* GetGameObject()->transform.GetWorldRotation());
 
 	nose->transform.localPosition_ = { 0,sin(min(max(0,
 		ADXUtility::ValueMapping(deadAnimationProgress,0.3f,0.8f,0.0f,1.0f)
-		), 1) * 3.1415f) * 5,1.01f };
-	nose->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,3.14159f,min(max(0,
+		), 1) * ADXUtility::Pi) * 5,1.01f };
+	nose->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi,min(max(0,
 		ADXUtility::ValueMapping(deadAnimationProgress,0.3f,0.8f,0.0f,1.0f)
 		), 1) * 50 });
 	dead->transform.localPosition_ = { 0,0,0 };

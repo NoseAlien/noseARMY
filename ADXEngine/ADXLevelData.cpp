@@ -79,9 +79,9 @@ void ADXLevelData::LoadTreeData(ADXLevelData* levelData,
 				(float)transform["translation"][1] };
 			obj.transform.localRotation_ = ADXQuaternion::EulerToQuaternion(
 				ADXVector3{
-				-(float)transform["rotation"][0] * 3.14159f / 180,
-				-(float)transform["rotation"][2] * 3.14159f / 180,
-				-(float)transform["rotation"][1] * 3.14159f / 180 });
+				-(float)transform["rotation"][0] * ADXUtility::Pi / 180,
+				-(float)transform["rotation"][2] * ADXUtility::Pi / 180,
+				-(float)transform["rotation"][1] * ADXUtility::Pi / 180 });
 			obj.transform.localScale_ =
 				ADXVector3{
 				(float)transform["scaling"][0],
