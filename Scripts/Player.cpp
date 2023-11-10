@@ -67,6 +67,18 @@ void Player::Move(float walkSpeed, float jumpPower)
 	}
 }
 
+void Player::ViewUpdate()
+{
+	ADXVector3 cameraVec = camera->GetGameObject()->transform.GetWorldPosition() - GetGameObject()->transform.GetWorldPosition();
+	cameraVec.y = 0;
+	cameraVec = cameraVec.Normalize();
+	camera->GetGameObject()->transform.localPosition_ = GetGameObject()->transform.localPosition_ + cameraVec * 20;
+	camera->GetGameObject()->transform.localPosition_.y += 5;
+	camera->GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(-cameraVec.x, -cameraVec.z),0 });
+	camera->GetGameObject()->transform.UpdateMatrix();
+	camera->GetGameObject()->transform.localRotation_ = camera->GetGameObject()->transform.localRotation_ * ADXQuaternion::MakeAxisAngle({ 1,0,0 }, 0.3f);
+}
+
 void Player::LiveEntitiesInitialize()
 {
 	jumpSE = ADXAudio::LoadADXAudio("sound/jump.wav");
@@ -116,7 +128,7 @@ void Player::LiveEntitiesInitialize()
 
 	dead = ADXObject::Create();
 	dead->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,3.1415f,0 });
-	dead->transform.localScale_ = { 2,2,2 };
+	dead->transform.localScale_ = { 1.5f,1.5f,1.5f };
 	dead->transform.parent_ = &GetGameObject()->transform;
 	dead->transform.UpdateMatrix();
 	dead->model = &rect;
@@ -167,14 +179,7 @@ void Player::LiveEntitiesUpdate()
 
 	visual->transform.localScale_ = { 1 + sinf(modelScalingTime) * 0.03f,1 + cosf(modelScalingTime) * 0.03f,1 + sinf(modelScalingTime) * 0.03f };
 
-	ADXVector3 cameraVec = camera->GetGameObject()->transform.GetWorldPosition() - GetGameObject()->transform.GetWorldPosition();
-	cameraVec.y = 0;
-	cameraVec = cameraVec.Normalize();
-	camera->GetGameObject()->transform.localPosition_ = GetGameObject()->transform.localPosition_ + cameraVec * 20;
-	camera->GetGameObject()->transform.localPosition_.y += 5;
-	camera->GetGameObject()->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(-cameraVec.x, -cameraVec.z),0 });
-	camera->GetGameObject()->transform.UpdateMatrix();
-	camera->GetGameObject()->transform.localRotation_ = camera->GetGameObject()->transform.localRotation_ * ADXQuaternion::MakeAxisAngle({ 1,0,0 }, 0.3f);
+	ViewUpdate();
 
 	rigidbody->drag = 0.8f;
 
@@ -352,6 +357,8 @@ void Player::DeadUpdate()
 {
 	bool prevDeadIsVisible = dead->isVisible;
 
+	ViewUpdate();
+
 	gameOverFilter->isVisible =
 		dead->isVisible =
 		keyUI->isVisible = true;
@@ -363,7 +370,6 @@ void Player::DeadUpdate()
 	visual->renderLayer = 4;
 	nose->renderLayer = 4;
 
-	GetGameObject()->transform.modelPosition_ = { 0,0,0 };
 	GetGameObject()->transform.SetWorldRotation(camera->GetGameObject()->transform.GetWorldRotation());
 	GetGameObject()->transform.UpdateMatrix();
 	GetGameObject()->transform.SetWorldRotation(
@@ -376,6 +382,7 @@ void Player::DeadUpdate()
 	nose->transform.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,3.14159f,min(max(0,
 		ADXUtility::ValueMapping(deadAnimationProgress,0.3f,0.8f,0.0f,1.0f)
 		), 1) * 50 });
+	dead->transform.localPosition_ = { 0,0,0 };
 
 
 	visual->isVisible = deadAnimationProgress < 0.3f;
@@ -384,62 +391,87 @@ void Player::DeadUpdate()
 
 	keyUI->transform.localPosition_ = { 0,-0.5f + sin(clock() * 0.001f - 1) * 0.02f,0 };
 	keyUI->transform.localScale_ = { keyUI->transform.localScale_.x,0.45f,1 };
-	if (deadAnimationProgress >= 1)
+
+	if (restartAnimationAble)
 	{
-		keyUI->transform.localScale_.x += (0.45f / ADXWindow::GetAspect() - keyUI->transform.localScale_.x) * 0.3f;
-		if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_SPACE))
+		deadAnimationProgress = 1;
+
+		if (restartAnimationProgress < 0.3f)
+		{
+			int shakeAngle = rand();
+			dead->transform.localPosition_ = ADXVector3{ sinf((float)shakeAngle),cosf((float)shakeAngle),0 } * 0.1f;
+		}
+		else if (restartAnimationProgress < 1)
+		{
+			dead->transform.localPosition_ = { 0, powf(ADXUtility::ValueMapping(restartAnimationProgress, 0.3f, 1.0f, 0.0f, 1.0f),3) * 20,0 };
+		}
+		else
 		{
 			SceneTransition::ChangeScene(2);
 		}
+
+		restartAnimationProgress = min(max(0, restartAnimationProgress + 0.01f), 1);
 	}
 	else
 	{
-		keyUI->transform.localScale_.x = 0;
-		if (deadAnimationProgress > 0.3f
-			&& ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_SPACE))
+
+		if (deadAnimationProgress >= 1)
 		{
-			deadAnimationProgress = 1;
+			keyUI->transform.localScale_.x += (0.45f / ADXWindow::GetAspect() - keyUI->transform.localScale_.x) * 0.3f;
+			if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_SPACE))
+			{
+				restartAnimationAble = true;
+			}
 		}
-	}
-
-
-	if (!visual->isVisible && nose->isVisible)
-	{
-		deadParticle->animation.delayFrame = 0;
-		deadParticle->lifeTime = deadParticle->animation.GetLength();
-		deadParticle->Emission();
-		deadParticle->particles.back()->GetGameObject()->transform.localPosition_ = 
-			nose->transform.localPosition_ + ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize();
-		deadParticle->particles.back()->moveVec = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize() * 0.1f;
-		float particleScale = 0.3f + (float)(rand() % 3) * 0.2f;
-		deadParticle->particles.back()->GetGameObject()->transform.localScale_ = ADXVector3{ particleScale ,particleScale ,particleScale } * 0.3f;
-		deadParticle->particles.back()->GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
-		deadParticle->particles.back()->GetGameObject()->renderLayer = 4;
-	}
-
-	if (dead->isVisible && !prevDeadIsVisible)
-	{
-		deadParticle->animation.delayFrame = 0;
-		deadParticle->lifeTime = deadParticle->animation.GetLength();
-		for (int i = 0; i < 9; i++)
+		else
 		{
+			keyUI->transform.localScale_.x = 0;
+			if (deadAnimationProgress > 0.3f
+				&& ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_SPACE))
+			{
+				deadAnimationProgress = 1;
+			}
+		}
+
+
+		if (!visual->isVisible && nose->isVisible)
+		{
+			deadParticle->animation.delayFrame = 0;
+			deadParticle->lifeTime = deadParticle->animation.GetLength();
 			deadParticle->Emission();
-			deadParticle->particles.back()->GetGameObject()->transform.localPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize();
-			deadParticle->particles.back()->moveVec = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize() * 0.3f;
+			deadParticle->particles.back()->GetGameObject()->transform.localPosition_ =
+				nose->transform.localPosition_ + ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize();
+			deadParticle->particles.back()->moveVec = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize() * 0.1f;
 			float particleScale = 0.3f + (float)(rand() % 3) * 0.2f;
-			deadParticle->particles.back()->GetGameObject()->transform.localScale_ = ADXVector3{ particleScale ,particleScale ,particleScale } * 3;
+			deadParticle->particles.back()->GetGameObject()->transform.localScale_ = ADXVector3{ particleScale ,particleScale ,particleScale } *0.3f;
 			deadParticle->particles.back()->GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
-			deadParticle->particles.back()->GetGameObject()->renderLayer = 5;
+			deadParticle->particles.back()->GetGameObject()->renderLayer = 4;
 		}
-	}
 
-	for (auto& itr : deadParticle->particles)
-	{
-		itr->moveVec *= 0.9f;
-		itr->GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0.01f }) * itr->GetGameObject()->transform.modelRotation_;
-	}
+		if (dead->isVisible && !prevDeadIsVisible)
+		{
+			deadParticle->animation.delayFrame = 0;
+			deadParticle->lifeTime = deadParticle->animation.GetLength();
+			for (int i = 0; i < 9; i++)
+			{
+				deadParticle->Emission();
+				deadParticle->particles.back()->GetGameObject()->transform.localPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize();
+				deadParticle->particles.back()->moveVec = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize() * 0.3f;
+				float particleScale = 0.3f + (float)(rand() % 3) * 0.2f;
+				deadParticle->particles.back()->GetGameObject()->transform.localScale_ = ADXVector3{ particleScale ,particleScale ,particleScale } *3;
+				deadParticle->particles.back()->GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
+				deadParticle->particles.back()->GetGameObject()->renderLayer = 5;
+			}
+		}
 
-	deadAnimationProgress = min(max(0, deadAnimationProgress + 0.01f), 1);
+		for (auto& itr : deadParticle->particles)
+		{
+			itr->moveVec *= 0.9f;
+			itr->GetGameObject()->transform.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0.01f }) * itr->GetGameObject()->transform.modelRotation_;
+		}
+
+		deadAnimationProgress = min(max(0, deadAnimationProgress + 0.01f), 1);
+	}
 
 	rigidbody->velocity = { 0,0,0 };
 }

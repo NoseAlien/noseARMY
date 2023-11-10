@@ -48,6 +48,8 @@ private:
 	bool windowClosing = false;
 
 	float deadAnimationProgress = 0;
+	bool restartAnimationAble = false;
+	float restartAnimationProgress = 0;
 
 	bool windowExtend = false;
 	bool isOutOfField = false;
@@ -68,4 +70,5 @@ private:
 	void DeadUpdate() final;
 	void SafetyPhase() final;
 	void Move(float walkSpeed, float jumpPower);
+	void ViewUpdate();
 };
