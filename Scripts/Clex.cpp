@@ -1,4 +1,4 @@
-﻿#include "Clex.h"
+#include "Clex.h"
 #include "ADXCamera.h"
 #include "ADXUtility.h"
 #include "Projectile.h"
@@ -77,7 +77,7 @@ void Clex::EnemyUpdate()
 		}
 		else if (attackProgress_ > 0.6f)
 		{
-			rigidbody_->velocity_ = (GetGameObject()->transform_.localPosition_ - cursor_).Normalize() * 0.5f;
+			rigidbody_->velocity_ = (GetGameObject()->transform_.localPosition_ - cursor_).Normalize() * 0.3f;
 			bodyScale = 0;
 			antennaAngle = 1;
 			if (!shotted)
@@ -89,7 +89,7 @@ void Clex::EnemyUpdate()
 					GetGameObject()->transform_.parent_);
 				Projectile* projectile = projectileObj->AddComponent<Projectile>();
 
-				projectile->SetData((GetGameObject()->transform_.localPosition_ - cursor_).Normalize() * -0.7f, ADXImage::LoadADXImage("texture/Clex_projectile.png"));
+				projectile->SetData((GetGameObject()->transform_.localPosition_ - cursor_).Normalize() * -0.5f, ADXImage::LoadADXImage("texture/Clex_projectile.png"));
 				projectile->LiveEntity::Initialize(GetTeam());
 
 				projectiles.push_back(projectile);
@@ -103,7 +103,7 @@ void Clex::EnemyUpdate()
 			shotted = false;
 		}
 	}
-	attackProgress_ = min(max(0, attackProgress_ - 0.02f), 1);
+	attackProgress_ = min(max(0, attackProgress_ - 0.01f), 1);
 
 	body_->transform_.localScale_ = { bodyScale,bodyScale,bodyScale };
 	antennaRig->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ antennaAngle,0,0 });

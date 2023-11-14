@@ -1,6 +1,10 @@
-﻿#include "LiveEntity.h"
+#include "LiveEntity.h"
 #include "ADXCamera.h"
 #include <time.h>
+
+const float LiveEntity::basicHP = 100;
+const float LiveEntity::basicAttackPower = 10;
+const uint32_t LiveEntity::basicGhostTimeFrame = 40;
 
 std::vector<AttackObject> LiveEntity::S_attackObjs = {};
 std::vector<AttackObject> LiveEntity::S_allAttackObj = {};
@@ -88,7 +92,7 @@ void LiveEntity::UniqueUpdate()
 				particle_->Emission();
 				particle_->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize();
 				particle_->particles_.back()->moveVec_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize() * 0.3f;
-				float particleScale = 1.5f + (float)(rand() % 5) * 0.1f;
+				float particleScale = 3.5f + (float)(rand() % 5) * 0.1f;
 				particle_->particles_.back()->GetGameObject()->transform_.localScale_ = { particleScale ,particleScale ,particleScale };
 				particle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 			}
@@ -98,8 +102,8 @@ void LiveEntity::UniqueUpdate()
 			{
 				particle_->Emission();
 				particle_->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize();
-				particle_->particles_.back()->moveVec_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize() * 0.6f;
-				float particleScale = 0.1f + (float)(rand() % 3) * 0.1f;
+				particle_->particles_.back()->moveVec_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize();
+				float particleScale = 0.1f + (float)(rand() % 3) * 0.2f;
 				particle_->particles_.back()->GetGameObject()->transform_.localScale_ = { particleScale ,particleScale ,particleScale };
 				particle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 			}
@@ -117,19 +121,24 @@ void LiveEntity::UniqueUpdate()
 	{
 		particle_->animation_.delayFrame_ = 0;
 		particle_->lifeTime_ = particle_->animation_.GetLength();
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 2; i++)
 		{
 			particle_->Emission();
 			particle_->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize();
 			particle_->particles_.back()->moveVec_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize() * 0.1f;
-			float particleScale = 0.1f + (float)(rand() % 3) * 0.1f;
+			float particleScale = 1 + (float)(rand() % 5) * 0.1f;
 			particle_->particles_.back()->GetGameObject()->transform_.localScale_ = { particleScale ,particleScale ,particleScale };
 			particle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 		}
-		visual_->material_.ambient_ = { 1,0,0 };
-		for (auto& itr : bodyParts_)
+		particle_->animation_.delayFrame_ = 1;
+		for (int i = 0; i < 6; i++)
 		{
-			itr->material_.ambient_ = { 1,0,0 };
+			particle_->Emission();
+			particle_->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize();
+			particle_->particles_.back()->moveVec_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize() * 0.3f;
+			float particleScale = 0.2f + (float)(rand() % 3) * 0.1f;
+			particle_->particles_.back()->GetGameObject()->transform_.localScale_ = { particleScale ,particleScale ,particleScale };
+			particle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 		}
 
 		visual_->transform_.localPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5)}.Normalize() * 0.3f;
@@ -137,13 +146,25 @@ void LiveEntity::UniqueUpdate()
 		attackHitted_ = false;
 		damageSE_.Play();
 	}
+
+	if (IsLive() && GhostTime_ > 0 && GhostTime_ % 4 >= 2)
+	{
+		visual_->material_.ambient_ = { 1,0.2f,0.2f };
+		for (auto& itr : bodyParts_)
+		{
+			itr->material_.ambient_ = { 1,0.2f,0.2f };
+		}
+	}
+
+	GhostTime_ = max(0, GhostTime_ - 1);
 }
 
 void LiveEntity::Damage(float damage)
 {
-	if (IsLive() && !attackHitted_)
+	if (IsLive() && !attackHitted_ && GhostTime_ <= 0)
 	{
 		hpAmount_ -= damage / maxHP_;
+		GhostTime_ = int32_t(damage / basicAttackPower * basicGhostTimeFrame);
 		attackHitted_ = true;
 	}
 }

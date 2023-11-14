@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXObject.h"
 #include "ADXAudio.h"
@@ -9,9 +9,15 @@ struct AttackObject;
 
 class LiveEntity : public ADXComponent
 {
+public:
+	static const float basicHP;
+	static const float basicAttackPower;
+	static const uint32_t basicGhostTimeFrame;
+
 protected:
-	float maxHP_ = 999;
+	float maxHP_ = basicHP;
 	float hpAmount_ = 1;
+	int32_t GhostTime_ = 0;
 	ADXAudio damageSE_{};
 	ADXAudio defeatSE_{};
 	ADXObject* visual_ = nullptr;

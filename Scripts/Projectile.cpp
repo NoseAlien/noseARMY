@@ -1,4 +1,4 @@
-﻿#include "Projectile.h"
+#include "Projectile.h"
 #include "ADXCamera.h"
 
 void Projectile::SetData(const ADXVector3& setDirection, uint32_t setVisual)
@@ -37,7 +37,7 @@ void Projectile::EnemyUpdate()
 		{
 			if (!itr->isTrigger_)
 			{
-				LiveEntity::SetAttackObj({ itr,this,10 });
+				LiveEntity::SetAttackObj({ itr,this,20 });
 			}
 		}
 		lifeTime--;
