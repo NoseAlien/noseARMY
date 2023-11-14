@@ -372,7 +372,7 @@ void ADXObject::StaticUpdate()
 	for (auto& itr : S_objs)
 	{
 		#ifdef _DEBUG
-		float pos[3] = { itr->transform.localPosition_.x,itr->transform.localPosition_.y,itr->transform.localPosition_.z };
+		float pos[3] = { itr->transform_.localPosition_.x_,itr->transform_.localPosition_.y_,itr->transform_.localPosition_.z_ };
 
 		bool tool_active = true;
 		ImGui::Begin("My First Tool", &tool_active, ImGuiWindowFlags_MenuBar);
@@ -380,7 +380,7 @@ void ADXObject::StaticUpdate()
 
 		ImGui::End();
 
-		itr->transform.localPosition_ = { pos[0],pos[1],pos[2] };
+		itr->transform_.localPosition_ = { pos[0],pos[1],pos[2] };
 		#endif
 
 		itr->Update();

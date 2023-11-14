@@ -1,4 +1,4 @@
-﻿#include "GameScene.h"
+#include "GameScene.h"
 #include "SceneTransition.h"
 
 #include "Cub_E.h"
@@ -112,8 +112,8 @@ void GameScene::Initialize()
 
 	enemySpawnData_.SetSpawnList({
 		{ 1,{2,20,40},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
-		{ 1,{-2,20,44},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0})},
-		{ 2,{0,21,55},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0})},
+		{ 1,{-2,20,44},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
+		{ 2,{0,21,55},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
 		});
 
 	enemySpawnData_.Spawn("enemy");
