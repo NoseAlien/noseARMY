@@ -318,11 +318,11 @@ ADXVector3 ADXCollider::CollideVector(const ADXCollider& col)
 //相手のコライダーと重なっているか
 bool ADXCollider::IsHit(const ADXCollider& col)
 {
-	/*if (!IsSphereHit(ADXMatrix4::Transform(pos_, GetGameObject()->transform_.GetMatWorld()), GenerateBoundingSphereRadius(),
+	if (!IsSphereHit(ADXMatrix4::Transform(pos_, GetGameObject()->transform_.GetMatWorld()), GenerateBoundingSphereRadius(),
 		ADXMatrix4::Transform(col.pos_, col.GetGameObject()->transform_.GetMatWorld()), col.GenerateBoundingSphereRadius()))
 	{
 		return false;
-	}*/
+	}
 	ADXVector3 closestVec1 = col.ClosestPoint(ClosestPoint(ADXMatrix4::Transform(col.pos_, col.GetGameObject()->transform_.GetMatWorld())));
 	ADXVector3 closestVec2 = ClosestPoint(col.ClosestPoint(ClosestPoint(ADXMatrix4::Transform(col.pos_, col.GetGameObject()->transform_.GetMatWorld()))));
 	float colPointDiff = (closestVec1 - closestVec2).Length();
@@ -564,5 +564,5 @@ void ADXCollider::StaticUpdate()
 
 bool ADXCollider::IsSphereHit(ADXVector3 s1Pos, float s1Rad, ADXVector3 s2Pos, float s2Rad)
 {
-	return (s2Pos - s1Pos).Length() <= sqrtf(s1Rad + s2Rad);
+	return (s2Pos - s1Pos).Length() <= s1Rad + s2Rad;
 }

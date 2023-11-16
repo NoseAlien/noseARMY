@@ -1,4 +1,4 @@
-﻿#include "Player.h"
+#include "Player.h"
 #include "SceneTransition.h"
 #include "ADXUtility.h"
 #include "FieldBox.h"
@@ -341,6 +341,11 @@ void Player::LiveEntitiesOnCollisionHit(ADXCollider* col, [[maybe_unused]]ADXCol
 
 void Player::DeadUpdate()
 {
+	for (auto& itr : minis_)
+	{
+		itr->GetGameObject()->Destroy();
+	}
+
 	bool prevDeadIsVisible = dead_->isVisible_;
 
 	ViewUpdate();
