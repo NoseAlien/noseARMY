@@ -12,7 +12,6 @@ enum colType
 {
     box,
     sphere,
-    plain,
     quad,
 };
 
@@ -44,6 +43,7 @@ private:
     ADXVector3 pushBackVector_ = { 0,0,0 };
 
 public:
+    float GenerateBoundingSphereRadius() const;
     ADXVector3 ClosestPoint(const ADXVector3& pos) const;
     ADXVector3 EdgePoint(const ADXVector3& pos);
     ADXVector3 EdgePoint(const ADXVector3& pos, const ADXVector3& prePos);
@@ -68,6 +68,7 @@ private:
 
 public:
     static void StaticUpdate();
+    static bool IsSphereHit(ADXVector3 s1Pos,float s1Rad, ADXVector3 s2Pos, float s2Rad);
 
 private:
     static std::vector<collidePattern> S_ignoreCollidePatterns;

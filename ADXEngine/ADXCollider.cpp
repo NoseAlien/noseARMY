@@ -29,6 +29,31 @@ void ADXCollider::UniqueUpdate()
 	S_cols.push_back(this);
 }
 
+float ADXCollider::GenerateBoundingSphereRadius() const
+{
+	ADXVector3 scaledEdgePos{};
+	switch (colType_)
+	{
+	case box:
+		scaledEdgePos = GetGameObject()->transform_.TransformPointWithoutTranslation(scale_);
+		return scaledEdgePos.Length();
+		break;
+	case sphere:
+		scaledEdgePos = GetGameObject()->transform_.TransformPointWithoutTranslation({radius_,0,0});
+		return scaledEdgePos.Length();
+		break;
+	case quad:
+		scaledEdgePos = GetGameObject()->transform_.TransformPointWithoutTranslation({ scale_.x_,0,scale_.z_ });
+		return scaledEdgePos.Length();
+		break;
+	default:
+		return 0.0f;
+		break;
+	}
+
+	return 0.0f;
+}
+
 //空間上の点をコライダーの中に収めた時の座標
 ADXVector3 ADXCollider::ClosestPoint(const ADXVector3& pos) const
 {
@@ -70,9 +95,6 @@ ADXVector3 ADXCollider::ClosestPoint(const ADXVector3& pos) const
 		{
 			closPos = pos_ + (closPos - pos_).Normalize() * radius_;
 		}
-		break;
-	case plain:
-		closPos.y_ = 0;
 		break;
 	case quad:
 		if (closPos.x_ > pos_.x_ + scale_.x_)
@@ -199,9 +221,6 @@ ADXVector3 ADXCollider::EdgeLocalPoint(const ADXVector3& pos, const ADXVector3& 
 	case sphere:
 		ret = ret.Normalize() * radius_;
 		break;
-	case plain:
-		ret.y_ = 0;
-		break;
 	case quad:
 		if (ret.x_ > pos_.x_ + scale_.x_)
 		{
@@ -299,6 +318,11 @@ ADXVector3 ADXCollider::CollideVector(const ADXCollider& col)
 //相手のコライダーと重なっているか
 bool ADXCollider::IsHit(const ADXCollider& col)
 {
+	/*if (!IsSphereHit(ADXMatrix4::Transform(pos_, GetGameObject()->transform_.GetMatWorld()), GenerateBoundingSphereRadius(),
+		ADXMatrix4::Transform(col.pos_, col.GetGameObject()->transform_.GetMatWorld()), col.GenerateBoundingSphereRadius()))
+	{
+		return false;
+	}*/
 	ADXVector3 closestVec1 = col.ClosestPoint(ClosestPoint(ADXMatrix4::Transform(col.pos_, col.GetGameObject()->transform_.GetMatWorld())));
 	ADXVector3 closestVec2 = ClosestPoint(col.ClosestPoint(ClosestPoint(ADXMatrix4::Transform(col.pos_, col.GetGameObject()->transform_.GetMatWorld()))));
 	float colPointDiff = (closestVec1 - closestVec2).Length();
@@ -536,4 +560,9 @@ void ADXCollider::StaticUpdate()
 	}
 
 	S_cols.clear();
+}
+
+bool ADXCollider::IsSphereHit(ADXVector3 s1Pos, float s1Rad, ADXVector3 s2Pos, float s2Rad)
+{
+	return (s2Pos - s1Pos).Length() <= sqrtf(s1Rad + s2Rad);
 }
