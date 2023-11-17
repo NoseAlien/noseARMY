@@ -1,8 +1,9 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXObject.h"
 #include "ADXAudio.h"
 #include "ADXParticleSystem.h"
+#include "FieldBox.h"
 #include <string>
 
 struct AttackObject;
@@ -31,6 +32,9 @@ private:
 	ADXObject* hpGaugeBG_ = nullptr;
 	std::string team_ = "";
 	bool attackHitted_ = false;
+
+	FieldBox* latestHitField_ = nullptr;
+	bool isOutOfField_ = false;
 
 private:
 	static std::vector<AttackObject> S_attackObjs;

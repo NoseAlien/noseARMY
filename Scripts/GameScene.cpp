@@ -84,7 +84,13 @@ void GameScene::Initialize()
 	tempTutorialArea->SetTutorialImg(ADXImage::LoadADXImage("texture/tutorial_army_2.png"));
 
 
-	temp = ADXObject::Create({ 0,13,35 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,14,45 });
+	temp = ADXObject::Create({ 0,13,5 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,14,15 });
+	fields_.push_back(temp->AddComponent<FieldBox>());
+
+	temp = ADXObject::Create({ 0,17,35 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,8,35 });
+	fields_.push_back(temp->AddComponent<FieldBox>());
+
+	temp = ADXObject::Create({ 0,18,66 }, ADXQuaternion::EulerToQuaternion({ 0.5f,0,0 }), { 10,9,10 });
 	fields_.push_back(temp->AddComponent<FieldBox>());
 
 	temp = ADXObject::Create({ 13.5,15,82 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 4.5,5,32 });

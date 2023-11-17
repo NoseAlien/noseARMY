@@ -1,7 +1,6 @@
-﻿#include "Player.h"
+#include "Player.h"
 #include "SceneTransition.h"
 #include "ADXUtility.h"
-#include "FieldBox.h"
 #include <time.h>
 
 void Player::Initialize(ADXKeyBoardInput* setKeyboard, const std::vector<BYTE>& setConfig, ADXCamera* setCamera)
@@ -387,21 +386,21 @@ void Player::DeadUpdate()
 	{
 		deadAnimationProgress_ = 1;
 
-		if (restartAnimationProgress_ < 0.3f)
+		if (restartAnimationProgress_ < 0.2f)
 		{
 			int shakeAngle = rand();
-			dead_->transform_.localPosition_ = ADXVector3{ sinf((float)shakeAngle),cosf((float)shakeAngle),0 } * 0.1f;
+			dead_->transform_.localPosition_ = ADXVector3{ sinf((float)shakeAngle),cosf((float)shakeAngle),0 } * 0.04f;
 		}
 		else if (restartAnimationProgress_ < 1)
 		{
-			dead_->transform_.localPosition_ = { 0, powf(ADXUtility::ValueMapping(restartAnimationProgress_, 0.3f, 1.0f, 0.0f, 1.0f),3) * 20,0 };
+			dead_->transform_.localPosition_ = { 0, powf(ADXUtility::ValueMapping(restartAnimationProgress_, 0.2f, 1.0f, 0.0f, 1.0f),3) * 20,0 };
 		}
 		else
 		{
 			SceneTransition::ChangeScene(2);
 		}
 
-		restartAnimationProgress_ = min(max(0, restartAnimationProgress_ + 0.01f), 1);
+		restartAnimationProgress_ = min(max(0, restartAnimationProgress_ + 0.015f), 1);
 	}
 	else
 	{

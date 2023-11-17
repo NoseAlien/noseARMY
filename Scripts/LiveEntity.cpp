@@ -1,4 +1,4 @@
-﻿#include "LiveEntity.h"
+#include "LiveEntity.h"
 #include "ADXCamera.h"
 #include <time.h>
 
@@ -157,6 +157,13 @@ void LiveEntity::UniqueUpdate()
 	}
 
 	GhostTime_ = max(0, GhostTime_ - 1);
+
+	if (isOutOfField_ && latestHitField_ != nullptr)
+	{
+		GetGameObject()->transform_.SetWorldPosition(latestHitField_->GetGameObject()->GetComponent<ADXCollider>()->ClosestPoint(GetGameObject()->transform_.GetWorldPosition()));
+	}
+
+	isOutOfField_ = true;
 }
 
 void LiveEntity::Damage(float damage)
@@ -182,6 +189,14 @@ void LiveEntity::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 			}
 		}
 	}
+
+	if (col->GetGameObject()->GetComponent<FieldBox>() != nullptr
+		&& (GetGameObject()->transform_.GetWorldPosition() - col->ClosestPoint(GetGameObject()->transform_.GetWorldPosition())).Length() < 0.1)
+	{
+		isOutOfField_ = false;
+		latestHitField_ = col->GetGameObject()->GetComponent<FieldBox>();
+	}
+
 	LiveEntitiesOnCollisionHit(col, myCol);
 }
 
