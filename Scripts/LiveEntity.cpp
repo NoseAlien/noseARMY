@@ -107,7 +107,7 @@ void LiveEntity::UniqueUpdate()
 				particle_->particles_.back()->GetGameObject()->transform_.localScale_ = { particleScale ,particleScale ,particleScale };
 				particle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 			}
-			damageSE_.Play();
+			defeatSE_.Play();
 		}
 	}
 

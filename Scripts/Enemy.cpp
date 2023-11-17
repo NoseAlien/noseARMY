@@ -3,7 +3,7 @@
 
 void Enemy::LiveEntitiesInitialize()
 {
-	damageSE_ = ADXAudio::LoadADXAudio("sound/hit.wav");
+	damageSE_ = ADXAudio::LoadADXAudio("sound/knock.wav");
 	defeatSE_ = ADXAudio::LoadADXAudio("sound/slap.wav");
 
 	enemyModel_ = ADXModel::LoadADXModel("model/groundBlock.obj");

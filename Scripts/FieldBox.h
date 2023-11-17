@@ -21,5 +21,6 @@ private:
 	void UniqueInitialize() final;
 	void UniqueUpdate() final;
 	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol) final;
+	void SafetyPhase() final;
 	std::list<FieldBox*> GetAdjacentFields() { return adjacentFields_; };
 };

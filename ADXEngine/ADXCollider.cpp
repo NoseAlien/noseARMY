@@ -46,9 +46,6 @@ float ADXCollider::GenerateBoundingSphereRadius() const
 		scaledEdgePos = GetGameObject()->transform_.TransformPointWithoutTranslation({ scale_.x_,0,scale_.z_ });
 		return scaledEdgePos.Length();
 		break;
-	default:
-		return 0.0f;
-		break;
 	}
 
 	return 0.0f;

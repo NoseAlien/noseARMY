@@ -58,3 +58,9 @@ void FieldBox::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 
 	FieldOnCollisionHit(col, myCol);
 }
+
+void FieldBox::SafetyPhase()
+{
+	insideObjects_.remove_if([=](auto& itr)
+		{ return itr->GetDeleteFlag(); });
+}
