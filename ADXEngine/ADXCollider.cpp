@@ -321,7 +321,7 @@ bool ADXCollider::IsHit(const ADXCollider& col)
 		return false;
 	}
 	ADXVector3 closestVec1 = col.ClosestPoint(ClosestPoint(ADXMatrix4::Transform(col.pos_, col.GetGameObject()->transform_.GetMatWorld())));
-	ADXVector3 closestVec2 = ClosestPoint(col.ClosestPoint(ClosestPoint(ADXMatrix4::Transform(col.pos_, col.GetGameObject()->transform_.GetMatWorld()))));
+	ADXVector3 closestVec2 = ClosestPoint(closestVec1);
 	float colPointDiff = (closestVec1 - closestVec2).Length();
 	if ((closestVec1 - closestVec2).Length() <= 0)
 	{
@@ -329,7 +329,7 @@ bool ADXCollider::IsHit(const ADXCollider& col)
 	}
 
 	closestVec1 = ClosestPoint(col.ClosestPoint(ADXMatrix4::Transform(pos_, GetGameObject()->transform_.GetMatWorld())));
-	closestVec2 = col.ClosestPoint(ClosestPoint(col.ClosestPoint(ADXMatrix4::Transform(pos_, GetGameObject()->transform_.GetMatWorld()))));
+	closestVec2 = col.ClosestPoint(closestVec1);
 	colPointDiff = (closestVec1 - closestVec2).Length();
 	if ((closestVec1 - closestVec2).Length() <= 0)
 	{
