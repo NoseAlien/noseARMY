@@ -123,6 +123,7 @@
     <ClCompile Include="ADXEngine\ADXVector3.cpp" />
     <ClCompile Include="ADXEngine\ADXWindow.cpp" />
     <ClCompile Include="ADXEngine\ADXWorldTransform.cpp" />
+    <ClCompile Include="ADXVector2.cpp" />
     <ClCompile Include="Scripts\BattleFieldBox.cpp" />
     <ClCompile Include="Scripts\Clex.cpp" />
     <ClCompile Include="Scripts\Cub_E.cpp" />
@@ -174,6 +175,8 @@
     <ClInclude Include="ADXEngine\ADXWindow.h" />
     <ClInclude Include="ADXEngine\ADXWorldTransform.h" />
     <ClInclude Include="ADXEngine\json.hpp" />
+    <ClInclude Include="ADXGamePadInput.h" />
+    <ClInclude Include="ADXVector2.h" />
     <ClInclude Include="Scripts\BattleFieldBox.h" />
     <ClInclude Include="Scripts\Clex.h" />
     <ClInclude Include="Scripts\Cub_E.h" />

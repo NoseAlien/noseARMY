@@ -177,6 +177,9 @@
     <ClCompile Include="Scripts\TutorialArea.cpp">
       <Filter>ソース ファイル\GameScript</Filter>
     </ClCompile>
+    <ClCompile Include="ADXVector2.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ADXEngine\ADXAudio.h">
@@ -322,6 +325,12 @@
     </ClInclude>
     <ClInclude Include="Scripts\TutorialArea.h">
       <Filter>ヘッダー ファイル\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXGamePadInput.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXVector2.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
