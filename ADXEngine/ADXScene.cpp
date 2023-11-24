@@ -36,6 +36,7 @@ void ADXScene::Initialize()
 	title_->texture_ = titleImg_;
 	title_->model_ = &rect_;
 	title_->material_ = unlitMat_;
+	title_->material_.alpha_ = 0;
 
 	logo_A_ = ADXObject::Duplicate(*title_);
 	logo_A_->transform_.localPosition_ = { 0,0,0 };

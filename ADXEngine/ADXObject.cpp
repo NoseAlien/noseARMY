@@ -331,6 +331,14 @@ ADXObject* ADXObject::Duplicate(const ADXObject& prefab)
 	ret->transform_.modelScale_ = prefab.transform_.modelScale_;
 	ret->texture_ = prefab.texture_;
 	ret->model_ = prefab.model_;
+	ret->material_ = prefab.material_;
+	ret->texture_ = prefab.texture_;
+	ret->renderLayer_ = prefab.renderLayer_;
+	ret->sortingOrder_ = prefab.sortingOrder_;
+	ret->alphaTex_ = prefab.alphaTex_;
+	ret->isVisible_ = prefab.isVisible_;
+	ret->isActive_ = prefab.isActive_;
+	ret->useDefaultDraw_ = prefab.useDefaultDraw_;
 
 	return ret;
 }
