@@ -77,7 +77,7 @@ void StageSelectScene::Update()
 	key_->transform_.localPosition_.y_ += sinf(clock() * 0.001f) * 0.01f;
 	key_->transform_.localScale_ = { 0.45f / ADXWindow::GetAspect(),0.45f,1 };
 
-	if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_Q))
+	if (ADXKeyBoardInput::GetCurrentInstance()->GetKeyDown(DIK_Q))
 	{
 		SceneTransition::ChangeScene(1);
 	}

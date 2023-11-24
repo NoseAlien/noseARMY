@@ -3,6 +3,8 @@
 #include <cstdlib>
 #include "ADXCommon.h"
 #include "ADXWindow.h"
+#include "ADXKeyBoardInput.h"
+#include "ADXGamePadInput.h"
 #include "ADXScene.h"
 #include "ADXAudio.h"
 #include "ADXImGuiManager.h"
@@ -31,6 +33,7 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 
 		//キーボードデバイスの生成
 		ADXKeyBoardInput keyboard_(&adxwindow);
+		ADXGamePadInput gamePad_;
 
 		ADXImGuiManager adximgui;
 		adximgui.Initialize(&adxwindow);
@@ -47,13 +50,14 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 		//ゲームループ
 		while (true)
 		{
-			if (adxwindow.ProcessMessage() || keyboard_.KeyTrigger(DIK_ESCAPE))
+			if (adxwindow.ProcessMessage() || keyboard_.GetKeyDown(DIK_ESCAPE))
 			{
 				break;
 			}
 
 			adximgui.Begin();
 			keyboard_.Update();
+			gamePad_.Update();
 			sceneMan.Update();
 			ADXObject::StaticUpdate();
 			//この下にあるゲーム専用の更新部分は後でまとめる

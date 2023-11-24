@@ -55,7 +55,7 @@ void PlayerMini::UniqueInitialize()
 
 	tempCol = GetGameObject()->AddComponent<ADXCollider>();
 	tempCol->isTrigger_ = true;
-	tempCol->radius_ = 1.1f;
+	tempCol->radius_ = 1.5f;
 
 	rigidbody_ = GetGameObject()->AddComponent<ADXRigidbody>();
 

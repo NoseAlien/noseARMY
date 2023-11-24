@@ -25,9 +25,9 @@ private:
 public:
 	ADXKeyBoardInput(ADXWindow* setWindow);
 	void Update();
-	bool KeyPress(const BYTE& keyNum);
-	bool KeyTrigger(const BYTE& keyNum);
-	bool KeyRelease(const BYTE& keyNum);
+	bool GetKey(const BYTE& keyNum);
+	bool GetKeyDown(const BYTE& keyNum);
+	bool GetKeyUp(const BYTE& keyNum);
 
 public:
 	static ADXKeyBoardInput* GetCurrentInstance() { return S_current; };

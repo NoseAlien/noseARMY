@@ -102,6 +102,7 @@
     <ClCompile Include="ADXEngine\ADXCommon.cpp" />
     <ClCompile Include="ADXEngine\ADXComponent.cpp" />
     <ClCompile Include="ADXEngine\ADXDataPool.cpp" />
+    <ClCompile Include="ADXEngine\ADXGamePadInput.cpp" />
     <ClCompile Include="ADXEngine\ADXImage.cpp" />
     <ClCompile Include="ADXEngine\ADXImGuiManager.cpp" />
     <ClCompile Include="ADXEngine\ADXKeyBoardInput.cpp" />
@@ -120,10 +121,10 @@
     <ClCompile Include="ADXEngine\ADXSprite.cpp" />
     <ClCompile Include="ADXEngine\ADXTexAnimation.cpp" />
     <ClCompile Include="ADXEngine\ADXUtility.cpp" />
+    <ClCompile Include="ADXEngine\ADXVector2.cpp" />
     <ClCompile Include="ADXEngine\ADXVector3.cpp" />
     <ClCompile Include="ADXEngine\ADXWindow.cpp" />
     <ClCompile Include="ADXEngine\ADXWorldTransform.cpp" />
-    <ClCompile Include="ADXVector2.cpp" />
     <ClCompile Include="Scripts\BattleFieldBox.cpp" />
     <ClCompile Include="Scripts\Clex.cpp" />
     <ClCompile Include="Scripts\Cub_E.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="ADXEngine\ADXComponent.h" />
     <ClInclude Include="ADXEngine\ADXComponentInclude.h" />
     <ClInclude Include="ADXEngine\ADXDataPool.h" />
+    <ClInclude Include="ADXEngine\ADXGamePadInput.h" />
     <ClInclude Include="ADXEngine\ADXImage.h" />
     <ClInclude Include="ADXEngine\ADXImGuiManager.h" />
     <ClInclude Include="ADXEngine\ADXKeyBoardInput.h" />
@@ -171,12 +173,11 @@
     <ClInclude Include="ADXEngine\ADXSprite.h" />
     <ClInclude Include="ADXEngine\ADXTexAnimation.h" />
     <ClInclude Include="ADXEngine\ADXUtility.h" />
+    <ClInclude Include="ADXEngine\ADXVector2.h" />
     <ClInclude Include="ADXEngine\ADXVector3.h" />
     <ClInclude Include="ADXEngine\ADXWindow.h" />
     <ClInclude Include="ADXEngine\ADXWorldTransform.h" />
     <ClInclude Include="ADXEngine\json.hpp" />
-    <ClInclude Include="ADXGamePadInput.h" />
-    <ClInclude Include="ADXVector2.h" />
     <ClInclude Include="Scripts\BattleFieldBox.h" />
     <ClInclude Include="Scripts\Clex.h" />
     <ClInclude Include="Scripts\Cub_E.h" />

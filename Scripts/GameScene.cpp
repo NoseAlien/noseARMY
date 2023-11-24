@@ -87,7 +87,7 @@ void GameScene::Initialize()
 	temp = ADXObject::Create({ 0,13,5 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,14,15 });
 	fields_.push_back(temp->AddComponent<FieldBox>());
 
-	temp = ADXObject::Create({ 0,17,35 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,8,35 });
+	temp = ADXObject::Create({ 0,18,35 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,10,35 });
 	fields_.push_back(temp->AddComponent<FieldBox>());
 
 	temp = ADXObject::Create({ 0,18,66 }, ADXQuaternion::EulerToQuaternion({ 0.5f,0,0 }), { 10,9,10 });
@@ -153,7 +153,7 @@ void GameScene::Update()
 	key_->transform_.localPosition_.y_ += sinf(clock() * 0.001f) * 0.01f;
 	key_->transform_.localScale_ = { 0.45f / ADXWindow::GetAspect(),0.45f,1 };
 
-	if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_Q))
+	if (ADXKeyBoardInput::GetCurrentInstance()->GetKeyDown(DIK_Q))
 	{
 		SceneTransition::ChangeScene(2);
 	}

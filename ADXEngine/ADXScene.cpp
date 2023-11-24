@@ -1,6 +1,5 @@
 ﻿#include "ADXScene.h"
 #include "ADXSceneManager.h"
-#include "ADXKeyBoardInput.h"
 #include "ADXUtility.h"
 #include <time.h>
 
@@ -79,7 +78,19 @@ void ADXScene::Update()
 		title_->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0, 0, rotAngle });
 	}
 
-	if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_SPACE) || (clock() - startTime_ >= 7000))
+	if ((clock() - startTime_ >= 7000)
+		|| ADXKeyBoardInput::GetCurrentInstance()->GetKeyDown(DIK_SPACE)
+		|| (ADXGamePadInput::GetCurrentInstance() != nullptr
+		&& (ADXGamePadInput::GetCurrentInstance()->GetButtonDown(A)
+		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(B)
+		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(X)
+		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(Y)
+		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(START)
+		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(BACK)
+		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(LB)
+		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(RB)
+		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(LT)
+		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(RT))))
 	{
 		logoJingle_.Stop();
 		ADXSceneManager::GetCurrentInstance()->SetSceneNum(1);
@@ -103,7 +114,7 @@ void ADXScene::Update()
 		title_->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0, 0, rotAngle });
 	}
 
-	if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_SPACE) || (clock() - startTime_ >= 7000))
+	if (ADXKeyBoardInput::GetCurrentInstance()->GetKeyDown(DIK_SPACE) || (clock() - startTime_ >= 7000))
 	{
 		logoJingle_.Stop();
 		ADXSceneManager::GetCurrentInstance()->SetSceneNum(1);

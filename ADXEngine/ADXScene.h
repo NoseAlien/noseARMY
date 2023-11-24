@@ -5,6 +5,8 @@
 #include "ADXCamera.h"
 #include "ADXImage.h"
 #include "ADXAudio.h"
+#include "ADXKeyBoardInput.h"
+#include "ADXGamePadInput.h"
 
 class ADXScene
 {

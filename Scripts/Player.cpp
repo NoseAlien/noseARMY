@@ -12,17 +12,17 @@ void Player::Initialize(ADXKeyBoardInput* setKeyboard, const std::vector<BYTE>& 
 
 bool Player::GetInputStatus(int keyIndex)
 {
-	return keyboard_->KeyPress(config_[keyIndex]);
+	return keyboard_->GetKey(config_[keyIndex]);
 }
 
 bool Player::GetInputStatusTrigger(int keyIndex)
 {
-	return keyboard_->KeyTrigger(config_[keyIndex]);
+	return keyboard_->GetKeyDown(config_[keyIndex]);
 }
 
 bool Player::GetInputStatusRelease(int keyIndex)
 {
-	return keyboard_->KeyRelease(config_[keyIndex]);
+	return keyboard_->GetKeyUp(config_[keyIndex]);
 }
 
 void Player::Move(float walkSpeed, float jumpPower)
@@ -33,33 +33,33 @@ void Player::Move(float walkSpeed, float jumpPower)
 	cameraForward.y_ = 0;
 	cameraForward = cameraForward.Normalize();
 
-	if (keyboard_->KeyPress(config_[0]) || keyboard_->KeyPress(config_[1]) || keyboard_->KeyPress(config_[2]) || keyboard_->KeyPress(config_[3]))
+	if (keyboard_->GetKey(config_[0]) || keyboard_->GetKey(config_[1]) || keyboard_->GetKey(config_[2]) || keyboard_->GetKey(config_[3]))
 	{
-		if (keyboard_->KeyPress(config_[0]))
+		if (keyboard_->GetKey(config_[0]))
 		{
 			rigidbody_->velocity_ += cameraForward * walkSpeed;
 		}
-		if (keyboard_->KeyPress(config_[1]))
+		if (keyboard_->GetKey(config_[1]))
 		{
 			rigidbody_->velocity_ -= cameraForward * walkSpeed;
 		}
-		if (keyboard_->KeyPress(config_[2]))
+		if (keyboard_->GetKey(config_[2]))
 		{
 			rigidbody_->velocity_ += cameraRight * walkSpeed;
 		}
-		if (keyboard_->KeyPress(config_[3]))
+		if (keyboard_->GetKey(config_[3]))
 		{
 			rigidbody_->velocity_ -= cameraRight * walkSpeed;
 		}
 		GetGameObject()->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(rigidbody_->velocity_.x_, rigidbody_->velocity_.z_),0 });
 	}
 
-	if (keyboard_->KeyTrigger(config_[4]))
+	if (keyboard_->GetKeyDown(config_[4]))
 	{
 		rigidbody_->velocity_.y_ = jumpPower;
 		jumpSE_.Play();
 	}
-	if (keyboard_->KeyRelease(config_[4]) && rigidbody_->velocity_.y_ > 0)
+	if (keyboard_->GetKeyUp(config_[4]) && rigidbody_->velocity_.y_ > 0)
 	{
 		rigidbody_->velocity_.y_ *= 0.2f;
 	}
@@ -170,7 +170,7 @@ void Player::LiveEntitiesUpdate()
 	GetGameObject()->transform_.localScale_ = { scale,scale,scale };
 
 	float modelScalingTime = (float)clock() * 0.002f;
-	if (!keyboard_->KeyPress(config_[5]) && (keyboard_->KeyPress(config_[0]) || keyboard_->KeyPress(config_[1]) || keyboard_->KeyPress(config_[2]) || keyboard_->KeyPress(config_[3])))
+	if (!keyboard_->GetKey(config_[5]) && (keyboard_->GetKey(config_[0]) || keyboard_->GetKey(config_[1]) || keyboard_->GetKey(config_[2]) || keyboard_->GetKey(config_[3])))
 	{
 		modelScalingTime = (float)clock() * 0.015f;
 	}
@@ -183,7 +183,7 @@ void Player::LiveEntitiesUpdate()
 
 	rigidbody_->VelocityMove();
 
-	if (keyboard_->KeyPress(config_[5]))
+	if (keyboard_->GetKey(config_[5]))
 	{
 		rigidbody_->velocity_ *= 0.8f;
 		rigidbody_->gravityScale_ = 0;
@@ -210,7 +210,7 @@ void Player::LiveEntitiesUpdate()
 	splitInterval_--;
 	splitInterval_ = max(-20, splitInterval_);
 
-	if (splitable_ && keyboard_->KeyRelease(config_[5]) && splitInterval_ <= 0)
+	if (splitable_ && keyboard_->GetKeyUp(config_[5]) && splitInterval_ <= 0)
 	{
 		nose_->transform_.localScale_ = { 0.42f,0.35f,0.35f };
 		nose_->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi,0 });
@@ -231,7 +231,7 @@ void Player::LiveEntitiesUpdate()
 		splitInterval_ = 7;
 	}
 
-	if (!keyboard_->KeyPress(config_[5]))
+	if (!keyboard_->GetKey(config_[5]))
 	{
 		splitable_ = true;
 	}
@@ -408,7 +408,7 @@ void Player::DeadUpdate()
 		if (deadAnimationProgress_ >= 1)
 		{
 			keyUI_->transform_.localScale_.x_ += (0.45f / ADXWindow::GetAspect() - keyUI_->transform_.localScale_.x_) * 0.3f;
-			if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_SPACE))
+			if (ADXKeyBoardInput::GetCurrentInstance()->GetKeyDown(DIK_SPACE))
 			{
 				restartAnimationAble_ = true;
 			}
@@ -417,7 +417,7 @@ void Player::DeadUpdate()
 		{
 			keyUI_->transform_.localScale_.x_ = 0;
 			if (deadAnimationProgress_ > 0.3f
-				&& ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_SPACE))
+				&& ADXKeyBoardInput::GetCurrentInstance()->GetKeyDown(DIK_SPACE))
 			{
 				deadAnimationProgress_ = 1;
 			}

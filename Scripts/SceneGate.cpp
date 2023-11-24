@@ -34,7 +34,7 @@ void SceneGate::UniqueUpdate()
 	if (hitted_)
 	{
 		keyUI_->transform_.localScale_.x_ += (0.45f / ADXWindow::GetAspect() - keyUI_->transform_.localScale_.x_) * 0.3f;
-		if (ADXKeyBoardInput::GetCurrentInstance()->KeyTrigger(DIK_SPACE))
+		if (ADXKeyBoardInput::GetCurrentInstance()->GetKeyDown(DIK_SPACE))
 		{
 			SceneTransition::ChangeScene(3);
 		}

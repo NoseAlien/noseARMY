@@ -48,17 +48,17 @@ void ADXKeyBoardInput::Update()
 	S_current = this;
 }
 
-bool ADXKeyBoardInput::KeyPress(const BYTE& keyNum)
+bool ADXKeyBoardInput::GetKey(const BYTE& keyNum)
 {
 	return key_[keyNum];
 }
 
-bool ADXKeyBoardInput::KeyTrigger(const BYTE& keyNum)
+bool ADXKeyBoardInput::GetKeyDown(const BYTE& keyNum)
 {
 	return key_[keyNum] && !prevKey_[keyNum];
 }
 
-bool ADXKeyBoardInput::KeyRelease(const BYTE& keyNum)
+bool ADXKeyBoardInput::GetKeyUp(const BYTE& keyNum)
 {
 	return !key_[keyNum] && prevKey_[keyNum];
 }
