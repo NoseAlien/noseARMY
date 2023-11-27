@@ -1,4 +1,4 @@
-﻿#include "ADXimage.h"
+#include "ADXimage.h"
 #include "ADXDataPool.h"
 #include "ADXCommon.h"
 #include "ADXUtility.h"
@@ -73,7 +73,19 @@ uint32_t ADXImage::LoadADXImage(const std::string& imgName, bool generateMipMaps
 		WIC_FLAGS_NONE,
 		&metadata, scratchImg);
 
-	if (generateMipMaps)
+	size_t pos1 = 0;
+	std::string fileExt = "";
+
+	//区切り文字'.'が出てくる一番最後の部分を検索
+	pos1 = imgName.rfind('.');
+	//検索がヒットしたら
+	if (pos1 != std::wstring::npos)
+	{
+		//区切り文字の後ろをファイル拡張子として保存
+		fileExt = imgName.substr(pos1 + 1, imgName.size() - pos1 - 1);
+	}
+
+	if (generateMipMaps && fileExt != ".dds")
 	{
 		//ミップマップ生成
 		result = GenerateMipMaps(
