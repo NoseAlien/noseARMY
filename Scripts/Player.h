@@ -1,7 +1,8 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXComponent.h"
 #include "ADXKeyBoardInput.h"
+#include "ADXGamePadInput.h"
 #include "ADXVector3.h"
 #include "ADXAudio.h"
 #include <vector>
@@ -14,6 +15,28 @@
 
 class Player : public LiveEntity
 {
+public:
+	enum actionsList
+	{
+		jump,
+		attack
+	};
+
+	struct keyboardConfig
+	{
+		BYTE up = 0;
+		BYTE down = 0;
+		BYTE left = 0;
+		BYTE right = 0;
+		BYTE jump = 0;
+		BYTE attack = 0;
+	};
+	struct gamePadConfig
+	{
+		ControllerButton jump{};
+		ControllerButton attack{};
+	};
+
 private:
 	static const uint32_t maxMinisNum = 20;
 
@@ -34,7 +57,9 @@ private:
 	ADXAudio windowOpenSE_{};
 
 	ADXKeyBoardInput* keyboard_ = nullptr;
-	std::vector<BYTE> config_{};
+	keyboardConfig keyboardConfig_{};
+	ADXGamePadInput* gamePad_ = nullptr;
+	gamePadConfig gamePadConfig_{};
 
 	ADXRigidbody* rigidbody_{};
 
@@ -57,10 +82,12 @@ private:
 	uint32_t setTutorialImg_ = 0;
 
 public:
-	void Initialize(ADXKeyBoardInput* setKeyboard, const std::vector<BYTE>& setConfig, ADXCamera* setCamera);
-	bool GetInputStatus(int keyIndex);
-	bool GetInputStatusTrigger(int keyIndex);
-	bool GetInputStatusRelease(int keyIndex);
+	void Initialize(ADXKeyBoardInput* setKeyboard, const keyboardConfig& setKeyBoardConfig,
+		ADXGamePadInput* setGamePad, const gamePadConfig& setGamePadConfig,
+		ADXCamera* setCamera);
+	bool GetInputStatus(actionsList action);
+	bool GetInputStatusTrigger(actionsList action);
+	bool GetInputStatusRelease(actionsList action);
 	ADXCamera* GetCamera() { return camera_; };
 
 private:

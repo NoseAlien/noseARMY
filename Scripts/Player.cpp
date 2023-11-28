@@ -1,28 +1,59 @@
-﻿#include "Player.h"
+#include "Player.h"
 #include "SceneTransition.h"
 #include "ADXUtility.h"
 #include <time.h>
 
-void Player::Initialize(ADXKeyBoardInput* setKeyboard, const std::vector<BYTE>& setConfig, ADXCamera* setCamera)
+void Player::Initialize(ADXKeyBoardInput* setKeyboard, const keyboardConfig& setKeyBoardConfig,
+	ADXGamePadInput* setGamePad, const gamePadConfig& setGamePadConfig,
+	ADXCamera* setCamera)
 {
 	keyboard_ = setKeyboard;
-	config_ = setConfig;
+	keyboardConfig_ = setKeyBoardConfig;
+	gamePad_ = setGamePad;
+	gamePadConfig_ = setGamePadConfig;
 	camera_ = setCamera;
 }
 
-bool Player::GetInputStatus(int keyIndex)
+bool Player::GetInputStatus(actionsList action)
 {
-	return keyboard_->GetKey(config_[keyIndex]);
+	switch (action)
+	{
+	case jump:
+		return keyboard_->GetKey(keyboardConfig_.jump);
+		break;
+	case attack:
+		return keyboard_->GetKey(keyboardConfig_.attack);
+		break;
+	}
+	return false;
 }
 
-bool Player::GetInputStatusTrigger(int keyIndex)
+bool Player::GetInputStatusTrigger(actionsList action)
 {
-	return keyboard_->GetKeyDown(config_[keyIndex]);
+	switch (action)
+	{
+	case jump:
+		return keyboard_->GetKeyDown(keyboardConfig_.jump);
+		break;
+	case attack:
+		return keyboard_->GetKeyDown(keyboardConfig_.attack);
+		break;
+	}
+	return false;
 }
 
-bool Player::GetInputStatusRelease(int keyIndex)
+bool Player::GetInputStatusRelease(actionsList action)
 {
-	return keyboard_->GetKeyUp(config_[keyIndex]);
+	switch (action)
+	{
+	case jump:
+		return keyboard_->GetKeyUp(keyboardConfig_.jump);
+		break;
+	case attack:
+		return keyboard_->GetKeyUp(keyboardConfig_.attack);
+		break;
+	}
+	return false;
 }
 
 void Player::Move(float walkSpeed, float jumpPower)
@@ -33,33 +64,33 @@ void Player::Move(float walkSpeed, float jumpPower)
 	cameraForward.y_ = 0;
 	cameraForward = cameraForward.Normalize();
 
-	if (keyboard_->GetKey(config_[0]) || keyboard_->GetKey(config_[1]) || keyboard_->GetKey(config_[2]) || keyboard_->GetKey(config_[3]))
+	if (keyboard_->GetKey(keyboardConfig_[0]) || keyboard_->GetKey(keyboardConfig_[1]) || keyboard_->GetKey(keyboardConfig_[2]) || keyboard_->GetKey(keyboardConfig_[3]))
 	{
-		if (keyboard_->GetKey(config_[0]))
+		if (keyboard_->GetKey(keyboardConfig_[0]))
 		{
 			rigidbody_->velocity_ += cameraForward * walkSpeed;
 		}
-		if (keyboard_->GetKey(config_[1]))
+		if (keyboard_->GetKey(keyboardConfig_[1]))
 		{
 			rigidbody_->velocity_ -= cameraForward * walkSpeed;
 		}
-		if (keyboard_->GetKey(config_[2]))
+		if (keyboard_->GetKey(keyboardConfig_[2]))
 		{
 			rigidbody_->velocity_ += cameraRight * walkSpeed;
 		}
-		if (keyboard_->GetKey(config_[3]))
+		if (keyboard_->GetKey(keyboardConfig_[3]))
 		{
 			rigidbody_->velocity_ -= cameraRight * walkSpeed;
 		}
 		GetGameObject()->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(rigidbody_->velocity_.x_, rigidbody_->velocity_.z_),0 });
 	}
 
-	if (keyboard_->GetKeyDown(config_[4]))
+	if (GetInputStatusTrigger(jump))
 	{
 		rigidbody_->velocity_.y_ = jumpPower;
 		jumpSE_.Play();
 	}
-	if (keyboard_->GetKeyUp(config_[4]) && rigidbody_->velocity_.y_ > 0)
+	if (GetInputStatusRelease(jump) && rigidbody_->velocity_.y_ > 0)
 	{
 		rigidbody_->velocity_.y_ *= 0.2f;
 	}
@@ -170,7 +201,7 @@ void Player::LiveEntitiesUpdate()
 	GetGameObject()->transform_.localScale_ = { scale,scale,scale };
 
 	float modelScalingTime = (float)clock() * 0.002f;
-	if (!keyboard_->GetKey(config_[5]) && (keyboard_->GetKey(config_[0]) || keyboard_->GetKey(config_[1]) || keyboard_->GetKey(config_[2]) || keyboard_->GetKey(config_[3])))
+	if (!GetInputStatus(attack) && (keyboard_->GetKey(keyboardConfig_[0]) || keyboard_->GetKey(keyboardConfig_[1]) || keyboard_->GetKey(keyboardConfig_[2]) || keyboard_->GetKey(keyboardConfig_[3])))
 	{
 		modelScalingTime = (float)clock() * 0.015f;
 	}
@@ -183,7 +214,7 @@ void Player::LiveEntitiesUpdate()
 
 	rigidbody_->VelocityMove();
 
-	if (keyboard_->GetKey(config_[5]))
+	if (GetInputStatus(attack))
 	{
 		rigidbody_->velocity_ *= 0.8f;
 		rigidbody_->gravityScale_ = 0;
@@ -210,7 +241,7 @@ void Player::LiveEntitiesUpdate()
 	splitInterval_--;
 	splitInterval_ = max(-20, splitInterval_);
 
-	if (splitable_ && keyboard_->GetKeyUp(config_[5]) && splitInterval_ <= 0)
+	if (splitable_ && GetInputStatusRelease(attack) && splitInterval_ <= 0)
 	{
 		nose_->transform_.localScale_ = { 0.42f,0.35f,0.35f };
 		nose_->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi,0 });
@@ -231,7 +262,7 @@ void Player::LiveEntitiesUpdate()
 		splitInterval_ = 7;
 	}
 
-	if (!keyboard_->GetKey(config_[5]))
+	if (GetInputStatus(attack))
 	{
 		splitable_ = true;
 	}
@@ -408,7 +439,7 @@ void Player::DeadUpdate()
 		if (deadAnimationProgress_ >= 1)
 		{
 			keyUI_->transform_.localScale_.x_ += (0.45f / ADXWindow::GetAspect() - keyUI_->transform_.localScale_.x_) * 0.3f;
-			if (ADXKeyBoardInput::GetCurrentInstance()->GetKeyDown(DIK_SPACE))
+			if (GetInputStatusTrigger(jump))
 			{
 				restartAnimationAble_ = true;
 			}
@@ -417,7 +448,7 @@ void Player::DeadUpdate()
 		{
 			keyUI_->transform_.localScale_.x_ = 0;
 			if (deadAnimationProgress_ > 0.3f
-				&& ADXKeyBoardInput::GetCurrentInstance()->GetKeyDown(DIK_SPACE))
+				&& GetInputStatusTrigger(jump))
 			{
 				deadAnimationProgress_ = 1;
 			}

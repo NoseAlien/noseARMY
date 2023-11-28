@@ -1,4 +1,4 @@
-﻿#include "StageSelectScene.h"
+#include "StageSelectScene.h"
 #include "SceneTransition.h"
 
 void StageSelectScene::Initialize()
@@ -8,15 +8,12 @@ void StageSelectScene::Initialize()
 	fields_ = {};
 	tutorialAreas_ = {};
 
-	//画僁E
 	keyImg_ = ADXImage::LoadADXImage("texture/QUIT_TITLE.png");
 	backGroundTex_ = ADXImage::LoadADXImage("texture/skyBG.png");
 	groundImg_ = ADXImage::LoadADXImage("texture/GroundBlock.png");
 
 	rect_ = ADXModel::CreateRect();
 	ground_ = ADXModel::LoadADXModel("model/groundBlock.obj");
-
-	//オブジェクチE
 
 	ADXObject* temp = ADXObject::Create();
 	shutter_ = temp->AddComponent<SceneTransition>();
@@ -27,7 +24,11 @@ void StageSelectScene::Initialize()
 
 	temp = ADXObject::Create({ 0,2,0 });
 	player_ = temp->AddComponent<Player>();
-	player_->Initialize(ADXKeyBoardInput::GetCurrentInstance(), { DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C }, camera_);
+	player_->Initialize(ADXKeyBoardInput::GetCurrentInstance(),
+		{ DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C },
+		ADXGamePadInput::GetCurrentInstance(),
+		{ A,B },
+		camera_);
 	player_->LiveEntity::Initialize("player");
 
 	floors_.push_back(ADXObject::Create({ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 2,2,2 }));
