@@ -88,6 +88,7 @@ public:
 	bool GetInputStatus(actionsList action);
 	bool GetInputStatusTrigger(actionsList action);
 	bool GetInputStatusRelease(actionsList action);
+	ADXVector2 GetDirectionInput();
 	ADXCamera* GetCamera() { return camera_; };
 
 private:

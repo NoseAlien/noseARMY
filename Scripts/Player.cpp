@@ -56,6 +56,30 @@ bool Player::GetInputStatusRelease(actionsList action)
 	return false;
 }
 
+ADXVector2 Player::GetDirectionInput()
+{
+	ADXVector2 ret{};
+
+	if (keyboard_->GetKey(keyboardConfig_.up))
+	{
+		ret.y_ += 1;
+	}
+	if (keyboard_->GetKey(keyboardConfig_.down))
+	{
+		ret.y_ -= 1;
+	}
+	if (keyboard_->GetKey(keyboardConfig_.right))
+	{
+		ret.x_ += 1;
+	}
+	if (keyboard_->GetKey(keyboardConfig_.left))
+	{
+		ret.x_ -= 1;
+	}
+
+	return ret.Normalize();
+}
+
 void Player::Move(float walkSpeed, float jumpPower)
 {
 	ADXVector3 cameraRight = camera_->GetGameObject()->transform_.TransformPointOnlyRotation({ 1,0,0 });
@@ -64,24 +88,30 @@ void Player::Move(float walkSpeed, float jumpPower)
 	cameraForward.y_ = 0;
 	cameraForward = cameraForward.Normalize();
 
-	if (keyboard_->GetKey(keyboardConfig_[0]) || keyboard_->GetKey(keyboardConfig_[1]) || keyboard_->GetKey(keyboardConfig_[2]) || keyboard_->GetKey(keyboardConfig_[3]))
+	if (keyboard_->GetKey(keyboardConfig_.up) || keyboard_->GetKey(keyboardConfig_.down) || keyboard_->GetKey(keyboardConfig_.right) || keyboard_->GetKey(keyboardConfig_.left))
 	{
-		if (keyboard_->GetKey(keyboardConfig_[0]))
+		if (keyboard_->GetKey(keyboardConfig_.up))
 		{
 			rigidbody_->velocity_ += cameraForward * walkSpeed;
 		}
-		if (keyboard_->GetKey(keyboardConfig_[1]))
+		if (keyboard_->GetKey(keyboardConfig_.down))
 		{
 			rigidbody_->velocity_ -= cameraForward * walkSpeed;
 		}
-		if (keyboard_->GetKey(keyboardConfig_[2]))
+		if (keyboard_->GetKey(keyboardConfig_.right))
 		{
 			rigidbody_->velocity_ += cameraRight * walkSpeed;
 		}
-		if (keyboard_->GetKey(keyboardConfig_[3]))
+		if (keyboard_->GetKey(keyboardConfig_.left))
 		{
 			rigidbody_->velocity_ -= cameraRight * walkSpeed;
 		}
+	}
+	ADXVector2 inputVec = GetDirectionInput();
+	rigidbody_->velocity_ += cameraRight* inputVec.x_ + cameraForward* inputVec.y_;
+
+	if (inputVec != ADXVector2{ 0,0 })
+	{
 		GetGameObject()->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(rigidbody_->velocity_.x_, rigidbody_->velocity_.z_),0 });
 	}
 
@@ -201,7 +231,7 @@ void Player::LiveEntitiesUpdate()
 	GetGameObject()->transform_.localScale_ = { scale,scale,scale };
 
 	float modelScalingTime = (float)clock() * 0.002f;
-	if (!GetInputStatus(attack) && (keyboard_->GetKey(keyboardConfig_[0]) || keyboard_->GetKey(keyboardConfig_[1]) || keyboard_->GetKey(keyboardConfig_[2]) || keyboard_->GetKey(keyboardConfig_[3])))
+	if (!GetInputStatus(attack) && (keyboard_->GetKey(keyboardConfig_.up) || keyboard_->GetKey(keyboardConfig_.down) || keyboard_->GetKey(keyboardConfig_.right) || keyboard_->GetKey(keyboardConfig_.left)))
 	{
 		modelScalingTime = (float)clock() * 0.015f;
 	}

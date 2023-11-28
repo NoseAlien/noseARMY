@@ -1,4 +1,4 @@
-﻿#include "GameScene.h"
+#include "GameScene.h"
 #include "SceneTransition.h"
 
 #include "Cub_E.h"
@@ -31,7 +31,11 @@ void GameScene::Initialize()
 
 	temp = ADXObject::Create({ 0,2,0 });
 	player_ = temp->AddComponent<Player>();
-	player_->Initialize(ADXKeyBoardInput::GetCurrentInstance(), { DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C }, camera_);
+	player_->Initialize(ADXKeyBoardInput::GetCurrentInstance(),
+		{ DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C },
+		ADXGamePadInput::GetCurrentInstance(),
+		{ A,B },
+		camera_);
 	player_->LiveEntity::Initialize("player");
 
 
