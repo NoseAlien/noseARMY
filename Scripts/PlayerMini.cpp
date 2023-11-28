@@ -14,32 +14,19 @@ void PlayerMini::Move(float walkSpeed, float jumpPower)
 	cameraForward.y_ = 0;
 	cameraForward = cameraForward.Normalize();
 
-	if (parent_->GetInputStatus(0) || parent_->GetInputStatus(1) || parent_->GetInputStatus(2) || parent_->GetInputStatus(3))
+	ADXVector2 inputVec = parent_->GetDirectionInput();
+	rigidbody_->velocity_ += (cameraRight * inputVec.x_ + cameraForward * inputVec.y_) * walkSpeed;
+
+	if (inputVec != ADXVector2{ 0,0 })
 	{
-		if (parent_->GetInputStatus(0))
-		{
-			rigidbody_->velocity_ += cameraForward * walkSpeed;
-		}
-		if (parent_->GetInputStatus(1))
-		{
-			rigidbody_->velocity_ -= cameraForward * walkSpeed;
-		}
-		if (parent_->GetInputStatus(2))
-		{
-			rigidbody_->velocity_ += cameraRight * walkSpeed;
-		}
-		if (parent_->GetInputStatus(3))
-		{
-			rigidbody_->velocity_ -= cameraRight * walkSpeed;
-		}
 		GetGameObject()->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(rigidbody_->velocity_.x_, rigidbody_->velocity_.z_),0 });
 	}
 
-	if (parent_->GetInputStatusTrigger(4))
+	if (parent_->GetInputStatusTrigger(jump))
 	{
 		rigidbody_->velocity_.y_ = jumpPower;
 	}
-	if (parent_->GetInputStatusRelease(4) && rigidbody_->velocity_.y_ > 0)
+	if (parent_->GetInputStatusRelease(jump) && rigidbody_->velocity_.y_ > 0)
 	{
 		rigidbody_->velocity_.y_ *= 0.2f;
 	}
@@ -80,7 +67,7 @@ void PlayerMini::UniqueUpdate()
 
 	rigidbody_->dragAxis_.y = false;
 
-	if (parent_->GetInputStatus(5))
+	if (parent_->GetInputStatus(attack))
 	{
 		Move(0.1f, 0.8f);
 		rigidbody_->gravityScale_ = 0.02f;

@@ -1,4 +1,4 @@
-#include "ADXimage.h"
+﻿#include "ADXimage.h"
 #include "ADXDataPool.h"
 #include "ADXCommon.h"
 #include "ADXUtility.h"

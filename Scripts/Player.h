@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "ADXComponent.h"
 #include "ADXKeyBoardInput.h"
@@ -13,29 +13,29 @@
 #include "ADXCamera.h"
 #include "ADXRigidbody.h"
 
+
+enum actionsList
+{
+	jump,
+	attack
+};
+
+struct keyboardConfig
+{
+	BYTE up = 0;
+	BYTE down = 0;
+	BYTE right = 0;
+	BYTE left = 0;
+	BYTE jump = 0;
+	BYTE attack = 0;
+};
+struct gamePadConfig
+{
+	ControllerButton jump{};
+	ControllerButton attack{};
+};
 class Player : public LiveEntity
 {
-public:
-	enum actionsList
-	{
-		jump,
-		attack
-	};
-
-	struct keyboardConfig
-	{
-		BYTE up = 0;
-		BYTE down = 0;
-		BYTE left = 0;
-		BYTE right = 0;
-		BYTE jump = 0;
-		BYTE attack = 0;
-	};
-	struct gamePadConfig
-	{
-		ControllerButton jump{};
-		ControllerButton attack{};
-	};
 
 private:
 	static const uint32_t maxMinisNum = 20;

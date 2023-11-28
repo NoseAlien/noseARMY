@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 #include "SceneTransition.h"
 #include "ADXUtility.h"
 #include <time.h>
@@ -88,27 +88,8 @@ void Player::Move(float walkSpeed, float jumpPower)
 	cameraForward.y_ = 0;
 	cameraForward = cameraForward.Normalize();
 
-	if (keyboard_->GetKey(keyboardConfig_.up) || keyboard_->GetKey(keyboardConfig_.down) || keyboard_->GetKey(keyboardConfig_.right) || keyboard_->GetKey(keyboardConfig_.left))
-	{
-		if (keyboard_->GetKey(keyboardConfig_.up))
-		{
-			rigidbody_->velocity_ += cameraForward * walkSpeed;
-		}
-		if (keyboard_->GetKey(keyboardConfig_.down))
-		{
-			rigidbody_->velocity_ -= cameraForward * walkSpeed;
-		}
-		if (keyboard_->GetKey(keyboardConfig_.right))
-		{
-			rigidbody_->velocity_ += cameraRight * walkSpeed;
-		}
-		if (keyboard_->GetKey(keyboardConfig_.left))
-		{
-			rigidbody_->velocity_ -= cameraRight * walkSpeed;
-		}
-	}
 	ADXVector2 inputVec = GetDirectionInput();
-	rigidbody_->velocity_ += cameraRight* inputVec.x_ + cameraForward* inputVec.y_;
+	rigidbody_->velocity_ += (cameraRight * inputVec.x_ + cameraForward * inputVec.y_) * walkSpeed;
 
 	if (inputVec != ADXVector2{ 0,0 })
 	{
@@ -231,7 +212,7 @@ void Player::LiveEntitiesUpdate()
 	GetGameObject()->transform_.localScale_ = { scale,scale,scale };
 
 	float modelScalingTime = (float)clock() * 0.002f;
-	if (!GetInputStatus(attack) && (keyboard_->GetKey(keyboardConfig_.up) || keyboard_->GetKey(keyboardConfig_.down) || keyboard_->GetKey(keyboardConfig_.right) || keyboard_->GetKey(keyboardConfig_.left)))
+	if (!GetInputStatus(attack) && GetDirectionInput() != ADXVector2{ 0,0 })
 	{
 		modelScalingTime = (float)clock() * 0.015f;
 	}
@@ -292,7 +273,7 @@ void Player::LiveEntitiesUpdate()
 		splitInterval_ = 7;
 	}
 
-	if (GetInputStatus(attack))
+	if (GetInputStatusTrigger(attack))
 	{
 		splitable_ = true;
 	}
