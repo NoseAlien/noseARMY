@@ -67,12 +67,6 @@ uint32_t ADXImage::LoadADXImage(const std::string& imgName, bool generateMipMaps
 	D3D12_RESOURCE_DESC textureResourceDesc{};
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};//設定構造体
 
-	//WICテクスチャのロード
-	result = LoadFromWICFile(
-		ADXUtility::StringToWideChar("Resources/" + imgName),
-		WIC_FLAGS_NONE,
-		&metadata, scratchImg);
-
 	size_t pos1 = 0;
 	std::string fileExt = "";
 
@@ -85,21 +79,39 @@ uint32_t ADXImage::LoadADXImage(const std::string& imgName, bool generateMipMaps
 		fileExt = imgName.substr(pos1 + 1, imgName.size() - pos1 - 1);
 	}
 
-	if (generateMipMaps && fileExt != ".dds")
+	if (fileExt == "dds")
 	{
-		//ミップマップ生成
-		result = GenerateMipMaps(
-			scratchImg.GetImages(), scratchImg.GetImageCount(), scratchImg.GetMetadata(),
-			TEX_FILTER_DEFAULT, 0, mipChain);
-		if (SUCCEEDED(result))
-		{
-			scratchImg = std::move(mipChain);
-			metadata = scratchImg.GetMetadata();
-		}
+		//DDSテクスチャのロード
+		result = LoadFromDDSFile(
+			ADXUtility::StringToWideChar("Resources/" + imgName),
+			DDS_FLAGS_NONE,
+			&metadata, scratchImg);
 	}
+	else
+	{
+		//WICテクスチャのロード
+		result = LoadFromWICFile(
+			ADXUtility::StringToWideChar("Resources/" + imgName),
+			WIC_FLAGS_NONE,
+			&metadata, scratchImg);
 
-	//読み込んだディフューズテクスチャをSRGBとして扱う
-	metadata.format = MakeSRGB(metadata.format);
+		if (generateMipMaps)
+		{
+			//ミップマップ生成
+			result = GenerateMipMaps(
+				scratchImg.GetImages(), scratchImg.GetImageCount(), scratchImg.GetMetadata(),
+				TEX_FILTER_DEFAULT, 0, mipChain);
+			if (SUCCEEDED(result))
+			{
+				scratchImg = std::move(mipChain);
+				metadata = scratchImg.GetMetadata();
+			}
+		}
+
+		//読み込んだディフューズテクスチャをSRGBとして扱う
+		metadata.format = MakeSRGB(metadata.format);
+	}
+	assert(SUCCEEDED(result));
 
 	//ヒープ設定
 	textureHeapProp.Type = D3D12_HEAP_TYPE_CUSTOM;
