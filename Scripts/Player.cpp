@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 #include "SceneTransition.h"
 #include "ADXUtility.h"
 #include <time.h>
@@ -143,7 +143,7 @@ void Player::LiveEntitiesInitialize()
 	nose_->transform_.parent_ = &visual_->transform_;
 	nose_->transform_.UpdateMatrix();
 	nose_->model_ = &rect_;
-	nose_->texture_ = ADXImage::LoadADXImage("texture/apEGnoSE.png");
+	nose_->texture_ = ADXImage::LoadADXImage("texture/apEGnoSE.dds");
 	nose_->material_ = GetGameObject()->material_;
 	bodyParts_.push_back(nose_);
 
