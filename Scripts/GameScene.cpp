@@ -31,9 +31,8 @@ void GameScene::Initialize()
 
 	temp = ADXObject::Create({ 0,2,0 });
 	player_ = temp->AddComponent<Player>();
-	player_->Initialize(ADXKeyBoardInput::GetCurrentInstance(),
+	player_->Initialize(
 		{ DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C },
-		ADXGamePadInput::GetCurrentInstance(),
 		{ A,B },
 		camera_);
 	player_->LiveEntity::Initialize("player");

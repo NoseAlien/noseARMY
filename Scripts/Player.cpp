@@ -3,26 +3,40 @@
 #include "ADXUtility.h"
 #include <time.h>
 
-void Player::Initialize(ADXKeyBoardInput* setKeyboard, const keyboardConfig& setKeyBoardConfig,
-	ADXGamePadInput* setGamePad, const gamePadConfig& setGamePadConfig,
+void Player::Initialize(const keyboardConfig& setKeyBoardConfig,
+	const gamePadConfig& setGamePadConfig,
 	ADXCamera* setCamera)
 {
-	keyboard_ = setKeyboard;
 	keyboardConfig_ = setKeyBoardConfig;
-	gamePad_ = setGamePad;
 	gamePadConfig_ = setGamePadConfig;
 	camera_ = setCamera;
 }
 
 bool Player::GetInputStatus(actionsList action)
 {
+	ADXGamePadInput* gamePad = ADXGamePadInput::GetCurrentInstance();
+	if (gamePad != nullptr)
+	{
+		switch (action)
+		{
+		case jump:
+			return ADXKeyBoardInput::GetCurrentInstance()->GetKey(keyboardConfig_.jump)
+				|| gamePad->GetButton(gamePadConfig_.jump);
+			break;
+		case attack:
+			return ADXKeyBoardInput::GetCurrentInstance()->GetKey(keyboardConfig_.attack)
+				|| gamePad->GetButton(gamePadConfig_.attack);
+			break;
+		}
+	}
+
 	switch (action)
 	{
 	case jump:
-		return keyboard_->GetKey(keyboardConfig_.jump);
+		return ADXKeyBoardInput::GetCurrentInstance()->GetKey(keyboardConfig_.jump);
 		break;
 	case attack:
-		return keyboard_->GetKey(keyboardConfig_.attack);
+		return ADXKeyBoardInput::GetCurrentInstance()->GetKey(keyboardConfig_.attack);
 		break;
 	}
 	return false;
@@ -30,13 +44,29 @@ bool Player::GetInputStatus(actionsList action)
 
 bool Player::GetInputStatusTrigger(actionsList action)
 {
+	ADXGamePadInput* gamePad = ADXGamePadInput::GetCurrentInstance();
+	if (gamePad != nullptr)
+	{
+		switch (action)
+		{
+		case jump:
+			return ADXKeyBoardInput::GetCurrentInstance()->GetKeyDown(keyboardConfig_.jump)
+				|| gamePad->GetButtonDown(gamePadConfig_.jump);
+			break;
+		case attack:
+			return ADXKeyBoardInput::GetCurrentInstance()->GetKeyDown(keyboardConfig_.attack)
+				|| gamePad->GetButtonDown(gamePadConfig_.attack);
+			break;
+		}
+	}
+
 	switch (action)
 	{
 	case jump:
-		return keyboard_->GetKeyDown(keyboardConfig_.jump);
+		return ADXKeyBoardInput::GetCurrentInstance()->GetKeyDown(keyboardConfig_.jump);
 		break;
 	case attack:
-		return keyboard_->GetKeyDown(keyboardConfig_.attack);
+		return ADXKeyBoardInput::GetCurrentInstance()->GetKeyDown(keyboardConfig_.attack);
 		break;
 	}
 	return false;
@@ -44,13 +74,29 @@ bool Player::GetInputStatusTrigger(actionsList action)
 
 bool Player::GetInputStatusRelease(actionsList action)
 {
+	ADXGamePadInput* gamePad = ADXGamePadInput::GetCurrentInstance();
+	if (gamePad != nullptr)
+	{
+		switch (action)
+		{
+		case jump:
+			return ADXKeyBoardInput::GetCurrentInstance()->GetKeyUp(keyboardConfig_.jump)
+				|| gamePad->GetButtonUp(gamePadConfig_.jump);
+			break;
+		case attack:
+			return ADXKeyBoardInput::GetCurrentInstance()->GetKeyUp(keyboardConfig_.attack)
+				|| gamePad->GetButtonUp(gamePadConfig_.attack);
+			break;
+		}
+	}
+
 	switch (action)
 	{
 	case jump:
-		return keyboard_->GetKeyUp(keyboardConfig_.jump);
+		return ADXKeyBoardInput::GetCurrentInstance()->GetKeyUp(keyboardConfig_.jump);
 		break;
 	case attack:
-		return keyboard_->GetKeyUp(keyboardConfig_.attack);
+		return ADXKeyBoardInput::GetCurrentInstance()->GetKeyUp(keyboardConfig_.attack);
 		break;
 	}
 	return false;
@@ -60,26 +106,26 @@ ADXVector2 Player::GetDirectionInput()
 {
 	ADXVector2 ret{};
 
-	if (keyboard_->GetKey(keyboardConfig_.up))
+	if (ADXKeyBoardInput::GetCurrentInstance()->GetKey(keyboardConfig_.up))
 	{
 		ret.y_ += 1;
 	}
-	if (keyboard_->GetKey(keyboardConfig_.down))
+	if (ADXKeyBoardInput::GetCurrentInstance()->GetKey(keyboardConfig_.down))
 	{
 		ret.y_ -= 1;
 	}
-	if (keyboard_->GetKey(keyboardConfig_.right))
+	if (ADXKeyBoardInput::GetCurrentInstance()->GetKey(keyboardConfig_.right))
 	{
 		ret.x_ += 1;
 	}
-	if (keyboard_->GetKey(keyboardConfig_.left))
+	if (ADXKeyBoardInput::GetCurrentInstance()->GetKey(keyboardConfig_.left))
 	{
 		ret.x_ -= 1;
 	}
 
-	if (gamePad_ != nullptr)
+	if (ADXGamePadInput::GetCurrentInstance() != nullptr)
 	{
-		ret += gamePad_->GetLeftStickVec();
+		ret += ADXGamePadInput::GetCurrentInstance()->GetLeftStickVec();
 	}
 
 	return ret.Normalize();

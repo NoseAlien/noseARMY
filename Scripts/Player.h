@@ -56,9 +56,7 @@ private:
 	ADXAudio jumpSE_{};
 	ADXAudio windowOpenSE_{};
 
-	ADXKeyBoardInput* keyboard_ = nullptr;
 	keyboardConfig keyboardConfig_{};
-	ADXGamePadInput* gamePad_ = nullptr;
 	gamePadConfig gamePadConfig_{};
 
 	ADXRigidbody* rigidbody_{};
@@ -82,8 +80,8 @@ private:
 	uint32_t setTutorialImg_ = 0;
 
 public:
-	void Initialize(ADXKeyBoardInput* setKeyboard, const keyboardConfig& setKeyBoardConfig,
-		ADXGamePadInput* setGamePad, const gamePadConfig& setGamePadConfig,
+	void Initialize(const keyboardConfig& setKeyBoardConfig,
+		const gamePadConfig& setGamePadConfig,
 		ADXCamera* setCamera);
 	bool GetInputStatus(actionsList action);
 	bool GetInputStatusTrigger(actionsList action);
