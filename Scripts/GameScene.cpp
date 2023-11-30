@@ -33,7 +33,7 @@ void GameScene::Initialize()
 	player_ = temp->AddComponent<Player>();
 	player_->Initialize(
 		{ DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C },
-		{ A,B },
+		{ B,A },
 		camera_);
 	player_->LiveEntity::Initialize("player");
 

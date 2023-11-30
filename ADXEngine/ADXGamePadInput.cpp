@@ -56,7 +56,7 @@ bool ADXGamePadInput::GetButtonUp(const ControllerButton& buttonNum)
 		return !(XINPUT_GAMEPAD_TRIGGER_THRESHOLD < inputState_.Gamepad.bRightTrigger);
 	}
 	else {
-		return !(inputState_.Gamepad.wButtons & buttonNum);
+		return (prevInputState_.Gamepad.wButtons & buttonNum) && !GetButton(buttonNum);
 	}
 }
 
