@@ -1,4 +1,4 @@
-﻿#include "Player.h"
+#include "Player.h"
 #include "SceneTransition.h"
 #include "ADXUtility.h"
 #include <time.h>
@@ -75,6 +75,11 @@ ADXVector2 Player::GetDirectionInput()
 	if (keyboard_->GetKey(keyboardConfig_.left))
 	{
 		ret.x_ -= 1;
+	}
+
+	if (gamePad_ != nullptr)
+	{
+		ret += gamePad_->GetLeftStickVec();
 	}
 
 	return ret.Normalize();
