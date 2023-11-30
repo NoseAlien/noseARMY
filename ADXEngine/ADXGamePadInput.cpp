@@ -62,12 +62,20 @@ bool ADXGamePadInput::GetButtonUp(const ControllerButton& buttonNum)
 
 ADXVector2 ADXGamePadInput::GetLeftStickVec()
 {
-	ADXVector2 ret(static_cast<float>(inputState_.Gamepad.sThumbLX), static_cast<float>(inputState_.Gamepad.sThumbLY));
-	return ret / MaxStickInput;
+	ADXVector2 ret = ADXVector2{ static_cast<float>(inputState_.Gamepad.sThumbLX), static_cast<float>(inputState_.Gamepad.sThumbLY) } / MaxStickInput;
+	if (ret.Length() <= deadZoneAmount)
+	{
+		return{ 0,0 };
+	}
+	return ret;
 }
 
 ADXVector2 ADXGamePadInput::GetRightStickVec()
 {
-	ADXVector2 ret(static_cast<float>(inputState_.Gamepad.sThumbRX), static_cast<float>(inputState_.Gamepad.sThumbRY));
-	return ret / MaxStickInput;
+	ADXVector2 ret = ADXVector2{ static_cast<float>(inputState_.Gamepad.sThumbRX), static_cast<float>(inputState_.Gamepad.sThumbRY) } / MaxStickInput;
+	if (ret.Length() <= deadZoneAmount)
+	{
+		return{ 0,0 };
+	}
+	return ret;
 }

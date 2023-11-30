@@ -29,6 +29,7 @@ private:
 	Microsoft::WRL::ComPtr<IDirectInputDevice8> controller_ = nullptr;
 	XINPUT_STATE inputState_{};
 	XINPUT_STATE prevInputState_{};
+	float deadZoneAmount = 0.5f;
 
 private:
 	static ADXGamePadInput* S_current;
