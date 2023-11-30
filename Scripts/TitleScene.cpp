@@ -5,9 +5,9 @@
 void TitleScene::Initialize()
 {
 	//画像
-	titleImg_ = ADXImage::LoadADXImage("texture/noseARMY_logo.png");
-	backGroundTex_ = ADXImage::LoadADXImage("texture/skyBG.png");
-	keyImg_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
+	titleImg_ = ADXImage::LoadADXImage("texture/noseARMY_logo.dds");
+	backGroundTex_ = ADXImage::LoadADXImage("texture/skyBG.dds");
+	keyImg_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.dds");
 
 	//マテリアル
 	unlitMat_ = ADXMaterial::LoadMaterial("material/unlit.mtl");

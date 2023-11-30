@@ -4,7 +4,7 @@
 
 void Goal::Initialize(const std::string& setTeam)
 {
-	GetGameObject()->texture_ = ADXImage::LoadADXImage("texture/goalField.png");
+	GetGameObject()->texture_ = ADXImage::LoadADXImage("texture/goalField.dds");
 	GetGameObject()->sortingOrder_ = 1;
 
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
@@ -22,11 +22,11 @@ void Goal::Initialize(const std::string& setTeam)
 	clearUI_ = ADXObject::Create();
 	clearUI_->transform_.rectTransform_ = true;
 	clearUI_->model_ = &rectModel_;
-	clearUI_->texture_ = ADXImage::LoadADXImage("texture/clear.png");
+	clearUI_->texture_ = ADXImage::LoadADXImage("texture/clear.dds");
 	clearUI_->renderLayer_ = 5;
 
 	keyUI_ = ADXObject::Duplicate(*clearUI_);
-	keyUI_->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
+	keyUI_->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.dds");
 }
 
 void Goal::UniqueUpdate()

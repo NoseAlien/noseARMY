@@ -8,9 +8,9 @@ void Clex::EnemyInitialize()
 	rect_ = ADXModel::CreateRect();
 	enemyModel_ = ADXModel::LoadADXModel("model/Clex.obj");
 
-	nutralTex_ = ADXImage::LoadADXImage("texture/tex_Clex.png");
-	deadTex_ = ADXImage::LoadADXImage("texture/tex_Clex_3.png");
-	attackTex = ADXImage::LoadADXImage("texture/tex_Clex_2.png");
+	nutralTex_ = ADXImage::LoadADXImage("texture/tex_Clex.dds");
+	deadTex_ = ADXImage::LoadADXImage("texture/tex_Clex_3.dds");
+	attackTex = ADXImage::LoadADXImage("texture/tex_Clex_2.dds");
 
 	visual_->model_ = &enemyModel_;
 
@@ -19,13 +19,13 @@ void Clex::EnemyInitialize()
 	face->transform_.localPosition_ = { 0,-0.4f,0.9f };
 	face->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0.4f,0,0 });
 	face->model_ = &rect_;
-	face->texture_ = ADXImage::LoadADXImage("texture/Clex_face.png");
+	face->texture_ = ADXImage::LoadADXImage("texture/Clex_face.dds");
 	bodyParts_.push_back(face);
 
 	body_ = ADXObject::Create();
 	body_->transform_.parent_ = &visual_->transform_;
 	body_->model_ = &rect_;
-	body_->texture_ = ADXImage::LoadADXImage("texture/Clex_projectile.png");
+	body_->texture_ = ADXImage::LoadADXImage("texture/Clex_projectile.dds");
 	bodyParts_.push_back(body_);
 
 	antennaRig = ADXObject::Create();
@@ -34,7 +34,7 @@ void Clex::EnemyInitialize()
 	antenna = ADXObject::Create();
 	antenna->transform_.parent_ = &antennaRig->transform_;
 	antenna->model_ = &rect_;
-	antenna->texture_ = ADXImage::LoadADXImage("texture/Clex_antenna.png");
+	antenna->texture_ = ADXImage::LoadADXImage("texture/Clex_antenna.dds");
 	bodyParts_.push_back(antenna);
 }
 
@@ -89,7 +89,7 @@ void Clex::EnemyUpdate()
 					GetGameObject()->transform_.parent_);
 				Projectile* projectile = projectileObj->AddComponent<Projectile>();
 
-				projectile->SetData((GetGameObject()->transform_.localPosition_ - cursor_).Normalize() * -0.5f, ADXImage::LoadADXImage("texture/Clex_projectile.png"));
+				projectile->SetData((GetGameObject()->transform_.localPosition_ - cursor_).Normalize() * -0.5f, ADXImage::LoadADXImage("texture/Clex_projectile.dds"));
 				projectile->LiveEntity::Initialize(GetTeam());
 
 				projectiles.push_back(projectile);

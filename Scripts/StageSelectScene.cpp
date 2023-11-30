@@ -8,9 +8,9 @@ void StageSelectScene::Initialize()
 	fields_ = {};
 	tutorialAreas_ = {};
 
-	keyImg_ = ADXImage::LoadADXImage("texture/QUIT_TITLE.png");
-	backGroundTex_ = ADXImage::LoadADXImage("texture/skyBG.png");
-	groundImg_ = ADXImage::LoadADXImage("texture/GroundBlock.png");
+	keyImg_ = ADXImage::LoadADXImage("texture/QUIT_TITLE.dds");
+	backGroundTex_ = ADXImage::LoadADXImage("texture/skyBG.dds");
+	groundImg_ = ADXImage::LoadADXImage("texture/GroundBlock.dds");
 
 	rect_ = ADXModel::CreateRect();
 	ground_ = ADXModel::LoadADXModel("model/groundBlock.obj");
@@ -46,7 +46,7 @@ void StageSelectScene::Initialize()
 
 	temp = ADXObject::Create({ 0,3,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 4,4,4 });
 	tutorialAreas_.push_back(temp->AddComponent<TutorialArea>());
-	tutorialAreas_.back()->SetTutorialImg(ADXImage::LoadADXImage("texture/tutorial_move.png"));
+	tutorialAreas_.back()->SetTutorialImg(ADXImage::LoadADXImage("texture/tutorial_move.dds"));
 
 	temp = ADXObject::Create({ 0,13,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 50,14,50 });
 	fields_.push_back(temp->AddComponent<FieldBox>());

@@ -9,7 +9,7 @@ void Enemy::LiveEntitiesInitialize()
 	enemyModel_ = ADXModel::LoadADXModel("model/groundBlock.obj");
 
 	visual_->model_ = &enemyModel_;
-	visual_->texture_ = ADXImage::LoadADXImage("texture/battleField.png");
+	visual_->texture_ = ADXImage::LoadADXImage("texture/battleField.dds");
 
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
 	tempCol->isTrigger_ = true;

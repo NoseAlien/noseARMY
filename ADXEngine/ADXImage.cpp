@@ -107,11 +107,11 @@ uint32_t ADXImage::LoadADXImage(const std::string& imgName, bool generateMipMaps
 				metadata = scratchImg.GetMetadata();
 			}
 		}
+
+		//読み込んだディフューズテクスチャをSRGBとして扱う
+		metadata.format = MakeSRGB(metadata.format);
 	}
 	assert(SUCCEEDED(result));
-
-	//読み込んだディフューズテクスチャをSRGBとして扱う
-	metadata.format = MakeSRGB(metadata.format);
 
 	//ヒープ設定
 	textureHeapProp.Type = D3D12_HEAP_TYPE_CUSTOM;

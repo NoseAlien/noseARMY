@@ -21,7 +21,7 @@ void LiveEntity::UniqueInitialize()
 	tempCol->pushable_ = true;
 
 	rect_ = ADXModel::CreateRect();
-	gaugeTex_ = ADXImage::LoadADXImage("texture/whiteDot.png");
+	gaugeTex_ = ADXImage::LoadADXImage("texture/whiteDot.dds");
 
 	visual_ = ADXObject::Create();
 	visual_->transform_.parent_ = &GetGameObject()->transform_;
@@ -42,12 +42,12 @@ void LiveEntity::UniqueInitialize()
 
 	particle_ = GetGameObject()->AddComponent<ADXParticleSystem>();
 	particle_->animation_.Initialize({
-		ADXImage::LoadADXImage("texture/particle_defeat/000.png"), ADXImage::LoadADXImage("texture/particle_defeat/001.png"),
-		ADXImage::LoadADXImage("texture/particle_defeat/002.png"), ADXImage::LoadADXImage("texture/particle_defeat/003.png"),
-		ADXImage::LoadADXImage("texture/particle_defeat/004.png"), ADXImage::LoadADXImage("texture/particle_defeat/005.png"),
-		ADXImage::LoadADXImage("texture/particle_defeat/006.png"), ADXImage::LoadADXImage("texture/particle_defeat/007.png"),
-		ADXImage::LoadADXImage("texture/particle_defeat/008.png"), ADXImage::LoadADXImage("texture/particle_defeat/009.png"),
-		ADXImage::LoadADXImage("texture/particle_defeat/010.png"), }, 0, false);
+		ADXImage::LoadADXImage("texture/particle_defeat/000.dds"), ADXImage::LoadADXImage("texture/particle_defeat/001.dds"),
+		ADXImage::LoadADXImage("texture/particle_defeat/002.dds"), ADXImage::LoadADXImage("texture/particle_defeat/003.dds"),
+		ADXImage::LoadADXImage("texture/particle_defeat/004.dds"), ADXImage::LoadADXImage("texture/particle_defeat/005.dds"),
+		ADXImage::LoadADXImage("texture/particle_defeat/006.dds"), ADXImage::LoadADXImage("texture/particle_defeat/007.dds"),
+		ADXImage::LoadADXImage("texture/particle_defeat/008.dds"), ADXImage::LoadADXImage("texture/particle_defeat/009.dds"),
+		ADXImage::LoadADXImage("texture/particle_defeat/010.dds"), }, 0, false);
 	particle_->lifeTime_ = particle_->animation_.GetLength();
 	particle_->particleModel_ = rect_;
 

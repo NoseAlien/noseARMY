@@ -9,7 +9,7 @@ void SceneTransition::UniqueInitialize()
 {
 	GetGameObject()->transform_.rectTransform_ = true;
 	GetGameObject()->model_ = &S_rect;
-	GetGameObject()->texture_ = ADXImage::LoadADXImage("texture/apEGnoSE.png");
+	GetGameObject()->texture_ = ADXImage::LoadADXImage("texture/apEGnoSE.dds");
 	GetGameObject()->renderLayer_ = 10;
 }
 

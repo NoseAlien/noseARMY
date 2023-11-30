@@ -137,7 +137,7 @@ void Player::LiveEntitiesInitialize()
 	rigidbody_ = GetGameObject()->AddComponent<ADXRigidbody>();
 
 	visual_->model_ = &playerModel_;
-	visual_->texture_ = ADXImage::LoadADXImage("texture/apEG_fur.png");
+	visual_->texture_ = ADXImage::LoadADXImage("texture/apEG_fur.dds");
 
 	nose_ = ADXObject::Create({ 0,0,1.01f }, ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi,0 }), { 0.42f,0.35f,0.35f });
 	nose_->transform_.parent_ = &visual_->transform_;
@@ -151,7 +151,7 @@ void Player::LiveEntitiesInitialize()
 	tutorialWindow_->transform_.rectTransform_ = true;
 	tutorialWindow_->transform_.UpdateMatrix();
 	tutorialWindow_->model_ = &rect_;
-	tutorialWindow_->texture_ = ADXImage::LoadADXImage("texture/WhiteDot.png");
+	tutorialWindow_->texture_ = ADXImage::LoadADXImage("texture/WhiteDot.dds");
 	tutorialWindow_->material_ = GetGameObject()->material_;
 	tutorialWindow_->renderLayer_ = 1;
 
@@ -159,7 +159,7 @@ void Player::LiveEntitiesInitialize()
 	outOfField_->transform_.rectTransform_ = true;
 	outOfField_->transform_.UpdateMatrix();
 	outOfField_->model_ = &rect_;
-	outOfField_->texture_ = ADXImage::LoadADXImage("texture/outOfField.png");
+	outOfField_->texture_ = ADXImage::LoadADXImage("texture/outOfField.dds");
 	outOfField_->material_ = GetGameObject()->material_;
 	outOfField_->renderLayer_ = 1;
 
@@ -167,7 +167,7 @@ void Player::LiveEntitiesInitialize()
 	gameOverFilter_->transform_.rectTransform_ = true;
 	gameOverFilter_->transform_.UpdateMatrix();
 	gameOverFilter_->model_ = &rect_;
-	gameOverFilter_->texture_ = ADXImage::LoadADXImage("texture/WhiteDot.png");
+	gameOverFilter_->texture_ = ADXImage::LoadADXImage("texture/WhiteDot.dds");
 	gameOverFilter_->material_ = GetGameObject()->material_;
 	gameOverFilter_->renderLayer_ = 1;
 
@@ -177,7 +177,7 @@ void Player::LiveEntitiesInitialize()
 	dead_->transform_.parent_ = &GetGameObject()->transform_;
 	dead_->transform_.UpdateMatrix();
 	dead_->model_ = &rect_;
-	dead_->texture_ = ADXImage::LoadADXImage("texture/apEG_dead.png");
+	dead_->texture_ = ADXImage::LoadADXImage("texture/apEG_dead.dds");
 	dead_->material_ = GetGameObject()->material_;
 	dead_->renderLayer_ = 4;
 
@@ -185,16 +185,16 @@ void Player::LiveEntitiesInitialize()
 	keyUI_->transform_.rectTransform_ = true;
 	keyUI_->model_ = &rect_;
 	keyUI_->renderLayer_ = 5;
-	keyUI_->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
+	keyUI_->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.dds");
 
 	deadParticle_ = GetGameObject()->AddComponent<ADXParticleSystem>();
 	deadParticle_->animation_.Initialize({
-		ADXImage::LoadADXImage("texture/particle_defeat/000.png"), ADXImage::LoadADXImage("texture/particle_defeat/001.png"),
-		ADXImage::LoadADXImage("texture/particle_defeat/002.png"), ADXImage::LoadADXImage("texture/particle_defeat/003.png"),
-		ADXImage::LoadADXImage("texture/particle_defeat/004.png"), ADXImage::LoadADXImage("texture/particle_defeat/005.png"),
-		ADXImage::LoadADXImage("texture/particle_defeat/006.png"), ADXImage::LoadADXImage("texture/particle_defeat/007.png"),
-		ADXImage::LoadADXImage("texture/particle_defeat/008.png"), ADXImage::LoadADXImage("texture/particle_defeat/009.png"),
-		ADXImage::LoadADXImage("texture/particle_defeat/010.png"), }, 0, false);
+		ADXImage::LoadADXImage("texture/particle_defeat/000.dds"), ADXImage::LoadADXImage("texture/particle_defeat/001.dds"),
+		ADXImage::LoadADXImage("texture/particle_defeat/002.dds"), ADXImage::LoadADXImage("texture/particle_defeat/003.dds"),
+		ADXImage::LoadADXImage("texture/particle_defeat/004.dds"), ADXImage::LoadADXImage("texture/particle_defeat/005.dds"),
+		ADXImage::LoadADXImage("texture/particle_defeat/006.dds"), ADXImage::LoadADXImage("texture/particle_defeat/007.dds"),
+		ADXImage::LoadADXImage("texture/particle_defeat/008.dds"), ADXImage::LoadADXImage("texture/particle_defeat/009.dds"),
+		ADXImage::LoadADXImage("texture/particle_defeat/010.dds"), }, 0, false);
 	deadParticle_->lifeTime_ = deadParticle_->animation_.GetLength();
 	deadParticle_->particleModel_ = rect_;
 }
