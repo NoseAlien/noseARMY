@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXComponent.h"
 #include "ADXKeyBoardInput.h"
@@ -20,20 +20,6 @@ enum actionsList
 	attack
 };
 
-struct keyboardConfig
-{
-	BYTE up = 0;
-	BYTE down = 0;
-	BYTE right = 0;
-	BYTE left = 0;
-	BYTE jump = 0;
-	BYTE attack = 0;
-};
-struct gamePadConfig
-{
-	ControllerButton jump{};
-	ControllerButton attack{};
-};
 class Player : public LiveEntity
 {
 
@@ -56,9 +42,6 @@ private:
 	ADXAudio jumpSE_{};
 	ADXAudio windowOpenSE_{};
 
-	keyboardConfig keyboardConfig_{};
-	gamePadConfig gamePadConfig_{};
-
 	ADXRigidbody* rigidbody_{};
 
 	ADXParticleSystem* deadParticle_ = nullptr;
@@ -80,9 +63,7 @@ private:
 	uint32_t setTutorialImg_ = 0;
 
 public:
-	void Initialize(const keyboardConfig& setKeyBoardConfig,
-		const gamePadConfig& setGamePadConfig,
-		ADXCamera* setCamera);
+	void Initialize(ADXCamera* setCamera);
 	bool GetInputStatus(actionsList action);
 	bool GetInputStatusTrigger(actionsList action);
 	bool GetInputStatusRelease(actionsList action);

@@ -1,4 +1,4 @@
-﻿#include "ADXGamePadInput.h"
+#include "ADXGamePadInput.h"
 #pragma comment (lib, "xinput.lib")
 
 ADXGamePadInput* ADXGamePadInput::S_current = nullptr;
@@ -60,20 +60,18 @@ bool ADXGamePadInput::GetButtonUp(const ControllerButton& buttonNum)
 	}
 }
 
-ADXVector2 ADXGamePadInput::GetLeftStickVec()
+ADXVector2 ADXGamePadInput::GetStickVec(const ControllerStick& stickNum)
 {
-	ADXVector2 ret = ADXVector2{ static_cast<float>(inputState_.Gamepad.sThumbLX), static_cast<float>(inputState_.Gamepad.sThumbLY) } / MaxStickInput;
-	if (ret.Length() <= deadZoneAmount)
+	ADXVector2 ret{};
+	if (stickNum == LEFT)
 	{
-		return{ 0,0 };
+		ret = ADXVector2{ static_cast<float>(inputState_.Gamepad.sThumbLX), static_cast<float>(inputState_.Gamepad.sThumbLY) } / MaxStickInput;
 	}
-	return ret;
-}
-
-ADXVector2 ADXGamePadInput::GetRightStickVec()
-{
-	ADXVector2 ret = ADXVector2{ static_cast<float>(inputState_.Gamepad.sThumbRX), static_cast<float>(inputState_.Gamepad.sThumbRY) } / MaxStickInput;
-	if (ret.Length() <= deadZoneAmount)
+	else
+	{
+		ret = ADXVector2{ static_cast<float>(inputState_.Gamepad.sThumbRX), static_cast<float>(inputState_.Gamepad.sThumbRY) } / MaxStickInput;
+	}
+	if (ret.Length() <= deadZoneAmount_)
 	{
 		return{ 0,0 };
 	}

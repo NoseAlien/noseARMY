@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include<dinput.h>
 #include<DirectXMath.h>
 #include<wrl.h>
@@ -19,6 +19,12 @@ enum ControllerButton
 	RT
 };
 
+enum ControllerStick
+{
+	LEFT,
+	RIGHT
+};
+
 class ADXGamePadInput
 {
 private:
@@ -29,7 +35,7 @@ private:
 	Microsoft::WRL::ComPtr<IDirectInputDevice8> controller_ = nullptr;
 	XINPUT_STATE inputState_{};
 	XINPUT_STATE prevInputState_{};
-	float deadZoneAmount = 0.5f;
+	float deadZoneAmount_ = 0.5f;
 
 private:
 	static ADXGamePadInput* S_current;
@@ -39,8 +45,7 @@ public:
 	bool GetButton(const ControllerButton& buttonNum);
 	bool GetButtonDown(const ControllerButton& buttonNum);
 	bool GetButtonUp(const ControllerButton& buttonNum);
-	ADXVector2 GetLeftStickVec();
-	ADXVector2 GetRightStickVec();
+	ADXVector2 GetStickVec(const ControllerStick& stickNum);
 
 public:
 	static ADXGamePadInput* GetCurrentInstance() { return S_current; };

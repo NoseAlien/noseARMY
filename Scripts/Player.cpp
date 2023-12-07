@@ -1,14 +1,11 @@
-﻿#include "Player.h"
+#include "Player.h"
 #include "SceneTransition.h"
 #include "ADXUtility.h"
+#include "ADXKeyConfig.h"
 #include <time.h>
 
-void Player::Initialize(const keyboardConfig& setKeyBoardConfig,
-	const gamePadConfig& setGamePadConfig,
-	ADXCamera* setCamera)
+void Player::Initialize(ADXCamera* setCamera)
 {
-	keyboardConfig_ = setKeyBoardConfig;
-	gamePadConfig_ = setGamePadConfig;
 	camera_ = setCamera;
 }
 
@@ -125,7 +122,8 @@ ADXVector2 Player::GetDirectionInput()
 
 	if (ADXGamePadInput::GetCurrentInstance() != nullptr)
 	{
-		ret += ADXGamePadInput::GetCurrentInstance()->GetLeftStickVec();
+		ret += ADXGamePadInput::GetCurrentInstance()->GetStickVec(
+			ADXKeyConfig::GetCurrentInstance()->GetConfigCell("vec").sticks[0]);
 	}
 
 	return ret.Normalize();
