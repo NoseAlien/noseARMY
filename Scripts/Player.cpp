@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 #include "SceneTransition.h"
 #include "ADXUtility.h"
 #include "ADXKeyConfig.h"
@@ -11,122 +11,59 @@ void Player::Initialize(ADXCamera* setCamera)
 
 bool Player::GetInputStatus(actionsList action)
 {
-	ADXGamePadInput* gamePad = ADXGamePadInput::GetCurrentInstance();
-	if (gamePad != nullptr)
-	{
-		switch (action)
-		{
-		case jump:
-			return ADXKeyBoardInput::GetCurrentInstance()->GetKey(keyboardConfig_.jump)
-				|| gamePad->GetButton(gamePadConfig_.jump);
-			break;
-		case attack:
-			return ADXKeyBoardInput::GetCurrentInstance()->GetKey(keyboardConfig_.attack)
-				|| gamePad->GetButton(gamePadConfig_.attack);
-			break;
-		}
-	}
-
+	std::string cellName = "";
 	switch (action)
 	{
 	case jump:
-		return ADXKeyBoardInput::GetCurrentInstance()->GetKey(keyboardConfig_.jump);
+		cellName = "jump";
 		break;
 	case attack:
-		return ADXKeyBoardInput::GetCurrentInstance()->GetKey(keyboardConfig_.attack);
+		cellName = "attack";
 		break;
 	}
-	return false;
+
+	ADXKeyConfig* config = ADXKeyConfig::GetCurrentInstance();
+	return config != nullptr && config->GetInput(cellName);
 }
 
 bool Player::GetInputStatusTrigger(actionsList action)
 {
-	ADXGamePadInput* gamePad = ADXGamePadInput::GetCurrentInstance();
-	if (gamePad != nullptr)
-	{
-		switch (action)
-		{
-		case jump:
-			return ADXKeyBoardInput::GetCurrentInstance()->GetKeyDown(keyboardConfig_.jump)
-				|| gamePad->GetButtonDown(gamePadConfig_.jump);
-			break;
-		case attack:
-			return ADXKeyBoardInput::GetCurrentInstance()->GetKeyDown(keyboardConfig_.attack)
-				|| gamePad->GetButtonDown(gamePadConfig_.attack);
-			break;
-		}
-	}
-
+	std::string cellName = "";
 	switch (action)
 	{
 	case jump:
-		return ADXKeyBoardInput::GetCurrentInstance()->GetKeyDown(keyboardConfig_.jump);
+		cellName = "jump";
 		break;
 	case attack:
-		return ADXKeyBoardInput::GetCurrentInstance()->GetKeyDown(keyboardConfig_.attack);
+		cellName = "attack";
 		break;
 	}
-	return false;
+
+	ADXKeyConfig* config = ADXKeyConfig::GetCurrentInstance();
+	return config != nullptr && config->GetInputDown(cellName);
 }
 
 bool Player::GetInputStatusRelease(actionsList action)
 {
-	ADXGamePadInput* gamePad = ADXGamePadInput::GetCurrentInstance();
-	if (gamePad != nullptr)
-	{
-		switch (action)
-		{
-		case jump:
-			return ADXKeyBoardInput::GetCurrentInstance()->GetKeyUp(keyboardConfig_.jump)
-				|| gamePad->GetButtonUp(gamePadConfig_.jump);
-			break;
-		case attack:
-			return ADXKeyBoardInput::GetCurrentInstance()->GetKeyUp(keyboardConfig_.attack)
-				|| gamePad->GetButtonUp(gamePadConfig_.attack);
-			break;
-		}
-	}
-
+	std::string cellName = "";
 	switch (action)
 	{
 	case jump:
-		return ADXKeyBoardInput::GetCurrentInstance()->GetKeyUp(keyboardConfig_.jump);
+		cellName = "jump";
 		break;
 	case attack:
-		return ADXKeyBoardInput::GetCurrentInstance()->GetKeyUp(keyboardConfig_.attack);
+		cellName = "attack";
 		break;
 	}
-	return false;
+
+	ADXKeyConfig* config = ADXKeyConfig::GetCurrentInstance();
+	return config != nullptr && config->GetInputUp(cellName);
 }
 
 ADXVector2 Player::GetDirectionInput()
 {
-	ADXVector2 ret{};
-
-	if (ADXKeyBoardInput::GetCurrentInstance()->GetKey(keyboardConfig_.up))
-	{
-		ret.y_ += 1;
-	}
-	if (ADXKeyBoardInput::GetCurrentInstance()->GetKey(keyboardConfig_.down))
-	{
-		ret.y_ -= 1;
-	}
-	if (ADXKeyBoardInput::GetCurrentInstance()->GetKey(keyboardConfig_.right))
-	{
-		ret.x_ += 1;
-	}
-	if (ADXKeyBoardInput::GetCurrentInstance()->GetKey(keyboardConfig_.left))
-	{
-		ret.x_ -= 1;
-	}
-
-	if (ADXGamePadInput::GetCurrentInstance() != nullptr)
-	{
-		ret += ADXGamePadInput::GetCurrentInstance()->GetStickVec(
-			ADXKeyConfig::GetCurrentInstance()->GetConfigCell("vec").sticks[0]);
-	}
-
-	return ret.Normalize();
+	ADXKeyConfig* config = ADXKeyConfig::GetCurrentInstance();
+	return config->GetVecInput("vec").Normalize();
 }
 
 void Player::Move(float walkSpeed, float jumpPower)

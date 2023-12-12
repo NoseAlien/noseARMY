@@ -1,4 +1,4 @@
-#include "ADXGamePadInput.h"
+﻿#include "ADXGamePadInput.h"
 #pragma comment (lib, "xinput.lib")
 
 ADXGamePadInput* ADXGamePadInput::S_current = nullptr;

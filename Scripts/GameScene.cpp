@@ -1,7 +1,7 @@
 ﻿#include "GameScene.h"
 #include "SceneTransition.h"
 
-#include "Cub_E.h"
+#include "ADXKeyConfig.h"
 
 void GameScene::Initialize()
 {
@@ -31,10 +31,7 @@ void GameScene::Initialize()
 
 	temp = ADXObject::Create({ 0,2,0 });
 	player_ = temp->AddComponent<Player>();
-	player_->Initialize(
-		{ DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C },
-		{ B,A },
-		camera_);
+	player_->Initialize(camera_);
 	player_->LiveEntity::Initialize("player");
 
 
@@ -156,7 +153,7 @@ void GameScene::Update()
 	key_->transform_.localPosition_.y_ += sinf(clock() * 0.001f) * 0.01f;
 	key_->transform_.localScale_ = { 0.45f / ADXWindow::GetAspect(),0.45f,1 };
 
-	if (ADXKeyBoardInput::GetCurrentInstance()->GetKeyDown(DIK_Q))
+	if (ADXKeyConfig::GetCurrentInstance()->GetInputDown("return"))
 	{
 		SceneTransition::ChangeScene(2);
 	}

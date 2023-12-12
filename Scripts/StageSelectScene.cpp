@@ -1,5 +1,6 @@
 ﻿#include "StageSelectScene.h"
 #include "SceneTransition.h"
+#include "ADXKeyConfig.h"
 
 void StageSelectScene::Initialize()
 {
@@ -24,10 +25,7 @@ void StageSelectScene::Initialize()
 
 	temp = ADXObject::Create({ 0,2,0 });
 	player_ = temp->AddComponent<Player>();
-	player_->Initialize(
-		{ DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE,DIK_C },
-		{ B,A },
-		camera_);
+	player_->Initialize(camera_);
 	player_->LiveEntity::Initialize("player");
 
 	floors_.push_back(ADXObject::Create({ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 2,2,2 }));
@@ -77,7 +75,7 @@ void StageSelectScene::Update()
 	key_->transform_.localPosition_.y_ += sinf(clock() * 0.001f) * 0.01f;
 	key_->transform_.localScale_ = { 0.45f / ADXWindow::GetAspect(),0.45f,1 };
 
-	if (ADXKeyBoardInput::GetCurrentInstance()->GetKeyDown(DIK_Q))
+	if (ADXKeyConfig::GetCurrentInstance()->GetInputDown("return"))
 	{
 		SceneTransition::ChangeScene(1);
 	}

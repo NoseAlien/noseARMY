@@ -183,7 +183,7 @@
     <ClCompile Include="ADXEngine\ADXVector2.cpp">
       <Filter>ソース ファイル\HanaBehaviour</Filter>
     </ClCompile>
-    <ClCompile Include="ADXKeyConfig.cpp">
+    <ClCompile Include="ADXEngine\ADXKeyConfig.cpp">
       <Filter>ソース ファイル\HanaBehaviour</Filter>
     </ClCompile>
   </ItemGroup>
@@ -338,7 +338,7 @@
     <ClInclude Include="ADXEngine\ADXVector2.h">
       <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
     </ClInclude>
-    <ClInclude Include="ADXKeyConfig.h">
+    <ClInclude Include="ADXEngine\ADXKeyConfig.h">
       <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
     </ClInclude>
   </ItemGroup>

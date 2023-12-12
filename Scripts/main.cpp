@@ -1,4 +1,4 @@
-#define _CRTDBG_MAP_ALLOC
+﻿#define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 #include <cstdlib>
 #include "ADXCommon.h"
@@ -36,16 +36,15 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 		ADXKeyBoardInput keyboard_(&adxwindow);
 		ADXGamePadInput gamePad_;
 		ADXKeyConfig config_;
-		config_.AddConfigCell({ "jump", {DIK_SPACE}, {B}, {} });
-		config_.AddConfigCell({ "attack", {DIK_Z,DIK_X,DIK_C,DIK_V,DIK_B}, {A}, {} });
-		config_.AddConfigCell({ "up", {DIK_UP,DIK_W}, {}, {} });
-		config_.AddConfigCell({ "down", {DIK_DOWN,DIK_S}, {}, {} });
-		config_.AddConfigCell({ "right", {DIK_RIGHT,DIK_D}, {}, {} });
-		config_.AddConfigCell({ "left", {DIK_LEFT,DIK_A}, {}, {} });
-		config_.AddConfigCell({ "vec", {}, {}, {LEFT} });
-		config_.AddConfigCell({ "select", {DIK_SPACE}, {B}, {} });
-		config_.AddConfigCell({ "back", {DIK_Z,DIK_X,DIK_C,DIK_V,DIK_B}, {A}, {} });
-		config_.AddConfigCell({ "return", {DIK_Q,DIK_BACKSPACE}, {}, {} });
+		config_.AddConfigCell({ "jump", {DIK_SPACE}, {B}});
+		config_.AddConfigCell({ "attack", {DIK_Z,DIK_X,DIK_C,DIK_V,DIK_B}, {A}});
+		config_.AddVecConfigCell({ "vec",
+			{DIK_UP,DIK_W},{DIK_DOWN,DIK_S},{DIK_RIGHT,DIK_D},{DIK_LEFT,DIK_A},
+			{},{},{},{},
+			{LEFT} });
+		config_.AddConfigCell({ "select", {DIK_SPACE}, {B}});
+		config_.AddConfigCell({ "back", {DIK_Z,DIK_X,DIK_C,DIK_V,DIK_B}, {A}});
+		config_.AddConfigCell({ "return", {DIK_Q,DIK_BACKSPACE,DIK_RETURN}, {}});
 
 		ADXImGuiManager adximgui;
 		adximgui.Initialize(&adxwindow);
