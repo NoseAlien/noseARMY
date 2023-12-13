@@ -147,7 +147,7 @@ void LiveEntity::UniqueUpdate()
 		damageSE_.Play();
 	}
 
-	if (IsLive() && GhostTime_ > 0 && GhostTime_ % 4 >= 2)
+	if (IsLive() && ghostTime_ > 0 && ghostTime_ % 4 >= 2)
 	{
 		visual_->material_.ambient_ = { 1,0.2f,0.2f };
 		for (auto& itr : bodyParts_)
@@ -156,7 +156,7 @@ void LiveEntity::UniqueUpdate()
 		}
 	}
 
-	GhostTime_ = max(0, GhostTime_ - 1);
+	ghostTime_ = max(0, ghostTime_ - 1);
 
 	if (isOutOfField_ && latestHitField_ != nullptr)
 	{
@@ -168,11 +168,20 @@ void LiveEntity::UniqueUpdate()
 
 void LiveEntity::Damage(float damage)
 {
-	if (IsLive() && !attackHitted_ && GhostTime_ <= 0)
+	if (IsLive() && !attackHitted_ && ghostTime_ <= 0)
 	{
 		hpAmount_ -= damage / maxHP_;
-		GhostTime_ = int32_t(damage / basicAttackPower * basicGhostTimeFrame);
+		ghostTime_ = int32_t(damage / basicAttackPower * basicGhostTimeFrame);
 		attackHitted_ = true;
+	}
+}
+
+void LiveEntity::Revive()
+{
+	if (!IsLive())
+	{
+		hpAmount_ = 1;
+		ghostTime_ = 60;
 	}
 }
 

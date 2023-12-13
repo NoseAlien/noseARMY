@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <d3d12.h>
 #include <string>
 #include <wrl.h>
@@ -21,6 +21,7 @@ public:
 	ADXImage();
 	uint32_t GetGHandle() { return Ghandle_; };
 	ID3D12Resource* GetTexBuff() { return texBuff_.Get(); };
+	std::string GetName() { return name_; };
 
 public:
 	static void StaticInitialize();

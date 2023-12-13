@@ -18,7 +18,7 @@ public:
 protected:
 	float maxHP_ = basicHP;
 	float hpAmount_ = 1;
-	int32_t GhostTime_ = 0;
+	int32_t ghostTime_ = 0;
 	ADXAudio damageSE_{};
 	ADXAudio defeatSE_{};
 	ADXObject* visual_ = nullptr;
@@ -47,6 +47,7 @@ public:
 
 protected:
 	void Damage(float damage);
+	void Revive();
 	virtual void LiveEntitiesInitialize() {};
 	virtual void LiveEntitiesUpdate() {};
 	virtual void LiveEntitiesOnPreRender() {};

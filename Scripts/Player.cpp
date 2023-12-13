@@ -234,6 +234,7 @@ void Player::LiveEntitiesUpdate()
 
 	nose_->transform_.localScale_ = ADXVector3{ 0.42f,0.35f,0.35f } *(float)fmax(1, 1 + pow(fmax(0, splitInterval_), 2) * 0.02f);
 	nose_->transform_.localPosition_ = { 0,sinf(modelScalingTime) * 0.03f,1.01f };
+	nose_->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi,0 });
 
 	splitInterval_--;
 	splitInterval_ = max(-20, splitInterval_);
@@ -241,7 +242,6 @@ void Player::LiveEntitiesUpdate()
 	if (splitable_ && GetInputStatusRelease(attack) && splitInterval_ <= 0)
 	{
 		nose_->transform_.localScale_ = { 0.42f,0.35f,0.35f };
-		nose_->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi,0 });
 		if (minis_.size() < maxMinisNum)
 		{
 			
@@ -394,6 +394,7 @@ void Player::DeadUpdate()
 		ADXQuaternion::MakeAxisAngle(GetGameObject()->transform_.TransformPointOnlyRotation({ 0,1,0 }), ADXUtility::Pi)
 		* GetGameObject()->transform_.GetWorldRotation());
 
+	nose_->transform_.localScale_ = ADXVector3{ 0.42f,0.35f,0.35f };
 	nose_->transform_.localPosition_ = { 0,sin(min(max(0,
 		ADXUtility::ValueMapping(deadAnimationProgress_,0.3f,0.8f,0.0f,1.0f)
 		), 1) * ADXUtility::Pi) * 5,1.01f };
@@ -436,16 +437,20 @@ void Player::DeadUpdate()
 		if (deadAnimationProgress_ >= 1)
 		{
 			keyUI_->transform_.localScale_.x_ += (0.45f / ADXWindow::GetAspect() - keyUI_->transform_.localScale_.x_) * 0.3f;
-			if (GetInputStatusTrigger(jump))
+			if (GetInputStatusTrigger(attack))
 			{
 				restartAnimationAble_ = true;
+			}
+			if (GetInputStatusTrigger(jump))
+			{
+				Revive();
 			}
 		}
 		else
 		{
 			keyUI_->transform_.localScale_.x_ = 0;
 			if (deadAnimationProgress_ > 0.3f
-				&& GetInputStatusTrigger(jump))
+				&& (GetInputStatusTrigger(jump) || GetInputStatusTrigger(attack)))
 			{
 				deadAnimationProgress_ = 1;
 			}
