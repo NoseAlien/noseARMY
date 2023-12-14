@@ -120,6 +120,7 @@
     <ClCompile Include="ADXEngine\ADXSceneManager.cpp" />
     <ClCompile Include="ADXEngine\ADXSprite.cpp" />
     <ClCompile Include="ADXEngine\ADXTexAnimation.cpp" />
+    <ClCompile Include="ADXEngine\ADXTextRenderer.cpp" />
     <ClCompile Include="ADXEngine\ADXUtility.cpp" />
     <ClCompile Include="ADXEngine\ADXVector2.cpp" />
     <ClCompile Include="ADXEngine\ADXVector3.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="ADXEngine\ADXSceneManager.h" />
     <ClInclude Include="ADXEngine\ADXSprite.h" />
     <ClInclude Include="ADXEngine\ADXTexAnimation.h" />
+    <ClInclude Include="ADXEngine\ADXTextRenderer.h" />
     <ClInclude Include="ADXEngine\ADXUtility.h" />
     <ClInclude Include="ADXEngine\ADXVector2.h" />
     <ClInclude Include="ADXEngine\ADXVector3.h" />

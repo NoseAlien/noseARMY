@@ -1,4 +1,4 @@
-﻿#include "Player.h"
+#include "Player.h"
 #include "SceneTransition.h"
 #include "ADXUtility.h"
 #include "ADXKeyConfig.h"
@@ -443,6 +443,7 @@ void Player::DeadUpdate()
 			}
 			if (GetInputStatusTrigger(jump))
 			{
+				deathCount_++;
 				Revive();
 			}
 		}

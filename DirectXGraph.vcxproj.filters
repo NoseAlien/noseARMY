@@ -186,6 +186,9 @@
     <ClCompile Include="ADXEngine\ADXKeyConfig.cpp">
       <Filter>ソース ファイル\HanaBehaviour</Filter>
     </ClCompile>
+    <ClCompile Include="ADXEngine\ADXTextRenderer.cpp">
+      <Filter>ソース ファイル\HanaBehaviour</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ADXEngine\ADXAudio.h">
@@ -339,6 +342,9 @@
       <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
     </ClInclude>
     <ClInclude Include="ADXEngine\ADXKeyConfig.h">
+      <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXTextRenderer.h">
       <Filter>ヘッダー ファイル\HanaBehaviour</Filter>
     </ClInclude>
   </ItemGroup>

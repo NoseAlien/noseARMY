@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXComponent.h"
 #include "ADXKeyBoardInput.h"
@@ -61,6 +61,7 @@ private:
 	bool isOutOfField_ = false;
 
 	uint32_t setTutorialImg_ = 0;
+	uint32_t deathCount_ = 0;
 
 public:
 	void Initialize(ADXCamera* setCamera);
