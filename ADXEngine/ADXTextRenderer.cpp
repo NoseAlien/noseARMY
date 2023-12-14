@@ -31,8 +31,9 @@ void ADXTextRenderer::UniqueUpdate()
 	{
 		if (letters_.size() < i)
 		{
-
+			letters_.push_back(ADXObject::Create());
 		}
+
 	}
 
 	int index = 0;
