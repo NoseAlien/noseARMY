@@ -22,33 +22,7 @@ void ADXTextRenderer::AddFonts(const std::vector<fontAndChar>& fontSet)
 	}
 }
 
-void ADXTextRenderer::UniqueUpdate()
+void ADXTextRenderer::UniqueRendering()
 {
-	letters_.remove_if([=](auto& itr)
-		{ return itr == nullptr; });
 
-	for (int i = 0; i < text_.size(); i++)
-	{
-		if (letters_.size() < i)
-		{
-			letters_.push_back(ADXObject::Create());
-		}
-
-	}
-
-	int index = 0;
-	for (auto& itr : letters_)
-	{
-		if (index >= text_.size())
-		{
-			itr->Destroy();
-		}
-		index++;
-	}
-}
-
-void ADXTextRenderer::SafetyPhase()
-{
-	letters_.remove_if([=](auto& itr)
-		{ return itr->GetDeleteFlag(); });
 }

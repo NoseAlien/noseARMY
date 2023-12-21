@@ -57,10 +57,6 @@ private: // 静的メンバ変数
 	static uint64_t S_descriptorHandleIncrementSize;
 	// コマンドリスト
 	static ID3D12GraphicsCommandList* S_cmdList;
-	// シェーダリソースビューのハンドル(CPU)
-	static D3D12_CPU_DESCRIPTOR_HANDLE S_cpuDescHandleSRV;
-	// シェーダリソースビューのハンドル(CPU)
-	static D3D12_GPU_DESCRIPTOR_HANDLE S_gpuDescHandleSRV;
 
 	static uint64_t S_GpuStartHandle;
 	// 全てのオブジェクトが入った配列
@@ -103,6 +99,8 @@ public: // 静的メンバ関数
 	static void StaticDraw();
 	// コマンドリストを取得
 	static ID3D12GraphicsCommandList* GetCmdList() { return S_cmdList; };
+
+	static uint64_t GetGpuStartHandle() { return S_GpuStartHandle; };
 	// 全オブジェクトを取得
 	static std::list<ADXObject*> GetObjs();
 

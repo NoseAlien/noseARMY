@@ -3,9 +3,9 @@
 #include <string>
 #include <vector>
 #include <list>
-#include "ADXComponent.h"
+#include "ADXRenderer.h"
 
-class ADXTextRenderer : public ADXComponent
+class ADXTextRenderer : public ADXRenderer
 {
 public:
 	enum anchor
@@ -32,15 +32,14 @@ public:
 	std::string text_ = "";
 	float fontSize_ = 1;
 	float fontAspect = 1;
+	anchor anchor_{};
 
 private:
 	std::vector<fontAndChar> fonts_{};
-	std::list<ADXObject*> letters_{};
 
 public:
 	void AddFonts(const std::vector<fontAndChar>& fontSet);
 
 private:
-	void UniqueUpdate();
-	void SafetyPhase();
+	void UniqueRendering();
 };

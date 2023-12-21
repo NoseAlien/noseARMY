@@ -1,8 +1,9 @@
 ﻿#include "ADXObject.h"
-#include <d3dcompiler.h>
 #include "ADXCommon.h"
 #include "ADXSceneManager.h"
 #include "ADXCamera.h"
+#include "ADXRenderer.h"
+#include <d3dcompiler.h>
 #include <imgui.h>
 
 #pragma comment(lib, "d3dcompiler.lib")
@@ -14,8 +15,6 @@ Microsoft::WRL::ComPtr<ID3D12PipelineState> ADXObject::S_pipelineState;
 Microsoft::WRL::ComPtr<ID3D12PipelineState> ADXObject::S_pipelineStateAlpha;
 
 uint64_t ADXObject::S_GpuStartHandle = 0;
-D3D12_CPU_DESCRIPTOR_HANDLE ADXObject::S_cpuDescHandleSRV;
-D3D12_GPU_DESCRIPTOR_HANDLE ADXObject::S_gpuDescHandleSRV;
 std::list<std::unique_ptr<ADXObject, ADXUtility::NPManager<ADXObject>>> ADXObject::S_objs{};
 std::vector<ADXCamera*> ADXObject::S_allCameraPtr{};
 ADXVector3 ADXObject::S_limitPos1 = { -300,-300,-100 };
@@ -329,7 +328,6 @@ ADXObject* ADXObject::Duplicate(const ADXObject& prefab)
 	ret->transform_.modelPosition_ = prefab.transform_.modelPosition_;
 	ret->transform_.modelRotation_ = prefab.transform_.modelRotation_;
 	ret->transform_.modelScale_ = prefab.transform_.modelScale_;
-	ret->texture_ = prefab.texture_;
 	ret->model_ = prefab.model_;
 	ret->material_ = prefab.material_;
 	ret->texture_ = prefab.texture_;
@@ -604,6 +602,7 @@ void ADXObject::Draw()
 		constMap1->alpha = material_.alpha_;
 		constBuffB1_->Unmap(0, nullptr);
 
+		D3D12_GPU_DESCRIPTOR_HANDLE S_gpuDescHandleSRV;
 		S_gpuDescHandleSRV.ptr = S_GpuStartHandle + texture_;
 		S_cmdList->SetGraphicsRootDescriptorTable(1, S_gpuDescHandleSRV);
 
@@ -614,6 +613,11 @@ void ADXObject::Draw()
 
 		// 描画コマンド
 		model_->Draw(transform_);
+	}
+
+	for (auto& itr : GetComponents<ADXRenderer>())
+	{
+		itr->UniqueRendering();
 	}
 
 	for (auto& itr : components_)

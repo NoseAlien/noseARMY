@@ -189,6 +189,12 @@
     <ClCompile Include="ADXEngine\ADXTextRenderer.cpp">
       <Filter>ソース ファイル\ADXEngine</Filter>
     </ClCompile>
+    <ClCompile Include="ADXEngine\ADXModelRenderer.cpp">
+      <Filter>ソース ファイル\ADXEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="ADXEngine\ADXRenderer.cpp">
+      <Filter>ソース ファイル\ADXEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ADXEngine\ADXAudio.h">
@@ -345,6 +351,12 @@
       <Filter>ヘッダー ファイル\ADXEngine</Filter>
     </ClInclude>
     <ClInclude Include="ADXEngine\ADXTextRenderer.h">
+      <Filter>ヘッダー ファイル\ADXEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXModelRenderer.h">
+      <Filter>ヘッダー ファイル\ADXEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXRenderer.h">
       <Filter>ヘッダー ファイル\ADXEngine</Filter>
     </ClInclude>
   </ItemGroup>
