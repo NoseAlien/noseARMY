@@ -24,7 +24,7 @@ public:
 public:
 	struct fontAndChar
 	{
-		uint32_t font{};
+		uint32_t font = 0;
 		char character = ' ';
 	};
 
@@ -39,6 +39,7 @@ private:
 
 public:
 	void AddFonts(const std::vector<fontAndChar>& fontSet);
+	void GetFontTex(const char& character);
 
 private:
 	void UniqueRendering(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList);
