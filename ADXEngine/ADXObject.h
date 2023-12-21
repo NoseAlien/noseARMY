@@ -101,7 +101,9 @@ public: // 静的メンバ関数
 	static void InitializeGraphicsPipeline();
 	// 全オブジェクトに対する描画処理
 	static void StaticDraw();
-
+	// コマンドリストを取得
+	static ID3D12GraphicsCommandList* GetCmdList() { return S_cmdList; };
+	// 全オブジェクトを取得
 	static std::list<ADXObject*> GetObjs();
 
 	static void SetAllCameraPtr(ADXCamera* camPtr);

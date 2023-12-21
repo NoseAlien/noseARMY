@@ -613,7 +613,7 @@ void ADXObject::Draw()
 		transform_.UpdateConstBuffer();
 
 		// 描画コマンド
-		model_->Draw(S_cmdList, transform_);
+		model_->Draw(transform_);
 	}
 
 	for (auto& itr : components_)

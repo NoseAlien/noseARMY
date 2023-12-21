@@ -39,7 +39,7 @@ public:
 
 	void Initialize();
 
-	void Draw(ID3D12GraphicsCommandList* commandList, const ADXWorldTransform& wtf_);
+	void Draw(const ADXWorldTransform& wtf_);
 
 private:
 	void Update();

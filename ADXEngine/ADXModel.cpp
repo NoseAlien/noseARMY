@@ -1,5 +1,6 @@
 ﻿#include "ADXModel.h"
 #include "ADXCommon.h"
+#include "ADXObject.h"
 #include <math.h>
 
 #include <fstream>
@@ -258,8 +259,10 @@ void ADXModel::Initialize()
 	CreateIndexBufferView();
 }
 
-void ADXModel::Draw(ID3D12GraphicsCommandList* commandList, const ADXWorldTransform& wtf_)
+void ADXModel::Draw(const ADXWorldTransform& wtf_)
 {
+	ID3D12GraphicsCommandList* commandList = ADXObject::GetCmdList();
+
 	// モデルデータを更新
 	Update();
 
