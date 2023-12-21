@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "ADXRenderer.h"
 #include "ADXModel.h"
@@ -10,5 +10,5 @@ public:
 	uint32_t texture_ = 0;
 
 private:
-	void UniqueRendering();
+	void UniqueRendering(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList);
 };

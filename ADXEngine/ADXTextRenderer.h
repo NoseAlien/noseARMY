@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <string>
 #include <vector>
@@ -41,5 +41,5 @@ public:
 	void AddFonts(const std::vector<fontAndChar>& fontSet);
 
 private:
-	void UniqueRendering();
+	void UniqueRendering(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList);
 };

@@ -1,4 +1,4 @@
-#include "ADXScene.h"
+﻿#include "ADXScene.h"
 #include "ADXSceneManager.h"
 #include "ADXUtility.h"
 #include <time.h>

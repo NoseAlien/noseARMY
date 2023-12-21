@@ -1,4 +1,4 @@
-#include "ADXTextRenderer.h"
+﻿#include "ADXTextRenderer.h"
 #include "ADXObject.h"
 
 void ADXTextRenderer::AddFonts(const std::vector<fontAndChar>& fontSet)
@@ -22,7 +22,7 @@ void ADXTextRenderer::AddFonts(const std::vector<fontAndChar>& fontSet)
 	}
 }
 
-void ADXTextRenderer::UniqueRendering()
+void ADXTextRenderer::UniqueRendering([[maybe_unused]] ID3D12Device* device, [[maybe_unused]] ID3D12GraphicsCommandList* cmdList)
 {
 
 }

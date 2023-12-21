@@ -602,12 +602,12 @@ void ADXObject::Draw()
 		constMap1->alpha = material_.alpha_;
 		constBuffB1_->Unmap(0, nullptr);
 
+		//定数バッファビュー(CBV)の設定コマンド
+		S_cmdList->SetGraphicsRootConstantBufferView(2, constBuffB1_->GetGPUVirtualAddress());
+
 		D3D12_GPU_DESCRIPTOR_HANDLE S_gpuDescHandleSRV;
 		S_gpuDescHandleSRV.ptr = S_GpuStartHandle + texture_;
 		S_cmdList->SetGraphicsRootDescriptorTable(1, S_gpuDescHandleSRV);
-
-		//定数バッファビュー(CBV)の設定コマンド
-		S_cmdList->SetGraphicsRootConstantBufferView(2, constBuffB1_->GetGPUVirtualAddress());
 		
 		transform_.UpdateConstBuffer();
 
@@ -617,7 +617,7 @@ void ADXObject::Draw()
 
 	for (auto& itr : GetComponents<ADXRenderer>())
 	{
-		itr->UniqueRendering();
+		itr->Rendering();
 	}
 
 	for (auto& itr : components_)

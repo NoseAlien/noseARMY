@@ -82,6 +82,7 @@ public:
 	std::list<Type*> GetComponents();
 	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol);
 	bool GetDeleteFlag() { return deleteFlag_; };
+	ID3D12Resource* GetConstBuffB1() { return constBuffB1_.Get(); };
 
 private:
 	void Initialize();
