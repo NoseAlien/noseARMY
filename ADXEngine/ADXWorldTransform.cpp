@@ -54,10 +54,6 @@ ADXMatrix4 ADXWorldTransform::GenerateMatTransform(const ADXVector3& localPositi
 	return matWorld;
 }
 
-void ADXWorldTransform::CreateConstBuffer()
-{
-}
-
 void ADXWorldTransform::Initialize(ADXObject* obj)
 {
 	ADXObject::InitializeConstBufferTransform(constBuffTransform_, &constMapTransform_);

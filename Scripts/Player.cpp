@@ -1,4 +1,4 @@
-﻿#include "Player.h"
+#include "Player.h"
 #include "SceneTransition.h"
 #include "ADXTextRenderer.h"
 #include "ADXUtility.h"
@@ -194,6 +194,7 @@ void Player::LiveEntitiesInitialize()
 		{ADXImage::LoadADXImage("texture/alphaNumber/8.png"),'8'},{ADXImage::LoadADXImage("texture/alphaNumber/9.png"),'9'},
 		});
 	deadCountUI_->GetComponent<ADXTextRenderer>()->text_ = "96187";
+	deadCountUI_->GetComponent<ADXTextRenderer>()->fontAspect_ = 0.75f;
 	deadCountUI_->transform_.localScale_.x_ /= ADXWindow::GetAspect();
 	deadCountUI_->transform_.localScale_ *= 0.1f;
 }

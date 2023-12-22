@@ -36,22 +36,24 @@ uint32_t ADXTextRenderer::GetFontTex(const char& character)
 
 void ADXTextRenderer::UniqueRendering([[maybe_unused]] ID3D12Device* device, ID3D12GraphicsCommandList* cmdList)
 {
+	GetGameObject()->transform_.UpdateConstBuffer();
+
+	fontWtfs_.clear();
 	for (int i = 0;i < text_.size();i++)
 	{
-		ADXModel fontModel = model_;
-
 		D3D12_GPU_DESCRIPTOR_HANDLE S_gpuDescHandleSRV;
 		S_gpuDescHandleSRV.ptr = ADXObject::GetGpuStartHandle() + GetFontTex(text_[i]);
 		cmdList->SetGraphicsRootDescriptorTable(1, S_gpuDescHandleSRV);
 
-		for (auto& itr : fontModel.vertices_)
-		{
-			itr.pos.x += fontSize_ * fontAspect_ * i;
-		}
-
-		GetGameObject()->transform_.UpdateConstBuffer();
+		fontWtfs_.push_back(ADXWorldTransform());
+		fontWtfs_.back().Initialize(GetGameObject());
+		fontWtfs_.back().parent_ = &GetGameObject()->transform_;
+		fontWtfs_.back().rectTransform_ = GetGameObject()->transform_.rectTransform_;
+		fontWtfs_.back().localPosition_.x_ = fontSize_ * fontAspect_ * i * 2;
+		fontWtfs_.back().UpdateMatrix();
+		fontWtfs_.back().UpdateConstBuffer();
 
 		// 描画コマンド
-		fontModel.Draw(GetGameObject()->transform_.constBuffTransform_.Get());
+		model_.Draw(fontWtfs_.back().constBuffTransform_.Get());
 	}
 }

@@ -110,9 +110,6 @@ public:
 	//子を全て取得
 	std::list<ADXWorldTransform*> GetChilds();
 
-private:
-	void CreateConstBuffer();
-
 public:
 	//ビュー行列、プロジェクション行列を代入する
 	static void SetViewProjection(ADXMatrix4* matView, ADXMatrix4* matProjection);

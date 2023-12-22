@@ -39,6 +39,7 @@ public:
 private:
 	std::vector<fontAndChar> fonts_{};
 	ADXModel model_ = ADXModel::CreateRect();
+	std::vector<ADXWorldTransform>fontWtfs_;
 
 public:
 	void AddFonts(const std::vector<fontAndChar>& fontSet);
