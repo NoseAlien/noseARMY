@@ -94,7 +94,7 @@ public: // 静的メンバ関数
 	// グラフィックパイプライン生成
 	static void InitializeGraphicsPipeline();
 	// 定数バッファ生成
-	static void InitializeConstBuffer();
+	static void InitializeConstBuffer(Microsoft::WRL::ComPtr<ID3D12Resource>& constBuffTransform, ConstBufferDataTransform** constMapTransform, Microsoft::WRL::ComPtr<ID3D12Resource>& constBuffB1);
 	// 全オブジェクトに対する描画処理
 	static void StaticDraw();
 	// コマンドリストを取得
