@@ -39,7 +39,7 @@ void ADXObject::Initialize()
 
 void ADXObject::CreateConstBuffer()
 {
-	InitializeConstBuffer(transform_.constBuffTransform_, &transform_.constMapTransform_, constBuffB1_);
+	InitializeConstBufferMaterial(constBuffB1_);
 }
 
 void ADXObject::InitializeGraphicsPipeline()
@@ -252,7 +252,7 @@ void ADXObject::InitializeGraphicsPipeline()
 	assert(SUCCEEDED(result));
 }
 
-void ADXObject::InitializeConstBuffer(Microsoft::WRL::ComPtr<ID3D12Resource>& constBuffTransform, ConstBufferDataTransform** constMapTransform, Microsoft::WRL::ComPtr<ID3D12Resource>& constBuffB1)
+void ADXObject::InitializeConstBufferTransform(Microsoft::WRL::ComPtr<ID3D12Resource>& constBuffTransform, ConstBufferDataTransform** constMapTransform)
 {
 	ID3D12Device* device = ADXCommon::GetCurrentInstance()->GetDevice();
 
@@ -281,13 +281,26 @@ void ADXObject::InitializeConstBuffer(Microsoft::WRL::ComPtr<ID3D12Resource>& co
 			nullptr,
 			IID_PPV_ARGS(&constBuffTransform));
 		assert(SUCCEEDED(result));
+
 		//定数バッファのマッピング
 		result = constBuffTransform->Map(0, nullptr, (void**)constMapTransform);//マッピング
 		assert(SUCCEEDED(result));
+	}
+}
 
+void ADXObject::InitializeConstBufferMaterial(Microsoft::WRL::ComPtr<ID3D12Resource>& constBuff)
+{
+	ID3D12Device* device = ADXCommon::GetCurrentInstance()->GetDevice();
 
+	if (device != nullptr)
+	{
+		HRESULT result = S_FALSE;
+
+		//ヒープ設定
+		D3D12_HEAP_PROPERTIES cbHeapProp{};
 		cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-
+		//リソース設定
+		D3D12_RESOURCE_DESC cbResourceDesc{};
 		cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
 		cbResourceDesc.Width = (sizeof(ConstBufferDataB1) + 0xff) & ~0xff;//256バイトアラインメント
 		cbResourceDesc.Height = 1;
@@ -302,7 +315,7 @@ void ADXObject::InitializeConstBuffer(Microsoft::WRL::ComPtr<ID3D12Resource>& co
 			&cbResourceDesc,
 			D3D12_RESOURCE_STATE_GENERIC_READ,
 			nullptr,
-			IID_PPV_ARGS(&constBuffB1));
+			IID_PPV_ARGS(&constBuff));
 		assert(SUCCEEDED(result));
 	}
 }

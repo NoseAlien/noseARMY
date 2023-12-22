@@ -60,6 +60,8 @@ void ADXWorldTransform::CreateConstBuffer()
 
 void ADXWorldTransform::Initialize(ADXObject* obj)
 {
+	ADXObject::InitializeConstBufferTransform(constBuffTransform_, &constMapTransform_);
+
 	matWorld_ = IdentityMatrix();
 	gameObject_ = obj;
 }
