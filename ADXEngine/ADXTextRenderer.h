@@ -4,6 +4,7 @@
 #include <vector>
 #include <list>
 #include "ADXRenderer.h"
+#include "ADXModel.h"
 
 class ADXTextRenderer : public ADXRenderer
 {
@@ -31,15 +32,17 @@ public:
 public:
 	std::string text_ = "";
 	float fontSize_ = 1;
-	float fontAspect = 1;
+	float fontExtend_ = 1;
+	float fontAspect_ = 1;
 	anchor anchor_{};
 
 private:
 	std::vector<fontAndChar> fonts_{};
+	ADXModel model_ = ADXModel::CreateRect();
 
 public:
 	void AddFonts(const std::vector<fontAndChar>& fontSet);
-	void GetFontTex(const char& character);
+	uint32_t GetFontTex(const char& character);
 
 private:
 	void UniqueRendering(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList);

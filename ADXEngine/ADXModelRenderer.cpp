@@ -13,6 +13,6 @@ void ADXModelRenderer::UniqueRendering([[maybe_unused]] ID3D12Device* device, ID
 		GetGameObject()->transform_.UpdateConstBuffer();
 
 		// 描画コマンド
-		model_->Draw(GetGameObject()->transform_);
+		model_->Draw(GetGameObject()->transform_.constBuffTransform_.Get());
 	}
 }

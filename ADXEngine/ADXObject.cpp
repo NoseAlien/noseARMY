@@ -302,6 +302,11 @@ void ADXObject::InitializeGraphicsPipeline()
 	assert(SUCCEEDED(result));
 }
 
+void ADXObject::InitializeConstBuffer()
+{
+	
+}
+
 void ADXObject::SetAllCameraPtr(ADXCamera* camPtr)
 {
 	S_allCameraPtr.push_back(camPtr);
@@ -612,7 +617,7 @@ void ADXObject::Draw()
 		transform_.UpdateConstBuffer();
 
 		// 描画コマンド
-		model_->Draw(transform_);
+		model_->Draw(transform_.constBuffTransform_.Get());
 	}
 
 	for (auto& itr : GetComponents<ADXRenderer>())

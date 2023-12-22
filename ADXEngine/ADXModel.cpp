@@ -259,7 +259,7 @@ void ADXModel::Initialize()
 	CreateIndexBufferView();
 }
 
-void ADXModel::Draw(const ADXWorldTransform& wtf_)
+void ADXModel::Draw(ID3D12Resource* constBuffTransform)
 {
 	ID3D12GraphicsCommandList* commandList = ADXObject::GetCmdList();
 
@@ -273,7 +273,7 @@ void ADXModel::Draw(const ADXWorldTransform& wtf_)
 	commandList->IASetIndexBuffer(&ibView_);
 
 	//定数バッファビュー(CBV)の設定コマンド
-	commandList->SetGraphicsRootConstantBufferView(0, wtf_.constBuffTransform_->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(0, constBuffTransform->GetGPUVirtualAddress());
 
 	// 描画コマンド
 	commandList->DrawIndexedInstanced((uint32_t)indices_.size(), 1, 0, 0, 0); // 全ての頂点を使って描画

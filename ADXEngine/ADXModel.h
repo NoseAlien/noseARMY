@@ -39,7 +39,7 @@ public:
 
 	void Initialize();
 
-	void Draw(const ADXWorldTransform& wtf_);
+	void Draw(ID3D12Resource* constBuffTransform);
 
 private:
 	void Update();

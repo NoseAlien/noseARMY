@@ -38,11 +38,8 @@ public:
 	bool isActive_ = true;
 	bool useDefaultDraw_ = true;
 
-protected:
-	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffB1_ = nullptr;
-	ConstBufferDataB0* constMapMaterial_ = nullptr;
-
 private:
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffB1_ = nullptr;
 	std::list<std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>>> components_{};
 	bool deleteFlag_ = false;
 
@@ -96,6 +93,8 @@ public: // 静的メンバ関数
 	static void StaticUpdate();
 	// グラフィックパイプライン生成
 	static void InitializeGraphicsPipeline();
+	// 定数バッファ生成
+	static void InitializeConstBuffer();
 	// 全オブジェクトに対する描画処理
 	static void StaticDraw();
 	// コマンドリストを取得
