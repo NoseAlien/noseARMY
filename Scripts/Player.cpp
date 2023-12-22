@@ -180,23 +180,22 @@ void Player::LiveEntitiesInitialize()
 	deadParticle_->lifeTime_ = deadParticle_->animation_.GetLength();
 	deadParticle_->particleModel_ = rect_;
 
-	deadCountUI_ = ADXObject::Create();
-	deadCountUI_->transform_.rectTransform_ = true;
-	deadCountUI_->model_ = &rect_;
-	deadCountUI_->renderLayer_ = 5;
-	deadCountUI_->useDefaultDraw_ = false;
-	deadCountUI_->AddComponent<ADXTextRenderer>();
-	deadCountUI_->GetComponent<ADXTextRenderer>()->AddFonts({
+	deathCountUI_ = ADXObject::Create();
+	deathCountUI_->transform_.rectTransform_ = true;
+	deathCountUI_->model_ = &rect_;
+	deathCountUI_->renderLayer_ = 5;
+	deathCountUI_->useDefaultDraw_ = false;
+	deathCountUI_->AddComponent<ADXTextRenderer>();
+	deathCountUI_->GetComponent<ADXTextRenderer>()->AddFonts({
 		{ADXImage::LoadADXImage("texture/alphaNumber/0.png"),'0'},{ADXImage::LoadADXImage("texture/alphaNumber/1.png"),'1'},
 		{ADXImage::LoadADXImage("texture/alphaNumber/2.png"),'2'},{ADXImage::LoadADXImage("texture/alphaNumber/3.png"),'3'},
 		{ADXImage::LoadADXImage("texture/alphaNumber/4.png"),'4'},{ADXImage::LoadADXImage("texture/alphaNumber/5.png"),'5'},
 		{ADXImage::LoadADXImage("texture/alphaNumber/6.png"),'6'},{ADXImage::LoadADXImage("texture/alphaNumber/7.png"),'7'},
 		{ADXImage::LoadADXImage("texture/alphaNumber/8.png"),'8'},{ADXImage::LoadADXImage("texture/alphaNumber/9.png"),'9'},
 		});
-	deadCountUI_->GetComponent<ADXTextRenderer>()->text_ = "96187";
-	deadCountUI_->GetComponent<ADXTextRenderer>()->fontAspect_ = 0.75f;
-	deadCountUI_->transform_.localScale_.x_ /= ADXWindow::GetAspect();
-	deadCountUI_->transform_.localScale_ *= 0.1f;
+	deathCountUI_->GetComponent<ADXTextRenderer>()->fontAspect_ = 0.75f;
+	deathCountUI_->transform_.localScale_.x_ /= ADXWindow::GetAspect();
+	deathCountUI_->transform_.localScale_ *= 0.1f;
 }
 
 void Player::LiveEntitiesUpdate()
@@ -353,6 +352,8 @@ void Player::LiveEntitiesUpdate()
 
 	isOutOfField_ = true;
 	windowExtend_ = false;
+
+	deathCountUI_->GetComponent<ADXTextRenderer>()->text_ = std::to_string(deathCount_);
 }
 
 void Player::LiveEntitiesOnCollisionHit(ADXCollider* col, [[maybe_unused]]ADXCollider* myCol)
