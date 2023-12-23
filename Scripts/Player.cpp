@@ -194,6 +194,7 @@ void Player::LiveEntitiesInitialize()
 		{ADXImage::LoadADXImage("texture/alphaNumber/8.png"),'8'},{ADXImage::LoadADXImage("texture/alphaNumber/9.png"),'9'},
 		});
 	deathCountUI_->GetComponent<ADXTextRenderer>()->fontAspect_ = 0.75f;
+	deathCountUI_->transform_.localPosition_ = {-0.9f,-0.8f,0};
 	deathCountUI_->transform_.localScale_.x_ /= ADXWindow::GetAspect();
 	deathCountUI_->transform_.localScale_ *= 0.1f;
 }
