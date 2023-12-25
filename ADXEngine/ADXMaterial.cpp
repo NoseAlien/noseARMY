@@ -1,4 +1,4 @@
-ï»¿#include "ADXMaterial.h"
+#include "ADXMaterial.h"
 
 #include <fstream>
 #include <sstream>
@@ -8,65 +8,65 @@ ADXMaterial ADXMaterial::LoadMaterial(const std::string& filePath)
 {
 	ADXMaterial material;
 
-	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚¹ãƒˆãƒªãƒ¼ãƒ 
+	//ƒtƒ@ƒCƒ‹ƒXƒgƒŠ[ƒ€
 	std::ifstream file;
-	//ãƒãƒ†ãƒªã‚¢ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
+	//ƒ}ƒeƒŠƒAƒ‹ƒtƒ@ƒCƒ‹‚ğŠJ‚­
 	file.open("Resources/" + filePath);
-	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³å¤±æ•—ã‚’ãƒã‚§ãƒƒã‚¯
+	//ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“¸”s‚ğƒ`ƒFƒbƒN
 	if (file.fail())
 	{
 		assert(0);
 	}
 
-	//1è¡Œãšã¤èª­ã¿è¾¼ã‚€
+	//1s‚¸‚Â“Ç‚İ‚Ş
 	std::string line;
 	while (getline(file, line))
 	{
-		//1è¡Œåˆ†ã®æ–‡å­—åˆ—ã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«å¤‰æ›
+		//1s•ª‚Ì•¶š—ñ‚ğƒXƒgƒŠ[ƒ€‚É•ÏŠ·
 		std::istringstream line_stream(line);
 
-		//åŠè§’ã‚¹ãƒšãƒ¼ã‚¹åŒºåˆ‡ã‚Šã§è¡Œã®å…ˆé ­æ–‡å­—åˆ—ã‚’å–å¾—
+		//”¼ŠpƒXƒy[ƒX‹æØ‚è‚Ås‚Ìæ“ª•¶š—ñ‚ğæ“¾
 		std::string key_;
 		getline(line_stream, key_, ' ');
 
-		//å…ˆé ­ã®ã‚¿ãƒ–ã¯ç„¡è¦–ã™ã‚‹
+		//æ“ª‚Ìƒ^ƒu‚Í–³‹‚·‚é
 		if (key_[0] == *"\t")
 		{
 			key_.erase(key_.begin());
 		}
 
-		//å…ˆé ­æ–‡å­—åˆ—ãŒnewmtlãªã‚‰ãƒãƒ†ãƒªã‚¢ãƒ«å
+		//æ“ª•¶š—ñ‚ªnewmtl‚È‚çƒ}ƒeƒŠƒAƒ‹–¼
 		if (key_ == "newmtl")
 		{
 			line_stream >> material.name_;
 		}
-		//å…ˆé ­æ–‡å­—åˆ—ãŒKaãªã‚‰ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆè‰²
+		//æ“ª•¶š—ñ‚ªKa‚È‚çƒAƒ“ƒrƒGƒ“ƒgF
 		if (key_ == "Ka")
 		{
 			line_stream >> material.ambient_.x;
 			line_stream >> material.ambient_.y;
 			line_stream >> material.ambient_.z;
 		}
-		//å…ˆé ­æ–‡å­—åˆ—ãŒKdãªã‚‰ãƒ‡ã‚£ãƒ•ãƒ¥ãƒ¼ã‚ºè‰²
+		//æ“ª•¶š—ñ‚ªKd‚È‚çƒfƒBƒtƒ…[ƒYF
 		if (key_ == "Kd")
 		{
 			line_stream >> material.diffuse_.x;
 			line_stream >> material.diffuse_.y;
 			line_stream >> material.diffuse_.z;
 		}
-		//å…ˆé ­æ–‡å­—åˆ—ãŒKsãªã‚‰ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼è‰²
+		//æ“ª•¶š—ñ‚ªKs‚È‚çƒXƒyƒLƒ…ƒ‰[F
 		if (key_ == "Ks")
 		{
 			line_stream >> material.specular_.x;
 			line_stream >> material.specular_.y;
 			line_stream >> material.specular_.z;
 		}
-		//å…ˆé ­æ–‡å­—åˆ—ãŒmap_Kdãªã‚‰ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«å
+		//æ“ª•¶š—ñ‚ªmap_Kd‚È‚çƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹–¼
 		/*if (key == "map_Kd")
 		{
-			//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒ•ã‚¡ã‚¤ãƒ«åèª­ã¿è¾¼ã¿
+			//ƒeƒNƒXƒ`ƒƒ‚Ìƒtƒ@ƒCƒ‹–¼“Ç‚İ‚İ
 			line_stream >> material.textureFilename;
-			//ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
+			//ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
 			LoadTexture(directoryPath, material.textureFilename);
 		}*/
 	}

@@ -1,4 +1,4 @@
-﻿#include "ADXParticleSystem.h"
+#include "ADXParticleSystem.h"
 
 void ADXParticleSystem::Emission()
 {

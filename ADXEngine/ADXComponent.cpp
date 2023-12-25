@@ -1,4 +1,4 @@
-﻿#include "ADXComponent.h"
+#include "ADXComponent.h"
 
 void ADXComponent::Update(ADXObject* obj)
 {

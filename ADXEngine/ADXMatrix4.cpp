@@ -1,4 +1,4 @@
-ï»¿#include "ADXMatrix4.h"
+#include "ADXMatrix4.h"
 #include <cassert>
 
 using namespace DirectX;
@@ -58,7 +58,7 @@ ADXMatrix4 ADXMatrix4::ConvertToADXMatrix(const XMMATRIX& mat)
 	return outPutADXM;
 }
 
-//é€†è¡Œåˆ—
+//‹ts—ñ
 ADXMatrix4 ADXMatrix4::Inverse() const
 {
 	const int32_t N = 4;
@@ -67,50 +67,50 @@ ADXMatrix4 ADXMatrix4::Inverse() const
 
 	double sweep[N][N * 2];
 
-	double a; /* å®šæ•°å€ç”¨ */
+	double a; /* ’è””{—p */
 
 	for (int32_t i = 0; i < N; i++) {
 		for (int32_t j = 0; j < N; j++) {
-			/* sweepã®å·¦å´ã«é€†è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹è¡Œåˆ—ã‚’ã‚»ãƒƒãƒˆ */
+			/* sweep‚Ì¶‘¤‚É‹ts—ñ‚ğ‹‚ß‚és—ñ‚ğƒZƒbƒg */
 			sweep[i][j] = m_[i][j];
 
-			/* sweepã®å³å´ã«å˜ä½è¡Œåˆ—ã‚’ã‚»ãƒƒãƒˆ */
+			/* sweep‚Ì‰E‘¤‚É’PˆÊs—ñ‚ğƒZƒbƒg */
 			sweep[i][N + j] = IdentityMatrix().m_[i][j];
 		}
 	}
 
 
-	/* å…¨ã¦ã®åˆ—ã®å¯¾è§’æˆåˆ†ã«å¯¾ã™ã‚‹ç¹°ã‚Šè¿”ã— */
+	/* ‘S‚Ä‚Ì—ñ‚Ì‘ÎŠp¬•ª‚É‘Î‚·‚éŒJ‚è•Ô‚µ */
 	for (int32_t k = 0; k < N; k++) {
 
-		/* sweep[k][k]ã«æ›ã‘ã‚‹ã¨1ã«ãªã‚‹å€¤ã‚’æ±‚ã‚ã‚‹ */
+		/* sweep[k][k]‚ÉŠ|‚¯‚é‚Æ1‚É‚È‚é’l‚ğ‹‚ß‚é */
 		a = 1 / sweep[k][k];
 
-		/* æ“ä½œï¼ˆï¼’ï¼‰ï¼škè¡Œç›®ã‚’aå€ã™ã‚‹ */
+		/* ‘€ìi‚QjFks–Ú‚ğa”{‚·‚é */
 		for (int32_t j = 0; j < N * 2; j++) {
-			/* ã“ã‚Œã«ã‚ˆã‚Šsweep[k][k]ãŒ1ã«ãªã‚‹ */
+			/* ‚±‚ê‚É‚æ‚èsweep[k][k]‚ª1‚É‚È‚é */
 			sweep[k][j] *= a;
 		}
 
-		/* æ“ä½œï¼ˆï¼“ï¼‰ã«ã‚ˆã‚Škè¡Œç›®ä»¥å¤–ã®è¡Œã®kåˆ—ç›®ã‚’0ã«ã™ã‚‹ */
+		/* ‘€ìi‚Rj‚É‚æ‚èks–ÚˆÈŠO‚Ìs‚Ìk—ñ–Ú‚ğ0‚É‚·‚é */
 		for (int32_t i = 0; i < N; i++) {
 			if (i == k) {
-				/* kè¡Œç›®ã¯ãã®ã¾ã¾ */
+				/* ks–Ú‚Í‚»‚Ì‚Ü‚Ü */
 				continue;
 			}
 
-			/* kè¡Œç›®ã«æ›ã‘ã‚‹å€¤ã‚’æ±‚ã‚ã‚‹ */
+			/* ks–Ú‚ÉŠ|‚¯‚é’l‚ğ‹‚ß‚é */
 			a = -sweep[i][k];
 
 			for (int32_t j = 0; j < N * 2; j++) {
-				/* iè¡Œç›®ã«kè¡Œç›®ã‚’aå€ã—ãŸè¡Œã‚’è¶³ã™ */
-				/* ã“ã‚Œã«ã‚ˆã‚Šsweep[i][k]ãŒ0ã«ãªã‚‹ */
+				/* is–Ú‚Éks–Ú‚ğa”{‚µ‚½s‚ğ‘«‚· */
+				/* ‚±‚ê‚É‚æ‚èsweep[i][k]‚ª0‚É‚È‚é */
 				sweep[i][j] += sweep[k][j] * a;
 			}
 		}
 	}
 
-	/* sweepã®å³åŠåˆ†ãŒmatã®é€†è¡Œåˆ— */
+	/* sweep‚Ì‰E”¼•ª‚ªmat‚Ì‹ts—ñ */
 	for (int32_t i = 0; i < N; i++) {
 		for (int32_t j = 0; j < N; j++) {
 			inv.m_[i][j] = (float)sweep[i][N + j];
@@ -135,7 +135,7 @@ ADXMatrix4 ADXMatrix4::Transpose() const
 	return ret;
 }
 
-// ä»£å…¥æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
+// ‘ã“ü‰‰ZqƒI[ƒo[ƒ[ƒh
 ADXMatrix4& ADXMatrix4::operator*=(const ADXMatrix4& m2)
 {
 	ADXMatrix4 m1;
@@ -158,7 +158,7 @@ ADXMatrix4& ADXMatrix4::operator*=(const ADXMatrix4& m2)
 	return *this;
 }
 
-//åº§æ¨™å¤‰æ›ï¼ˆãƒ™ã‚¯ãƒˆãƒ«ã¨è¡Œåˆ—ã®æ›ã‘ç®—ã‚’ã™ã‚‹ï¼‰
+//À•W•ÏŠ·iƒxƒNƒgƒ‹‚Æs—ñ‚ÌŠ|‚¯Z‚ğ‚·‚éj
 ADXVector3 ADXMatrix4::Transform(const ADXVector3& v, const ADXMatrix4& m)
 {
 	float w = v.x_ * m.m_[0][3] + v.y_ * m.m_[1][3] + v.z_ * m.m_[2][3] + m.m_[3][3];
@@ -172,7 +172,7 @@ ADXVector3 ADXMatrix4::Transform(const ADXVector3& v, const ADXMatrix4& m)
 	return result;
 }
 
-// 2é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
+// 2€‰‰ZqƒI[ƒo[ƒ[ƒh
 ADXMatrix4 operator*(const ADXMatrix4& m1, const ADXMatrix4& m2)
 {
 	ADXMatrix4 result = m1;
@@ -180,7 +180,7 @@ ADXMatrix4 operator*(const ADXMatrix4& m1, const ADXMatrix4& m2)
 	return result *= m2;
 }
 
-//å˜ä½è¡Œåˆ—
+//’PˆÊs—ñ
 ADXMatrix4 IdentityMatrix()
 {
 	return

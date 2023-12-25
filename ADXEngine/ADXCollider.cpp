@@ -1,18 +1,18 @@
-﻿#include "ADXCollider.h"
+#include "ADXCollider.h"
 #include "ADXObject.h"
 
 std::vector<collidePattern> ADXCollider::S_ignoreCollidePatterns = {};
 std::vector<collidePattern> ADXCollider::S_ignorePushBackPatterns = {};
 
 /*
-【接触検知から押し戻しベクトル算出までの流れ】
+�y�ڐG���m���牟���߂��x�N�g���Z�o�܂ł̗���z
 
-・空間上の一つの点が二つの図形の中にあるかを調べる（二つの立体図形が同じ点を共有しているかを調べる）
-これにより二つの図形が接触しているかを判定する
+�E��ԏ�̈�̓_����̐}�`�̒��ɂ��邩�𒲂ׂ�i��̗��̐}�`�������_�����L���Ă��邩�𒲂ׂ�j
+����ɂ���̐}�`���ڐG���Ă��邩�𔻒肷��
 
-・当たっていると判定されたらそれぞれのオブジェクトで『衝突点』を求める
+�E�������Ă���Ɣ��肳�ꂽ�炻�ꂼ��̃I�u�W�F�N�g�Łw�Փ˓_�x�����߂�
 
-・互いのオブジェクトの衝突点の座標の差が押し戻しの方向と強さが入ったベクトルになる
+�E�݂��̃I�u�W�F�N�g�̏Փ˓_�̍��W�̍��������߂��̕����Ƌ������������x�N�g���ɂȂ�
 */
 
 std::list<ADXCollider*> ADXCollider::S_cols = {};
@@ -51,7 +51,7 @@ float ADXCollider::GenerateBoundingSphereRadius() const
 	return 0.0f;
 }
 
-//空間上の点をコライダーの中に収めた時の座標
+//��ԏ�̓_���R���C�_�[�̒��Ɏ��߂����̍��W
 ADXVector3 ADXCollider::ClosestPoint(const ADXVector3& pos) const
 {
 	ADXVector3 ret = ADXMatrix4::Transform(pos, GetGameObject()->transform_.GetMatWorldInverse());
@@ -132,13 +132,13 @@ ADXVector3 ADXCollider::ClosestPoint(const ADXVector3& pos) const
 	return ret;
 }
 
-//空間上の点をコライダーのフチに寄せた時の相対座標
+//��ԏ�̓_���R���C�_�[�̃t�`�Ɋ񂹂����̑��΍��W
 ADXVector3 ADXCollider::EdgeLocalPoint(const ADXVector3& pos) const
 {
 	return EdgeLocalPoint(pos, pos);
 }
 
-//空間上の点をコライダーのフチに寄せた時の相対座標
+//��ԏ�̓_���R���C�_�[�̃t�`�Ɋ񂹂����̑��΍��W
 ADXVector3 ADXCollider::EdgeLocalPoint(const ADXVector3& pos, const ADXVector3& prePos) const
 {
 	ADXVector3 ret = ADXMatrix4::Transform(pos, GetGameObject()->transform_.GetMatWorldInverse());
@@ -250,13 +250,13 @@ ADXVector3 ADXCollider::EdgeLocalPoint(const ADXVector3& pos, const ADXVector3& 
 	return ret;
 }
 
-//空間上の点をコライダーのフチに寄せた時の座標
+//��ԏ�̓_���R���C�_�[�̃t�`�Ɋ񂹂����̍��W
 ADXVector3 ADXCollider::EdgePoint(const ADXVector3& pos)
 {
 	return EdgePoint(pos, pos);
 }
 
-//空間上の点をコライダーのフチに寄せた時の座標
+//��ԏ�̓_���R���C�_�[�̃t�`�Ɋ񂹂����̍��W
 ADXVector3 ADXCollider::EdgePoint(const ADXVector3& pos, const ADXVector3& prePos)
 {
 	ADXVector3 ret = EdgeLocalPoint(pos, prePos);
@@ -264,7 +264,7 @@ ADXVector3 ADXCollider::EdgePoint(const ADXVector3& pos, const ADXVector3& prePo
 	return ret;
 }
 
-//相手のコライダーとの衝突点の座標
+//����̃R���C�_�[�Ƃ̏Փ˓_�̍��W
 ADXVector3 ADXCollider::CollidePoint(const ADXVector3& pos, const ADXVector3& targetColSenter, const ADXVector3& move) const
 {
 	ADXVector3 ret = EdgeLocalPoint(pos, pos - move);
@@ -279,7 +279,7 @@ ADXVector3 ADXCollider::CollidePoint(const ADXVector3& pos, const ADXVector3& ta
 	return ret;
 }
 
-//押し返す方向と強さのベクトル
+//�����Ԃ������Ƌ����̃x�N�g��
 ADXVector3 ADXCollider::CollideVector(const ADXCollider& col)
 {
 	ADXVector3 ret;
@@ -312,7 +312,7 @@ ADXVector3 ADXCollider::CollideVector(const ADXCollider& col)
 	return ret;
 }
 
-//相手のコライダーと重なっているか
+//����̃R���C�_�[�Əd�Ȃ��Ă��邩
 bool ADXCollider::IsHit(const ADXCollider& col)
 {
 	if (!IsSphereHit(ADXMatrix4::Transform(pos_, GetGameObject()->transform_.GetMatWorld()), GenerateBoundingSphereRadius(),
@@ -339,7 +339,7 @@ bool ADXCollider::IsHit(const ADXCollider& col)
 	return false;
 }
 
-//コライダー同士で押し合う（動かないコライダーにぶつかったら一方的に押される）
+//�R���C�_�[���m�ŉ��������i�����Ȃ��R���C�_�[�ɂԂ����������I�ɉ������j
 void ADXCollider::Collide(ADXCollider* col)
 {
 	if (GetGameObject() == col->GetGameObject())
@@ -436,7 +436,7 @@ void ADXCollider::Collide(ADXCollider* col)
 	}
 }
 
-//先のCollidersUpdateで別のコライダーにぶつかっていたらオブジェクトを押し戻す
+//���CollidersUpdate�ŕʂ̃R���C�_�[�ɂԂ����Ă�����I�u�W�F�N�g�������߂�
 void ADXCollider::SendPushBack()
 {
 	if (pushable_)
@@ -450,22 +450,22 @@ void ADXCollider::SendPushBack()
 	pushBackVector_ = { 0,0,0 };
 }
 
-//全てのコライダーで接触判定と押し戻しベクトルの算出を行う
-//ゲーム内の全てのコライダーが入った配列を入れて使う
+//�S�ẴR���C�_�[�ŐڐG����Ɖ����߂��x�N�g���̎Z�o���s��
+//�Q�[�����̑S�ẴR���C�_�[���������z������Ďg��
 void ADXCollider::StaticUpdate()
 {
-	//現在の座標を保存しておく
+	//���݂̍��W��ۑ����Ă���
 	std::vector<ADXVector3> objsTranslation = {};
 	for (auto& itr : ADXObject::GetObjs())
 	{
 		objsTranslation.push_back(itr->transform_.localPosition_);
 	}
 
-	//すべてのコライダーで移動距離÷(最小絶対半径×0.95)を求め、最も大きい値をtranslateDivNumFに入れる
+	//���ׂẴR���C�_�[�ňړ�������(�ŏ���Δ��a�~0.95)�����߁A�ł��傫���l��translateDivNumF�ɓ����
 	float translateDivNumF = 1;
 	for (auto& colItr : S_cols)
 	{
-		//ついでにcollideListもこのタイミングでリセット
+		//���ł�collideList�����̃^�C�~���O�Ń��Z�b�g
 		colItr->collideList_.clear();
 
 
@@ -512,13 +512,13 @@ void ADXCollider::StaticUpdate()
 	}
 	translateDivNumF = ceilf(translateDivNumF);
 
-	//全てのオブジェクトを移動する前の座標へ移動させる
+	//�S�ẴI�u�W�F�N�g���ړ�����O�̍��W�ֈړ�������
 	for (auto& colItr : S_cols)
 	{
 		colItr->GetGameObject()->transform_.localPosition_ = colItr->preTranslation_;
 	}
 
-	//行列更新のついでに移動する前の座標を保存
+	//�s��X�V�̂��łɈړ�����O�̍��W��ۑ�
 	std::vector<ADXVector3> objsPreTranslation = {};
 	for (auto& objItr : ADXObject::GetObjs())
 	{
@@ -526,11 +526,11 @@ void ADXCollider::StaticUpdate()
 		objItr->transform_.UpdateMatrix();
 	}
 
-	//少しづつ移動させながら当たり判定と押し戻し処理を行う
+	//�����Âړ������Ȃ��瓖���蔻��Ɖ����߂��������s��
 	for (int32_t i = 0; i < translateDivNumF; i++)
 	{
 		uint32_t index = 0;
-		//移動
+		//�ړ�
 		for (auto& itr : ADXObject::GetObjs())
 		{
 			ADXVector3 move = objsTranslation[index] - objsPreTranslation[index];
@@ -541,7 +541,7 @@ void ADXCollider::StaticUpdate()
 			index++;
 		}
 
-		//当たり判定と押し戻しベクトルの算出
+		//�����蔻��Ɖ����߂��x�N�g���̎Z�o
 		for (auto& colItr1 : S_cols)
 		{
 			for (auto& colItr2 : S_cols)

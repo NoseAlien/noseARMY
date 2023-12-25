@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Enemy.h"
 #include "ADXUtility.h"
 #include <memory>

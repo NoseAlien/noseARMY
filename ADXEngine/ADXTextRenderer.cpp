@@ -1,4 +1,4 @@
-﻿#include "ADXTextRenderer.h"
+#include "ADXTextRenderer.h"
 #include "ADXObject.h"
 
 void ADXTextRenderer::AddFonts(const std::vector<fontAndChar>& fontSet)
@@ -38,6 +38,8 @@ void ADXTextRenderer::UniqueRendering([[maybe_unused]] ID3D12Device* device, ID3
 {
 	GetGameObject()->transform_.UpdateConstBuffer();
 
+	float fontWidth = fontSize_ * fontAspect_;
+
 	fontWtfs_.clear();
 	for (int i = 0;i < text_.size();i++)
 	{
@@ -49,11 +51,39 @@ void ADXTextRenderer::UniqueRendering([[maybe_unused]] ID3D12Device* device, ID3
 		fontWtfs_.back().Initialize(GetGameObject());
 		fontWtfs_.back().parent_ = &GetGameObject()->transform_;
 		fontWtfs_.back().rectTransform_ = GetGameObject()->transform_.rectTransform_;
-		fontWtfs_.back().localPosition_.x_ = fontSize_ * fontAspect_ * i * 2;
+		switch (anchor_)
+		{
+		case upperLeft:
+			fontWtfs_.back().localPosition_ = { fontWidth * (i * 2 + 1),-fontSize_,0 };
+			break;
+		case upperCenter:
+			fontWtfs_.back().localPosition_ = { fontWidth * (i * 2 + 1 - (float)text_.size()),-fontSize_,0 };
+			break;
+		case upperRight:
+			fontWtfs_.back().localPosition_ = { fontWidth * ((i - (float)text_.size()) * 2 + 1),-fontSize_,0 };
+			break;
+		case middleLeft:
+			fontWtfs_.back().localPosition_ = { fontWidth * (i * 2 + 1),0,0 };
+			break;
+		case middleCenter:
+			fontWtfs_.back().localPosition_ = { fontWidth * (i * 2 + 1 - (float)text_.size()),0,0 };
+			break;
+		case middleRight:
+			fontWtfs_.back().localPosition_ = { fontWidth * ((i - (float)text_.size()) * 2 + 1),0,0 };
+			break;
+		case lowerLeft:
+			fontWtfs_.back().localPosition_ = { fontWidth * (i * 2 + 1),fontSize_,0 };
+			break;
+		case lowerCenter:
+			fontWtfs_.back().localPosition_ = { fontWidth * (i * 2 + 1 - (float)text_.size()),fontSize_,0 };
+			break;
+		case lowerRight:
+			fontWtfs_.back().localPosition_ = { fontWidth * ((i - (float)text_.size()) * 2 + 1),fontSize_,0 };
+			break;
+		}
 		fontWtfs_.back().UpdateMatrix();
 		fontWtfs_.back().UpdateConstBuffer();
 
-		// 描画コマンド
 		model_.Draw(fontWtfs_.back().constBuffTransform_.Get());
 	}
 }

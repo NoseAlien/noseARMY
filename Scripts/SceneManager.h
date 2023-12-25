@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "ADXSceneManager.h"
 #include "TitleScene.h"
 #include "StageSelectScene.h"

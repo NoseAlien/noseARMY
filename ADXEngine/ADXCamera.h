@@ -1,14 +1,14 @@
-ï»¿#pragma once
+#pragma once
 #include "ADXObject.h"
 
 class ADXCamera : public ADXComponent
 {
 
 private:
-	//å°„å½±å¤‰æ›è¡Œåˆ—
+	//Ë‰e•ÏŠ·s—ñ
 	ADXMatrix4 matProjection_{};
 
-	//ãƒ“ãƒ¥ãƒ¼å¤‰æ›è¡Œåˆ—
+	//ƒrƒ…[•ÏŠ·s—ñ
 	ADXMatrix4 matView_{};
 	DirectX::XMFLOAT3 eye_{};
 	DirectX::XMFLOAT3 target_{};

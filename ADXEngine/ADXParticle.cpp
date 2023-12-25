@@ -1,4 +1,4 @@
-﻿#include "ADXParticle.h"
+#include "ADXParticle.h"
 #include "ADXCamera.h"
 
 void ADXParticle::UniqueInitialize()

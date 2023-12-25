@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include "ADXModel.h"
 #include "ADXMaterial.h"
 #include "ADXObject.h"
@@ -11,7 +11,7 @@
 class ADXScene
 {
 private:
-	//ç”»åƒ
+	//‰æ‘œ
 	uint32_t engineLogoImg_ = 0;
 	uint32_t logoImg_A_ = 0;
 	uint32_t logoImg_D_ = 0;
@@ -19,19 +19,19 @@ private:
 	uint32_t logoImg_Engine_ = 0;
 	uint32_t titleImg_ = 0;
 
-	//éŸ³å£°ãƒ‡ãƒ¼ã‚¿
+	//‰¹ºƒf[ƒ^
 	ADXAudio logoJingle_{};
 
-	//3Dãƒ¢ãƒ‡ãƒ«
+	//3Dƒ‚ƒfƒ‹
 	ADXModel rect_{};
 
-	//ãƒãƒ†ãƒªã‚¢ãƒ«
+	//ƒ}ƒeƒŠƒAƒ‹
 	ADXMaterial unlitMat_{};
 
-	//ã‚«ãƒ¡ãƒ©
+	//ƒJƒƒ‰
 	ADXCamera* camera_ = nullptr;
 
-	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	//ƒIƒuƒWƒFƒNƒg
 	ADXObject* engineLogo_ = nullptr;
 	ADXObject* logo_A_ = nullptr;
 	ADXObject* logo_D_ = nullptr;

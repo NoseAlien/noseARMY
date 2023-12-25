@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 
 #include <vector>
 #include <d3d12.h>
@@ -9,7 +9,7 @@
 class ADXModel
 {
 public:
-	//é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
+	//’¸“_ƒf[ƒ^\‘¢‘Ì
 	struct Vertex
 	{
 		DirectX::XMFLOAT3 pos;

@@ -1,4 +1,4 @@
-﻿#include "ADXRigidbody.h"
+#include "ADXRigidbody.h"
 
 void ADXRigidbody::UniqueInitialize()
 {

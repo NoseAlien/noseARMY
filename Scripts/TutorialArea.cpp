@@ -1,4 +1,4 @@
-﻿#include "TutorialArea.h"
+#include "TutorialArea.h"
 
 void TutorialArea::SetTutorialImg(uint32_t setTutorialImg_)
 {

@@ -1,4 +1,4 @@
-﻿#include "ADXVector2.h"
+#include "ADXVector2.h"
 #include <cmath>
 
 using namespace DirectX;

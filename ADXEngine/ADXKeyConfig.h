@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "ADXKeyboardInput.h"
 #include "ADXGamePadInput.h"
 #include <string>

@@ -1,4 +1,4 @@
-﻿#include "Clex.h"
+#include "Clex.h"
 #include "ADXCamera.h"
 #include "ADXUtility.h"
 #include "Projectile.h"

@@ -1,4 +1,4 @@
-﻿#include "StageSelectScene.h"
+#include "StageSelectScene.h"
 #include "SceneTransition.h"
 #include "ADXKeyConfig.h"
 

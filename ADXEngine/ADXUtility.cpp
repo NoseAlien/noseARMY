@@ -1,4 +1,4 @@
-ï»¿#include "ADXUtility.h"
+#include "ADXUtility.h"
 #include <math.h>
 #include <wrl.h>
 
@@ -38,7 +38,7 @@ float ADXUtility::EaseOut(float progress, float powNum)
 	return currentProgress;
 }
 
-//è§’åº¦ã®å·®ã‚’æ±‚ã‚ã‚‹ã€€ç›®çš„ã®è§’åº¦ã¸ã‚†ã£ãã‚Šå‘ã‘ã‚‹æ™‚ã«ä½¿ã£ã¦ã¿ã‚ˆã†
+//Šp“x‚Ì·‚ğ‹‚ß‚é@–Ú“I‚ÌŠp“x‚Ö‚ä‚Á‚­‚èŒü‚¯‚é‚Ég‚Á‚Ä‚İ‚æ‚¤
 float ADXUtility::AngleDiff(float angle1, float angle2)
 {
 	float angle1Current = fmodf(angle1, 2 * ADXUtility::Pi);
@@ -67,17 +67,17 @@ float ADXUtility::LerpInverse(float nowValue, float startValue, float endValue)
 	return ret;
 }
 
-//inputStartã‹ã‚‰inputEndã¾ã§ã®å€¤ã‚’outputStartã‹ã‚‰outputEndã¾ã§ã®å€¤ã«å¤‰æ›ã™ã‚‹
+//inputStart‚©‚çinputEnd‚Ü‚Å‚Ì’l‚ğoutputStart‚©‚çoutputEnd‚Ü‚Å‚Ì’l‚É•ÏŠ·‚·‚é
 float ADXUtility::ValueMapping(float nowValue, float inputStart, float inputEnd, float outputStart, float outputEnd)
 {
 	return outputStart + (outputEnd - outputStart) * ((nowValue - inputStart) / (inputEnd - inputStart));
 }
 
-//std::stringã‹ã‚‰wchar_t*ã«å¤‰æ›ã™ã‚‹
+//std::string‚©‚çwchar_t*‚É•ÏŠ·‚·‚é
 wchar_t* ADXUtility::StringToWideChar(const std::string& pKey)
 {
 	const char* pCStrKey = pKey.c_str();
-	//                ï¼Œ     wchar_t*
+	//                C     wchar_t*
 	int32_t pSize = MultiByteToWideChar(CP_OEMCP, 0, pCStrKey, (int32_t)strlen(pCStrKey) + 1, NULL, 0);
 	wchar_t* pWCStrKey = new wchar_t[pSize];
 	//                     

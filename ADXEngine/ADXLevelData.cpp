@@ -1,40 +1,40 @@
-ï»¿#include "ADXLevelData.h"
+#include "ADXLevelData.h"
 #include <fstream>
 
 ADXLevelData ADXLevelData::Load(const std::string& filename)
 {
-	//é€£çµã—ã¦ãƒ•ãƒ«ãƒ‘ã‚¹ã‚’å¾—ã‚‹
+	//˜AŒ‹‚µ‚Äƒtƒ‹ƒpƒX‚ğ“¾‚é
 	const std::string fullpath = "Resources/" + filename;
 
-	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚¹ãƒˆãƒªãƒ¼ãƒ 
+	//ƒtƒ@ƒCƒ‹ƒXƒgƒŠ[ƒ€
 	std::ifstream file;
 
-	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
+	//ƒtƒ@ƒCƒ‹‚ğŠJ‚­
 	file.open(fullpath);
-	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³å¤±æ•—ã‚’ãƒã‚§ãƒƒã‚¯
+	//ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“¸”s‚ğƒ`ƒFƒbƒN
 	if (file.fail())
 	{
 		assert(0);
 	}
 
-	//JSONæ–‡å­—åˆ—ã‹ã‚‰è§£å‡ã—ãŸãƒ‡ãƒ¼ã‚¿
+	//JSON•¶š—ñ‚©‚ç‰ğ“€‚µ‚½ƒf[ƒ^
 	nlohmann::json deserialized;
 
-	//è§£å‡
+	//‰ğ“€
 	file >> deserialized;
 
-	//æ­£ã—ã„ãƒ¬ãƒ™ãƒ«ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«ã‹ãƒã‚§ãƒƒã‚¯
+	//³‚µ‚¢ƒŒƒxƒ‹ƒf[ƒ^ƒtƒ@ƒCƒ‹‚©ƒ`ƒFƒbƒN
 	assert(deserialized.is_object());
 	assert(deserialized.contains("name"));
 	assert(deserialized["name"].is_string());
 
-	//"name"ã‚’æ–‡å­—åˆ—ã¨ã—ã¦å–å¾—
+	//"name"‚ğ•¶š—ñ‚Æ‚µ‚Äæ“¾
 	std::string name =
 		deserialized["name"].get<std::string>();
-	//æ­£ã—ã„ãƒ¬ãƒ™ãƒ«ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«ã‹ãƒã‚§ãƒƒã‚¯
+	//³‚µ‚¢ƒŒƒxƒ‹ƒf[ƒ^ƒtƒ@ƒCƒ‹‚©ƒ`ƒFƒbƒN
 	assert(name.compare("scene") == 0);
 
-	//ãƒ¬ãƒ™ãƒ«ãƒ‡ãƒ¼ã‚¿æ ¼ç´ç”¨ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆ
+	//ƒŒƒxƒ‹ƒf[ƒ^Ši”[—pƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬
 	ADXLevelData ret{};
 
 	LoadTreeData(&ret, deserialized["objects"]);
@@ -45,20 +45,20 @@ ADXLevelData ADXLevelData::Load(const std::string& filename)
 void ADXLevelData::LoadTreeData(ADXLevelData* levelData, 
 	nlohmann::json deserialized, int32_t parentIndex)
 {
-	//"objects"ã®å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’èµ°æŸ»
+	//"objects"‚Ì‘SƒIƒuƒWƒFƒNƒg‚ğ‘–¸
 	for (nlohmann::json& object : deserialized)
 	{
 		assert(object.contains("type"));
 
-		//ç¨®åˆ¥ã‚’å–å¾—
+		//í•Ê‚ğæ“¾
 		std::string type = object["type"].get<std::string>();
 
 		//MESH
 		if (type.compare("MESH") == 0)
 		{
-			//è¦ç´ è¿½åŠ 
+			//—v‘f’Ç‰Á
 			levelData->objs_.emplace_back();
-			//ä»Šè¿½åŠ ã—ãŸè¦ç´ ã®å‚ç…§ã‚’å¾—ã‚‹
+			//¡’Ç‰Á‚µ‚½—v‘f‚ÌQÆ‚ğ“¾‚é
 			levelDataCell& obj = levelData->objs_.back();
 
 			if (object.contains("file_name"))
@@ -66,12 +66,12 @@ void ADXLevelData::LoadTreeData(ADXLevelData* levelData,
 				obj.name = object["file_name"];
 			}
 
-			//è¦ªã‚’è¨­å®š
+			//e‚ğİ’è
 			obj.parentIndex = parentIndex;
 
-			//ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼èª­ã¿è¾¼ã¿
+			//ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚Ìƒpƒ‰ƒ[ƒ^[“Ç‚İ‚İ
 			nlohmann::json& transform = object["transform"];
-			//å¹³è¡Œç§»å‹•
+			//•½sˆÚ“®
 			obj.transform.localPosition_ =
 				ADXVector3{
 				(float)transform["translation"][0],

@@ -1,4 +1,4 @@
-ï»¿#include "ADXScene.h"
+#include "ADXScene.h"
 #include "ADXSceneManager.h"
 #include "ADXUtility.h"
 #include <time.h>
@@ -12,7 +12,7 @@ void ADXScene::Initialize()
 {
 	startTime_ = 0;
 
-	//ç”»åƒ
+	//‰æ‘œ
 	titleImg_ = ADXImage::LoadADXImage("texture/ADXEngine_logo.png");
 	logoImg_A_ = ADXImage::LoadADXImage("texture/logo_A.png");
 	logoImg_D_ = ADXImage::LoadADXImage("texture/logo_D.png");
@@ -21,12 +21,12 @@ void ADXScene::Initialize()
 
 	logoJingle_ = ADXAudio::LoadADXAudio("sound/ADXJingle.wav");
 
-	//ãƒžãƒ†ãƒªã‚¢ãƒ«
+	//ƒ}ƒeƒŠƒAƒ‹
 	unlitMat_ = ADXMaterial::LoadMaterial("material/unlit.mtl");
 
 	rect_ = ADXModel::CreateRect();
 
-	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	//ƒIƒuƒWƒFƒNƒg
 
 	ADXObject* temp = ADXObject::Create({0,0,-2});
 	camera_ = temp->AddComponent<ADXCamera>();

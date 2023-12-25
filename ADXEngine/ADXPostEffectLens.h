@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include "ADXObject.h"
 
 class ADXPostEffectLens : public ADXComponent
@@ -9,9 +9,9 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descHeapRTV_ = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descHeapDSV_ = nullptr;
 
-	// ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£
+	// ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature_;
-	// ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã‚¹ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³
+	// ƒOƒ‰ƒtƒBƒbƒNƒXƒpƒCƒvƒ‰ƒCƒ“
 	Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState_;
 public:
 	ADXPostEffectLens();

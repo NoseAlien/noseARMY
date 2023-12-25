@@ -1,17 +1,17 @@
-ï»¿#include "ADXRenderer.h"
+#include "ADXRenderer.h"
 #include "ADXCommon.h"
 #include "ADXObject.h"
 
 void ADXRenderer::Rendering()
 {
-	// nullptrãƒã‚§ãƒƒã‚¯
+	// nullptrƒ`ƒFƒbƒN
 	[[maybe_unused]] ID3D12Device* device = ADXCommon::GetCurrentInstance()->GetDevice();
 	[[maybe_unused]] ID3D12GraphicsCommandList* cmdList = ADXObject::GetCmdList();
 	assert(device);
 	assert(cmdList);
 
 	HRESULT result = S_FALSE;
-	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¸ãƒ‡ãƒ¼ã‚¿è»¢é€
+	//’è”ƒoƒbƒtƒ@‚Öƒf[ƒ^“]‘—
 	ADXObject::ConstBufferDataB1* constMap1 = nullptr;
 	result = GetGameObject()->GetConstBuffB1()->Map(0, nullptr, (void**)&constMap1);
 	constMap1->ambient = material_.ambient_;
@@ -20,7 +20,7 @@ void ADXRenderer::Rendering()
 	constMap1->alpha = material_.alpha_;
 	GetGameObject()->GetConstBuffB1()->Unmap(0, nullptr);
 
-	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼(CBV)ã®è¨­å®šã‚³ãƒžãƒ³ãƒ‰
+	//’è”ƒoƒbƒtƒ@ƒrƒ…[(CBV)‚ÌÝ’èƒRƒ}ƒ“ƒh
 	cmdList->SetGraphicsRootConstantBufferView(2, GetGameObject()->GetConstBuffB1()->GetGPUVirtualAddress());
 
 	UniqueRendering(device, cmdList);

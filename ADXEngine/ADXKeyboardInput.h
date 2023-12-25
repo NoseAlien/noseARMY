@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
@@ -14,9 +14,9 @@ private:
 	Microsoft::WRL::ComPtr<IDirectInput8> directInput_ = nullptr;
 	IDirectInputDevice8* keyboard_ = nullptr;
 
-	//å…¨ã‚­ãƒ¼ã®å…¥åŠ›çŠ¶æ…‹ã‚’å…¥ã‚Œã‚‹å¤‰æ•°
+	//‘SƒL[‚Ì“ü—Íó‘Ô‚ğ“ü‚ê‚é•Ï”
 	BYTE key_[256] = {};
-	//å‰ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã®å…¥åŠ›çŠ¶æ…‹ã‚’å…¥ã‚Œã‚‹å¤‰æ•°
+	//‘O‚ÌƒtƒŒ[ƒ€‚Ì“ü—Íó‘Ô‚ğ“ü‚ê‚é•Ï”
 	BYTE prevKey_[256] = {};
 
 private:

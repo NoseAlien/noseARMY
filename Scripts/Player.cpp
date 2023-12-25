@@ -192,11 +192,14 @@ void Player::LiveEntitiesInitialize()
 		{ADXImage::LoadADXImage("texture/alphaNumber/4.png"),'4'},{ADXImage::LoadADXImage("texture/alphaNumber/5.png"),'5'},
 		{ADXImage::LoadADXImage("texture/alphaNumber/6.png"),'6'},{ADXImage::LoadADXImage("texture/alphaNumber/7.png"),'7'},
 		{ADXImage::LoadADXImage("texture/alphaNumber/8.png"),'8'},{ADXImage::LoadADXImage("texture/alphaNumber/9.png"),'9'},
+		{ADXImage::LoadADXImage("texture/alphaNumber/plus.png"),'+'},{ADXImage::LoadADXImage("texture/alphaNumber/minus.png"),'-'},
 		});
 	deathCountUI_->GetComponent<ADXTextRenderer>()->fontAspect_ = 0.75f;
-	deathCountUI_->transform_.localPosition_ = {-0.9f,-0.8f,0};
+	deathCountUI_->GetComponent<ADXTextRenderer>()->anchor_ = ADXTextRenderer::lowerLeft;
+	deathCountUI_->transform_.localPosition_ = {-0.9f,-0.9f,0};
 	deathCountUI_->transform_.localScale_.x_ /= ADXWindow::GetAspect();
 	deathCountUI_->transform_.localScale_ *= 0.1f;
+	deathCount_ = 96187;
 }
 
 void Player::LiveEntitiesUpdate()

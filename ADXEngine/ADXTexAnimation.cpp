@@ -1,4 +1,4 @@
-﻿#include "ADXTexAnimation.h"
+#include "ADXTexAnimation.h"
 
 ADXTexAnimation ADXTexAnimation::Initialize(const std::vector<uint32_t>& setTextures, uint32_t setDelayFrame, bool setLoop)
 {

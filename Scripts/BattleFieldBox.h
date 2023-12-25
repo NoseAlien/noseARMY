@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "FieldBox.h"
 #include "Enemy.h"

@@ -1,4 +1,4 @@
-ï»¿#include "ADXModel.h"
+#include "ADXModel.h"
 #include "ADXCommon.h"
 #include "ADXObject.h"
 #include <math.h>
@@ -36,54 +36,54 @@ ADXModel ADXModel::LoadADXModel(const std::string& filePath)
 		std::string key_;
 		std::getline(line_stream, key_, ' ');
 
-		//å…ˆé ­æ–‡å­—åˆ—ãŒvãªã‚‰é ‚ç‚¹åº§æ¨™
+		//æ“ª•¶š—ñ‚ªv‚È‚ç’¸“_À•W
 		if (key_ == "v")
 		{
-			//XYZåº§æ¨™èª­ã¿è¾¼ã¿
+			//XYZÀ•W“Ç‚İ‚İ
 			XMFLOAT3 position{};
 			line_stream >> position.x;
 			line_stream >> position.y;
 			line_stream >> position.z;
-			//åº§æ¨™ãƒ‡ãƒ¼ã‚¿ã«è¿½åŠ 
+			//À•Wƒf[ƒ^‚É’Ç‰Á
 			positions.emplace_back(position);
 		}
 
-		//å…ˆé ­æ–‡å­—åˆ—ãŒvtãªã‚‰ãƒ†ã‚¯ã‚¹ãƒãƒ£
+		//æ“ª•¶š—ñ‚ªvt‚È‚çƒeƒNƒXƒ`ƒƒ
 		if (key_ == "vt")
 		{
-			//UVæˆåˆ†èª­ã¿è¾¼ã¿
+			//UV¬•ª“Ç‚İ‚İ
 			XMFLOAT2 texcoord{};
 			line_stream >> texcoord.x;
 			line_stream >> texcoord.y;
-			//Væ–¹å‘åè»¢
+			//V•ûŒü”½“]
 			texcoord.y = 1.0f - texcoord.y;
-			//ãƒ†ã‚¯ã‚¹ãƒãƒ£åº§æ¨™ãƒ‡ãƒ¼ã‚¿ã«è¿½åŠ 
+			//ƒeƒNƒXƒ`ƒƒÀ•Wƒf[ƒ^‚É’Ç‰Á
 			texcoords.emplace_back(texcoord);
 		}
 
-		//å…ˆé ­æ–‡å­—åˆ—ãŒvnãªã‚‰æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
+		//æ“ª•¶š—ñ‚ªvn‚È‚ç–@üƒxƒNƒgƒ‹
 		if (key_ == "vn")
 		{
-			//XYZæˆåˆ†èª­ã¿è¾¼ã¿
+			//XYZ¬•ª“Ç‚İ‚İ
 			XMFLOAT3 normal{};
 			line_stream >> normal.x;
 			line_stream >> normal.y;
 			line_stream >> normal.z;
-			//æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ãƒ‡ãƒ¼ã‚¿ã«è¿½åŠ 
+			//–@üƒxƒNƒgƒ‹ƒf[ƒ^‚É’Ç‰Á
 			normals.emplace_back(normal);
 		}
 
-		//å…ˆé ­æ–‡å­—åˆ—ãŒfãªã‚‰ãƒãƒªã‚´ãƒ³
+		//æ“ª•¶š—ñ‚ªf‚È‚çƒ|ƒŠƒSƒ“
 		if (key_ == "f")
 		{
 			int32_t polyCount = 0;
 			unsigned short firstIndex{};
 			unsigned short lastIndex{};
-			//åŠè§’ã‚¹ãƒšãƒ¼ã‚¹åŒºåˆ‡ã‚Šã§è¡Œã®ç¶šãã‚’èª­ã¿è¾¼ã‚€
+			//”¼ŠpƒXƒy[ƒX‹æØ‚è‚Ås‚Ì‘±‚«‚ğ“Ç‚İ‚Ş
 			std::string index_string;
 			while (std::getline(line_stream, index_string, ' '))
 			{
-				//é ‚ç‚¹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹1å€‹åˆ†ã®æ–‡å­—åˆ—ã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«å¤‰æ›ã—ã¦è§£æã—ã‚„ã™ãã™ã‚‹
+				//’¸“_ƒCƒ“ƒfƒbƒNƒX1ŒÂ•ª‚Ì•¶š—ñ‚ğƒXƒgƒŠ[ƒ€‚É•ÏŠ·‚µ‚Ä‰ğÍ‚µ‚â‚·‚­‚·‚é
 				std::istringstream index_stream(index_string);
 				unsigned short indexPosition, indexNormal, indexTexcoord;
 				index_stream >> indexPosition;
@@ -91,13 +91,13 @@ ADXModel ADXModel::LoadADXModel(const std::string& filePath)
 				index_stream >> indexTexcoord;
 				index_stream.seekg(1, std::ios_base::cur);
 				index_stream >> indexNormal;
-				//é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã®è¿½åŠ 
+				//’¸“_ƒf[ƒ^‚Ì’Ç‰Á
 				Vertex vertex{};
 				vertex.pos = positions[indexPosition - 1];
 				vertex.normal = normals[indexNormal - 1];
 				vertex.uv = texcoords[indexTexcoord - 1];
 				model.vertices_.emplace_back(vertex);
-				//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ã®è¿½åŠ 
+				//ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^‚Ì’Ç‰Á
 				unsigned short nowIndex = (unsigned short)model.vertices_.size() - 1;
 				model.indices_.emplace_back(nowIndex);
 				if (polyCount >= 3)
@@ -124,23 +124,23 @@ ADXModel ADXModel::LoadADXModel(const std::string& filePath)
 void ADXModel::SetNormal()
 {
 	for (int32_t i = 0; i < indices_.size() / 3; i++)
-	{//ä¸‰è§’å½¢ä¸€ã¤ã”ã¨ã«è¨ˆç®—ã—ã¦ã„ã
-		//ä¸‰è§’å½¢ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å–ã‚Šå‡ºã—ã¦ã€ä¸€æ™‚çš„ãªå¤‰æ•°ã«å…¥ã‚Œã‚‹
+	{//OŠpŒ`ˆê‚Â‚²‚Æ‚ÉŒvZ‚µ‚Ä‚¢‚­
+		//OŠpŒ`‚ÌƒCƒ“ƒfƒbƒNƒX‚ğæ‚èo‚µ‚ÄAˆê“I‚È•Ï”‚É“ü‚ê‚é
 		unsigned short index0 = indices_[i * 3];
 		unsigned short index1 = indices_[i * 3 + 1];
 		unsigned short index2 = indices_[i * 3 + 2];
-		//ä¸‰è§’å½¢ã‚’æ§‹æˆã™ã‚‹é ‚ç‚¹åº§æ¨™ã‚’ãƒ™ã‚¯ãƒˆãƒ«ã«ä»£å…¥
+		//OŠpŒ`‚ğ\¬‚·‚é’¸“_À•W‚ğƒxƒNƒgƒ‹‚É‘ã“ü
 		XMVECTOR p0 = XMLoadFloat3(&vertices_[index0].pos);
 		XMVECTOR p1 = XMLoadFloat3(&vertices_[index1].pos);
 		XMVECTOR p2 = XMLoadFloat3(&vertices_[index2].pos);
-		//p0â†’p1ãƒ™ã‚¯ãƒˆãƒ«ã€p0â†’p2ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—ï¼ˆãƒ™ã‚¯ãƒˆãƒ«ã®æ¸›ç®—ï¼‰
+		//p0¨p1ƒxƒNƒgƒ‹Ap0¨p2ƒxƒNƒgƒ‹‚ğŒvZiƒxƒNƒgƒ‹‚ÌŒ¸Zj
 		XMVECTOR v1 = XMVectorSubtract(p1, p0);
 		XMVECTOR v2 = XMVectorSubtract(p2, p0);
-		//å¤–ç©ã¯ä¸¡æ–¹ã‹ã‚‰å‚ç›´ãªãƒ™ã‚¯ãƒˆãƒ«
+		//ŠOÏ‚Í—¼•û‚©‚ç‚’¼‚ÈƒxƒNƒgƒ‹
 		XMVECTOR normal = XMVector3Cross(v1, v2);
-		//æ­£è¦åŒ–
+		//³‹K‰»
 		normal = XMVector3Normalize(normal);
-		//æ±‚ã‚ãŸæ³•ç·šã‚’é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã«ä»£å…¥
+		//‹‚ß‚½–@ü‚ğ’¸“_ƒf[ƒ^‚É‘ã“ü
 		XMStoreFloat3(&vertices_[index0].normal, normal);
 		XMStoreFloat3(&vertices_[index1].normal, normal);
 		XMStoreFloat3(&vertices_[index2].normal, normal);
@@ -148,18 +148,18 @@ void ADXModel::SetNormal()
 }
 
 ///<summary>
-///é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆã™ã‚‹å‡¦ç†ã‚’ä¸€æ‹¬ã§è¡Œã†
+///’¸“_ƒoƒbƒtƒ@ƒrƒ…[‚ğì¬‚·‚éˆ—‚ğˆêŠ‡‚Ås‚¤
 ///</summary>
 void ADXModel::CreateVertexBufferView()
 {
 	HRESULT result;
 
-	//é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿å…¨ä½“ã®ã‚µã‚¤ã‚º = ä¸€ã¤ã®é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã®ã‚µã‚¤ã‚º * é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã®è¦ç´ æ•°
+	//’¸“_ƒf[ƒ^‘S‘Ì‚ÌƒTƒCƒY = ˆê‚Â‚Ì’¸“_ƒf[ƒ^‚ÌƒTƒCƒY * ’¸“_ƒf[ƒ^‚Ì—v‘f”
 	uint32_t sizeVB = static_cast<uint32_t>(sizeof(vertices_[0]) * vertices_.size());
-	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®è¨­å®š
+	//’¸“_ƒoƒbƒtƒ@‚Ìİ’è
 	D3D12_HEAP_PROPERTIES heapProp{};
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-	//ãƒªã‚½ãƒ¼ã‚¹è¨­å®š
+	//ƒŠƒ\[ƒXİ’è
 	D3D12_RESOURCE_DESC resDesc{};
 	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
 	resDesc.Width = sizeVB;
@@ -168,7 +168,7 @@ void ADXModel::CreateVertexBufferView()
 	resDesc.MipLevels = 1;
 	resDesc.SampleDesc.Count = 1;
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
+	//’¸“_ƒoƒbƒtƒ@‚Ì¶¬
 	result = ADXCommon::GetCurrentInstance()->GetDevice()
 		->CreateCommittedResource(
 			&heapProp,
@@ -179,39 +179,39 @@ void ADXModel::CreateVertexBufferView()
 			IID_PPV_ARGS(&vertBuff_));
 	assert(SUCCEEDED(result));
 
-	//GPUä¸Šã®ãƒãƒƒãƒ•ã‚¡ã«å¯¾å¿œã—ãŸä»®æƒ³ãƒ¡ãƒ¢ãƒªï¼ˆãƒ¡ã‚¤ãƒ³ãƒ¡ãƒ¢ãƒªä¸Šï¼‰ã‚’å–å¾—
+	//GPUã‚Ìƒoƒbƒtƒ@‚É‘Î‰‚µ‚½‰¼‘zƒƒ‚ƒŠiƒƒCƒ“ƒƒ‚ƒŠãj‚ğæ“¾
 	Vertex* vertMap = nullptr;
 	result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
-	//å…¨é ‚ç‚¹ã«å¯¾ã—åº§æ¨™ã‚’ã‚³ãƒ”ãƒ¼
+	//‘S’¸“_‚É‘Î‚µÀ•W‚ğƒRƒs[
 	for (int32_t i = 0; i < vertices_.size(); i++)
 	{
 		vertMap[i] = vertices_[i];
 	}
-	//ã¤ãªãŒã‚Šã‚’å‰Šé™¤
+	//‚Â‚È‚ª‚è‚ğíœ
 	vertBuff_->Unmap(0, nullptr);
 
-	//GPUä»®æƒ³ã‚¢ãƒ‰ãƒ¬ã‚¹
+	//GPU‰¼‘zƒAƒhƒŒƒX
 	vbView_.BufferLocation = vertBuff_->GetGPUVirtualAddress();
-	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚º
+	//’¸“_ƒoƒbƒtƒ@‚ÌƒTƒCƒY
 	vbView_.SizeInBytes = sizeVB;
-	//é ‚ç‚¹ä¸€ã¤åˆ†ã®ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚º
+	//’¸“_ˆê‚Â•ª‚Ìƒf[ƒ^ƒTƒCƒY
 	vbView_.StrideInBytes = sizeof(vertices_[0]);
 }
 
 ///<summary>
-///ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆã™ã‚‹å‡¦ç†ã‚’ä¸€æ‹¬ã§è¡Œã†
+///ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[‚ğì¬‚·‚éˆ—‚ğˆêŠ‡‚Ås‚¤
 ///</summary>
 void ADXModel::CreateIndexBufferView()
 {
 	HRESULT result;
 
-	//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿å…¨ä½“ã®ã‚µã‚¤ã‚º
+	//ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^‘S‘Ì‚ÌƒTƒCƒY
 	uint32_t sizeIB = static_cast<uint32_t>(sizeof(uint16_t) * indices_.size());
-	//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®è¨­å®š
+	//ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚Ìİ’è
 	D3D12_HEAP_PROPERTIES heapProp{};
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-	//ãƒªã‚½ãƒ¼ã‚¹è¨­å®š
+	//ƒŠƒ\[ƒXİ’è
 	D3D12_RESOURCE_DESC resDesc{};
 	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
 	resDesc.Width = sizeIB;
@@ -220,7 +220,7 @@ void ADXModel::CreateIndexBufferView()
 	resDesc.MipLevels = 1;
 	resDesc.SampleDesc.Count = 1;
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-	//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
+	//ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚Ì¶¬
 	result = ADXCommon::GetCurrentInstance()->GetDevice()
 		->CreateCommittedResource(
 			&heapProp,
@@ -230,18 +230,18 @@ void ADXModel::CreateIndexBufferView()
 			nullptr,
 			IID_PPV_ARGS(&indexBuff_));
 
-	//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ãƒãƒƒãƒ”ãƒ³ã‚°
+	//ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ğƒ}ƒbƒsƒ“ƒO
 	uint16_t* indexMap = nullptr;
 	result = indexBuff_->Map(0, nullptr, (void**)&indexMap);
-	//å…¨ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«å¯¾ã—ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ã‚³ãƒ”ãƒ¼
+	//‘SƒCƒ“ƒfƒbƒNƒX‚É‘Î‚µƒCƒ“ƒfƒbƒNƒX‚ğƒRƒs[
 	for (int32_t i = 0; i < indices_.size(); i++)
 	{
 		indexMap[i] = indices_[i];
 	}
-	//ã¤ãªãŒã‚Šã‚’å‰Šé™¤
+	//‚Â‚È‚ª‚è‚ğíœ
 	indexBuff_->Unmap(0, nullptr);
 
-	//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
+	//ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[‚Ìì¬
 	ibView_.BufferLocation = indexBuff_->GetGPUVirtualAddress();
 	ibView_.Format = DXGI_FORMAT_R16_UINT;
 	ibView_.SizeInBytes = sizeIB;
@@ -249,13 +249,13 @@ void ADXModel::CreateIndexBufferView()
 
 void ADXModel::Initialize()
 {
-	//æ³•ç·šã‚’è‡ªå‹•è¨­å®š
+	//–@ü‚ğ©“®İ’è
 	SetNormal();
 
-	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ä½œæˆ
+	//’¸“_ƒoƒbƒtƒ@ƒrƒ…[ì¬
 	CreateVertexBufferView();
 
-	//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ä½œæˆ
+	//ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[ì¬
 	CreateIndexBufferView();
 }
 
@@ -263,67 +263,67 @@ void ADXModel::Draw(ID3D12Resource* constBuffTransform)
 {
 	ID3D12GraphicsCommandList* commandList = ADXObject::GetCmdList();
 
-	// ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’æ›´æ–°
+	// ƒ‚ƒfƒ‹ƒf[ƒ^‚ğXV
 	Update();
 
-	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®è¨­å®šã‚³ãƒãƒ³ãƒ‰
+	// ’¸“_ƒoƒbƒtƒ@ƒrƒ…[‚Ìİ’èƒRƒ}ƒ“ƒh
 	commandList->IASetVertexBuffers(0, 1, &vbView_);
 
-	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®è¨­å®šã‚³ãƒãƒ³ãƒ‰
+	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[‚Ìİ’èƒRƒ}ƒ“ƒh
 	commandList->IASetIndexBuffer(&ibView_);
 
-	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼(CBV)ã®è¨­å®šã‚³ãƒãƒ³ãƒ‰
+	//’è”ƒoƒbƒtƒ@ƒrƒ…[(CBV)‚Ìİ’èƒRƒ}ƒ“ƒh
 	commandList->SetGraphicsRootConstantBufferView(0, constBuffTransform->GetGPUVirtualAddress());
 
-	// æç”»ã‚³ãƒãƒ³ãƒ‰
-	commandList->DrawIndexedInstanced((uint32_t)indices_.size(), 1, 0, 0, 0); // å…¨ã¦ã®é ‚ç‚¹ã‚’ä½¿ã£ã¦æç”»
+	// •`‰æƒRƒ}ƒ“ƒh
+	commandList->DrawIndexedInstanced((uint32_t)indices_.size(), 1, 0, 0, 0); // ‘S‚Ä‚Ì’¸“_‚ğg‚Á‚Ä•`‰æ
 }
 
 void ADXModel::Update()
 {
-	//æ³•ç·šã‚’è‡ªå‹•è¨­å®š
+	//–@ü‚ğ©“®İ’è
 	SetNormal();
 
 	HRESULT result;
 
-	//é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿å…¨ä½“ã®ã‚µã‚¤ã‚º = ä¸€ã¤ã®é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã®ã‚µã‚¤ã‚º * é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã®è¦ç´ æ•°
+	//’¸“_ƒf[ƒ^‘S‘Ì‚ÌƒTƒCƒY = ˆê‚Â‚Ì’¸“_ƒf[ƒ^‚ÌƒTƒCƒY * ’¸“_ƒf[ƒ^‚Ì—v‘f”
 	uint32_t sizeVB = static_cast<uint32_t>(sizeof(vertices_[0]) * vertices_.size());
 
-	//GPUä¸Šã®ãƒãƒƒãƒ•ã‚¡ã«å¯¾å¿œã—ãŸä»®æƒ³ãƒ¡ãƒ¢ãƒªï¼ˆãƒ¡ã‚¤ãƒ³ãƒ¡ãƒ¢ãƒªä¸Šï¼‰ã‚’å–å¾—
+	//GPUã‚Ìƒoƒbƒtƒ@‚É‘Î‰‚µ‚½‰¼‘zƒƒ‚ƒŠiƒƒCƒ“ƒƒ‚ƒŠãj‚ğæ“¾
 	Vertex* vertMap = nullptr;
 	result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
-	//å…¨é ‚ç‚¹ã«å¯¾ã—åº§æ¨™ã‚’ã‚³ãƒ”ãƒ¼
+	//‘S’¸“_‚É‘Î‚µÀ•W‚ğƒRƒs[
 	for (int32_t i = 0; i < vertices_.size(); i++)
 	{
 		vertMap[i] = vertices_[i];
 	}
-	//ã¤ãªãŒã‚Šã‚’å‰Šé™¤
+	//‚Â‚È‚ª‚è‚ğíœ
 	vertBuff_->Unmap(0, nullptr);
 
-	//GPUä»®æƒ³ã‚¢ãƒ‰ãƒ¬ã‚¹
+	//GPU‰¼‘zƒAƒhƒŒƒX
 	vbView_.BufferLocation = vertBuff_->GetGPUVirtualAddress();
-	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚º
+	//’¸“_ƒoƒbƒtƒ@‚ÌƒTƒCƒY
 	vbView_.SizeInBytes = sizeVB;
-	//é ‚ç‚¹ä¸€ã¤åˆ†ã®ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚º
+	//’¸“_ˆê‚Â•ª‚Ìƒf[ƒ^ƒTƒCƒY
 	vbView_.StrideInBytes = sizeof(vertices_[0]);
 
 
-	//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿å…¨ä½“ã®ã‚µã‚¤ã‚º
+	//ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^‘S‘Ì‚ÌƒTƒCƒY
 	uint32_t sizeIB = static_cast<uint32_t>(sizeof(uint16_t) * indices_.size());
 
-	//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ãƒãƒƒãƒ”ãƒ³ã‚°
+	//ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ğƒ}ƒbƒsƒ“ƒO
 	uint16_t* indexMap = nullptr;
 	result = indexBuff_->Map(0, nullptr, (void**)&indexMap);
-	//å…¨ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«å¯¾ã—ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ã‚³ãƒ”ãƒ¼
+	//‘SƒCƒ“ƒfƒbƒNƒX‚É‘Î‚µƒCƒ“ƒfƒbƒNƒX‚ğƒRƒs[
 	for (int32_t i = 0; i < indices_.size(); i++)
 	{
 		indexMap[i] = indices_[i];
 	}
-	//ã¤ãªãŒã‚Šã‚’å‰Šé™¤
+	//‚Â‚È‚ª‚è‚ğíœ
 	indexBuff_->Unmap(0, nullptr);
 
-	//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
+	//ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[‚Ìì¬
 	ibView_.BufferLocation = indexBuff_->GetGPUVirtualAddress();
 	ibView_.Format = DXGI_FORMAT_R16_UINT;
 	ibView_.SizeInBytes = sizeIB;
@@ -333,12 +333,12 @@ ADXModel ADXModel::CreateRect()
 {
 	ADXModel rect_;
 	rect_.vertices_ = {
-	{{-1.0f,-1.0f,0.0f},{}, {0.0f,1.0f}},//å·¦ä¸‹
-	{{-1.0f,1.0f,0.0f},{},{0.0f,0.0f}},//å·¦ä¸Š
-	{{1.0f,-1.0f,0.0f},{},{1.0f,1.0f}},//å³ä¸‹
-	{{1.0f,1.0f,0.0f},{},{1.0f,0.0f}},//å³ä¸Š
+	{{-1.0f,-1.0f,0.0f},{}, {0.0f,1.0f}},//¶‰º
+	{{-1.0f,1.0f,0.0f},{},{0.0f,0.0f}},//¶ã
+	{{1.0f,-1.0f,0.0f},{},{1.0f,1.0f}},//‰E‰º
+	{{1.0f,1.0f,0.0f},{},{1.0f,0.0f}},//‰Eã
 	};
-	//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿
+	//ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^
 	rect_.indices_ =
 	{
 		0,1,2,

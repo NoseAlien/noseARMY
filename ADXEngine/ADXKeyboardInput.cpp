@@ -1,4 +1,4 @@
-ï»¿#include "ADXKeyBoardInput.h"
+#include "ADXKeyBoardInput.h"
 
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
@@ -19,11 +19,11 @@ ADXKeyBoardInput::ADXKeyBoardInput(ADXWindow* setWindow)
 	result = directInput_->CreateDevice(GUID_SysKeyboard, &keyboard_, NULL);
 	assert(SUCCEEDED(result));
 
-	//å…¥åŠ›ãƒ‡ãƒ¼ã‚¿å½¢å¼ã®ã‚»ãƒƒãƒˆ
+	//“ü—Íƒf[ƒ^Œ`®‚ÌƒZƒbƒg
 	result = keyboard_->SetDataFormat(&c_dfDIKeyboard);
 	assert(SUCCEEDED(result));
 
-	//æ’ä»–åˆ¶å¾¡ãƒ¬ãƒ™ãƒ«ã®ã‚»ãƒƒãƒˆ
+	//”r‘¼§ŒäƒŒƒxƒ‹‚ÌƒZƒbƒg
 	result = keyboard_->SetCooperativeLevel(
 		window_->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	assert(SUCCEEDED(result));
@@ -33,16 +33,16 @@ ADXKeyBoardInput::ADXKeyBoardInput(ADXWindow* setWindow)
 
 void ADXKeyBoardInput::Update()
 {
-	//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æƒ…å ±ã®å–å¾—é–‹å§‹
+	//ƒL[ƒ{[ƒhî•ñ‚Ìæ“¾ŠJn
 	keyboard_->Acquire();
 
-	//å‰ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã®å…¥åŠ›çŠ¶æ…‹ã‚’å–å¾—ã™ã‚‹
+	//‘O‚ÌƒtƒŒ[ƒ€‚Ì“ü—Íó‘Ô‚ğæ“¾‚·‚é
 	for (int32_t i = 0; i < sizeof(key_) / sizeof(*key_); i++)
 	{
 		prevKey_[i] = key_[i];
 	}
 
-	//å…¨ã‚­ãƒ¼ã®å…¥åŠ›çŠ¶æ…‹ã‚’å–å¾—ã™ã‚‹
+	//‘SƒL[‚Ì“ü—Íó‘Ô‚ğæ“¾‚·‚é
 	keyboard_->GetDeviceState(sizeof(key_), key_);
 
 	S_current = this;

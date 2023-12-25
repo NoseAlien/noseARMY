@@ -1,4 +1,4 @@
-﻿#include "Cub_E.h"
+#include "Cub_E.h"
 #include "ADXCamera.h"
 
 void Cub_E::EnemyInitialize()

@@ -1,4 +1,4 @@
-ï»¿#include "ADXWindow.h"
+#include "ADXWindow.h"
 #include <imgui_impl_win32.h>
 
 uint32_t ADXWindow::S_window_width = 1280;
@@ -54,7 +54,7 @@ LRESULT ADXWindow::WindowProc(HWND hwnd, uint32_t msg, WPARAM wparam, LPARAM lpa
 
 bool ADXWindow::ProcessMessage()
 {
-	//ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	//ƒƒbƒZ[ƒW
 	MSG msg{};
 
 	if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -63,7 +63,7 @@ bool ADXWindow::ProcessMessage()
 		DispatchMessage(&msg);
 	}
 
-	//xãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸã‚‰ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹
+	//xƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚çƒ‹[ƒv‚ğ”²‚¯‚é
 	if (msg.message == WM_QUIT)
 	{
 		return true;

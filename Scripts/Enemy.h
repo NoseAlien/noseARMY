@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "LiveEntity.h"
 #include "ADXRigidbody.h"

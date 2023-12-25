@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include "ADXModel.h"
 #include "ADXMaterial.h"
 #include "ADXImage.h"
@@ -12,7 +12,7 @@ class ADXCamera;
 class ADXObject
 {
 public:
-	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“ï¼ˆãƒãƒ†ãƒªã‚¢ãƒ«ï¼‰
+	//’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ìiƒ}ƒeƒŠƒAƒ‹j
 	struct ConstBufferDataB0 {
 		DirectX::XMMATRIX mat;
 	};
@@ -43,24 +43,24 @@ private:
 	std::list<std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>>> components_{};
 	bool deleteFlag_ = false;
 
-private: // é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°
-	// ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£
+private: // Ã“Iƒƒ“ƒo•Ï”
+	// ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ
 	static Microsoft::WRL::ComPtr<ID3D12RootSignature> S_rootSignature;
-	// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆï¼ˆä¸é€æ˜ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”¨ï¼‰
+	// ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒgƒIƒuƒWƒFƒNƒgi•s“§–¾ƒIƒuƒWƒFƒNƒg—pj
 	static Microsoft::WRL::ComPtr<ID3D12PipelineState> S_pipelineState;
-	// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆï¼ˆåŠé€æ˜ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”¨ï¼‰
+	// ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒgƒIƒuƒWƒFƒNƒgi”¼“§–¾ƒIƒuƒWƒFƒNƒg—pj
 	static Microsoft::WRL::ComPtr<ID3D12PipelineState> S_pipelineStateAlpha;
-	// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ã‚µã‚¤ã‚º
+	// ƒfƒXƒNƒŠƒvƒ^ƒTƒCƒY
 	static uint64_t S_descriptorHandleIncrementSize;
-	// ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆ
+	// ƒRƒ}ƒ“ƒhƒŠƒXƒg
 	static ID3D12GraphicsCommandList* S_cmdList;
 
 	static uint64_t S_GpuStartHandle;
-	// å…¨ã¦ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå…¥ã£ãŸé…åˆ—
+	// ‘S‚Ä‚ÌƒIƒuƒWƒFƒNƒg‚ª“ü‚Á‚½”z—ñ
 	static std::list<std::unique_ptr<ADXObject, ADXUtility::NPManager<ADXObject>>> S_objs;
-	// å…¨ã¦ã®ã‚«ãƒ¡ãƒ©ã‚’å…¥ã‚Œã‚‹é…åˆ—
+	// ‘S‚Ä‚ÌƒJƒƒ‰‚ğ“ü‚ê‚é”z—ñ
 	static std::vector<ADXCamera*> S_allCameraPtr;
-	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå­˜åœ¨ã§ãã‚‹é ˜åŸŸã‚’åˆ¶é™ã™ã‚‹ãŸã‚ã®å¤‰æ•°
+	// ƒIƒuƒWƒFƒNƒg‚ª‘¶İ‚Å‚«‚é—Ìˆæ‚ğ§ŒÀ‚·‚é‚½‚ß‚Ì•Ï”
 	static ADXVector3 S_limitPos1;
 	static ADXVector3 S_limitPos2;
 
@@ -86,43 +86,43 @@ private:
 	void Update();
 	void CreateConstBuffer();
 
-public: // é™çš„ãƒ¡ãƒ³ãƒé–¢æ•°
-	//é™çš„åˆæœŸåŒ–
+public: // Ã“Iƒƒ“ƒoŠÖ”
+	//Ã“I‰Šú‰»
 	static void StaticInitialize();
-	//é™çš„æ›´æ–°å‡¦ç†
+	//Ã“IXVˆ—
 	static void StaticUpdate();
-	// ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ç”Ÿæˆ
+	// ƒOƒ‰ƒtƒBƒbƒNƒpƒCƒvƒ‰ƒCƒ“¶¬
 	static void InitializeGraphicsPipeline();
-	// ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ç”¨å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
+	// ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€—p’è”ƒoƒbƒtƒ@¶¬
 	static void InitializeConstBufferTransform(Microsoft::WRL::ComPtr<ID3D12Resource>& constBuff, ConstBufferDataTransform** constMap);
-	// ãƒãƒ†ãƒªã‚¢ãƒ«ç”¨å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
+	// ƒ}ƒeƒŠƒAƒ‹—p’è”ƒoƒbƒtƒ@¶¬
 	static void InitializeConstBufferMaterial(Microsoft::WRL::ComPtr<ID3D12Resource>& constBuff);
-	// å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¯¾ã™ã‚‹æç”»å‡¦ç†
+	// ‘SƒIƒuƒWƒFƒNƒg‚É‘Î‚·‚é•`‰æˆ—
 	static void StaticDraw();
-	// ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã‚’å–å¾—
+	// ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ğæ“¾
 	static ID3D12GraphicsCommandList* GetCmdList() { return S_cmdList; };
 
 	static uint64_t GetGpuStartHandle() { return S_GpuStartHandle; };
-	// å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—
+	// ‘SƒIƒuƒWƒFƒNƒg‚ğæ“¾
 	static std::list<ADXObject*> GetObjs();
 
 	static void SetAllCameraPtr(ADXCamera* camPtr);
 
-	//ç©ºã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆ
+	//‹ó‚ÌƒIƒuƒWƒFƒNƒg‚ğ¶¬
 	static ADXObject* Create(const ADXVector3& setLocalPosition = { 0,0,0 },
 		const ADXQuaternion& setLocalRotation = ADXQuaternion::IdentityQuaternion(),
 		const ADXVector3& setLocalScale = { 1,1,1 }, ADXWorldTransform* setParent = nullptr);
 
-	//æ—¢å­˜ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¤‡è£½
+	//Šù‘¶‚ÌƒIƒuƒWƒFƒNƒg‚ğ•¡»
 	static ADXObject* Duplicate(const ADXObject& prefab);
 
-	//ã‚·ãƒ¼ãƒ³åˆ‡ã‚Šæ›¿ãˆæ™‚ãªã©ã«ä½¿ç”¨ã€ä»Šã‚ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å…¨éƒ¨æ¶ˆã™
+	//ƒV[ƒ“Ø‚è‘Ö‚¦‚È‚Ç‚Ég—pA¡‚ ‚éƒIƒuƒWƒFƒNƒg‚ğ‘S•”Á‚·
 	static void Annihilate() { S_objs.clear(); };
 
 private:
-	// æç”»å‰å‡¦ç†
+	// •`‰æ‘Oˆ—
 	static void PreDraw();
-	// æç”»å¾Œå‡¦ç†
+	// •`‰æŒãˆ—
 	static void PostDraw();
 };
 

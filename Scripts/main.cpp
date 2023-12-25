@@ -1,4 +1,4 @@
-ï»¿#define _CRTDBG_MAP_ALLOC
+#define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 #include <cstdlib>
 #include "ADXCommon.h"
@@ -24,15 +24,15 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	{
-		//WinAPIåˆæœŸåŒ–å‡¦ç†
+		//WinAPI‰Šú‰»ˆ—
 
-		//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ç”Ÿæˆ
+		//ƒEƒBƒ“ƒhƒE¶¬
 		ADXWindow adxwindow(L"noseARMY");
 
 		ADXCommon adxcommon;
 		adxcommon.Initialize(&adxwindow);
 
-		//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒ‡ãƒã‚¤ã‚¹ã®ç”Ÿæˆ
+		//ƒL[ƒ{[ƒhƒfƒoƒCƒX‚Ì¶¬
 		ADXKeyBoardInput keyboard_(&adxwindow);
 		ADXGamePadInput gamePad_;
 		ADXKeyConfig config_;
@@ -54,11 +54,11 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 		ADXObject::StaticInitialize();
 		SceneTransition::StaticInitialize();
 
-		//ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ã®ä½œæˆ
+		//ƒQ[ƒ€ƒV[ƒ“‚Ìì¬
 		SceneManager sceneMan{};
 		sceneMan.Initialize();
 
-		//ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—
+		//ƒQ[ƒ€ƒ‹[ƒv
 		while (true)
 		{
 			if (adxwindow.ProcessMessage() || keyboard_.GetKeyDown(DIK_ESCAPE))
@@ -72,7 +72,7 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 			config_.Update();
 			sceneMan.Update();
 			ADXObject::StaticUpdate();
-			//ã“ã®ä¸‹ã«ã‚ã‚‹ã‚²ãƒ¼ãƒ å°‚ç”¨ã®æ›´æ–°éƒ¨åˆ†ã¯å¾Œã§ã¾ã¨ã‚ã‚‹
+			//‚±‚Ì‰º‚É‚ ‚éƒQ[ƒ€ê—p‚ÌXV•”•ª‚ÍŒã‚Å‚Ü‚Æ‚ß‚é
 			SceneTransition::StaticUpdate();
 			LiveEntity::StaticUpdate();
 			ADXCollider::StaticUpdate();
