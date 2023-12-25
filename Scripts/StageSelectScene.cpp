@@ -51,7 +51,7 @@ void StageSelectScene::Initialize()
 
 	temp = ADXObject::Create({ 0,1.01f,30 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 2,2,2 });
 	gates_.push_back(temp->AddComponent<SceneGate>());
-	gates_.back()->Initialize("player");
+	gates_.back()->Initialize("player","1-1");
 
 
 	backGround_ = ADXObject::Create();

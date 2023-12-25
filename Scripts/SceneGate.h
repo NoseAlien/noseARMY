@@ -9,13 +9,16 @@ public:
 
 private:
 	std::string team_ = "";
+	std::string stageName_ = "";
 	bool hitted_ = false;
-	ADXObject *keyUI_ = nullptr;
+	ADXObject* keyUI_ = nullptr;
+	ADXObject* stageNameUI_ = nullptr;
 	ADXModel boxModel_{};
 	ADXModel rectModel_{};
 
 public:
-	void Initialize(const std::string& setTeam);
+	void Initialize(const std::string& team, const std::string& stageName);
+	std::string GetStageName() { return stageName_; };
 
 private:
 	void UniqueUpdate();

@@ -199,7 +199,6 @@ void Player::LiveEntitiesInitialize()
 	deathCountUI_->transform_.localPosition_ = {-0.9f,-0.9f,0};
 	deathCountUI_->transform_.localScale_.x_ /= ADXWindow::GetAspect();
 	deathCountUI_->transform_.localScale_ *= 0.1f;
-	deathCount_ = 96187;
 }
 
 void Player::LiveEntitiesUpdate()
