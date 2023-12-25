@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include<dinput.h>
 #include<DirectXMath.h>
 #include<wrl.h>
@@ -28,7 +28,7 @@ enum ControllerStick
 class ADXGamePadInput
 {
 private:
-	//Å‚“ü—Í‹­“x
+	//æœ€é«˜å…¥åŠ›å¼·åº¦
 	const float MaxStickInput = 32768.0f;
 
 private:

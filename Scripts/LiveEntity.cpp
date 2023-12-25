@@ -1,4 +1,4 @@
-#include "LiveEntity.h"
+﻿#include "LiveEntity.h"
 #include "ADXCamera.h"
 #include <time.h>
 

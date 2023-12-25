@@ -1,4 +1,4 @@
-#include "ADXModelRenderer.h"
+ï»¿#include "ADXModelRenderer.h"
 #include "ADXObject.h"
 #include "ADXCommon.h"
 
@@ -12,7 +12,7 @@ void ADXModelRenderer::UniqueRendering([[maybe_unused]] ID3D12Device* device, ID
 
 		GetGameObject()->transform_.UpdateConstBuffer();
 
-		// •`‰æƒRƒ}ƒ“ƒh
+		// æç”»ã‚³ãƒžãƒ³ãƒ‰
 		model_->Draw(GetGameObject()->transform_.constBuffTransform_.Get());
 	}
 }

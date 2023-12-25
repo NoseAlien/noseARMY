@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 class ADXObject;
 class ADXCollider;
@@ -10,36 +10,36 @@ private:
 	ADXObject* gameObject_ = nullptr;
 
 public:
-	//XVˆ—
+	//æ›´æ–°å‡¦ç†
 	void Update(ADXObject* obj);
-	//Update()‚æ‚è‘O‚ÉgameObject‚ğ‘ã“ü‚·‚é
+	//Update()ã‚ˆã‚Šå‰ã«gameObjectã‚’ä»£å…¥ã™ã‚‹
 	void SetGameObject(ADXObject* obj);
-	//gameObject‚ğæ“¾
+	//gameObjectã‚’å–å¾—
 	ADXObject* GetGameObject() const { return gameObject_; };
 
 public:
-	//‘SƒIƒuƒWƒFƒNƒg‚ÅˆêÄ‚ÉŒÄ‚Î‚ê‚é•`‰æ‘Oˆ—
+	//å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã§ä¸€æ–‰ã«å‘¼ã°ã‚Œã‚‹æç”»å‰å‡¦ç†
 	virtual void OnPreRender() {};
-	//gameObject‚ª•`‰æ‚³‚ê‚é’¼‘O‚ÉŒÄ‚Î‚ê‚é•`‰æ‘Oˆ—
+	//gameObjectãŒæç”»ã•ã‚Œã‚‹ç›´å‰ã«å‘¼ã°ã‚Œã‚‹æç”»å‰å‡¦ç†
 	virtual void OnWillRenderObject() {};
-	//gameObject‚ª•`‰æ‚³‚ê‚½’¼Œã‚ÉŒÄ‚Î‚ê‚é•`‰æŒãˆ—
+	//gameObjectãŒæç”»ã•ã‚ŒãŸç›´å¾Œã«å‘¼ã°ã‚Œã‚‹æç”»å¾Œå‡¦ç†
 	virtual void Rendered() {};
 	/// <summary>
-	/// <para>ƒAƒNƒZƒXˆá”½‚ğ–h‚®‚½‚ß‚ÌXVˆ—‚ğs‚¤ŠÖ”</para>
-	/// <para>Á‚¦‚»‚¤‚ÈƒIƒuƒWƒFƒNƒg‚ğQÆ‚µ‚Ä‚¢‚½‚ç‚±‚±‚ÅØ‚Á‚Ä‚¨‚¯‚ÎˆÀ‘S</para>
+	/// <para>ã‚¢ã‚¯ã‚»ã‚¹é•åã‚’é˜²ããŸã‚ã®æ›´æ–°å‡¦ç†ã‚’è¡Œã†é–¢æ•°</para>
+	/// <para>æ¶ˆãˆãã†ãªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å‚ç…§ã—ã¦ã„ãŸã‚‰ã“ã“ã§åˆ‡ã£ã¦ãŠã‘ã°å®‰å…¨</para>
 	/// </summary>
 	virtual void SafetyPhase() {};
-	//gameObject‚ÌDestroy()‚ªŒÄ‚Î‚ê‚½’¼Œã‚ÉŒÄ‚Î‚ê‚éŠÖ”
+	//gameObjectã®Destroy()ãŒå‘¼ã°ã‚ŒãŸç›´å¾Œã«å‘¼ã°ã‚Œã‚‹é–¢æ•°
 	virtual void OnDestroy() {};
-	//gameObject‚ª‘¼‚ÌƒRƒ‰ƒCƒ_[‚ÆÚG‚µ‚½uŠÔ‚ÉŒÄ‚Î‚ê‚éˆ—
+	//gameObjectãŒä»–ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã¨æ¥è§¦ã—ãŸç¬é–“ã«å‘¼ã°ã‚Œã‚‹å‡¦ç†
 	virtual void OnCollisionHit([[maybe_unused]] ADXCollider* col, [[maybe_unused]] ADXCollider* myCol) {};
 
 protected:
 	/// <summary>
-	/// <para>Å‰‚ÌUpdate‚ªŒÄ‚Î‚ê‚½ƒ^ƒCƒ~ƒ“ƒO‚ÅŒÄ‚Î‚ê‚é</para>
-	/// <para>”h¶ƒNƒ‰ƒXŒÅ—L‚Ì‰Šú‰»ˆ—</para>
+	/// <para>æœ€åˆã®UpdateãŒå‘¼ã°ã‚ŒãŸã‚¿ã‚¤ãƒŸãƒ³ã‚°ã§å‘¼ã°ã‚Œã‚‹</para>
+	/// <para>æ´¾ç”Ÿã‚¯ãƒ©ã‚¹å›ºæœ‰ã®åˆæœŸåŒ–å‡¦ç†</para>
 	/// </summary>
 	virtual void UniqueInitialize() {};
-	//”h¶ƒNƒ‰ƒXŒÅ—L‚ÌXVˆ—
+	//æ´¾ç”Ÿã‚¯ãƒ©ã‚¹å›ºæœ‰ã®æ›´æ–°å‡¦ç†
 	virtual void UniqueUpdate() {};
 };

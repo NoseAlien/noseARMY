@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "ADXVector3.h"
 #include "ADXMatrix4.h"
@@ -9,33 +9,33 @@
 
 class ADXObject;
 
-// ’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì
+// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 struct ConstBufferDataTransform {
-	ADXMatrix4 matWorld{};           // ƒ[ƒJƒ‹ ¨ ƒ[ƒ‹ƒh•ÏŠ·s—ñ
-	ADXMatrix4 matWorldRot{};           // ƒ[ƒJƒ‹ ¨ ƒ[ƒ‹ƒh•ÏŠ·s—ñi‰ñ“]î•ñ‚Ì‚İj
-	ADXMatrix4 matMVP{};             // ƒ[ƒJƒ‹ ¨ ƒ[ƒ‹ƒh ¨ ƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“•ÏŠ·s—ñ
-	ADXVector3 cameraWorldPos{};     // ƒJƒƒ‰‚Ìƒ[ƒ‹ƒhÀ•W
+	ADXMatrix4 matWorld{};           // ãƒ­ãƒ¼ã‚«ãƒ« â†’ ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›è¡Œåˆ—
+	ADXMatrix4 matWorldRot{};           // ãƒ­ãƒ¼ã‚«ãƒ« â†’ ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›è¡Œåˆ—ï¼ˆå›è»¢æƒ…å ±ã®ã¿ï¼‰
+	ADXMatrix4 matMVP{};             // ãƒ­ãƒ¼ã‚«ãƒ« â†’ ãƒ¯ãƒ¼ãƒ«ãƒ‰ â†’ ãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³å¤‰æ›è¡Œåˆ—
+	ADXVector3 cameraWorldPos{};     // ã‚«ãƒ¡ãƒ©ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™
 };
 
 /// <summary>
-/// ƒ[ƒ‹ƒh•ÏŠ·ƒf[ƒ^
+/// ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›ãƒ‡ãƒ¼ã‚¿
 /// </summary>
 class ADXWorldTransform {
 public:
-	// ’è”ƒoƒbƒtƒ@
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform_ = nullptr;
-	// ƒ}ƒbƒsƒ“ƒOÏ‚İƒAƒhƒŒƒX
+	// ãƒãƒƒãƒ”ãƒ³ã‚°æ¸ˆã¿ã‚¢ãƒ‰ãƒ¬ã‚¹
 	ConstBufferDataTransform* constMapTransform_ = nullptr;
 
-	// ƒ[ƒJƒ‹À•W
+	// ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™
 	ADXVector3 localPosition_ = { 0, 0, 0 };
-	// ƒ[ƒJƒ‹‰ñ“]‚ğ•\‚·ƒNƒI[ƒ^ƒjƒIƒ“
+	// ãƒ­ãƒ¼ã‚«ãƒ«å›è»¢ã‚’è¡¨ã™ã‚¯ã‚ªãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³
 	ADXQuaternion localRotation_ = ADXQuaternion::IdentityQuaternion();
-	// ƒ[ƒJƒ‹ƒXƒP[ƒ‹
+	// ãƒ­ãƒ¼ã‚«ãƒ«ã‚¹ã‚±ãƒ¼ãƒ«
 	ADXVector3 localScale_ = { 1, 1, 1 };
-	// e‚Æ‚È‚éƒ[ƒ‹ƒh•ÏŠ·‚Ö‚Ìƒ|ƒCƒ“ƒ^
+	// è¦ªã¨ãªã‚‹ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›ã¸ã®ãƒã‚¤ãƒ³ã‚¿
 	ADXWorldTransform* parent_ = nullptr;
-	// ƒXƒvƒ‰ƒCƒg‚ğ•`‰æ‚·‚é‚È‚ÇAƒJƒƒ‰‚ÌˆÊ’u‚â‰œs‚«‚ğ–³‹‚·‚éê‡‚Í‚±‚ê‚ğtrue‚É‚·‚é
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚’æç”»ã™ã‚‹æ™‚ãªã©ã€ã‚«ãƒ¡ãƒ©ã®ä½ç½®ã‚„å¥¥è¡Œãã‚’ç„¡è¦–ã™ã‚‹å ´åˆã¯ã“ã‚Œã‚’trueã«ã™ã‚‹
 	bool rectTransform_ = false;
 
 	ADXVector3 modelPosition_ = { 0, 0, 0 };
@@ -43,9 +43,9 @@ public:
 	ADXVector3 modelScale_ = { 1, 1, 1 };
 
 private:
-	// ‚±‚ÌWorldTransform‚ğ‚ÂƒIƒuƒWƒFƒNƒg
+	// ã“ã®WorldTransformã‚’æŒã¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	ADXObject* gameObject_ = nullptr;
-	// ƒ[ƒJƒ‹ ¨ ƒ[ƒ‹ƒh•ÏŠ·s—ñ
+	// ãƒ­ãƒ¼ã‚«ãƒ« â†’ ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›è¡Œåˆ—
 	ADXMatrix4 matTrans_{};
 	ADXMatrix4 matRot_{};
 	ADXMatrix4 matScale_{};
@@ -53,31 +53,31 @@ private:
 	ADXMatrix4 matWorldInverse_{};
 
 private:
-	//ƒrƒ…[•ÏŠ·s—ñ
+	//ãƒ“ãƒ¥ãƒ¼å¤‰æ›è¡Œåˆ—
 	static ADXMatrix4* S_matView;
-	//Ë‰e•ÏŠ·s—ñi“§‹“Š‰ej
+	//å°„å½±å¤‰æ›è¡Œåˆ—ï¼ˆé€è¦–æŠ•å½±ï¼‰
 	static ADXMatrix4* S_matProjection;
 
 public:
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize(ADXObject* obj);
 
-	//s—ñ‚ğXV‚·‚é
+	//è¡Œåˆ—ã‚’æ›´æ–°ã™ã‚‹
 	void UpdateMatrix();
 
-	//’è”ƒoƒbƒtƒ@‚ğXV‚·‚é
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ã‚’æ›´æ–°ã™ã‚‹
 	void UpdateConstBuffer();
 
-	//ƒ[ƒ‹ƒhÀ•W‚ğæ“¾‚·‚é
+	//ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’å–å¾—ã™ã‚‹
 	ADXVector3 GetWorldPosition();
 
-	//ƒ[ƒ‹ƒhÀ•W‚ğ‘ã“ü‚·‚é
+	//ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’ä»£å…¥ã™ã‚‹
 	void SetWorldPosition(const ADXVector3& worldPos);
 
-	//ƒ[ƒ‹ƒh‰ñ“]Šp‚ğæ“¾‚·‚é
+	//ãƒ¯ãƒ¼ãƒ«ãƒ‰å›è»¢è§’ã‚’å–å¾—ã™ã‚‹
 	ADXQuaternion GetWorldRotation() const;
 
-	//ƒ[ƒ‹ƒh‰ñ“]Šp‚ğ‘ã“ü‚·‚é
+	//ãƒ¯ãƒ¼ãƒ«ãƒ‰å›è»¢è§’ã‚’ä»£å…¥ã™ã‚‹
 	void SetWorldRotation(const ADXQuaternion& worldRot);
 
 	ADXVector3 TransformPointWithoutTranslation(const ADXVector3& pos) const;
@@ -92,29 +92,29 @@ public:
 
 	ADXQuaternion InverseTransformRotation(const ADXQuaternion& rot) const;
 
-	//ƒ[ƒ‹ƒh•ÏŠ·s—ñ‚ğæ“¾‚·‚é
+	//ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›è¡Œåˆ—ã‚’å–å¾—ã™ã‚‹
 	ADXMatrix4 GetMatWorld() { return matWorld_; };
 
-	//ƒ[ƒ‹ƒh•ÏŠ·s—ñ‚ğæ“¾‚·‚é
+	//ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›è¡Œåˆ—ã‚’å–å¾—ã™ã‚‹
 	ADXMatrix4 GetMatWorldInverse();
 
-	//ƒ[ƒ‹ƒh‰ñ“]s—ñ‚ğæ“¾‚·‚é
+	//ãƒ¯ãƒ¼ãƒ«ãƒ‰å›è»¢è¡Œåˆ—ã‚’å–å¾—ã™ã‚‹
 	ADXMatrix4 GetMatRot() { return matRot_; };
 
-	//ƒ[ƒ‹ƒhƒXƒP[ƒ‹s—ñ‚ğæ“¾‚·‚é
+	//ãƒ¯ãƒ¼ãƒ«ãƒ‰ã‚¹ã‚±ãƒ¼ãƒ«è¡Œåˆ—ã‚’å–å¾—ã™ã‚‹
 	ADXMatrix4 GetMatScale() { return matScale_; };
 
-	//‚±‚ÌWorldTransform‚ğ‚ÂƒIƒuƒWƒFƒNƒg‚ğæ“¾‚·‚é
+	//ã“ã®WorldTransformã‚’æŒã¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—ã™ã‚‹
 	ADXObject* GetGameObject() { return gameObject_; };
 
-	//q‚ğ‘S‚Äæ“¾
+	//å­ã‚’å…¨ã¦å–å¾—
 	std::list<ADXWorldTransform*> GetChilds();
 
 public:
-	//ƒrƒ…[s—ñAƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ‚ğ‘ã“ü‚·‚é
+	//ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã€ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—ã‚’ä»£å…¥ã™ã‚‹
 	static void SetViewProjection(ADXMatrix4* matView, ADXMatrix4* matProjection);
-	//ƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ‚ğæ“¾‚·‚é
+	//ãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—ã‚’å–å¾—ã™ã‚‹
 	static ADXMatrix4 GetViewProjection();
-	//ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€s—ñ‚ğ¶¬
+	//ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ è¡Œåˆ—ã‚’ç”Ÿæˆ
 	static ADXMatrix4 GenerateMatTransform(const ADXVector3& localPosition, const ADXQuaternion& localRotation, const ADXVector3& localScale);
 };

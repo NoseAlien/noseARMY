@@ -1,4 +1,4 @@
-#include "ADXGamePadInput.h"
+ï»¿#include "ADXGamePadInput.h"
 #pragma comment (lib, "xinput.lib")
 
 ADXGamePadInput* ADXGamePadInput::S_current = nullptr;
@@ -8,7 +8,7 @@ void ADXGamePadInput::Update()
 	prevInputState_ = inputState_;
 	ZeroMemory(&inputState_, sizeof(XINPUT_STATE));
 
-	//ƒRƒ“ƒgƒ[ƒ‰[æ“¾
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼å–å¾—
 	DWORD dwResult = XInputGetState(0, &inputState_);
 
 	if (dwResult == ERROR_SUCCESS)
@@ -17,7 +17,7 @@ void ADXGamePadInput::Update()
 	}
 	else
 	{
-		//ƒRƒ“ƒgƒ[ƒ‰[‚ªÚ‘±‚³‚ê‚Ä‚¢‚È‚¢
+		//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ãŒæ¥ç¶šã•ã‚Œã¦ã„ãªã„
 	}
 }
 

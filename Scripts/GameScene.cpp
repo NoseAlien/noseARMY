@@ -1,4 +1,4 @@
-#include "GameScene.h"
+ï»¿#include "GameScene.h"
 #include "SceneTransition.h"
 
 #include "ADXKeyConfig.h"
@@ -10,7 +10,7 @@ void GameScene::Initialize()
 	battleFields_ = {};
 	player_ = {};
 
-	//‰æ‘œ
+	//ç”»åƒ
 	keyImg_ = ADXImage::LoadADXImage("texture/QUIT_TITLE.png");
 	backGroundTex_ = ADXImage::LoadADXImage("texture/skyBG.png");
 	groundImg_ = ADXImage::LoadADXImage("texture/GroundBlock.png");
@@ -18,7 +18,7 @@ void GameScene::Initialize()
 	rect_ = ADXModel::CreateRect();
 	ground_ = ADXModel::LoadADXModel("model/groundBlock.obj");
 
-	//ƒIƒuƒWƒFƒNƒg
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 
 	ADXObject* temp = ADXObject::Create();
 	shutter_ = temp->AddComponent<SceneTransition>();

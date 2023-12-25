@@ -1,19 +1,19 @@
-#pragma once
+ï»¿#pragma once
 
 #include "ADXVector3.h"
 
 /// <summary>
-/// s—ñ
+/// è¡Œåˆ—
 /// </summary>
 class ADXMatrix4 {
 public:
-	// sx—ñ
+	// è¡Œxåˆ—
 	float m_[4][4]{};
 
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	ADXMatrix4();
-	// ¬•ª‚ğw’è‚µ‚Ä‚Ì¶¬
+	// æˆåˆ†ã‚’æŒ‡å®šã—ã¦ã®ç”Ÿæˆ
 	ADXMatrix4(
 		float m00, float m01, float m02, float m03,
 		float m10, float m11, float m12, float m13,
@@ -26,18 +26,18 @@ public:
 
 	ADXMatrix4 Transpose() const;
 
-	// ‘ã“ü‰‰ZqƒI[ƒo[ƒ[ƒh
+	// ä»£å…¥æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 	ADXMatrix4& operator*=(const ADXMatrix4& m2);
 
 public:
 	static ADXMatrix4 ConvertToADXMatrix(const DirectX::XMMATRIX& mat);
 
-	//À•W•ÏŠ·iƒxƒNƒgƒ‹‚Æs—ñ‚ÌŠ|‚¯Z‚ğ‚·‚éj
+	//åº§æ¨™å¤‰æ›ï¼ˆãƒ™ã‚¯ãƒˆãƒ«ã¨è¡Œåˆ—ã®æ›ã‘ç®—ã‚’ã™ã‚‹ï¼‰
 	static ADXVector3 Transform(const ADXVector3& v, const ADXMatrix4& m);
 };
 
-// 2€‰‰ZqƒI[ƒo[ƒ[ƒh
+// 2é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 ADXMatrix4 operator*(const ADXMatrix4& m1, const ADXMatrix4& m2);
 
-//’PˆÊs—ñ
+//å˜ä½è¡Œåˆ—
 ADXMatrix4 IdentityMatrix();

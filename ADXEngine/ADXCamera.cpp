@@ -1,4 +1,4 @@
-#include "ADXCamera.h"
+ï»¿#include "ADXCamera.h"
 #include "ADXWindow.h"
 
 using namespace DirectX;
@@ -8,14 +8,14 @@ ADXCamera* ADXCamera::S_current = nullptr;
 
 void ADXCamera::UniqueInitialize()
 {
-	//Ë‰e•ÏŠ·s—ñi“§‹“Š‰ej
+	//å°„å½±å¤‰æ›è¡Œåˆ—ï¼ˆé€è¦–æŠ•å½±ï¼‰
 	matProjection_ = ADXMatrix4::ConvertToADXMatrix(
 		XMMatrixPerspectiveFovLH(
-			XMConvertToRadians(45.0f),//‰æŠp
-			(float)ADXWindow::S_window_width / ADXWindow::S_window_height,//ƒAƒXƒyƒNƒg”ä
-			1.0f, 1000.0f));//ƒjƒAAƒtƒ@[ƒNƒŠƒbƒv
+			XMConvertToRadians(45.0f),//ç”»è§’
+			(float)ADXWindow::S_window_width / ADXWindow::S_window_height,//ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”
+			1.0f, 1000.0f));//ãƒ‹ã‚¢ã€ãƒ•ã‚¡ãƒ¼ã‚¯ãƒªãƒƒãƒ—
 
-	//ƒrƒ…[•ÏŠ·s—ñ
+	//ãƒ“ãƒ¥ãƒ¼å¤‰æ›è¡Œåˆ—
 	eye_ = XMFLOAT3(0, 0, -20);
 	target_ = XMFLOAT3(0, 0, 0);
 	up_ = XMFLOAT3(0, 1, 0);

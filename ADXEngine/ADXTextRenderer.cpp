@@ -1,4 +1,4 @@
-#include "ADXTextRenderer.h"
+﻿#include "ADXTextRenderer.h"
 #include "ADXObject.h"
 
 void ADXTextRenderer::AddFonts(const std::vector<fontAndChar>& fontSet)

@@ -1,4 +1,4 @@
-#include "ADXimage.h"
+ï»¿#include "ADXimage.h"
 #include "ADXDataPool.h"
 #include "ADXCommon.h"
 #include "ADXUtility.h"
@@ -22,23 +22,23 @@ void ADXImage::StaticInitialize()
 
 	ID3D12Device* device = ADXCommon::GetCurrentInstance()->GetDevice();
 
-	//ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚ÌÅ‘åŒÂ”
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®æœ€å¤§å€‹æ•°
 	const uint32_t kMaxSRVCount = 2056;
-	//ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv‚Ìİ’è
+	//ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã®è¨­å®š
 	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
 	srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;//ƒVƒF[ƒ_[‚©‚çŒ©‚¦‚é‚æ‚¤‚É
+	srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‹ã‚‰è¦‹ãˆã‚‹ã‚ˆã†ã«
 	srvHeapDesc.NumDescriptors = kMaxSRVCount;
-	//İ’è‚ğŒ³‚ÉSRV—pƒfƒXƒNƒŠƒvƒ^ƒq[ƒv‚ğ¶¬
+	//è¨­å®šã‚’å…ƒã«SRVç”¨ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã‚’ç”Ÿæˆ
 	result = device->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&S_srvHeap));
 	assert(SUCCEEDED(result));
 
-	//SRVƒq[ƒv‚Ìæ“ªƒnƒ“ƒhƒ‹‚ğæ“¾
+	//SRVãƒ’ãƒ¼ãƒ—ã®å…ˆé ­ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—
 	S_srvHandle = S_srvHeap->GetCPUDescriptorHandleForHeapStart();
 	S_CpuStartHandle = S_srvHandle.ptr;
 
-	//ƒfƒXƒNƒŠƒvƒ^‚ÌƒTƒCƒY
-	//ƒhƒ‰ƒCƒo‚É‚æ‚Á‚Äˆá‚¤‚Ì‚ÅŠÖ”‚Åæ“¾‚µ‚È‚¯‚ê‚Î‚È‚ç‚È‚¢
+	//ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ã®ã‚µã‚¤ã‚º
+	//ãƒ‰ãƒ©ã‚¤ãƒã«ã‚ˆã£ã¦é•ã†ã®ã§é–¢æ•°ã§å–å¾—ã—ãªã‘ã‚Œã°ãªã‚‰ãªã„
 	S_incrementSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 }
 
@@ -65,23 +65,23 @@ uint32_t ADXImage::LoadADXImage(const std::string& imgName, bool generateMipMaps
 	ScratchImage mipChain{};
 	D3D12_HEAP_PROPERTIES textureHeapProp{};
 	D3D12_RESOURCE_DESC textureResourceDesc{};
-	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};//İ’è\‘¢‘Ì
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};//è¨­å®šæ§‹é€ ä½“
 
 	size_t pos1 = 0;
 	std::string fileExt = "";
 
-	//‹æØ‚è•¶š'.'‚ªo‚Ä‚­‚éˆê”ÔÅŒã‚Ì•”•ª‚ğŒŸõ
+	//åŒºåˆ‡ã‚Šæ–‡å­—'.'ãŒå‡ºã¦ãã‚‹ä¸€ç•ªæœ€å¾Œã®éƒ¨åˆ†ã‚’æ¤œç´¢
 	pos1 = imgName.rfind('.');
-	//ŒŸõ‚ªƒqƒbƒg‚µ‚½‚ç
+	//æ¤œç´¢ãŒãƒ’ãƒƒãƒˆã—ãŸã‚‰
 	if (pos1 != std::wstring::npos)
 	{
-		//‹æØ‚è•¶š‚ÌŒã‚ë‚ğƒtƒ@ƒCƒ‹Šg’£q‚Æ‚µ‚Ä•Û‘¶
+		//åŒºåˆ‡ã‚Šæ–‡å­—ã®å¾Œã‚ã‚’ãƒ•ã‚¡ã‚¤ãƒ«æ‹¡å¼µå­ã¨ã—ã¦ä¿å­˜
 		fileExt = imgName.substr(pos1 + 1, imgName.size() - pos1 - 1);
 	}
 
 	if (fileExt == "dds")
 	{
-		//DDSƒeƒNƒXƒ`ƒƒ‚Ìƒ[ƒh
+		//DDSãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒ­ãƒ¼ãƒ‰
 		result = LoadFromDDSFile(
 			ADXUtility::StringToWideChar("Resources/" + imgName),
 			DDS_FLAGS_NONE,
@@ -89,7 +89,7 @@ uint32_t ADXImage::LoadADXImage(const std::string& imgName, bool generateMipMaps
 	}
 	else
 	{
-		//WICƒeƒNƒXƒ`ƒƒ‚Ìƒ[ƒh
+		//WICãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒ­ãƒ¼ãƒ‰
 		result = LoadFromWICFile(
 			ADXUtility::StringToWideChar("Resources/" + imgName),
 			WIC_FLAGS_NONE,
@@ -97,7 +97,7 @@ uint32_t ADXImage::LoadADXImage(const std::string& imgName, bool generateMipMaps
 
 		if (generateMipMaps)
 		{
-			//ƒ~ƒbƒvƒ}ƒbƒv¶¬
+			//ãƒŸãƒƒãƒ—ãƒãƒƒãƒ—ç”Ÿæˆ
 			result = GenerateMipMaps(
 				scratchImg.GetImages(), scratchImg.GetImageCount(), scratchImg.GetMetadata(),
 				TEX_FILTER_DEFAULT, 0, mipChain);
@@ -108,17 +108,17 @@ uint32_t ADXImage::LoadADXImage(const std::string& imgName, bool generateMipMaps
 			}
 		}
 
-		//“Ç‚İ‚ñ‚¾ƒfƒBƒtƒ…[ƒYƒeƒNƒXƒ`ƒƒ‚ğSRGB‚Æ‚µ‚Äˆµ‚¤
+		//èª­ã¿è¾¼ã‚“ã ãƒ‡ã‚£ãƒ•ãƒ¥ãƒ¼ã‚ºãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’SRGBã¨ã—ã¦æ‰±ã†
 		metadata.format = MakeSRGB(metadata.format);
 	}
 	assert(SUCCEEDED(result));
 
-	//ƒq[ƒvİ’è
+	//ãƒ’ãƒ¼ãƒ—è¨­å®š
 	textureHeapProp.Type = D3D12_HEAP_TYPE_CUSTOM;
 	textureHeapProp.CPUPageProperty =
 		D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
 	textureHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
-	//ƒŠƒ\[ƒXİ’è
+	//ãƒªã‚½ãƒ¼ã‚¹è¨­å®š
 	textureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 	textureResourceDesc.Format = metadata.format;
 	textureResourceDesc.Width = metadata.width;
@@ -127,7 +127,7 @@ uint32_t ADXImage::LoadADXImage(const std::string& imgName, bool generateMipMaps
 	textureResourceDesc.MipLevels = (uint16_t)metadata.mipLevels;
 	textureResourceDesc.SampleDesc.Count = 1;
 
-	//ƒeƒNƒXƒ`ƒƒƒoƒbƒtƒ@‚Ì¶¬
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
 	result = device->CreateCommittedResource(
 		&textureHeapProp,
 		D3D12_HEAP_FLAG_NONE,
@@ -135,38 +135,38 @@ uint32_t ADXImage::LoadADXImage(const std::string& imgName, bool generateMipMaps
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&image.texBuff_));
-	//‘Sƒ~ƒbƒvƒ}ƒbƒv‚É‚Â‚¢‚Ä
+	//å…¨ãƒŸãƒƒãƒ—ãƒãƒƒãƒ—ã«ã¤ã„ã¦
 	for (uint32_t i = 0; i < metadata.mipLevels; i++)
 	{
-		//ƒ~ƒbƒvƒ}ƒbƒvƒŒƒxƒ‹‚ğw’è‚µ‚ÄƒCƒ[ƒW‚ğæ“¾
+		//ãƒŸãƒƒãƒ—ãƒãƒƒãƒ—ãƒ¬ãƒ™ãƒ«ã‚’æŒ‡å®šã—ã¦ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’å–å¾—
 		const Image* img = scratchImg.GetImage(i, 0, 0);
-		//ƒeƒNƒXƒ`ƒƒƒoƒbƒtƒ@‚Éƒf[ƒ^“]‘—
+		//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒƒãƒ•ã‚¡ã«ãƒ‡ãƒ¼ã‚¿è»¢é€
 		result = image.texBuff_->WriteToSubresource(
 			(uint32_t)i,
-			nullptr,//‘S—Ìˆæ‚ÖƒRƒs[
-			img->pixels,//Œ³ƒf[ƒ^ƒAƒhƒŒƒX
-			(uint32_t)img->rowPitch,//1ƒ‰ƒCƒ“ƒTƒCƒY
-			(uint32_t)img->slicePitch//‘SƒTƒCƒY
+			nullptr,//å…¨é ˜åŸŸã¸ã‚³ãƒ”ãƒ¼
+			img->pixels,//å…ƒãƒ‡ãƒ¼ã‚¿ã‚¢ãƒ‰ãƒ¬ã‚¹
+			(uint32_t)img->rowPitch,//1ãƒ©ã‚¤ãƒ³ã‚µã‚¤ã‚º
+			(uint32_t)img->slicePitch//å…¨ã‚µã‚¤ã‚º
 		);
 		assert(SUCCEEDED(result));
 	}
 
 
-	//ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[İ’è
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼è¨­å®š
 	srvDesc.Format = textureResourceDesc.Format;//RGBA float
 	srvDesc.Shader4ComponentMapping =
 		D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2DƒeƒNƒXƒ`ƒƒ
+	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dãƒ†ã‚¯ã‚¹ãƒãƒ£
 	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
 
-	//ƒnƒ“ƒhƒ‹‚Ìw‚·ˆÊ’u‚ÉƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[ì¬
+	//ãƒãƒ³ãƒ‰ãƒ«ã®æŒ‡ã™ä½ç½®ã«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ä½œæˆ
 	device->CreateShaderResourceView(image.texBuff_.Get(), &srvDesc, S_srvHandle);
 
 	image.Ghandle_ = (int32_t)(S_srvHandle.ptr - S_CpuStartHandle);
 
 	image.name_ = imgName;
 
-	//ˆê‚Âƒnƒ“ƒhƒ‹‚ği‚ß‚é
+	//ä¸€ã¤ãƒãƒ³ãƒ‰ãƒ«ã‚’é€²ã‚ã‚‹
 	S_srvHandle.ptr += S_incrementSize;
 
 	ADXDataPool::SetImgDataPool(image);
@@ -186,14 +186,14 @@ uint32_t ADXImage::CreateADXImage(const uint64_t& width, const uint64_t& height,
 	ScratchImage mipChain{};
 	D3D12_HEAP_PROPERTIES textureHeapProp{};
 	D3D12_RESOURCE_DESC textureResourceDesc{};
-	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};//İ’è\‘¢‘Ì
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};//è¨­å®šæ§‹é€ ä½“
 
-	//ƒq[ƒvİ’è
+	//ãƒ’ãƒ¼ãƒ—è¨­å®š
 	textureHeapProp.Type = D3D12_HEAP_TYPE_CUSTOM;
 	textureHeapProp.CPUPageProperty =
 		D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
 	textureHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
-	//ƒŠƒ\[ƒXİ’è
+	//ãƒªã‚½ãƒ¼ã‚¹è¨­å®š
 	textureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 	textureResourceDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	textureResourceDesc.Width = width;
@@ -203,7 +203,7 @@ uint32_t ADXImage::CreateADXImage(const uint64_t& width, const uint64_t& height,
 	textureResourceDesc.SampleDesc.Count = 1;
 	textureResourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET;
 
-	//ƒeƒNƒXƒ`ƒƒƒoƒbƒtƒ@‚Ì¶¬
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
 	result = device->CreateCommittedResource(
 		&textureHeapProp,
 		D3D12_HEAP_FLAG_NONE,
@@ -223,28 +223,28 @@ uint32_t ADXImage::CreateADXImage(const uint64_t& width, const uint64_t& height,
 
 	result = image.texBuff_->WriteToSubresource(
 		0,
-		nullptr,//‘S—Ìˆæ‚ÖƒRƒs[
-		&img.front(),//Œ³ƒf[ƒ^ƒAƒhƒŒƒX
-		(uint32_t)rowPitch,//1ƒ‰ƒCƒ“ƒTƒCƒY
-		(uint32_t)depthPitch//‘SƒTƒCƒY
+		nullptr,//å…¨é ˜åŸŸã¸ã‚³ãƒ”ãƒ¼
+		&img.front(),//å…ƒãƒ‡ãƒ¼ã‚¿ã‚¢ãƒ‰ãƒ¬ã‚¹
+		(uint32_t)rowPitch,//1ãƒ©ã‚¤ãƒ³ã‚µã‚¤ã‚º
+		(uint32_t)depthPitch//å…¨ã‚µã‚¤ã‚º
 	);
 
 
-	//ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[İ’è
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼è¨­å®š
 	srvDesc.Format = textureResourceDesc.Format;//RGBA float
 	srvDesc.Shader4ComponentMapping =
 		D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2DƒeƒNƒXƒ`ƒƒ
+	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dãƒ†ã‚¯ã‚¹ãƒãƒ£
 	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
 
-	//ƒnƒ“ƒhƒ‹‚Ìw‚·ˆÊ’u‚ÉƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[ì¬
+	//ãƒãƒ³ãƒ‰ãƒ«ã®æŒ‡ã™ä½ç½®ã«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ä½œæˆ
 	device->CreateShaderResourceView(image.texBuff_.Get(), &srvDesc, S_srvHandle);
 
 	image.Ghandle_ = (uint32_t)(S_srvHandle.ptr - S_CpuStartHandle);
 
 	image.name_ = imgName;
 
-	//ˆê‚Âƒnƒ“ƒhƒ‹‚ği‚ß‚é
+	//ä¸€ã¤ãƒãƒ³ãƒ‰ãƒ«ã‚’é€²ã‚ã‚‹
 	S_srvHandle.ptr += S_incrementSize;
 
 	ADXDataPool::SetImgDataPool(image);

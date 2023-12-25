@@ -1,4 +1,4 @@
-#include "ADXQuaternion.h"
+ï»¿#include "ADXQuaternion.h"
 #include <cmath>
 #include <limits>
 
@@ -189,7 +189,7 @@ ADXQuaternion ADXQuaternion::Slerp(const ADXQuaternion& q0, const ADXQuaternion&
 		q0f = -q0f;
 		dot = -dot;
 	}
-	//‚È‚·Šp‚ğ‹‚ß‚é
+	//ãªã™è§’ã‚’æ±‚ã‚ã‚‹
 	float theta = std::acosf(dot);
 
 	float st = std::sinf(theta);
