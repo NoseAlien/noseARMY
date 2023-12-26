@@ -39,14 +39,14 @@ void ADXImGuiManager::Finalize()
 	srvHeap_.Reset();
 }
 
-void ADXImGuiManager::Begin()
+void ADXImGuiManager::PreDraw()
 {
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 }
 
-void ADXImGuiManager::End()
+void ADXImGuiManager::PostDraw()
 {
 	ImGui::Render();
 }

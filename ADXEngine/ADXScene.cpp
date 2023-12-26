@@ -82,19 +82,19 @@ void ADXScene::Update()
 	if ((clock() - startTime_ >= 7000)
 		|| ADXKeyBoardInput::GetCurrentInstance()->GetKeyDown(DIK_SPACE)
 		|| (ADXGamePadInput::GetCurrentInstance() != nullptr
-		&& (ADXGamePadInput::GetCurrentInstance()->GetButtonDown(A)
-		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(B)
-		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(X)
-		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(Y)
-		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(START)
-		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(BACK)
-		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(LB)
-		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(RB)
-		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(LT)
-		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(RT))))
+		&& (ADXGamePadInput::GetCurrentInstance()->GetButtonDown(ADXGamePadInput::A)
+		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(ADXGamePadInput::B)
+		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(ADXGamePadInput::X)
+		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(ADXGamePadInput::Y)
+		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(ADXGamePadInput::START)
+		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(ADXGamePadInput::BACK)
+		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(ADXGamePadInput::LB)
+		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(ADXGamePadInput::RB)
+		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(ADXGamePadInput::LT)
+		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(ADXGamePadInput::RT))))
 	{
 		logoJingle_.Stop();
-		ADXSceneManager::GetCurrentInstance()->SetSceneNum(1);
+		ADXSceneManager::GetCurrentInstance()->SetSceneIndex(1);
 	}
 	title_->material_.alpha_ = (float)(clock() - startTime_) * 0.0004f;
 
@@ -118,6 +118,6 @@ void ADXScene::Update()
 	if (ADXKeyBoardInput::GetCurrentInstance()->GetKeyDown(DIK_SPACE) || (clock() - startTime_ >= 7000))
 	{
 		logoJingle_.Stop();
-		ADXSceneManager::GetCurrentInstance()->SetSceneNum(1);
+		ADXSceneManager::GetCurrentInstance()->SetSceneIndex(1);
 	}
 }

@@ -2,6 +2,7 @@
 #include "ADXObject.h"
 #include "ADXTexAnimation.h"
 
+//パーティクルとして扱うオブジェクトに入れるコンポーネント
 class ADXParticle : public ADXComponent
 {
 public:
@@ -13,7 +14,12 @@ public:
 	bool billboard_ = true;
 
 private:
+	//初期化処理
 	void UniqueInitialize();
+
+	//更新処理
 	void UniqueUpdate();
+
+	//描画前処理
 	void OnPreRender();
 };

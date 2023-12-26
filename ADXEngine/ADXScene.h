@@ -8,6 +8,7 @@
 #include "ADXKeyBoardInput.h"
 #include "ADXGamePadInput.h"
 
+//ゲームシーンの基底クラス
 class ADXScene
 {
 private:
@@ -42,7 +43,12 @@ private:
 	int32_t startTime_ = 0;
 
 public:
+	//コンストラクタ
 	ADXScene();
+
+	//シーンごとの固有初期化処理
 	virtual void Initialize();
+
+	//シーンごとの固有更新処理
 	virtual void Update();
 };

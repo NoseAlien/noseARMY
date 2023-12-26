@@ -13,7 +13,7 @@ void Enemy::LiveEntitiesInitialize()
 
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
 	tempCol->isTrigger_ = true;
-	tempCol->colType_ = sphere;
+	tempCol->colType_ = ADXCollider::sphere;
 	tempCol->radius_ = 12;
 
 	rigidbody_ = GetGameObject()->AddComponent<ADXRigidbody>();

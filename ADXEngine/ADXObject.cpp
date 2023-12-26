@@ -20,8 +20,6 @@ std::vector<ADXCamera*> ADXObject::S_allCameraPtr{};
 ADXVector3 ADXObject::S_limitPos1 = { -300,-300,-100 };
 ADXVector3 ADXObject::S_limitPos2 = { 100,100,150 };
 bool ADXObject::S_highQualityZSort = false;
-std::list<std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>>> ADXObject::S_usedComponents;
-
 
 
 void ADXObject::StaticInitialize()

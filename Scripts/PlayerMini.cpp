@@ -22,11 +22,11 @@ void PlayerMini::Move(float walkSpeed, float jumpPower)
 		GetGameObject()->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(rigidbody_->velocity_.x_, rigidbody_->velocity_.z_),0 });
 	}
 
-	if (parent_->GetInputStatusTrigger(jump))
+	if (parent_->GetInputStatusTrigger(Player::jump))
 	{
 		rigidbody_->velocity_.y_ = jumpPower;
 	}
-	if (parent_->GetInputStatusRelease(jump) && rigidbody_->velocity_.y_ > 0)
+	if (parent_->GetInputStatusRelease(Player::jump) && rigidbody_->velocity_.y_ > 0)
 	{
 		rigidbody_->velocity_.y_ *= 0.2f;
 	}
@@ -67,7 +67,7 @@ void PlayerMini::UniqueUpdate()
 
 	rigidbody_->dragAxis_.y = false;
 
-	if (parent_->GetInputStatus(attack))
+	if (parent_->GetInputStatus(Player::attack))
 	{
 		Move(0.1f, 0.8f);
 		rigidbody_->gravityScale_ = 0.02f;

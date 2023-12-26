@@ -31,7 +31,7 @@ void SceneTransition::StaticUpdate()
 		S_sceneChangeFrame++;
 		if (S_sceneChangeFrame == S_MaxSceneChangeFrame / 2)
 		{
-			ADXSceneManager::GetCurrentInstance()->SetSceneNum(S_nextSceneNum);
+			ADXSceneManager::GetCurrentInstance()->SetSceneIndex(S_nextSceneNum);
 		}
 		if (S_sceneChangeFrame == S_MaxSceneChangeFrame)
 		{

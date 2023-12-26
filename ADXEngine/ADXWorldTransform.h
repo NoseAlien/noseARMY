@@ -17,9 +17,7 @@ struct ConstBufferDataTransform {
 	ADXVector3 cameraWorldPos{};     // カメラのワールド座標
 };
 
-/// <summary>
-/// ワールド変換データ
-/// </summary>
+// ワールド変換データ
 class ADXWorldTransform {
 public:
 	// 定数バッファ
@@ -59,7 +57,7 @@ private:
 	static ADXMatrix4* S_matProjection;
 
 public:
-	//初期化
+	//初期化処理
 	void Initialize(ADXObject* obj);
 
 	//行列を更新する
@@ -79,6 +77,7 @@ public:
 
 	//ワールド回転角を代入する
 	void SetWorldRotation(const ADXQuaternion& worldRot);
+
 
 	ADXVector3 TransformPointWithoutTranslation(const ADXVector3& pos) const;
 

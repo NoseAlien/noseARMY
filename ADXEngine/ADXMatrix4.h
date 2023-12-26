@@ -2,9 +2,7 @@
 
 #include "ADXVector3.h"
 
-/// <summary>
-/// 行列
-/// </summary>
+// 行列
 class ADXMatrix4 {
 public:
 	// 行x列
@@ -13,6 +11,7 @@ public:
 public:
 	// コンストラクタ
 	ADXMatrix4();
+
 	// 成分を指定しての生成
 	ADXMatrix4(
 		float m00, float m01, float m02, float m03,
@@ -20,16 +19,20 @@ public:
 		float m20, float m21, float m22, float m23,
 		float m30, float m31, float m32, float m33);
 
+	//XMMATRIXに変換
 	DirectX::XMMATRIX ConvertToXMMatrix();
 
+	//逆行列を取得
 	ADXMatrix4 Inverse() const;
 
+	//転置行列を取得
 	ADXMatrix4 Transpose() const;
 
 	// 代入演算子オーバーロード
 	ADXMatrix4& operator*=(const ADXMatrix4& m2);
 
 public:
+	//XMMATRIXから変換
 	static ADXMatrix4 ConvertToADXMatrix(const DirectX::XMMATRIX& mat);
 
 	//座標変換（ベクトルと行列の掛け算をする）

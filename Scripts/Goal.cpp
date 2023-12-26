@@ -10,7 +10,7 @@ void Goal::Initialize(const std::string& setTeam)
 
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
 	tempCol->isTrigger_ = true;
-	tempCol->colType_ = box;
+	tempCol->colType_ = ADXCollider::box;
 
 	team_ = setTeam;
 	sceneTransitionCount_ = MaxSceneTransitionCount;

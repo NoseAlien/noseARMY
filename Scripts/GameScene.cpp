@@ -59,7 +59,7 @@ void GameScene::Initialize()
 		floors_.back()->model_ = &ground_;
 		floors_.back()->texture_ = groundImg_;
 		ADXCollider* tempCol = floors_.back()->AddComponent<ADXCollider>();
-		tempCol->colType_ = box;
+		tempCol->colType_ = ADXCollider::box;
 	}
 
 

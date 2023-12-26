@@ -6,6 +6,7 @@
 #include <wrl.h>
 #include <string>
 
+//モデルデータを格納するクラス
 class ADXModel
 {
 public:
@@ -30,21 +31,32 @@ public:
 	Microsoft::WRL::ComPtr<ID3D12Resource> indexBuff_ = nullptr;
 
 public:
+	//コンストラクタ
 	ADXModel();
 
+	//法線を自動設定
 	void SetNormal();
 
+	//頂点バッファビュー作成
 	void CreateVertexBufferView();
+
+	//インデックスバッファビュー作成
 	void CreateIndexBufferView();
 
+	//初期化処理
 	void Initialize();
 
+	//モデルを描画
 	void Draw(ID3D12Resource* constBuffTransform);
 
 private:
+	//更新処理
 	void Update();
 
 public:
+	//モデルデータ読み込み
 	static ADXModel LoadADXModel(const std::string& filePath);
+
+	//画像表示用の正方形ポリゴンを作成
 	static ADXModel CreateRect();
 };

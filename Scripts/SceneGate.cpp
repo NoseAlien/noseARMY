@@ -12,7 +12,7 @@ void SceneGate::Initialize(const std::string& team, const std::string& stageName
 
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
 	tempCol->isTrigger_ = true;
-	tempCol->colType_ = box;
+	tempCol->colType_ = ADXCollider::box;
 
 	team_ = team;
 	stageName_ = stageName;

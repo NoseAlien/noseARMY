@@ -5,6 +5,7 @@
 #include <wrl.h>
 #include <string>
 
+//音声データをロードし再生する機能
 class ADXAudio
 {
 private:
@@ -33,6 +34,7 @@ private:
 		uint32_t bufferSize = 0; // バッファのサイズ
 	};
 
+private:
 	std::string name_ = {};
 	uint32_t sHandle_ = 0;
 	SoundData data_{};
@@ -41,12 +43,25 @@ private:
 	IXAudio2SourceVoice* pSourceVoice_ = nullptr;
 
 public:
+	//コンストラクタ
 	ADXAudio();
+
+	//音を再生、ループ再生するなら引数のloopをtrueに
 	void Play(bool loop = false);
+
+	//再生中の音を停止、後で続きから再生するなら引数のpauseをtrueに
 	void Stop(bool pause = false);
+
+	//音を再生中ならtrueを返す
 	bool IsPlaying();
+
+	//音量を設定
 	void SetVolume(float setVolume);
+
+	//現在の音量を取得
 	float GetVolume();
+
+	//音声データのハンドルを取得
 	uint32_t GetSHandle() { return sHandle_; };
 
 private:
@@ -55,7 +70,12 @@ private:
 	static uint32_t S_currentSHandle;
 
 public:
+	//クラスを初期化
 	static void StaticInitialize();
+
+	//クラスの終了処理
 	static void StaticFinalize();
+
+	//音声データ読み込み
 	static ADXAudio LoadADXAudio(const std::string& filename);
 };

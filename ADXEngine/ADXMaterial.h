@@ -4,6 +4,7 @@
 #include <string>
 #include <DirectXMath.h>
 
+//マテリアルを格納するクラス
 class ADXMaterial
 {
 public:
@@ -16,5 +17,6 @@ private:
 	std::string name_ = "";
 
 public:
+	//マテリアル読み込み
 	static ADXMaterial LoadMaterial(const std::string& filePath);
 };

@@ -9,6 +9,7 @@
 
 class ADXCamera;
 
+//ゲーム画面に出現するオブジェクト
 class ADXObject
 {
 public:
@@ -43,69 +44,105 @@ private:
 	std::list<std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>>> components_{};
 	bool deleteFlag_ = false;
 
+public:
+	//このオブジェクトを描画
+	void Draw();
+
+	//このオブジェクトを次の更新処理の前に削除される状態にする
+	void Destroy();
+
+	//オブジェクトにコンポーネントを追加
+	template <class Type>
+	Type* AddComponent();
+
+	//指定クラスのコンポーネントのうち配列の先頭にあるものを一つ取得
+	template <class Type>
+	Type* GetComponent();
+
+	//指定クラスのコンポーネントを全て取得
+	template <class Type>
+	std::list<Type*> GetComponents();
+
+	//持っているコライダーが別のコライダーに触れた時に呼ばれる
+	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol);
+
+	//このオブジェクトが次の更新処理の前に削除される状態ならtrueを返す
+	bool GetDeleteFlag() { return deleteFlag_; };
+
+	//定数バッファ用データ構造体（マテリアル）を取得
+	ID3D12Resource* GetConstBuffB1() { return constBuffB1_.Get(); };
+
+private:
+	//初期化処理
+	void Initialize();
+
+	//更新処理
+	void Update();
+
+	//定数バッファ用データ構造体（マテリアル）を生成
+	void CreateConstBuffer();
+
 private: // 静的メンバ変数
 	// ルートシグネチャ
 	static Microsoft::WRL::ComPtr<ID3D12RootSignature> S_rootSignature;
+
 	// パイプラインステートオブジェクト（不透明オブジェクト用）
 	static Microsoft::WRL::ComPtr<ID3D12PipelineState> S_pipelineState;
+
 	// パイプラインステートオブジェクト（半透明オブジェクト用）
 	static Microsoft::WRL::ComPtr<ID3D12PipelineState> S_pipelineStateAlpha;
+
 	// デスクリプタサイズ
 	static uint64_t S_descriptorHandleIncrementSize;
+
 	// コマンドリスト
 	static ID3D12GraphicsCommandList* S_cmdList;
 
+	//SRVヒープの先頭ハンドル
 	static uint64_t S_GpuStartHandle;
+
 	// 全てのオブジェクトが入った配列
 	static std::list<std::unique_ptr<ADXObject, ADXUtility::NPManager<ADXObject>>> S_objs;
+
 	// 全てのカメラを入れる配列
 	static std::vector<ADXCamera*> S_allCameraPtr;
+
 	// オブジェクトが存在できる領域を制限するための変数
 	static ADXVector3 S_limitPos1;
 	static ADXVector3 S_limitPos2;
 
+	//Zソートを詳細な方式で行うか
 	static bool S_highQualityZSort;
-
-	static std::list<std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>>> S_usedComponents;
-
-public:
-	void Draw();
-	void Destroy();
-	template <class Type>
-	Type* AddComponent();
-	template <class Type>
-	Type* GetComponent();
-	template <class Type>
-	std::list<Type*> GetComponents();
-	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol);
-	bool GetDeleteFlag() { return deleteFlag_; };
-	ID3D12Resource* GetConstBuffB1() { return constBuffB1_.Get(); };
-
-private:
-	void Initialize();
-	void Update();
-	void CreateConstBuffer();
 
 public: // 静的メンバ関数
 	//静的初期化
 	static void StaticInitialize();
+
 	//静的更新処理
 	static void StaticUpdate();
+
 	// グラフィックパイプライン生成
 	static void InitializeGraphicsPipeline();
+
 	// トランスフォーム用定数バッファ生成
 	static void InitializeConstBufferTransform(Microsoft::WRL::ComPtr<ID3D12Resource>& constBuff, ConstBufferDataTransform** constMap);
+
 	// マテリアル用定数バッファ生成
 	static void InitializeConstBufferMaterial(Microsoft::WRL::ComPtr<ID3D12Resource>& constBuff);
+
 	// 全オブジェクトに対する描画処理
 	static void StaticDraw();
+
 	// コマンドリストを取得
 	static ID3D12GraphicsCommandList* GetCmdList() { return S_cmdList; };
 
+	//SRVヒープの先頭ハンドルを取得
 	static uint64_t GetGpuStartHandle() { return S_GpuStartHandle; };
+
 	// 全オブジェクトを取得
 	static std::list<ADXObject*> GetObjs();
 
+	// ワールド上の全てのカメラを入れておく配列に新しくカメラを入れる
 	static void SetAllCameraPtr(ADXCamera* camPtr);
 
 	//空のオブジェクトを生成
@@ -122,6 +159,7 @@ public: // 静的メンバ関数
 private:
 	// 描画前処理
 	static void PreDraw();
+
 	// 描画後処理
 	static void PostDraw();
 };

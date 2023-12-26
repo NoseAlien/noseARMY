@@ -4,7 +4,7 @@ void FieldBox::UniqueInitialize()
 {
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
 	tempCol->isTrigger_ = true;
-	tempCol->colType_ = box;
+	tempCol->colType_ = ADXCollider::box;
 	FieldInitialize();
 }
 

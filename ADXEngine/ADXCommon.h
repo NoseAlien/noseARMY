@@ -8,6 +8,7 @@
 
 #include "ADXWindow.h"
 
+//DirectXを扱うクラス
 class ADXCommon
 {
 public:
@@ -32,33 +33,60 @@ private:
 	uint64_t fenceVal_ = 0;
 	std::chrono::steady_clock::time_point reference_;
 
+public:
+	//初期化処理
+	void Initialize(ADXWindow* setWindow);
+
+	//描画前処理
+	void PreDraw();
+
+	//描画後処理
+	void PostDraw();
+
+	//描画先の変更
+	void ReturnRenderTarget();
+
+	//デバイスを取得
+	ID3D12Device* GetDevice() const { return device_.Get(); }
+
+	//コマンドリストを取得
+	ID3D12GraphicsCommandList* GetCommandList() const { return commandList_.Get(); }
+
+	//DSVハンドルを取得
+	D3D12_CPU_DESCRIPTOR_HANDLE* GetDsvHandle() { return &dsvHandle_; }
+
+	//バックバッファの数を取得
+	size_t GetBackBufferCount() const { return backBuffers_.size(); }
+
+private:
+	//フレームレート固定機能の初期化処理
+	void InitializeFixFPS();
+
+	//フレームレート固定機能の更新処理
+	void UpdateFixFPS();
+
+	//デバイスの初期化
+	void InitializeDevice();
+
+	//コマンドアロケーター、コマンドリスト、コマンドキューの初期化
+	void InitializeCommand();
+
+	//スワップチェーンの初期化
+	void InitializeSwapChain();
+
+	//レンダーターゲットビューの初期化
+	void InitializeRenderTargetView();
+
+	//深度バッファの初期化
+	void InitializeDepthBuffer();
+
+	//フェンスの初期化
+	void InitializeFence();
+
 private:
 	static ADXCommon* S_currentInstance;
 
 public:
-	void Initialize(ADXWindow* setWindow);
-
-	void PreDraw();
-	void PostDraw();
-
-	void ReturnRenderTarget();
-
-	ID3D12Device* GetDevice() const { return device_.Get(); }
-	ID3D12GraphicsCommandList* GetCommandList() const { return commandList_.Get(); }
-	D3D12_CPU_DESCRIPTOR_HANDLE* GetDsvHandle() { return &dsvHandle_; }
-	size_t GetBackBufferCount() const { return backBuffers_.size(); }
-
-private:
-	void InitializeFixFPS();
-	void UpdateFixFPS();
-
-	void InitializeDevice();
-	void InitializeCommand();
-	void InitializeSwapChain();
-	void InitializeRenderTargetView();
-	void InitializeDepthBuffer();
-	void InitializeFence();
-
-public:
+	//このクラスのインスタンスを取得
 	static ADXCommon* GetCurrentInstance() { return S_currentInstance; };
 };

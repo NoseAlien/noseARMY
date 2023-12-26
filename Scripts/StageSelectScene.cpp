@@ -32,13 +32,13 @@ void StageSelectScene::Initialize()
 	floors_.back()->model_ = &ground_;
 	floors_.back()->texture_ = groundImg_;
 	ADXCollider* tempCol = floors_.back()->AddComponent<ADXCollider>();
-	tempCol->colType_ = box;
+	tempCol->colType_ = ADXCollider::box;
 
 	floors_.push_back(ADXObject::Create({ 0,-2,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 50,1,50 }));
 	floors_.back()->model_ = &ground_;
 	floors_.back()->texture_ = groundImg_;
 	tempCol = floors_.back()->AddComponent<ADXCollider>();
-	tempCol->colType_ = box;
+	tempCol->colType_ = ADXCollider::box;
 
 
 	temp = ADXObject::Create({ 0,3,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 4,4,4 });

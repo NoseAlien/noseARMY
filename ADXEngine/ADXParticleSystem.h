@@ -4,6 +4,7 @@
 #include "ADXTexAnimation.h"
 #include <list>
 
+//パーティクルを出すオブジェクトに入れるコンポーネント
 class ADXParticleSystem : public ADXComponent
 {
 public:
@@ -22,9 +23,13 @@ private:
 	int32_t nowCoolTime_ = 0;
 
 public:
+	//パーティクルを生成
 	void Emission();
 
 private:
+	//初期化
 	void UniqueInitialize();
+
+	//消えそうなインスタンスを参照していたらここで切る
 	void SafetyPhase();
 };
