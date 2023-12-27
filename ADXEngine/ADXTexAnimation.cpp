@@ -53,7 +53,7 @@ uint32_t ADXTexAnimation::GetLength()
 	return (uint32_t)textures_.size();
 }
 
-bool ADXTexAnimation::AnimEnd()
+bool ADXTexAnimation::IsAnimEnd()
 {
 	return nowTexIndex_ >= textures_.size() - 1 && nowDelayFrame_ <= 0 && !loop_;
 }

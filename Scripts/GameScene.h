@@ -16,6 +16,7 @@
 #include "BattleFieldBox.h"
 #include "Goal.h"
 
+//プレイ画面のシーン
 class GameScene : public ADXScene
 {
 private:
@@ -53,6 +54,13 @@ private:
 	std::list<TransformData> floorGenerateData_{};
 
 public:
+	//---以下の関数は必要な時に自動で呼び出される---
+
+	//初期化処理
 	void Initialize();
+
+	//更新処理
 	void Update();
+
+	//---以上の関数は必要な時に自動で呼び出される---
 };

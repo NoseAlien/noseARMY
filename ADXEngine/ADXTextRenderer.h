@@ -6,6 +6,7 @@
 #include "ADXRenderer.h"
 #include "ADXModel.h"
 
+//画像をフォントとして表示するコンポーネント
 class ADXTextRenderer : public ADXRenderer
 {
 public:
@@ -42,9 +43,13 @@ private:
 	std::vector<ADXWorldTransform>fontWtfs_;
 
 public:
+	//フォントを追加
 	void AddFonts(const std::vector<fontAndChar>& fontSet);
+
+	//文字からフォント画像を検索して追加
 	uint32_t GetFontTex(const char& character);
 
 private:
+	//描画処理
 	void UniqueRendering(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList);
 };

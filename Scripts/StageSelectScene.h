@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXScene.h"
 #include "ADXObject.h"
@@ -9,6 +9,7 @@
 #include "SceneGate.h"
 #include "SceneTransition.h"
 
+//ステージ選択シーン
 class StageSelectScene : public ADXScene
 {
 private:
@@ -36,6 +37,13 @@ private:
 	ADXObject* backGround_{};
 
 public:
+	//---以下の関数は必要な時に自動で呼び出される---
+
+	//初期化処理
 	void Initialize();
+
+	//更新処理
 	void Update();
+
+	//---以上の関数は必要な時に自動で呼び出される---
 };

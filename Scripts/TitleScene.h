@@ -1,7 +1,8 @@
-﻿#pragma once
+#pragma once
 #include "ADXScene.h"
 #include "SceneTransition.h"
 
+//タイトルシーン
 class TitleScene : public ADXScene
 {
 private:
@@ -20,6 +21,13 @@ private:
 	ADXCamera* camera_ = nullptr;
 
 public:
+	//---以下の関数は必要な時に自動で呼び出される---
+
+	//初期化処理
 	void Initialize();
+
+	//更新処理
 	void Update();
+
+	//---以上の関数は必要な時に自動で呼び出される---
 };

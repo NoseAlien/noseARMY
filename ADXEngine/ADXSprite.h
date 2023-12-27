@@ -2,6 +2,7 @@
 
 #include "ADXObject.h"
 
+//スプライトを表示する際に用いる、表示範囲を簡単に指定できるコンポーネント
 class ADXSprite : public ADXComponent
 {
 public:
@@ -15,10 +16,14 @@ private:
     ADXModel rect_{};
 
 public:
+    //表示範囲を指定
     void SetClippingStatus(const ADXVector3& maxBoxRUF, const ADXVector3& maxBoxLDB, 
         const ADXVector3& nowBoxRUF, const ADXVector3& nowBoxLDB);
 
 private:
+    //初期化処理
     void UniqueInitialize();
+
+    //更新処理
     void UniqueUpdate();
 };

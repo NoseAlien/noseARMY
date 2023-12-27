@@ -1,4 +1,4 @@
-﻿#include "LiveEntity.h"
+#include "LiveEntity.h"
 #include "ADXCamera.h"
 #include <time.h>
 
@@ -6,8 +6,8 @@ const float LiveEntity::basicHP = 100;
 const float LiveEntity::basicAttackPower = 10;
 const uint32_t LiveEntity::basicGhostTimeFrame = 40;
 
-std::vector<AttackObject> LiveEntity::S_attackObjs = {};
-std::vector<AttackObject> LiveEntity::S_allAttackObj = {};
+std::vector<LiveEntity::AttackObject> LiveEntity::S_attackObjs = {};
+std::vector<LiveEntity::AttackObject> LiveEntity::S_allAttackObj = {};
 
 
 void LiveEntity::Initialize(const std::string& setTeam)

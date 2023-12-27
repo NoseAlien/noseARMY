@@ -1,8 +1,8 @@
 ﻿#pragma once
-#pragma once
 
 #include <DirectXMath.h>
 
+//2次元ベクトル
 class ADXVector2
 {
 public:
@@ -10,14 +10,25 @@ public:
 	float y_;
 
 public:
+	//コンストラクタ
 	ADXVector2();
+
+	//コンストラクタ
 	ADXVector2(float x, float y);
 
+	//XMFLOAT2に変換
 	DirectX::XMFLOAT2 ConvertToXMFloat2();
 
+	//長さを返す
 	float Length() const;
+
+	//正規化されたベクトルを返す
 	ADXVector2 Normalize() const;
+
+	//内積を返す
 	float Dot(const ADXVector2& v) const;
+
+	//外積を返す
 	float Cross(const ADXVector2& v) const;
 
 	ADXVector2 operator+() const;
@@ -31,6 +42,7 @@ public:
 	bool operator==(const ADXVector2& v) const;
 
 public:
+	//XMFLOAT2から変換
 	static ADXVector2 ConvertToADXVector2(DirectX::XMFLOAT2 xf3);
 };
 
