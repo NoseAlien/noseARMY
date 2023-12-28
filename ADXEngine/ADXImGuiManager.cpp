@@ -1,4 +1,4 @@
-﻿#include "ADXImGuiManager.h"
+#include "ADXImGuiManager.h"
 #include "ADXCommon.h"
 #include <imgui.h>
 #include <imgui_impl_win32.h>

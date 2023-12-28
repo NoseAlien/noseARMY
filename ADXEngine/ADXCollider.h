@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXComponent.h"
 #include "ADXVector3.h"
@@ -60,7 +60,7 @@ public:
     //引数に入れた点とコライダーの衝突点を返す
     ADXVector3 CollidePoint(const ADXVector3& pos, const ADXVector3& colSenter, const ADXVector3& move) const;
 
-    //引数に入れたコライダーを押し返す方向
+    //引数に入れたコライダーを押し返す方向と強さのベクトルを返す
     ADXVector3 CollideVector(const ADXCollider& col);
 
     //引数に入れたコライダーに触れていたらtrueを返す

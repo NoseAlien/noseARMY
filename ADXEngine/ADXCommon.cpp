@@ -1,4 +1,4 @@
-﻿#include "ADXCommon.h"
+#include "ADXCommon.h"
 
 #include <cassert>
 
@@ -57,12 +57,12 @@ void ADXCommon::UpdateFixFPS()
 
 void ADXCommon::Initialize(ADXWindow* setWindow)
 {
+	//ウインドウを設定
 	assert(setWindow);
-
 	adxwindow = setWindow;
 
+	//各種初期化
 	InitializeFixFPS();
-
 	InitializeDevice();
 	InitializeCommand();
 	InitializeSwapChain();
@@ -70,6 +70,7 @@ void ADXCommon::Initialize(ADXWindow* setWindow)
 	InitializeDepthBuffer();
 	InitializeFence();
 
+	//これを現在のインスタンスとする
 	S_currentInstance = this;
 }
 

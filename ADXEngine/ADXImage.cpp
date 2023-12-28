@@ -1,4 +1,4 @@
-﻿#include "ADXimage.h"
+#include "ADXimage.h"
 #include "ADXDataPool.h"
 #include "ADXCommon.h"
 #include "ADXUtility.h"
@@ -51,6 +51,7 @@ uint32_t ADXImage::LoadADXImage(const std::string& imgName, bool generateMipMaps
 
 	std::vector<ADXImage> imgDataPool = ADXDataPool::GetImgDataPool();
 
+	//既に読み込んだ画像ならそのハンドルを返して終わり
 	for (int32_t i = 0; i < imgDataPool.size(); i++)
 	{
 		if (imgDataPool[i].name_ == imgName)
