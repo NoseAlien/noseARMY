@@ -1,4 +1,4 @@
-#include "ADXLevelData.h"
+﻿#include "ADXLevelData.h"
 #include <fstream>
 
 ADXLevelData ADXLevelData::Load(const std::string& filename)

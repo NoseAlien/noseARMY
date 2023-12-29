@@ -1,4 +1,4 @@
-#include "ADXDataPool.h"
+﻿#include "ADXDataPool.h"
 
 std::vector<ADXImage> ADXDataPool::S_imgDataPool{};
 std::vector<ADXAudio> ADXDataPool::S_audioDataPool{};

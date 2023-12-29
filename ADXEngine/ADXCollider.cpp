@@ -1,4 +1,4 @@
-#include "ADXCollider.h"
+﻿#include "ADXCollider.h"
 #include "ADXObject.h"
 
 std::vector<ADXCollider::collidePattern> ADXCollider::S_ignoreCollidePatterns = {};

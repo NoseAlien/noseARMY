@@ -1,4 +1,4 @@
-#include "ADXCommon.h"
+﻿#include "ADXCommon.h"
 
 #include <cassert>
 

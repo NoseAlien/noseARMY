@@ -1,4 +1,4 @@
-#include "ADXKeyConfig.h"
+﻿#include "ADXKeyConfig.h"
 
 ADXKeyConfig* ADXKeyConfig::S_current = nullptr;
 

@@ -1,4 +1,4 @@
-#include "ADXWindow.h"
+﻿#include "ADXWindow.h"
 #include <imgui_impl_win32.h>
 
 uint32_t ADXWindow::S_window_width = 1280;

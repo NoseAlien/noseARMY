@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "ADXModel.h"
 #include "ADXMaterial.h"
 #include "ADXObject.h"
@@ -11,6 +11,11 @@
 //ゲームシーンの基底クラス
 class ADXScene
 {
+private:
+	const int32_t titleSceneIndex = 1;
+	const int32_t logoAnimationPow = 2;
+	const float logoStartHeight = 0.2f
+
 private:
 	//画像
 	uint32_t engineLogoImg_ = 0;
