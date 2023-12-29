@@ -1,7 +1,8 @@
-﻿#include "ADXTexAnimation.h"
+#include "ADXTexAnimation.h"
 
 ADXTexAnimation ADXTexAnimation::Initialize(const std::vector<uint32_t>& setTextures, uint32_t setDelayFrame, bool setLoop)
 {
+	//引数から変数の値を設定
 	textures_ = setTextures;
 	loop_ = setLoop;
 	delayFrame_ = setDelayFrame;
@@ -11,6 +12,7 @@ ADXTexAnimation ADXTexAnimation::Initialize(const std::vector<uint32_t>& setText
 
 void ADXTexAnimation::Update()
 {
+	//時間が経ったら次の画像に切り替える
 	if (nowDelayFrame_ > 0)
 	{
 		nowDelayFrame_--;
@@ -20,6 +22,8 @@ void ADXTexAnimation::Update()
 		nowTexIndex_++;
 		nowDelayFrame_ = delayFrame_;
 	}
+
+	//必要に応じてループ
 	if (nowTexIndex_ >= textures_.size())
 	{
 		if (loop_)

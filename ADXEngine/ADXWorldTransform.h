@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXVector3.h"
 #include "ADXMatrix4.h"
@@ -78,17 +78,22 @@ public:
 	//ワールド回転角を代入する
 	void SetWorldRotation(const ADXQuaternion& worldRot);
 
-
+	//ローカル座標を回転、拡縮のみでワールド座標に変換
 	ADXVector3 TransformPointWithoutTranslation(const ADXVector3& pos) const;
 
+	//ワールド座標を回転、拡縮のみでローカル座標に変換
 	ADXVector3 InverseTransformPointWithoutTranslation(const ADXVector3& pos) const;
 
+	//ローカル座標を回転のみでワールド座標に変換
 	ADXVector3 TransformPointOnlyRotation(const ADXVector3& pos) const;
 
+	//ワールド座標を回転のみでローカル座標に変換
 	ADXVector3 InverseTransformPointOnlyRotation(const ADXVector3& pos) const;
 
+	//ローカル座標をワールド座標に変換
 	ADXQuaternion TransformRotation(const ADXQuaternion& rot) const;
 
+	//ワールド座標をローカル座標に変換
 	ADXQuaternion InverseTransformRotation(const ADXQuaternion& rot) const;
 
 	//ワールド変換行列を取得する
@@ -112,8 +117,10 @@ public:
 public:
 	//ビュー行列、プロジェクション行列を代入する
 	static void SetViewProjection(ADXMatrix4* matView, ADXMatrix4* matProjection);
+
 	//ビュープロジェクション行列を取得する
 	static ADXMatrix4 GetViewProjection();
+
 	//トランスフォーム行列を生成
 	static ADXMatrix4 GenerateMatTransform(const ADXVector3& localPosition, const ADXQuaternion& localRotation, const ADXVector3& localScale);
 };

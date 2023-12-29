@@ -3,10 +3,21 @@
 #include "ADXUtility.h"
 #include <time.h>
 
-ADXScene::ADXScene()
-{
-
-}
+const int32_t logoSceneTimeFrame = 7000;
+const int32_t titleSceneIndex = 1;
+const int32_t logoAnimationPow = 2;
+const float logoTextAspect = 0.5f;
+const float logoStartHeight = 0.2f;
+const float logoAlphaSpeed = 0.0004f;
+const float logoRotateSpeed = 0.001f;
+const float logoRotatePow = 3.5f;
+const int32_t logoRotateTime = 5200;
+const ADXVector2 logo_A_displayTime = { 2900,3700 };
+const ADXVector2 logo_D_displayTime = { 3200,4000 };
+const ADXVector2 logo_X_displayTime = { 3500,4300 };
+const ADXVector2 logo_Engine_displayTime = { 3800,4600 };
+const ADXVector3 cameraPos = { 0,0,-2 };
+const ADXVector3 logoTextPos = { 0,0,-0.1f };
 
 void ADXScene::Initialize()
 {
@@ -28,10 +39,10 @@ void ADXScene::Initialize()
 
 	//オブジェクト
 
-	ADXObject* temp = ADXObject::Create({0,0,-2});
+	ADXObject* temp = ADXObject::Create(cameraPos);
 	camera_ = temp->AddComponent<ADXCamera>();
 
-	title_ = ADXObject::Create({ 0,0,0.1f },ADXQuaternion::IdentityQuaternion());
+	title_ = ADXObject::Create();
 	title_->transform_.UpdateMatrix();
 	title_->texture_ = titleImg_;
 	title_->model_ = &rect_;
@@ -39,8 +50,8 @@ void ADXScene::Initialize()
 	title_->material_.alpha_ = 0;
 
 	logo_A_ = ADXObject::Duplicate(*title_);
-	logo_A_->transform_.localPosition_ = { 0,0,0 };
-	logo_A_->transform_.localScale_ = { 1,0.5f,1 };
+	logo_A_->transform_.localPosition_ = logoTextPos;
+	logo_A_->transform_.localScale_ = { 1,logoTextAspect,1 };
 	logo_A_->texture_ = logoImg_A_;
 
 	logo_D_ = ADXObject::Duplicate(*logo_A_);
@@ -62,27 +73,33 @@ void ADXScene::Initialize()
 void ADXScene::Update()
 {
 	//エンジンロゴの見た目が時間と共に変化していく
-	title_->material_.alpha_ = (float)(clock() - startTime_) * 0.0004f;
+	title_->material_.alpha_ = (float)(clock() - startTime_) * logoAlphaSpeed;
 
-	logo_A_->material_.alpha_ = ADXUtility::ValueMapping((float)(clock() - startTime_), 2900, 3700, 0, 1);
-	logo_A_->transform_.localPosition_.y_ = (float)pow(max(ADXUtility::ValueMapping((float)(clock() - startTime_), 2900, 3700, logoStartHeight, 0), 0), logoAnimationPow);
+	logo_A_->material_.alpha_ = ADXUtility::ValueMapping((float)(clock() - startTime_),
+		logo_A_displayTime.x_, logo_A_displayTime.y_, 0, 1);
+	logo_A_->transform_.localPosition_.y_ = (float)pow(max(ADXUtility::ValueMapping((float)(clock() - startTime_),
+		logo_A_displayTime.x_, logo_A_displayTime.y_, logoStartHeight, 0), 0), logoAnimationPow);
 
-	logo_D_->material_.alpha_ = ADXUtility::ValueMapping((float)(clock() - startTime_), 3200, 4000, 0, 1);
-	logo_D_->transform_.localPosition_.y_ = (float)pow(max(ADXUtility::ValueMapping((float)(clock() - startTime_), 3200, 4000, logoStartHeight, 0), 0), logoAnimationPow);
+	logo_D_->material_.alpha_ = ADXUtility::ValueMapping((float)(clock() - startTime_),
+		logo_D_displayTime.x_, logo_D_displayTime.y_, 0, 1);
+	logo_D_->transform_.localPosition_.y_ = (float)pow(max(ADXUtility::ValueMapping((float)(clock() - startTime_),
+		logo_D_displayTime.x_, logo_D_displayTime.y_, logoStartHeight, 0), 0), logoAnimationPow);
 
-	logo_X_->material_.alpha_ = ADXUtility::ValueMapping((float)(clock() - startTime_), 3500, 4300, 0, 1);
-	logo_X_->transform_.localPosition_.y_ = (float)pow(max(ADXUtility::ValueMapping((float)(clock() - startTime_), 3500, 4300, logoStartHeight, 0), 0), logoAnimationPow);
+	logo_X_->material_.alpha_ = ADXUtility::ValueMapping((float)(clock() - startTime_),
+		logo_X_displayTime.x_, logo_X_displayTime.y_, 0, 1);
+	logo_X_->transform_.localPosition_.y_ = (float)pow(max(ADXUtility::ValueMapping((float)(clock() - startTime_),
+		logo_X_displayTime.x_, logo_X_displayTime.y_, logoStartHeight, 0), 0), logoAnimationPow);
 
-	logo_Engine_->material_.alpha_ = ADXUtility::ValueMapping((float)(clock() - startTime_), 3800, 4600, 0, 1);
-	logo_Engine_->transform_.localPosition_.y_ = (float)pow(max(ADXUtility::ValueMapping((float)(clock() - startTime_), 3800, 4600, logoStartHeight, 0), 0), logoAnimationPow);
+	logo_Engine_->material_.alpha_ = ADXUtility::ValueMapping((float)(clock() - startTime_),
+		logo_Engine_displayTime.x_, logo_Engine_displayTime.y_, 0, 1);
+	logo_Engine_->transform_.localPosition_.y_ = (float)pow(max(ADXUtility::ValueMapping((float)(clock() - startTime_),
+		logo_Engine_displayTime.x_, logo_Engine_displayTime.y_, logoStartHeight, 0), 0), logoAnimationPow);
 
-	{
-		float rotAngle = (float)abs(pow(abs(min(clock() - startTime_ - 5200, 0)) * 0.001f, 3.5f));
-		title_->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0, 0, rotAngle });
-	}
+	float rotAngle = (float)abs(pow(abs(min(clock() - startTime_ - logoRotateTime, 0)) * logoRotateSpeed, logoRotatePow));
+	title_->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0, 0, rotAngle });
 
 	//何かボタンが押されたらスキップ
-	if ((clock() - startTime_ >= 7000)
+	if ((clock() - startTime_ >= logoSceneTimeFrame)
 		|| ADXKeyBoardInput::GetCurrentInstance()->GetKeyDown(DIK_SPACE)
 		|| (ADXGamePadInput::GetCurrentInstance() != nullptr
 		&& (ADXGamePadInput::GetCurrentInstance()->GetButtonDown(ADXGamePadInput::A)

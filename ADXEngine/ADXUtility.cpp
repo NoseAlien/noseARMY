@@ -1,4 +1,4 @@
-﻿#include "ADXUtility.h"
+#include "ADXUtility.h"
 #include <math.h>
 #include <wrl.h>
 
@@ -38,7 +38,6 @@ float ADXUtility::EaseOut(float progress, float powNum)
 	return currentProgress;
 }
 
-//角度の差を求める　目的の角度へゆっくり向ける時に使ってみよう
 float ADXUtility::AngleDiff(float angle1, float angle2)
 {
 	float angle1Current = fmodf(angle1, 2 * ADXUtility::Pi);
@@ -47,6 +46,7 @@ float ADXUtility::AngleDiff(float angle1, float angle2)
 	float angle4 = angle2Current + 2 * ADXUtility::Pi;
 
 	float nearestAngleDiff = angle2Current - angle1Current;
+	//最小の角度を探す
 	if (fabsf(nearestAngleDiff) > fabsf(angle3 - angle1Current))
 	{
 		nearestAngleDiff = angle3 - angle1Current;
@@ -67,13 +67,11 @@ float ADXUtility::LerpInverse(float nowValue, float startValue, float endValue)
 	return ret;
 }
 
-//inputStartからinputEndまでの値をoutputStartからoutputEndまでの値に変換する
 float ADXUtility::ValueMapping(float nowValue, float inputStart, float inputEnd, float outputStart, float outputEnd)
 {
 	return outputStart + (outputEnd - outputStart) * ((nowValue - inputStart) / (inputEnd - inputStart));
 }
 
-//std::stringからwchar_t*に変換する
 wchar_t* ADXUtility::StringToWideChar(const std::string& pKey)
 {
 	const char* pCStrKey = pKey.c_str();
