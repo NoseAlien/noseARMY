@@ -1,4 +1,4 @@
-﻿#include "ADXWindow.h"
+#include "ADXWindow.h"
 #include <imgui_impl_win32.h>
 
 uint32_t ADXWindow::S_window_width = 1280;
@@ -37,6 +37,7 @@ ADXWindow::ADXWindow(const LPCTSTR& window_title)
 
 LRESULT ADXWindow::WindowProc(HWND hwnd, uint32_t msg, WPARAM wparam, LPARAM lparam)
 {
+	//ImGui用ウインドウプロシージャ呼び出し
 	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam))
 	{
 		return true;

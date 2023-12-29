@@ -1,12 +1,15 @@
-﻿#include "ADXParticleSystem.h"
+#include "ADXParticleSystem.h"
 
 void ADXParticleSystem::Emission()
 {
+	//パーティクルの最大数に達していなければ
 	if (particles_.size() < maxParticleNum_)
 	{
+		//パーティクル生成
 		ADXObject* temp = ADXObject::Create();
 		particles_.push_back(temp->AddComponent<ADXParticle>());
 		ADXParticle* particle_ = particles_.back();
+		//設定を反映
 		temp->transform_.parent_ = parent_;
 		temp->transform_.UpdateMatrix();
 		temp->model_ = &particleModel_;

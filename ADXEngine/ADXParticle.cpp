@@ -1,4 +1,4 @@
-﻿#include "ADXParticle.h"
+#include "ADXParticle.h"
 #include "ADXCamera.h"
 
 void ADXParticle::UniqueInitialize()
@@ -8,9 +8,13 @@ void ADXParticle::UniqueInitialize()
 
 void ADXParticle::UniqueUpdate()
 {
+	//移動
 	GetGameObject()->transform_.localPosition_ += moveVec_;
+	//アニメーションの状態を更新
 	animation_.Update();
 	GetGameObject()->texture_ = animation_.GetNowTex();
+
+	//寿命を減らし、尽きたら消す
 	lifeTime_--;
 	if (lifeTime_ <= 0)
 	{
@@ -20,6 +24,7 @@ void ADXParticle::UniqueUpdate()
 
 void ADXParticle::OnPreRender()
 {
+	//必要に応じてビルボードにする
 	if (billboard_)
 	{
 		GetGameObject()->transform_.SetWorldRotation(ADXCamera::GetCurrentCamera()->GetGameObject()->transform_.GetWorldRotation());

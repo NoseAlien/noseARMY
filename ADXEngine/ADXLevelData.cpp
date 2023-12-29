@@ -1,4 +1,4 @@
-﻿#include "ADXLevelData.h"
+#include "ADXLevelData.h"
 #include <fstream>
 
 ADXLevelData ADXLevelData::Load(const std::string& filename)
@@ -77,17 +77,20 @@ void ADXLevelData::LoadTreeData(ADXLevelData* levelData,
 				(float)transform["translation"][0],
 				(float)transform["translation"][2],
 				(float)transform["translation"][1] };
+			//回転
 			obj.transform.localRotation_ = ADXQuaternion::EulerToQuaternion(
 				ADXVector3{
 				-(float)transform["rotation"][0] * ADXUtility::Pi / 180,
 				-(float)transform["rotation"][2] * ADXUtility::Pi / 180,
 				-(float)transform["rotation"][1] * ADXUtility::Pi / 180 });
+			//拡縮
 			obj.transform.localScale_ =
 				ADXVector3{
 				(float)transform["scaling"][0],
 				(float)transform["scaling"][2],
 				(float)transform["scaling"][1] };
 
+			//コライダーが設定されていたら読み込む
 			if (object.contains("collider"))
 			{
 				obj.colliderEnabled = true;
@@ -105,6 +108,7 @@ void ADXLevelData::LoadTreeData(ADXLevelData* levelData,
 			}
 		}
 
+		//子オブジェクトがあったら読み込む
 		if (object.contains("children"))
 		{
 			LoadTreeData(levelData, object["children"], (int32_t)levelData->objs_.size() - 1);

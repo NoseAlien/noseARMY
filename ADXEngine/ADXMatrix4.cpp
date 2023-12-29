@@ -1,4 +1,4 @@
-﻿#include "ADXMatrix4.h"
+#include "ADXMatrix4.h"
 #include <cassert>
 
 using namespace DirectX;
@@ -58,7 +58,6 @@ ADXMatrix4 ADXMatrix4::ConvertToADXMatrix(const XMMATRIX& mat)
 	return outPutADXM;
 }
 
-//逆行列
 ADXMatrix4 ADXMatrix4::Inverse() const
 {
 	const int32_t N = 4;
@@ -135,7 +134,6 @@ ADXMatrix4 ADXMatrix4::Transpose() const
 	return ret;
 }
 
-// 代入演算子オーバーロード
 ADXMatrix4& ADXMatrix4::operator*=(const ADXMatrix4& m2)
 {
 	ADXMatrix4 m1;
@@ -158,11 +156,11 @@ ADXMatrix4& ADXMatrix4::operator*=(const ADXMatrix4& m2)
 	return *this;
 }
 
-//座標変換（ベクトルと行列の掛け算をする）
 ADXVector3 ADXMatrix4::Transform(const ADXVector3& v, const ADXMatrix4& m)
 {
 	float w = v.x_ * m.m_[0][3] + v.y_ * m.m_[1][3] + v.z_ * m.m_[2][3] + m.m_[3][3];
 
+	//ベクトルと行列の掛け算の更新
 	ADXVector3 result
 	{
 		(v.x_ * m.m_[0][0] + v.y_ * m.m_[1][0] + v.z_ * m.m_[2][0] + m.m_[3][0]) / w,
@@ -172,7 +170,6 @@ ADXVector3 ADXMatrix4::Transform(const ADXVector3& v, const ADXMatrix4& m)
 	return result;
 }
 
-// 2項演算子オーバーロード
 ADXMatrix4 operator*(const ADXMatrix4& m1, const ADXMatrix4& m2)
 {
 	ADXMatrix4 result = m1;
@@ -180,9 +177,9 @@ ADXMatrix4 operator*(const ADXMatrix4& m1, const ADXMatrix4& m2)
 	return result *= m2;
 }
 
-//単位行列
 ADXMatrix4 IdentityMatrix()
 {
+	//単位行列を返す
 	return
 	{ 1,0,0,0,
 	0,1,0,0,

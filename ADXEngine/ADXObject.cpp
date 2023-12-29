@@ -1,4 +1,4 @@
-﻿#include "ADXObject.h"
+#include "ADXObject.h"
 #include "ADXCommon.h"
 #include "ADXSceneManager.h"
 #include "ADXCamera.h"
@@ -326,13 +326,17 @@ void ADXObject::SetAllCameraPtr(ADXCamera* camPtr)
 ADXObject* ADXObject::Create(const ADXVector3& setLocalPosition, const ADXQuaternion& setLocalRotation,
 	const ADXVector3& setLocalScale, ADXWorldTransform* setParent)
 {
+	//オブジェクトを生成
 	std::unique_ptr<ADXObject, ADXUtility::NPManager<ADXObject>> obj(new ADXObject);
 	obj->Initialize();
+	//引数のトランスフォーム情報を代入
 	obj->transform_.localPosition_ = setLocalPosition;
 	obj->transform_.localRotation_ = setLocalRotation;
 	obj->transform_.localScale_ = setLocalScale;
 	obj->transform_.parent_ = setParent;
+	//オブジェクトリストに追加
 	S_objs.push_back(move(obj));
+	//ここで生成したオブジェクトを返す
 	return S_objs.back().get();
 }
 
@@ -340,6 +344,7 @@ ADXObject* ADXObject::Duplicate(const ADXObject& prefab)
 {
 	ADXObject* ret = Create(prefab.transform_.localPosition_, prefab.transform_.localRotation_,
 		prefab.transform_.localScale_, prefab.transform_.parent_);
+	//オブジェクトの情報を複製
 	ret->transform_.rectTransform_ = prefab.transform_.rectTransform_;
 	ret->transform_.modelPosition_ = prefab.transform_.modelPosition_;
 	ret->transform_.modelRotation_ = prefab.transform_.modelRotation_;
@@ -353,12 +358,13 @@ ADXObject* ADXObject::Duplicate(const ADXObject& prefab)
 	ret->isVisible_ = prefab.isVisible_;
 	ret->isActive_ = prefab.isActive_;
 	ret->useDefaultDraw_ = prefab.useDefaultDraw_;
-
+	//ここで生成したオブジェクトを返す
 	return ret;
 }
 
 void ADXObject::Update()
 {
+	//アクティブなオブジェクトの全コンポーネントの更新処理を呼ぶ
 	if (isActive_)
 	{
 		for (auto& itr : components_)
@@ -373,6 +379,7 @@ void ADXObject::StaticUpdate()
 	ADXVector3 limitMinPos = { min(S_limitPos1.x_,S_limitPos2.x_),min(S_limitPos1.y_,S_limitPos2.y_) ,min(S_limitPos1.z_,S_limitPos2.z_) };
 	ADXVector3 limitMaxPos = { max(S_limitPos1.x_,S_limitPos2.x_),max(S_limitPos1.y_,S_limitPos2.y_) ,max(S_limitPos1.z_,S_limitPos2.z_) };
 
+	//オブジェクトの全コンポーネントのメモリ管理用処理を呼ぶ
 	for (auto& itr : S_objs)
 	{
 		for (auto& comItr : itr->components_)
@@ -381,6 +388,7 @@ void ADXObject::StaticUpdate()
 		}
 	}
 
+	//消す準備が出来ているオブジェクトを削除
 	for (auto& itr : S_objs)
 	{
 		if (itr->deleteFlag_ || (itr->transform_.parent_ != nullptr && itr->transform_.parent_->GetGameObject()->deleteFlag_))
@@ -393,6 +401,7 @@ void ADXObject::StaticUpdate()
 
 	for (auto& itr : S_objs)
 	{
+		//全オブジェクトの情報をImGuiに表示
 		#ifdef _DEBUG
 		float pos[3] = { itr->transform_.localPosition_.x_,itr->transform_.localPosition_.y_,itr->transform_.localPosition_.z_ };
 
@@ -405,7 +414,9 @@ void ADXObject::StaticUpdate()
 		itr->transform_.localPosition_ = { pos[0],pos[1],pos[2] };
 		#endif
 
+		//更新処理
 		itr->Update();
+		//オブジェクトが存在できる限界範囲内に収める
 		if (itr->transform_.parent_ == nullptr && !itr->transform_.rectTransform_)
 		{
 			ADXVector3 itrWorldPos = itr->transform_.GetWorldPosition();
@@ -420,15 +431,18 @@ void ADXObject::StaticUpdate()
 
 void ADXObject::StaticDraw()
 {
+	//描画前処理
 	PreDraw();
 
 	std::list<ADXObject*> allObjPtr = GetObjs();
 
+	//カメラの描画前処理
 	for (int32_t i = 0; i < S_allCameraPtr.size(); i++)
 	{
 		S_allCameraPtr[i]->PrepareToRandering();
 	}
 
+	//全オブジェクトの描画前処理
 	for (auto& itr : allObjPtr)
 	{
 		for (auto& comItr : itr->components_)
@@ -450,7 +464,7 @@ void ADXObject::StaticDraw()
 		maxSortingOrder = allObjPtr.front()->sortingOrder_;
 	}
 
-	//RenderLayerの範囲を読み取る
+	//全オブジェクトのレイヤー、描画順の範囲を読み取る
 	for (auto& itr : allObjPtr)
 	{
 		if (itr->renderLayer_ < minLayer)
@@ -586,6 +600,7 @@ std::list<ADXObject*> ADXObject::GetObjs()
 {
 	std::list<ADXObject*> ret = {};
 
+	//ポインタに変換
 	for (auto& itr : S_objs)
 	{
 		ret.push_back(itr.get());
@@ -596,6 +611,7 @@ std::list<ADXObject*> ADXObject::GetObjs()
 
 void ADXObject::Draw()
 {
+	//コンポーネントの描画前処理
 	for (auto& itr : components_)
 	{
 		itr->OnWillRenderObject();
@@ -631,11 +647,13 @@ void ADXObject::Draw()
 		model_->Draw(transform_.constBuffTransform_.Get());
 	}
 
+	//コンポーネントの描画処理
 	for (auto& itr : GetComponents<ADXRenderer>())
 	{
 		itr->Rendering();
 	}
 
+	//コンポーネントの描画後処理
 	for (auto& itr : components_)
 	{
 		itr->Rendered();
@@ -644,11 +662,15 @@ void ADXObject::Draw()
 
 void ADXObject::Destroy()
 {
+	//このオブジェクトが次の更新処理前に消されるように設定
 	deleteFlag_ = true;
+
+	//コンポーネントの削除準備処理
 	for (auto& itr : components_)
 	{
 		itr->OnDestroy();
 	}
+	//子オブジェクトにも行う
 	for (auto& itr : transform_.GetChilds())
 	{
 		itr->GetGameObject()->Destroy();
@@ -657,6 +679,7 @@ void ADXObject::Destroy()
 
 void ADXObject::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 {
+	//コンポーネントの接触処理
 	for (auto& itr : components_)
 	{
 		itr->OnCollisionHit(col, myCol);

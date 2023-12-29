@@ -1,14 +1,16 @@
-﻿#include "ADXKeyConfig.h"
+#include "ADXKeyConfig.h"
 
 ADXKeyConfig* ADXKeyConfig::S_current = nullptr;
 
 void ADXKeyConfig::Update()
 {
+	//これを現在のインスタンスとする
 	S_current = this;
 }
 
 void ADXKeyConfig::AddConfigCell(configCell cell)
 {
+	//既に同じ名前のセルがあったら設定上書き、無かったら新規作成
 	for (auto& itr : configCells_)
 	{
 		if (itr.configCode == cell.configCode)
@@ -22,12 +24,14 @@ void ADXKeyConfig::AddConfigCell(configCell cell)
 
 void ADXKeyConfig::DeleteConfigCell(std::string cellName)
 {
+	//引数と同じ名前のセルを削除
 	configCells_.remove_if([=](auto& itr)
 		{ return itr.configCode == cellName; });
 }
 
 void ADXKeyConfig::AddVecConfigCell(vecConfigCell cell)
 {
+	//既に同じ名前のセルがあったら設定上書き、無かったら新規作成
 	for (auto& itr : vecConfigCells_)
 	{
 		if (itr.configCode == cell.configCode)
@@ -41,12 +45,14 @@ void ADXKeyConfig::AddVecConfigCell(vecConfigCell cell)
 
 void ADXKeyConfig::DeleteVecConfigCell(std::string cellName)
 {
+	//引数と同じ名前のセルを削除
 	vecConfigCells_.remove_if([=](auto& itr)
 		{ return itr.configCode == cellName; });
 }
 
 ADXKeyConfig::configCell ADXKeyConfig::GetConfigCell(std::string cellName) const
 {
+	//同じ名前のセルがヒットしたらそれを返す
 	for (auto& itr : configCells_)
 	{
 		if (itr.configCode == cellName)
@@ -59,6 +65,7 @@ ADXKeyConfig::configCell ADXKeyConfig::GetConfigCell(std::string cellName) const
 
 ADXKeyConfig::vecConfigCell ADXKeyConfig::GetVecConfigCell(std::string cellName) const
 {
+	//同じ名前のセルがヒットしたらそれを返す
 	for (auto& itr : vecConfigCells_)
 	{
 		if (itr.configCode == cellName)
@@ -75,6 +82,7 @@ bool ADXKeyConfig::GetInput(std::string cellName) const
 	ADXGamePadInput* gamePad = ADXGamePadInput::GetCurrentInstance();
 	configCell cell = GetConfigCell(cellName);
 
+	//ゲームパッドが接続されていたら入力状態を取る
 	if (gamePad != nullptr)
 	{
 		for (auto& itr : cell.buttons)
@@ -86,6 +94,7 @@ bool ADXKeyConfig::GetInput(std::string cellName) const
 		}
 	}
 
+	//キーボードの入力状態を取る
 	for (auto& itr : cell.keys)
 	{
 		if (keyBoard->GetKey(itr))
@@ -103,6 +112,7 @@ bool ADXKeyConfig::GetInputDown(std::string cellName) const
 	ADXGamePadInput* gamePad = ADXGamePadInput::GetCurrentInstance();
 	configCell cell = GetConfigCell(cellName);
 
+	//ゲームパッドが接続されていたら入力状態を取る
 	if (gamePad != nullptr)
 	{
 		for (auto& itr : cell.buttons)
@@ -114,6 +124,7 @@ bool ADXKeyConfig::GetInputDown(std::string cellName) const
 		}
 	}
 
+	//キーボードの入力状態を取る
 	for (auto& itr : cell.keys)
 	{
 		if (keyBoard->GetKeyDown(itr))
@@ -131,6 +142,7 @@ bool ADXKeyConfig::GetInputUp(std::string cellName) const
 	ADXGamePadInput* gamePad = ADXGamePadInput::GetCurrentInstance();
 	configCell cell = GetConfigCell(cellName);
 
+	//ゲームパッドが接続されていたら入力状態を取る
 	if (gamePad != nullptr)
 	{
 		for (auto& itr : cell.buttons)
@@ -142,6 +154,7 @@ bool ADXKeyConfig::GetInputUp(std::string cellName) const
 		}
 	}
 
+	//キーボードの入力状態を取る
 	for (auto& itr : cell.keys)
 	{
 		if (keyBoard->GetKeyUp(itr))
@@ -160,6 +173,7 @@ ADXVector2 ADXKeyConfig::GetVecInput(std::string cellName) const
 	vecConfigCell cell = GetVecConfigCell(cellName);
 	ADXVector2 ret = { 0,0 };
 
+	//ゲームパッドが接続されていたら入力状態を取る
 	if (gamePad != nullptr)
 	{
 		for (auto& itr : cell.buttonsUp)
@@ -197,6 +211,7 @@ ADXVector2 ADXKeyConfig::GetVecInput(std::string cellName) const
 		}
 	}
 
+	//キーボードの入力状態を取る
 	for (auto& itr : cell.keysUp)
 	{
 		if (keyBoard->GetKey(itr))

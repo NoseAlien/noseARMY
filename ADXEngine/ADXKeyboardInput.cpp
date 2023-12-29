@@ -1,4 +1,4 @@
-﻿#include "ADXKeyBoardInput.h"
+#include "ADXKeyBoardInput.h"
 
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
@@ -50,15 +50,18 @@ void ADXKeyBoardInput::Update()
 
 bool ADXKeyBoardInput::GetKey(const BYTE& keyNum)
 {
+	//指定のキーの状態を返す
 	return key_[keyNum];
 }
 
 bool ADXKeyBoardInput::GetKeyDown(const BYTE& keyNum)
 {
+	//今のフレームで押され、前のフレームで押されていなければtrue
 	return key_[keyNum] && !prevKey_[keyNum];
 }
 
 bool ADXKeyBoardInput::GetKeyUp(const BYTE& keyNum)
 {
+	//今のフレームで押されず、前のフレームで押されていればtrue
 	return !key_[keyNum] && prevKey_[keyNum];
 }
