@@ -19,12 +19,13 @@ std::list<Enemy*> EnemySpawnData::Spawn(const std::string& team, ADXWorldTransfo
 	{
 		ADXObject* temp = ADXObject::Create();
 
+		//設定されている種類と同じ敵を生成
 		switch (spawnItr.specie)
 		{
-		case 1:
+		case eType_Cub_E:
 			ret.push_back(temp->AddComponent<Cub_E>());
 			break;
-		case 2:
+		case eType_Clex:
 			ret.push_back(temp->AddComponent<Clex>());
 			break;
 		default:
@@ -32,6 +33,7 @@ std::list<Enemy*> EnemySpawnData::Spawn(const std::string& team, ADXWorldTransfo
 			break;
 		}
 
+		//位置を設定と同じに
 		if (tf == nullptr)
 		{
 			temp->transform_.localPosition_ = spawnItr.position;
@@ -43,8 +45,8 @@ std::list<Enemy*> EnemySpawnData::Spawn(const std::string& team, ADXWorldTransfo
 			temp->transform_.localRotation_ = tf->TransformRotation(spawnItr.rotation);
 		}
 		temp->transform_.UpdateMatrix();
+		//引数に入れた配列に追加
 		ret.back()->LiveEntity::Initialize(team);
-
 	}
 
 	return ret;

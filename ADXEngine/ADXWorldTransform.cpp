@@ -1,4 +1,4 @@
-#include "ADXWorldTransform.h"
+﻿#include "ADXWorldTransform.h"
 #include "ADXCamera.h"
 #include "ADXObject.h"
 #include <math.h>

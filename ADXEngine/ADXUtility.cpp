@@ -1,4 +1,4 @@
-#include "ADXUtility.h"
+﻿#include "ADXUtility.h"
 #include <math.h>
 #include <wrl.h>
 

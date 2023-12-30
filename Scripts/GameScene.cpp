@@ -109,21 +109,19 @@ void GameScene::Initialize()
 	temp = ADXObject::Create({ 3,15.4f,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,5,6 });
 	battleFields_.push_back(temp->AddComponent<BattleFieldBox>());
 	battleFields_.back()->Initialize({
-		{1,{0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
-		{2,{0.5f,0,-0.5f},ADXQuaternion::IdentityQuaternion()},
-		{1,{-0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
-		{2,{-0.5f,0,-0.5f},ADXQuaternion::IdentityQuaternion()},
+		{EnemySpawnData::eType_Cub_E,{0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
+		{EnemySpawnData::eType_Clex,{0.5f,0,-0.5f},ADXQuaternion::IdentityQuaternion()},
+		{EnemySpawnData::eType_Cub_E,{-0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
+		{EnemySpawnData::eType_Clex,{-0.5f,0,-0.5f},ADXQuaternion::IdentityQuaternion()},
 		}, "enemy");
 	battleFields_.back()->fieldLayer_ = 2;
 
 	enemySpawnData_.SetSpawnList({
-		{ 1,{2,20,40},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
-		{ 1,{-2,20,44},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
-		{ 2,{0,21,55},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
-		{ 1,{15,12,86},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
-		{ 1,{14,12,100},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
-
-
+		{ EnemySpawnData::eType_Cub_E,{2,20,40},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
+		{ EnemySpawnData::eType_Cub_E,{-2,20,44},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
+		{ EnemySpawnData::eType_Clex,{0,21,55},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
+		{ EnemySpawnData::eType_Cub_E,{15,12,86},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
+		{ EnemySpawnData::eType_Cub_E,{14,12,100},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
 		});
 
 	enemySpawnData_.Spawn("enemy");

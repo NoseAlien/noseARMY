@@ -1,4 +1,4 @@
-#include "ADXSprite.h"
+﻿#include "ADXSprite.h"
 #include "ADXUtility.h"
 
 void ADXSprite::SetClippingStatus(const ADXVector3& maxBoxRUF, const ADXVector3& maxBoxLDB, 

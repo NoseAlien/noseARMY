@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXObject.h"
 #include "ADXAudio.h"
@@ -15,6 +15,7 @@ public:
 	static const float basicHP;
 	static const float basicAttackPower;
 	static const uint32_t basicGhostTimeFrame;
+	static const uint32_t reviveGhostTimeFrame;
 
 public:
 	struct AttackObject

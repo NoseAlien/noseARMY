@@ -7,9 +7,15 @@
 class EnemySpawnData
 {
 public:
+	enum enemyType
+	{
+		eType_Cub_E,
+		eType_Clex,
+	};
+
 	struct SpawnData
 	{
-		uint32_t specie = 0;
+		enemyType specie = eType_Cub_E;
 		ADXVector3 position{};
 		ADXQuaternion rotation{};
 	};

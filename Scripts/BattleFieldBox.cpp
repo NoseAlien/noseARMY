@@ -1,6 +1,9 @@
 ﻿#include "BattleFieldBox.h"
 #include "LiveEntity.h"
 
+const float animationProgressSpeed = 0.2f;
+const float animationRotSpeed = 3;
+
 void BattleFieldBox::Initialize(const std::vector<EnemySpawnData::SpawnData>& setGuarders, const std::string& setTeam)
 {
 	enemySpawnData_.SetSpawnList(setGuarders);
@@ -28,16 +31,16 @@ void BattleFieldBox::FieldUpdate()
 			guarderSpawned_ = true;
 		}
 
-		animationProgress_ += (1 - animationProgress_) * 0.2f;
+		animationProgress_ += (1 - animationProgress_) * animationProgressSpeed;
 		GetGameObject()->transform_.modelPosition_ = { 0,-(1 - animationProgress_) ,0 };
-		GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,(1 - animationProgress_) * 3,0 });
+		GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,(1 - animationProgress_) * animationRotSpeed,0 });
 		GetGameObject()->transform_.modelScale_ = { animationProgress_,animationProgress_ ,animationProgress_ };
 
 		GetGameObject()->isVisible_ = true;
 
 		if (battling_ <= 0)
 		{
-			animationProgress_ += (-1 - animationProgress_) * 0.2f; 
+			animationProgress_ += (-1 - animationProgress_) * animationProgressSpeed;
 			if (animationProgress_ <= 0)
 			{
 				GetGameObject()->isActive_ = false;
@@ -55,6 +58,7 @@ void BattleFieldBox::FieldOnCollisionHit(ADXCollider* col, [[maybe_unused]] ADXC
 {
 	if (!awake_)
 	{
+		//これのチームIDと違うIDを持ったLiveEntityが入ったら起動
 		LiveEntity* tempLiv = col->GetGameObject()->GetComponent<LiveEntity>();
 		if (tempLiv != nullptr && tempLiv->GetTeam() != team_)
 		{
@@ -69,6 +73,7 @@ void BattleFieldBox::FieldOnCollisionHit(ADXCollider* col, [[maybe_unused]] ADXC
 			{
 				if (col == colItr && objItr->IsLive())
 				{
+					//guardersPtr_の中の敵が触れ続けている限り消えないようにする
 					battling_ = 10;
 				}
 			}

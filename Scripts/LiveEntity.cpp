@@ -5,6 +5,7 @@
 const float LiveEntity::basicHP = 100;
 const float LiveEntity::basicAttackPower = 10;
 const uint32_t LiveEntity::basicGhostTimeFrame = 40;
+const uint32_t LiveEntity::reviveGhostTimeFrame = 60;
 
 std::vector<LiveEntity::AttackObject> LiveEntity::S_attackObjs = {};
 std::vector<LiveEntity::AttackObject> LiveEntity::S_allAttackObj = {};
@@ -181,7 +182,7 @@ void LiveEntity::Revive()
 	if (!IsLive())
 	{
 		hpAmount_ = 1;
-		ghostTime_ = 60;
+		ghostTime_ = reviveGhostTimeFrame;
 	}
 }
 
@@ -200,7 +201,7 @@ void LiveEntity::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 	}
 
 	if (col->GetGameObject()->GetComponent<FieldBox>() != nullptr
-		&& (GetGameObject()->transform_.GetWorldPosition() - col->ClosestPoint(GetGameObject()->transform_.GetWorldPosition())).Length() < 0.1)
+		&& (GetGameObject()->transform_.GetWorldPosition() - col->ClosestPoint(GetGameObject()->transform_.GetWorldPosition())).Length() < 0.1f)
 	{
 		isOutOfField_ = false;
 		latestHitField_ = col->GetGameObject()->GetComponent<FieldBox>();
