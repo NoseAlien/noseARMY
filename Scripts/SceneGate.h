@@ -22,7 +22,7 @@ public:
 	void Initialize(const std::string& team, const std::string& stageName);
 
 	//ワープ先のステージ名を取得
-	std::string GetStageName() { return stageName_; };
+	std::string GetStageName() { return stageName_; }
 
 private:
 	//---以下の関数は必要な時に自動で呼び出される---
@@ -34,4 +34,11 @@ private:
 	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol);
 
 	//---以上の関数は必要な時に自動で呼び出される---
+
+private:
+	static std::string S_nextStageName;
+
+public:
+	//読み込むシーンの名前を取得
+	static std::string GetNextScene() { return S_nextStageName; }
 };

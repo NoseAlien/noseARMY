@@ -85,6 +85,8 @@ void ADXTextRenderer::UniqueRendering([[maybe_unused]] ID3D12Device* device, ID3
 			fontWtfs_.back().localPosition_ = { fontWidth * ((i - (float)text_.size()) * 2 + 1),fontSize_,0 };
 			break;
 		}
+		//文字の拡大率を適用
+		fontWtfs_.back().localScale_ = { fontExtend_,fontExtend_,fontExtend_ };
 		fontWtfs_.back().UpdateMatrix();
 		fontWtfs_.back().UpdateConstBuffer();
 

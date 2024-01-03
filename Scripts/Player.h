@@ -35,6 +35,7 @@ private:
 	ADXObject* gameOverFilter_ = nullptr;
 	ADXObject* dead_ = nullptr;
 	ADXObject* keyUI_ = nullptr;
+	ADXObject* deathCountIcon_ = nullptr;
 	ADXObject* deathCountUI_ = nullptr;
 
 	ADXModel rect_{};

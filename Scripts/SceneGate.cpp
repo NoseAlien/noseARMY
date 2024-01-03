@@ -5,6 +5,8 @@
 #include "ADXKeyConfig.h"
 #include "ADXTextRenderer.h"
 
+std::string SceneGate::S_nextStageName = "";
+
 void SceneGate::Initialize(const std::string& team, const std::string& stageName)
 {
 	GetGameObject()->texture_ = ADXImage::LoadADXImage("texture/goalField.png");
@@ -44,6 +46,7 @@ void SceneGate::Initialize(const std::string& team, const std::string& stageName
 		{ADXImage::LoadADXImage("texture/alphaNumber/plus.png"),'+'},{ADXImage::LoadADXImage("texture/alphaNumber/minus.png"),'-'},
 		});
 	stageNameUI_->GetComponent<ADXTextRenderer>()->fontAspect_ = 0.75f;
+	stageNameUI_->GetComponent<ADXTextRenderer>()->fontExtend_ = 2;
 	stageNameUI_->GetComponent<ADXTextRenderer>()->anchor_ = ADXTextRenderer::middleCenter;
 	stageNameUI_->transform_.localPosition_ = { -0.9f,-0.9f,0 };
 	stageNameUI_->transform_.localScale_.x_ /= ADXWindow::GetAspect();
@@ -65,6 +68,7 @@ void SceneGate::UniqueUpdate()
 		stageNameUI_->transform_.localScale_.x_ += (0.1f / ADXWindow::GetAspect() - stageNameUI_->transform_.localScale_.x_) * 0.3f;
 		if (ADXKeyConfig::GetCurrentInstance()->GetInputDown("select"))
 		{
+			S_nextStageName = stageName_;
 			SceneTransition::ChangeScene(3);
 		}
 

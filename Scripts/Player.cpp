@@ -180,8 +180,18 @@ void Player::LiveEntitiesInitialize()
 	deadParticle_->lifeTime_ = deadParticle_->animation_.GetLength();
 	deadParticle_->particleModel_ = rect_;
 
+	deathCountIcon_ = ADXObject::Create();
+	deathCountIcon_->transform_.rectTransform_ = true;
+	deathCountIcon_->model_ = &rect_;
+	deathCountIcon_->renderLayer_ = 5;
+	deathCountIcon_->texture_ = ADXImage::LoadADXImage("texture/apEG_dead.png");
+	deathCountIcon_->transform_.localPosition_ = { -0.85f,-0.8f,0 };
+	deathCountIcon_->transform_.localScale_.x_ /= ADXWindow::GetAspect();
+	deathCountIcon_->transform_.localScale_ *= 0.1f;
+
 	deathCountUI_ = ADXObject::Create();
 	deathCountUI_->transform_.rectTransform_ = true;
+	deathCountUI_->transform_.parent_ = &deathCountIcon_->transform_;
 	deathCountUI_->model_ = &rect_;
 	deathCountUI_->renderLayer_ = 5;
 	deathCountUI_->useDefaultDraw_ = false;
@@ -193,12 +203,14 @@ void Player::LiveEntitiesInitialize()
 		{ADXImage::LoadADXImage("texture/alphaNumber/6.png"),'6'},{ADXImage::LoadADXImage("texture/alphaNumber/7.png"),'7'},
 		{ADXImage::LoadADXImage("texture/alphaNumber/8.png"),'8'},{ADXImage::LoadADXImage("texture/alphaNumber/9.png"),'9'},
 		{ADXImage::LoadADXImage("texture/alphaNumber/plus.png"),'+'},{ADXImage::LoadADXImage("texture/alphaNumber/minus.png"),'-'},
+		{ADXImage::LoadADXImage("texture/alphaNumber/space.png"),' '},
 		});
 	deathCountUI_->GetComponent<ADXTextRenderer>()->fontAspect_ = 0.75f;
-	deathCountUI_->GetComponent<ADXTextRenderer>()->anchor_ = ADXTextRenderer::lowerLeft;
-	deathCountUI_->transform_.localPosition_ = {-0.9f,-0.9f,0};
-	deathCountUI_->transform_.localScale_.x_ /= ADXWindow::GetAspect();
-	deathCountUI_->transform_.localScale_ *= 0.1f;
+	deathCountUI_->GetComponent<ADXTextRenderer>()->fontExtend_ = 2;
+	deathCountUI_->GetComponent<ADXTextRenderer>()->anchor_ = ADXTextRenderer::middleLeft;
+	deathCountUI_->transform_.localPosition_ = {1.5f,-0.25f,0};
+	deathCountUI_->transform_.localScale_ *= 0.75f;
+
 }
 
 void Player::LiveEntitiesUpdate()
