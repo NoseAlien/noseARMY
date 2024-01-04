@@ -20,19 +20,9 @@ void GameScene::Initialize()
 	ADXObject* temp = ADXObject::Create();
 	shutter_ = temp->AddComponent<SceneTransition>();
 
-	temp = ADXObject::Create({ 0,5,-20 }, ADXQuaternion::EulerToQuaternion({ 0.3f,0,0 }));
-
-	temp->transform_.localPosition_ = { 0,5,-20 };
-	temp->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0.3f,0,0 });
-	ADXCamera* camera = temp->AddComponent<ADXCamera>();
-
-	temp = ADXObject::Create({ 0,2,0 });
-	Player* tempPlayer = temp->AddComponent<Player>();
-	tempPlayer->Initialize(camera);
-	tempPlayer->LiveEntity::Initialize("player");
-
 
 	//ステージ生成に使う情報
+	TransformData PlayerStartTransform{};
 	std::vector<TransformData> floorGenerateData{};
 	std::vector<TransformData> fieldGenerateData{};
 	std::vector<TutorialArea::GenerateData> tutorialAreaGenerateData{};
@@ -42,6 +32,8 @@ void GameScene::Initialize()
 
 	if (SceneGate::GetNextStageName() == "1-1")
 	{
+		//自機のスタート位置
+		PlayerStartTransform = { {0,2,0}, ADXQuaternion::EulerToQuaternion({ 0,0,0 }) };
 		//床
 		floorGenerateData = {
 			{{ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 2,2,2 }},
@@ -100,8 +92,26 @@ void GameScene::Initialize()
 			{{ -40,-50,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,10,6 }}
 		};
 	}
+	else if (SceneGate::GetNextStageName() == "1-2")
+	{
+		//自機のスタート位置
+		PlayerStartTransform = { {0,4,-19}, ADXQuaternion::EulerToQuaternion({ 0,0,0 }) };
+		//床
+		floorGenerateData = {
+			{{ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,2,20 }},
+		};
+	}
 
 	//設定された情報を元に生成
+	//自機とそのカメラ
+	temp = ADXObject::Create();
+	ADXCamera* camera = temp->AddComponent<ADXCamera>();
+	temp = ADXObject::Create(PlayerStartTransform.localPosition, PlayerStartTransform.localRotation);
+	temp->transform_.UpdateMatrix();
+	Player* tempPlayer = temp->AddComponent<Player>();
+	tempPlayer->Initialize(camera);
+	tempPlayer->LiveEntity::Initialize("player");
+	camera->GetGameObject()->transform_.SetWorldPosition(tempPlayer->GetGameObject()->transform_.TransformPoint({ 0,0,-1 }));
 	//床
 	for (auto& itr : floorGenerateData)
 	{

@@ -159,6 +159,18 @@ void ADXWorldTransform::SetWorldRotation(const ADXQuaternion& worldRot)
 	}
 }
 
+ADXVector3 ADXWorldTransform::TransformPoint(const ADXVector3& pos) const
+{
+	ADXVector3 ret = ADXMatrix4::Transform(pos, matTrans_);
+	return ret;
+}
+
+ADXVector3 ADXWorldTransform::InverseTransformPoint(const ADXVector3& pos) const
+{
+	ADXVector3 ret = ADXMatrix4::Transform(pos, GetMatWorldInverse());
+	return ret;
+}
+
 ADXVector3 ADXWorldTransform::TransformPointWithoutTranslation(const ADXVector3& pos) const
 {
 	ADXVector3 ret = ADXMatrix4::Transform(pos, matScale_ * matRot_);
@@ -223,7 +235,7 @@ ADXQuaternion ADXWorldTransform::InverseTransformRotation(const ADXQuaternion& r
 	return ret;
 }
 
-ADXMatrix4 ADXWorldTransform::GetMatWorldInverse()
+ADXMatrix4 ADXWorldTransform::GetMatWorldInverse() const
 {
 	ADXMatrix4 ret = matWorld_.Inverse();
 	

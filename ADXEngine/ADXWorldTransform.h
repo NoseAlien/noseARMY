@@ -78,6 +78,12 @@ public:
 	//ワールド回転角を代入する
 	void SetWorldRotation(const ADXQuaternion& worldRot);
 
+	//ローカル座標をワールド座標に変換
+	ADXVector3 TransformPoint(const ADXVector3& pos) const;
+
+	//ワールド座標をローカル座標に変換
+	ADXVector3 InverseTransformPoint(const ADXVector3& pos) const;
+
 	//ローカル座標を回転、拡縮のみでワールド座標に変換
 	ADXVector3 TransformPointWithoutTranslation(const ADXVector3& pos) const;
 
@@ -99,8 +105,8 @@ public:
 	//ワールド変換行列を取得する
 	ADXMatrix4 GetMatWorld() { return matWorld_; };
 
-	//ワールド変換行列を取得する
-	ADXMatrix4 GetMatWorldInverse();
+	//ワールド変換逆行列を取得する
+	ADXMatrix4 GetMatWorldInverse() const;
 
 	//ワールド回転行列を取得する
 	ADXMatrix4 GetMatRot() { return matRot_; };
