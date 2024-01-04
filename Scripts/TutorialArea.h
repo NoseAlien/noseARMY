@@ -5,6 +5,15 @@
 //触れると操作方法が表示されるエリア
 class TutorialArea : public ADXComponent
 {
+public:
+	struct GenerateData
+	{
+		ADXVector3 localPosition{};
+		ADXQuaternion localRotation{};
+		ADXVector3 localScale{};
+		std::string tutorialImgName = "";
+	};
+
 private:
 	uint32_t tutorialImg_ = 0;
 

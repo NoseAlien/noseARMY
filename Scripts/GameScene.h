@@ -43,15 +43,9 @@ private:
 	//オブジェクト
 	SceneTransition* shutter_ = nullptr;
 	Player* player_ = nullptr;
-	std::list<ADXObject*> floors_{};
-	std::list<FieldBox*> fields_{};
-	std::list<BattleFieldBox*> battleFields_{};
 	Goal* goal_ = nullptr;
 	ADXObject* key_ = nullptr;
 	ADXObject* backGround_ = nullptr;
-
-	EnemySpawnData enemySpawnData_{};
-	std::list<TransformData> floorGenerateData_{};
 
 public:
 	//---以下の関数は必要な時に自動で呼び出される---

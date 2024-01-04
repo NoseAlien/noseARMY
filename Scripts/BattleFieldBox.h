@@ -7,6 +7,16 @@
 //バトルしないと出られない部屋
 class BattleFieldBox : public FieldBox
 {
+public:
+	struct GenerateData
+	{
+		ADXVector3 localPosition{};
+		ADXQuaternion localRotation{};
+		ADXVector3 localScale{};
+		std::vector<EnemySpawnData::SpawnData> setGuarders;
+		std::string setTeam = "";
+	};
+
 private:
 	EnemySpawnData enemySpawnData_{};
 	std::list<Enemy*> guardersPtr_ = {};
