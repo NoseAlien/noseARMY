@@ -40,5 +40,5 @@ private:
 
 public:
 	//読み込むシーンの名前を取得
-	static std::string GetNextScene() { return S_nextStageName; }
+	static std::string GetNextStageName() { return S_nextStageName; }
 };

@@ -37,15 +37,9 @@ private:
 	ADXModel ground_{};
 	ADXModel rect_{};
 
-	//カメラ
-	ADXCamera* camera_{};
-
 	//オブジェクト
 	SceneTransition* shutter_ = nullptr;
-	Player* player_ = nullptr;
-	Goal* goal_ = nullptr;
 	ADXObject* key_ = nullptr;
-	ADXObject* backGround_ = nullptr;
 
 public:
 	//---以下の関数は必要な時に自動で呼び出される---
