@@ -195,7 +195,12 @@ void LiveEntity::OnCollisionHit(ADXCollider* col, ADXCollider* myCol)
 			if (objItr.col != nullptr && objItr.attacker != nullptr
 				&& col == objItr.col && objItr.attacker->team_ != team_)
 			{
+				bool prevIsLive = IsLive();
 				Damage(objItr.power);
+				if (!IsLive() && prevIsLive && objItr.attacker != nullptr)
+				{
+					objItr.attacker->killCount_++;
+				}
 			}
 		}
 	}

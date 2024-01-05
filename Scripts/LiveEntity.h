@@ -43,6 +43,7 @@ private:
 	std::string team_ = "";
 	bool attackHitted_ = false;
 
+	uint32_t killCount_ = 0;
 	FieldBox* latestHitField_ = nullptr;
 	bool isOutOfField_ = false;
 
@@ -51,10 +52,13 @@ public:
 	void Initialize(const std::string& setTeam);
 
 	//体力が0でなければtrueを返す
-	bool IsLive() { return hpAmount_ > 0; };
+	bool IsLive() { return hpAmount_ > 0; }
 
 	//チームIDを取得
-	std::string GetTeam() { return team_; };
+	std::string GetTeam() { return team_; }
+
+	//倒した敵の数を取得
+	uint32_t GetKillCount() { return killCount_; }
 
 protected:
 	//ダメージを受ける
@@ -64,22 +68,22 @@ protected:
 	void Revive();
 
 	//LiveEntity毎の固有初期化処理
-	virtual void LiveEntitiesInitialize() {};
+	virtual void LiveEntitiesInitialize() {}
 
 	//生きている時の更新処理
-	virtual void LiveEntitiesUpdate() {};
+	virtual void LiveEntitiesUpdate() {}
 
 	//LiveEntity毎の固有描画前処理
-	virtual void LiveEntitiesOnPreRender() {};
+	virtual void LiveEntitiesOnPreRender() {}
 
 	//LiveEntity毎の固有削除前処理
-	virtual void LiveEntityOnDestroy() {};
+	virtual void LiveEntityOnDestroy() {}
 
 	//死んでいる時の更新処理
-	virtual void DeadUpdate() {};
+	virtual void DeadUpdate() {}
 
 	//LiveEntity毎の固有接触処理
-	virtual void LiveEntitiesOnCollisionHit([[maybe_unused]] ADXCollider* col, [[maybe_unused]] ADXCollider* myCol) {};
+	virtual void LiveEntitiesOnCollisionHit([[maybe_unused]] ADXCollider* col, [[maybe_unused]] ADXCollider* myCol) {}
 
 	//何かに触れた時に呼び出される
 	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol) final;
@@ -110,5 +114,5 @@ public:
 	static void SetAttackObj(const AttackObject& attackObj);
 
 	//攻撃に用いるコライダーを全て取得
-	static std::vector<AttackObject> GetAttackObj() { return S_attackObjs; };
+	static std::vector<AttackObject> GetAttackObj() { return S_attackObjs; }
 };

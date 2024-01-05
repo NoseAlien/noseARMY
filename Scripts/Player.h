@@ -37,6 +37,8 @@ private:
 	ADXObject* keyUI_ = nullptr;
 	ADXObject* deathCountIcon_ = nullptr;
 	ADXObject* deathCountUI_ = nullptr;
+	ADXObject* killCountIcon_ = nullptr;
+	ADXObject* killCountUI_ = nullptr;
 
 	ADXModel rect_{};
 	ADXModel playerModel_{};

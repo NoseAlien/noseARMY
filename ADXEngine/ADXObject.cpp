@@ -379,6 +379,28 @@ void ADXObject::StaticUpdate()
 	ADXVector3 limitMinPos = { min(S_limitPos1.x_,S_limitPos2.x_),min(S_limitPos1.y_,S_limitPos2.y_) ,min(S_limitPos1.z_,S_limitPos2.z_) };
 	ADXVector3 limitMaxPos = { max(S_limitPos1.x_,S_limitPos2.x_),max(S_limitPos1.y_,S_limitPos2.y_) ,max(S_limitPos1.z_,S_limitPos2.z_) };
 
+	//親オブジェクトが消えそうになっている場合は自身も消えるようにする
+	for (auto& itr : S_objs)
+	{
+		if (!itr->GetDeleteFlag())
+		{
+			ADXWorldTransform* tempParent = &itr->transform_;
+			while (true)
+			{
+				tempParent = tempParent->parent_;
+				if (tempParent == nullptr)
+				{
+					break;
+				}
+				else if (tempParent->GetGameObject()->GetDeleteFlag())
+				{
+					itr->Destroy();
+					break;
+				}
+			}
+		}
+	}
+
 	//オブジェクトの全コンポーネントのメモリ管理用処理を呼ぶ
 	for (auto& itr : S_objs)
 	{
@@ -391,13 +413,13 @@ void ADXObject::StaticUpdate()
 	//消す準備が出来ているオブジェクトを削除
 	for (auto& itr : S_objs)
 	{
-		if (itr->deleteFlag_ || (itr->transform_.parent_ != nullptr && itr->transform_.parent_->GetGameObject()->deleteFlag_))
+		if (itr->GetDeleteFlag() || (itr->transform_.parent_ != nullptr && itr->transform_.parent_->GetGameObject()->GetDeleteFlag()))
 		{
 			itr->components_.clear();
 		}
 	}
 	S_objs.remove_if([=](auto& itr)
-		{ return itr->deleteFlag_; });
+		{ return itr->GetDeleteFlag(); });
 
 	for (auto& itr : S_objs)
 	{
@@ -669,11 +691,6 @@ void ADXObject::Destroy()
 	for (auto& itr : components_)
 	{
 		itr->OnDestroy();
-	}
-	//子オブジェクトにも行う
-	for (auto& itr : transform_.GetChilds())
-	{
-		itr->GetGameObject()->Destroy();
 	}
 }
 

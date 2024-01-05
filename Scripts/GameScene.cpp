@@ -34,6 +34,16 @@ void GameScene::Initialize()
 	{
 		//自機のスタート位置
 		PlayerStartTransform = { {0,2,0}, ADXQuaternion::EulerToQuaternion({ 0,0,0 }) };
+		//自機や敵が動き回れる範囲
+		fieldGenerateData = {
+			{{ 0,13,5 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,14,15 }},
+			{{ 0,18,35 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,10,35 }},
+			{{ 0,18,66 }, ADXQuaternion::EulerToQuaternion({ 0.5f,0,0 }), { 10,9,10 }},
+			{{ 13.5,15,82 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 4.5,5,32 }},
+			{{ 3,15.5f,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6.1f,5,6 }},
+			{{ -22,-14,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,1 }), { 38,4,2 }},
+			{{ -40,-50,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,10,6 }},
+		};
 		//床
 		floorGenerateData = {
 			{{ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 2,2,2 }},
@@ -51,16 +61,6 @@ void GameScene::Initialize()
 			{{ 3,10,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,1,6 }},
 			{{ -18.5f,-14.8f,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,1 }), { 30,1,2 }},
 			{{ -40,-60,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,1,6 }},
-		};
-		//自機や敵が動き回れる範囲
-		fieldGenerateData = {
-			{{ 0,13,5 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,14,15 }},
-			{{ 0,18,35 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,10,35 }},
-			{{ 0,18,66 }, ADXQuaternion::EulerToQuaternion({ 0.5f,0,0 }), { 10,9,10 }},
-			{{ 13.5,15,82 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 4.5,5,32 }},
-			{{ 3,15.5f,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6.1f,5,6 }},
-			{{ -22,-14,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,1 }), { 38,4,2 }},
-			{{ -40,-50,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,10,6 }},
 		};
 		//チュートリアルが表示されるエリア
 		tutorialAreaGenerateData = {
@@ -96,10 +96,30 @@ void GameScene::Initialize()
 	{
 		//自機のスタート位置
 		PlayerStartTransform = { {0,4,-19}, ADXQuaternion::EulerToQuaternion({ 0,0,0 }) };
+		//自機や敵が動き回れる範囲
+		fieldGenerateData = {
+			{{ 0,5,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,5,20 }},
+			{{ 0,5,30 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 3,5,10 }},
+			{{ 0,5,40 }, ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi * 0.25f,0 }), { 5,5,5 }},
+
+		};
 		//床
 		floorGenerateData = {
 			{{ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,2,20 }},
+			{{ 3,5,20 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 0.3f,5,0.5f }},
+			{{ 1.5f,5,20 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 0.3f,5,0.5f }},
+			{{ 0,5,20 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 0.3f,5,0.5f }},
+			{{ -1.5f,5,20 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 0.3f,5,0.5f }},
+			{{ -3,5,20 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 0.3f,5,0.5f }},
+			{{ 0,-1,30 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 3,2,10 }},
+			{{ 0,-1,40 }, ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi * 0.25f,0 }), { 5,3,5 }},
+
 		};
+		//敵
+		enemySpawnData.SetSpawnList({
+			{ EnemySpawnData::eType_Cub_E,{7,3,0},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi * 1.25f,0}) },
+			{ EnemySpawnData::eType_Cub_E,{-7,3,10},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi * 0.75f,0}) },
+			});
 	}
 
 	//設定された情報を元に生成
@@ -112,6 +132,8 @@ void GameScene::Initialize()
 	tempPlayer->Initialize(camera);
 	tempPlayer->LiveEntity::Initialize("player");
 	camera->GetGameObject()->transform_.SetWorldPosition(tempPlayer->GetGameObject()->transform_.TransformPoint({ 0,0,-1 }));
+	camera->GetGameObject()->transform_.SetWorldRotation(tempPlayer->GetGameObject()->transform_.GetWorldRotation());
+	camera->GetGameObject()->transform_.UpdateMatrix();
 	//床
 	for (auto& itr : floorGenerateData)
 	{

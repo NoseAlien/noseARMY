@@ -29,6 +29,7 @@ void SceneGate::Initialize(const std::string& team, const std::string& stageName
 	keyUI_->model_ = &rectModel_;
 	keyUI_->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
 	keyUI_->renderLayer_ = 5;
+	keyUI_->transform_.localScale_ = { 0,0,0 };
 
 	stageNameUI_ = ADXObject::Create();
 	stageNameUI_->transform_.rectTransform_ = true;
