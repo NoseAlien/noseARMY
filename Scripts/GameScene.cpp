@@ -101,25 +101,34 @@ void GameScene::Initialize()
 			{{ 0,5,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,5,20 }},
 			{{ 0,5,30 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 3,5,10 }},
 			{{ 0,5,40 }, ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi * 0.25f,0 }), { 5,5,5 }},
-
+			{{ 10,5,40 }, ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi * 0.5f,0 }), { 3,5,10 }},
+			{{ -10,5,40 }, ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi * -0.5f,0 }), { 3,5,10 }},
+			{{ 0,5,50 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 3,5,10 }},
+			{{ 0,5,90 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,5,30 }},
 		};
 		//床
 		floorGenerateData = {
 			{{ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,2,20 }},
-			{{ 3,5,20 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 0.3f,5,0.5f }},
-			{{ 1.5f,5,20 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 0.3f,5,0.5f }},
-			{{ 0,5,20 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 0.3f,5,0.5f }},
-			{{ -1.5f,5,20 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 0.3f,5,0.5f }},
-			{{ -3,5,20 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 0.3f,5,0.5f }},
+			{{ 3,5,20 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 0.3f,5,0.3f }},
+			{{ 1.5f,5,20 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 0.3f,5,0.3f }},
+			{{ 0,5,20 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 0.3f,5,0.3f }},
+			{{ -1.5f,5,20 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 0.3f,5,0.3f }},
+			{{ -3,5,20 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 0.3f,5,0.3f }},
 			{{ 0,-1,30 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 3,2,10 }},
 			{{ 0,-1,40 }, ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi * 0.25f,0 }), { 5,3,5 }},
-
+			{{ 10,-1,40 }, ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi * 0.5f,0 }), { 3,2,10 }},
+			{{ -10,-1,40 }, ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi * -0.5f,0 }), { 3,2,10 }},
+			{{ 0,-1,50 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 3,2,10 }},
+			{{ 0,-1,90 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,2,30 }},
 		};
 		//敵
 		enemySpawnData.SetSpawnList({
 			{ EnemySpawnData::eType_Cub_E,{7,3,0},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi * 1.25f,0}) },
 			{ EnemySpawnData::eType_Cub_E,{-7,3,10},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi * 0.75f,0}) },
-			});
+			{ EnemySpawnData::eType_Clex,{0,8,40},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
+			{ EnemySpawnData::eType_Clex,{2,5,40},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
+			{ EnemySpawnData::eType_Clex,{-2,5,40},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
+		});
 	}
 
 	//設定された情報を元に生成
