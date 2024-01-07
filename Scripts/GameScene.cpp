@@ -9,10 +9,13 @@ void GameScene::Initialize()
 	key_ = nullptr;
 
 	//画像
-	keyImg_ = ADXImage::LoadADXImage("texture/QUIT_TITLE.png");
-	backGroundTex_ = ADXImage::LoadADXImage("texture/skyBG.png");
-	groundImg_ = ADXImage::LoadADXImage("texture/GroundBlock.png");
+	keyImg = ADXImage::LoadADXImage("texture/QUIT_TITLE.png");
+	backGroundTex = ADXImage::LoadADXImage("texture/skyBG.png");
+	groundImg = ADXImage::LoadADXImage("texture/GroundBlock.png");
+	constructionSignImg = ADXImage::LoadADXImage("texture/constructionSign.png");
+	constructionInfoImg = ADXImage::LoadADXImage("texture/constructionInfo.png");
 
+	//3Dモデル
 	rect_ = ADXModel::CreateRect();
 	ground_ = ADXModel::LoadADXModel("model/groundBlock.obj");
 
@@ -28,7 +31,9 @@ void GameScene::Initialize()
 	std::vector<TutorialArea::GenerateData> tutorialAreaGenerateData{};
 	EnemySpawnData enemySpawnData{};
 	std::vector<BattleFieldBox::GenerateData> battleFieldGenerateData{};
-	std::vector<TransformData> GoalGenerateData{};
+	std::vector<TransformData> goalGenerateData{};
+	std::vector<TransformData> constructionSignGenerateData{};
+	std::vector<TransformData> constructionInfoGenerateData{};
 
 	if (SceneGate::GetNextStageName() == "1-1")
 	{
@@ -88,7 +93,7 @@ void GameScene::Initialize()
 			}, "enemy"},
 		};
 		//ゴール
-		GoalGenerateData = {
+		goalGenerateData = {
 			{{ -40,-50,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,10,6 }}
 		};
 	}
@@ -129,6 +134,17 @@ void GameScene::Initialize()
 			{ EnemySpawnData::eType_Clex,{2,5,40},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
 			{ EnemySpawnData::eType_Clex,{-2,5,40},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
 		});
+		//工事中標識
+		constructionSignGenerateData = {
+			{{ 8,3,70 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 1,1,1 }},
+			{{ 6,3,70 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 1,1,1 }},
+			{{ -6,3,70 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 1,1,1 }},
+			{{ -8,3,70 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 1,1,1 }},
+		};
+		//工事案内
+		constructionInfoGenerateData = {
+			{{ 0,5,70 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 4,4,4 }},
+		};
 	}
 
 	//設定された情報を元に生成
@@ -148,7 +164,7 @@ void GameScene::Initialize()
 	{
 		temp = ADXObject::Create(itr.localPosition, itr.localRotation, itr.localScale);
 		temp->model_ = &ground_;
-		temp->texture_ = groundImg_;
+		temp->texture_ = groundImg;
 		ADXCollider* tempCol = temp->AddComponent<ADXCollider>();
 		tempCol->colType_ = ADXCollider::box;
 	}
@@ -176,25 +192,39 @@ void GameScene::Initialize()
 		tempBattleFieldBox->fieldLayer_ = 2;
 	}
 	//ゴール
-	for (auto& itr : GoalGenerateData)
+	for (auto& itr : goalGenerateData)
 	{
 		temp = ADXObject::Create(itr.localPosition, itr.localRotation, itr.localScale);
 		Goal* tempGoal = temp->AddComponent<Goal>();
 		tempGoal->Initialize("player");
+	}
+	//工事中標識
+	for (auto& itr : constructionSignGenerateData)
+	{
+		temp = ADXObject::Create(itr.localPosition, itr.localRotation, itr.localScale);
+		temp->model_ = &rect_;
+		temp->texture_ = constructionSignImg;
+	}
+	//工事案内
+	for (auto& itr : constructionInfoGenerateData)
+	{
+		temp = ADXObject::Create(itr.localPosition, itr.localRotation, itr.localScale);
+		temp->model_ = &rect_;
+		temp->texture_ = constructionInfoImg;
 	}
 
 	ADXObject* backGround = ADXObject::Create();
 	backGround->transform_.rectTransform_ = true;
 	backGround->transform_.UpdateMatrix();
 	backGround->model_ = &rect_;
-	backGround->texture_ = backGroundTex_;
+	backGround->texture_ = backGroundTex;
 	backGround->renderLayer_ = -1;
 
 	key_ = ADXObject::Duplicate(*backGround);
 	key_->transform_.localPosition_ = { -0.65f,0.85f,0 };
 	key_->transform_.localScale_ = { 0.3f,0.45f,1 };
 	key_->transform_.UpdateMatrix();
-	key_->texture_ = keyImg_;
+	key_->texture_ = keyImg;
 	key_->renderLayer_ = 1;
 }
 
