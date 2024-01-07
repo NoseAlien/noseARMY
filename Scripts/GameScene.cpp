@@ -6,6 +6,9 @@
 
 void GameScene::Initialize()
 {
+	ground_ = {};
+	rect_ = {};
+	shutter_ = nullptr;
 	key_ = nullptr;
 
 	//画像
