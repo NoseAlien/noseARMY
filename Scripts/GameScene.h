@@ -32,7 +32,7 @@ private:
 	uint32_t keyImg = 0;
 	uint32_t backGroundTex = 0;
 	uint32_t groundImg = 0;
-	uint32_t constructionSignImg = 0;
+	//uint32_t constructionSignImg = 0;
 	uint32_t constructionInfoImg = 0;
 
 	//3Dモデル

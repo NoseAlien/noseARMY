@@ -15,7 +15,7 @@ void GameScene::Initialize()
 	keyImg = ADXImage::LoadADXImage("texture/QUIT_TITLE.png");
 	backGroundTex = ADXImage::LoadADXImage("texture/skyBG.png");
 	groundImg = ADXImage::LoadADXImage("texture/GroundBlock.png");
-	constructionSignImg = ADXImage::LoadADXImage("texture/constructionSign.png");
+	//constructionSignImg = ADXImage::LoadADXImage("texture/constructionSign.png");
 	constructionInfoImg = ADXImage::LoadADXImage("texture/constructionInfo.png");
 
 	//3Dモデル
@@ -201,13 +201,13 @@ void GameScene::Initialize()
 		Goal* tempGoal = temp->AddComponent<Goal>();
 		tempGoal->Initialize("player");
 	}
-	//工事中標識
-	for (auto& itr : constructionSignGenerateData)
-	{
-		temp = ADXObject::Create(itr.localPosition, itr.localRotation, itr.localScale);
-		temp->model_ = &rect_;
-		temp->texture_ = constructionSignImg;
-	}
+	////工事中標識
+	//for (auto& itr : constructionSignGenerateData)
+	//{
+	//	temp = ADXObject::Create(itr.localPosition, itr.localRotation, itr.localScale);
+	//	temp->model_ = &rect_;
+	//	temp->texture_ = constructionSignImg;
+	//}
 	//工事案内
 	for (auto& itr : constructionInfoGenerateData)
 	{
