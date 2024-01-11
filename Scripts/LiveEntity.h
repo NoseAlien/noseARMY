@@ -14,6 +14,8 @@ class LiveEntity : public ADXComponent
 public:
 	static const float basicHP;
 	static const float basicAttackPower;
+	static const float repairPower;
+	static const uint32_t maxRepairCoolTime;
 	static const uint32_t basicGhostTimeFrame;
 	static const uint32_t reviveGhostTimeFrame;
 
@@ -44,6 +46,7 @@ private:
 	bool attackHitted_ = false;
 
 	uint32_t killCount_ = 0;
+	int32_t repairCoolTime_ = 0;
 	FieldBox* latestHitField_ = nullptr;
 	bool isOutOfField_ = false;
 

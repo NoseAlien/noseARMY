@@ -2,8 +2,10 @@
 #include "ADXCamera.h"
 #include <time.h>
 
-const float LiveEntity::basicHP = 100;
+const float LiveEntity::basicHP = 50;
 const float LiveEntity::basicAttackPower = 10;
+const float LiveEntity::repairPower = 0.005f;
+const uint32_t LiveEntity::maxRepairCoolTime = 400;
 const uint32_t LiveEntity::basicGhostTimeFrame = 40;
 const uint32_t LiveEntity::reviveGhostTimeFrame = 60;
 
@@ -58,6 +60,20 @@ void LiveEntity::UniqueInitialize()
 void LiveEntity::UniqueUpdate()
 {
 	GetGameObject()->isVisible_ = true;
+	
+	if (IsLive() && ghostTime_ >= 0)
+	{
+		if (repairCoolTime_ > 0)
+		{
+			repairCoolTime_--;
+		}
+		else
+		{
+			hpAmount_ += repairPower;
+		}
+	}
+
+	hpAmount_ = min(max(0, hpAmount_), 1);
 
 	hpGaugeBG_->material_.ambient_ = { 0.1f,0.1f,0.1f };
 	hpGauge_->material_.ambient_ = { 0.1f,1,0.3f };
@@ -173,6 +189,7 @@ void LiveEntity::Damage(float damage)
 	{
 		hpAmount_ -= damage / maxHP_;
 		ghostTime_ = int32_t(damage / basicAttackPower * basicGhostTimeFrame);
+		repairCoolTime_ = maxRepairCoolTime;
 		attackHitted_ = true;
 	}
 }
