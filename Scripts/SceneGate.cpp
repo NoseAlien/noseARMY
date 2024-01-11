@@ -38,14 +38,7 @@ void SceneGate::Initialize(const std::string& team, const std::string& stageName
 	stageNameUI_->renderLayer_ = 5;
 	stageNameUI_->useDefaultDraw_ = false;
 	stageNameUI_->AddComponent<ADXTextRenderer>();
-	stageNameUI_->GetComponent<ADXTextRenderer>()->AddFonts({
-		{ADXImage::LoadADXImage("texture/alphaNumber/0.png"),'0'},{ADXImage::LoadADXImage("texture/alphaNumber/1.png"),'1'},
-		{ADXImage::LoadADXImage("texture/alphaNumber/2.png"),'2'},{ADXImage::LoadADXImage("texture/alphaNumber/3.png"),'3'},
-		{ADXImage::LoadADXImage("texture/alphaNumber/4.png"),'4'},{ADXImage::LoadADXImage("texture/alphaNumber/5.png"),'5'},
-		{ADXImage::LoadADXImage("texture/alphaNumber/6.png"),'6'},{ADXImage::LoadADXImage("texture/alphaNumber/7.png"),'7'},
-		{ADXImage::LoadADXImage("texture/alphaNumber/8.png"),'8'},{ADXImage::LoadADXImage("texture/alphaNumber/9.png"),'9'},
-		{ADXImage::LoadADXImage("texture/alphaNumber/plus.png"),'+'},{ADXImage::LoadADXImage("texture/alphaNumber/minus.png"),'-'},
-		});
+	stageNameUI_->GetComponent<ADXTextRenderer>()->font_ = ADXTextRenderer::GetFont("texture/alphaNumber");
 	stageNameUI_->GetComponent<ADXTextRenderer>()->fontAspect_ = 0.75f;
 	stageNameUI_->GetComponent<ADXTextRenderer>()->fontExtend_ = 2;
 	stageNameUI_->GetComponent<ADXTextRenderer>()->anchor_ = ADXTextRenderer::middleCenter;

@@ -24,27 +24,35 @@ public:
 	};
 
 public:
-	struct fontAndChar
+	struct fontLetter
 	{
 		uint32_t font = 0;
 		char character = ' ';
 	};
 
+	struct font
+	{
+		std::string name = "";
+		std::vector<fontLetter> fontDataCells_{};
+	};
+
+	struct charAndString
+	{
+		char c = ' ';
+		std::string str = "";
+	};
+
 public:
 	std::string text_ = "";
+	font* font_ = nullptr;
 	float fontSize_ = 1;
 	float fontExtend_ = 1;
 	float fontAspect_ = 1;
 	anchor anchor_{};
 
 private:
-	std::vector<fontAndChar> fonts_{};
 	ADXModel model_ = ADXModel::CreateRect();
 	std::vector<ADXWorldTransform>fontWtfs_;
-
-public:
-	//フォントを追加
-	void AddFonts(const std::vector<fontAndChar>& fontSet);
 
 	//文字からフォント画像を検索して追加
 	uint32_t GetFontTex(const char& character);
@@ -52,4 +60,20 @@ public:
 private:
 	//描画処理
 	void UniqueRendering(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList);
+
+private:
+	//フォント
+	static std::vector<font> fonts_;
+
+public:
+	//フォントを追加
+	static void AddFont(const std::string letters, const std::string& folderPath, const std::string& largeLetterFolderPath,
+		const std::vector<charAndString>& translateFileNameDatas);
+
+	//フォントを取得
+	static font* GetFont(const std::string fontName);
+
+private:
+	//フォント内に文字データを1文字追加
+	static void AddLetter(font* targetFont, const fontLetter& setLetter);
 };

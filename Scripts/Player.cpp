@@ -199,15 +199,7 @@ void Player::LiveEntitiesInitialize()
 	deathCountUI_->renderLayer_ = 5;
 	deathCountUI_->useDefaultDraw_ = false;
 	deathCountUI_->AddComponent<ADXTextRenderer>();
-	deathCountUI_->GetComponent<ADXTextRenderer>()->AddFonts({
-		{ADXImage::LoadADXImage("texture/alphaNumber/0.png"),'0'},{ADXImage::LoadADXImage("texture/alphaNumber/1.png"),'1'},
-		{ADXImage::LoadADXImage("texture/alphaNumber/2.png"),'2'},{ADXImage::LoadADXImage("texture/alphaNumber/3.png"),'3'},
-		{ADXImage::LoadADXImage("texture/alphaNumber/4.png"),'4'},{ADXImage::LoadADXImage("texture/alphaNumber/5.png"),'5'},
-		{ADXImage::LoadADXImage("texture/alphaNumber/6.png"),'6'},{ADXImage::LoadADXImage("texture/alphaNumber/7.png"),'7'},
-		{ADXImage::LoadADXImage("texture/alphaNumber/8.png"),'8'},{ADXImage::LoadADXImage("texture/alphaNumber/9.png"),'9'},
-		{ADXImage::LoadADXImage("texture/alphaNumber/plus.png"),'+'},{ADXImage::LoadADXImage("texture/alphaNumber/minus.png"),'-'},
-		{ADXImage::LoadADXImage("texture/alphaNumber/space.png"),' '},
-		});
+	deathCountUI_->GetComponent<ADXTextRenderer>()->font_ = ADXTextRenderer::GetFont("texture/alphaNumber");
 	deathCountUI_->GetComponent<ADXTextRenderer>()->fontAspect_ = 0.75f;
 	deathCountUI_->GetComponent<ADXTextRenderer>()->fontExtend_ = 2;
 	deathCountUI_->GetComponent<ADXTextRenderer>()->anchor_ = ADXTextRenderer::middleLeft;
@@ -229,15 +221,7 @@ void Player::LiveEntitiesInitialize()
 	killCountUI_->renderLayer_ = 5;
 	killCountUI_->useDefaultDraw_ = false;
 	killCountUI_->AddComponent<ADXTextRenderer>();
-	killCountUI_->GetComponent<ADXTextRenderer>()->AddFonts({
-		{ADXImage::LoadADXImage("texture/alphaNumber/0.png"),'0'},{ADXImage::LoadADXImage("texture/alphaNumber/1.png"),'1'},
-		{ADXImage::LoadADXImage("texture/alphaNumber/2.png"),'2'},{ADXImage::LoadADXImage("texture/alphaNumber/3.png"),'3'},
-		{ADXImage::LoadADXImage("texture/alphaNumber/4.png"),'4'},{ADXImage::LoadADXImage("texture/alphaNumber/5.png"),'5'},
-		{ADXImage::LoadADXImage("texture/alphaNumber/6.png"),'6'},{ADXImage::LoadADXImage("texture/alphaNumber/7.png"),'7'},
-		{ADXImage::LoadADXImage("texture/alphaNumber/8.png"),'8'},{ADXImage::LoadADXImage("texture/alphaNumber/9.png"),'9'},
-		{ADXImage::LoadADXImage("texture/alphaNumber/plus.png"),'+'},{ADXImage::LoadADXImage("texture/alphaNumber/minus.png"),'-'},
-		{ADXImage::LoadADXImage("texture/alphaNumber/space.png"),' '},
-		});
+	killCountUI_->GetComponent<ADXTextRenderer>()->font_ = ADXTextRenderer::GetFont("texture/alphaNumber");
 	killCountUI_->GetComponent<ADXTextRenderer>()->fontAspect_ = 0.75f;
 	killCountUI_->GetComponent<ADXTextRenderer>()->fontExtend_ = 2;
 	killCountUI_->GetComponent<ADXTextRenderer>()->anchor_ = ADXTextRenderer::middleRight;

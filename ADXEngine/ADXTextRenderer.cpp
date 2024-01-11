@@ -1,36 +1,19 @@
 ﻿#include "ADXTextRenderer.h"
 #include "ADXObject.h"
 
-void ADXTextRenderer::AddFonts(const std::vector<fontAndChar>& fontSet)
-{
-	//既に設定されている文字は上書き、そうでなければ新規作成
-	for (auto& setItr : fontSet)
-	{
-		bool hitted = false;
-		for (auto& itr : fonts_)
-		{
-			if (setItr.character == itr.character)
-			{
-				itr = setItr;
-				hitted = true;
-				break;
-			}
-		}
-		if (!hitted)
-		{
-			fonts_.push_back(setItr);
-		}
-	}
-}
+std::vector<ADXTextRenderer::font> ADXTextRenderer::fonts_{};
 
 uint32_t ADXTextRenderer::GetFontTex(const char& character)
 {
-	//検索してヒットしたらそれを返す
-	for (auto& itr : fonts_)
+	if (font_ != nullptr)
 	{
-		if (itr.character == character)
+		//検索してヒットしたらそれを返す
+		for (auto& itr : font_->fontDataCells_)
 		{
-			return itr.font;
+			if (itr.character == character)
+			{
+				return itr.font;
+			}
 		}
 	}
 	return 0;
@@ -92,5 +75,88 @@ void ADXTextRenderer::UniqueRendering([[maybe_unused]] ID3D12Device* device, ID3
 
 		// 描画コマンド
 		model_.Draw(fontWtfs_.back().constBuffTransform_.Get());
+	}
+}
+
+void ADXTextRenderer::AddFont(const std::string letters, const std::string& folderPath, const std::string& largeLetterFolderPath,
+	const std::vector<charAndString>& translateFileNameDatas)
+{
+	font* targetFont = nullptr;
+
+	//既に設定されている場合は上書き、そうでなければ新規作成
+	bool hitted = false;
+	for (auto& itr : fonts_)
+	{
+		if (itr.name == folderPath)
+		{
+			targetFont = &itr;
+			hitted = true;
+			break;
+		}
+	}
+	if (!hitted)
+	{
+		fonts_.push_back(font());
+		targetFont = &fonts_.back();
+	}
+	
+	//一文字ずつ生成
+	for (auto& itr : letters)
+	{
+		std::string fileName = "";
+		fileName += itr;
+		//記号など、対応させたい文字とファイル名が違うものは変換
+		for (auto& transItr : translateFileNameDatas)
+		{
+			if (transItr.c == itr)
+			{
+				fileName = transItr.str;
+				break;
+			}
+		}
+		//大文字はフォルダ分けされているのでそのフォルダ名をファイルパスに追加
+		if (std::isupper(itr) != 0)
+		{
+			fileName = largeLetterFolderPath + "/" + fileName;
+		}
+
+		fileName = folderPath + "/" + fileName + ".png";
+		AddLetter(targetFont, { ADXImage::LoadADXImage(fileName), itr });
+	}
+
+	targetFont->name = folderPath;
+}
+
+ADXTextRenderer::font* ADXTextRenderer::GetFont(const std::string fontName)
+{
+	//同じ名前のフォントを検索し、ヒットしたらそれを返す
+	for (auto& itr : fonts_)
+	{
+		if (itr.name == fontName)
+		{
+			return &itr;
+			break;
+		}
+	}
+
+	return nullptr;
+}
+
+void ADXTextRenderer::AddLetter(font* targetFont, const fontLetter& setLetter)
+{
+	//既に設定されている文字は上書き、そうでなければ新規作成
+	bool hitted = false;
+	for (auto& itr : targetFont->fontDataCells_)
+	{
+		if (setLetter.character == itr.character)
+		{
+			itr = setLetter;
+			hitted = true;
+			break;
+		}
+	}
+	if (!hitted)
+	{
+		targetFont->fontDataCells_.push_back(setLetter);
 	}
 }
