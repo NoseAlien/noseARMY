@@ -18,6 +18,8 @@ private:
 	ADXObject* title_ = nullptr;
 	ADXObject* key_ = nullptr;
 	ADXObject* backGround_ = nullptr;
+	ADXObject* copyright_ = nullptr;
+	ADXObject* version_ = nullptr;
 	ADXCamera* camera_ = nullptr;
 
 public:
