@@ -46,8 +46,8 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 		SceneTransition::StaticInitialize();
 
 		ADXKeyConfig config_;
-		config_.AddConfigCell({ "jump", {DIK_SPACE}, {ADXGamePadInput::B} });
-		config_.AddConfigCell({ "attack", {DIK_Z,DIK_X,DIK_C,DIK_V,DIK_B}, {ADXGamePadInput::A} });
+		config_.AddConfigCell({ "jump", {DIK_SPACE}, {ADXGamePadInput::B,ADXGamePadInput::X} });
+		config_.AddConfigCell({ "attack", {DIK_Z,DIK_X,DIK_C,DIK_V,DIK_B}, {ADXGamePadInput::A,ADXGamePadInput::Y} });
 		config_.AddVecConfigCell({ "vec",
 			{DIK_UP,DIK_W},{DIK_DOWN,DIK_S},{DIK_RIGHT,DIK_D},{DIK_LEFT,DIK_A},
 			{},{},{},{},
