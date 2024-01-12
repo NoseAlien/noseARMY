@@ -54,7 +54,7 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 			{ADXGamePadInput::LEFT} });
 		config_.AddConfigCell({ "select", {DIK_SPACE}, {ADXGamePadInput::B} });
 		config_.AddConfigCell({ "back", {DIK_Z,DIK_X,DIK_C,DIK_V,DIK_B}, {ADXGamePadInput::A} });
-		config_.AddConfigCell({ "return", {DIK_Q,DIK_BACKSPACE,DIK_RETURN}, {} });
+		config_.AddConfigCell({ "return", {DIK_Q,DIK_BACKSPACE,DIK_RETURN}, {ADXGamePadInput::BACK} });
 		ADXTextRenderer::AddFont("0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM +-,._",
 			"texture/alphaNumber", "large",
 			{ {'+',"plus"},{'-',"minus"},{' ',"space"},{',',"comma"},{'.',"period"},{'_',"underscore"} });
