@@ -79,7 +79,8 @@ void TitleScene::Update()
 {
 	title_->transform_.localPosition_.y_ = sin(clock() * 0.001f) * 0.01f + 0.2f;
 	key_->transform_.localPosition_.y_ = sin(clock() * 0.001f - 1) * 0.01f - 0.4f;
-	if (ADXKeyConfig::GetCurrentInstance()->GetInputDown("select"))
+	if (ADXKeyConfig::GetCurrentInstance()->GetInputDown("select")
+		|| ADXKeyConfig::GetCurrentInstance()->GetInputDown("back"))
 	{
 		SceneTransition::ChangeScene(2);
 	}
