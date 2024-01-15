@@ -265,6 +265,12 @@ void Player::LiveEntitiesUpdate()
 	{
 		rigidbody_->velocity_ *= 0.8f;
 		rigidbody_->gravityScale_ = 0;
+		if ((prevInputVec.Length() == 0 && GetDirectionInput().Length() != 0)
+			|| (prevInputVec.Length() != 0 && GetDirectionInput().Length() == 0)
+			|| GetInputStatusTrigger(jump) || GetInputStatusRelease(jump))
+		{
+			splitable_ = false;
+		}
 	}
 	else
 	{
@@ -406,6 +412,8 @@ void Player::LiveEntitiesUpdate()
 	{
 		killCountIcon_->transform_.localScale_.x_ -= killCountIcon_->transform_.localScale_.x_ * uiExtendSpeed;
 	}
+
+	prevInputVec = GetDirectionInput();
 }
 
 void Player::LiveEntitiesOnCollisionHit(ADXCollider* col, [[maybe_unused]]ADXCollider* myCol)
