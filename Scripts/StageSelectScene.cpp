@@ -41,7 +41,16 @@ void StageSelectScene::Initialize()
 	tempCol = floors_.back()->AddComponent<ADXCollider>();
 	tempCol->colType_ = ADXCollider::box;
 
-	temp = ADXObject::Create({ 4,1,0 });
+	temp = ADXObject::Create({ 12,1,18 }, ADXQuaternion::IdentityQuaternion(), { 0.5f,0.5f,0.5f });
+	temp->AddComponent<Pebble>();
+
+	temp = ADXObject::Create({ -15,1,-12 }, ADXQuaternion::IdentityQuaternion(), { 1,1,1 });
+	temp->AddComponent<Pebble>();
+
+	temp = ADXObject::Create({ 20,1,-14 }, ADXQuaternion::IdentityQuaternion(), { 0.7f,0.7f,0.7f });
+	temp->AddComponent<Pebble>();
+
+	temp = ADXObject::Create({ -22,1,30 }, ADXQuaternion::IdentityQuaternion(), { 0.3f,0.3f,0.3f });
 	temp->AddComponent<Pebble>();
 
 

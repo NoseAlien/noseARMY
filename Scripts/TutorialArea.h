@@ -6,7 +6,7 @@
 class TutorialArea : public ADXComponent
 {
 public:
-	struct GenerateData
+	struct generateData
 	{
 		ADXVector3 localPosition{};
 		ADXQuaternion localRotation{};

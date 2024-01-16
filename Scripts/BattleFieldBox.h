@@ -8,7 +8,7 @@
 class BattleFieldBox : public FieldBox
 {
 public:
-	struct GenerateData
+	struct generateData
 	{
 		ADXVector3 localPosition{};
 		ADXQuaternion localRotation{};

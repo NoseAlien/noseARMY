@@ -20,11 +20,17 @@
 class GameScene : public ADXScene
 {
 private:
-	struct TransformData
+	struct transformData
 	{
 		ADXVector3 localPosition{};
 		ADXQuaternion localRotation{};
 		ADXVector3 localScale{};
+	};
+
+	struct pebbleSpawnData
+	{
+		ADXVector3 position{};
+		float scale = 1;
 	};
 
 private:

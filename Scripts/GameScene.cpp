@@ -1,6 +1,7 @@
 ﻿#include "GameScene.h"
 #include "SceneTransition.h"
 #include "SceneGate.h"
+#include "Pebble.h"
 
 #include "ADXKeyConfig.h"
 
@@ -28,15 +29,16 @@ void GameScene::Initialize()
 
 
 	//ステージ生成に使う情報
-	TransformData PlayerStartTransform{};
-	std::vector<TransformData> floorGenerateData{};
-	std::vector<TransformData> fieldGenerateData{};
-	std::vector<TutorialArea::GenerateData> tutorialAreaGenerateData{};
+	transformData PlayerStartTransform{};
+	std::vector<transformData> fieldGenerateData{};
+	std::vector<transformData> floorGenerateData{};
+	std::vector<pebbleSpawnData> pebbleGenerateData{};
+	std::vector<TutorialArea::generateData> tutorialAreaGenerateData{};
 	EnemySpawnData enemySpawnData{};
-	std::vector<BattleFieldBox::GenerateData> battleFieldGenerateData{};
-	std::vector<TransformData> goalGenerateData{};
-	std::vector<TransformData> constructionSignGenerateData{};
-	std::vector<TransformData> constructionInfoGenerateData{};
+	std::vector<BattleFieldBox::generateData> battleFieldGenerateData{};
+	std::vector<transformData> goalGenerateData{};
+	std::vector<transformData> constructionSignGenerateData{};
+	std::vector<transformData> constructionInfoGenerateData{};
 
 	if (SceneGate::GetNextStageName() == "1-1")
 	{
@@ -162,6 +164,12 @@ void GameScene::Initialize()
 	camera->GetGameObject()->transform_.SetWorldPosition(tempPlayer->GetGameObject()->transform_.TransformPoint({ 0,0,-1 }));
 	camera->GetGameObject()->transform_.SetWorldRotation(tempPlayer->GetGameObject()->transform_.GetWorldRotation());
 	camera->GetGameObject()->transform_.UpdateMatrix();
+	//自機や敵が動き回れる範囲
+	for (auto& itr : fieldGenerateData)
+	{
+		temp = ADXObject::Create(itr.localPosition, itr.localRotation, itr.localScale);
+		temp->AddComponent<FieldBox>();
+	}
 	//床
 	for (auto& itr : floorGenerateData)
 	{
@@ -171,11 +179,11 @@ void GameScene::Initialize()
 		ADXCollider* tempCol = temp->AddComponent<ADXCollider>();
 		tempCol->colType_ = ADXCollider::box;
 	}
-	//自機や敵が動き回れる範囲
-	for (auto& itr : fieldGenerateData)
+	//小石
+	for (auto& itr : pebbleGenerateData)
 	{
-		temp = ADXObject::Create(itr.localPosition, itr.localRotation, itr.localScale);
-		temp->AddComponent<FieldBox>();
+		temp = ADXObject::Create(itr.position, ADXQuaternion::IdentityQuaternion(), { itr.scale,itr.scale,itr.scale });
+		temp->AddComponent<Pebble>();
 	}
 	//チュートリアルが表示されるエリア
 	for (auto& itr : tutorialAreaGenerateData)
