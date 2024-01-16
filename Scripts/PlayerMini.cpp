@@ -1,4 +1,4 @@
-﻿#include "PlayerMini.h"
+#include "PlayerMini.h"
 #include "Player.h"
 
 void PlayerMini::Initialize(Player* setParent)
@@ -84,6 +84,5 @@ void PlayerMini::UniqueUpdate()
 void PlayerMini::OnPreRender()
 {
 	body_->transform_.SetWorldRotation(ADXCamera::GetCurrentCamera()->GetGameObject()->transform_.GetWorldRotation());
-	body_->transform_.UpdateMatrix();
 	body_->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,bodyRotAngle_ });
 }

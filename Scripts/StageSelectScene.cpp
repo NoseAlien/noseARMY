@@ -1,6 +1,7 @@
 ﻿#include "StageSelectScene.h"
 #include "SceneTransition.h"
 #include "ADXKeyConfig.h"
+#include "Pebble.h"
 
 void StageSelectScene::Initialize()
 {
@@ -39,6 +40,9 @@ void StageSelectScene::Initialize()
 	floors_.back()->texture_ = groundImg_;
 	tempCol = floors_.back()->AddComponent<ADXCollider>();
 	tempCol->colType_ = ADXCollider::box;
+
+	temp = ADXObject::Create({ 4,1,0 });
+	temp->AddComponent<Pebble>();
 
 
 	temp = ADXObject::Create({ 0,3,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 4,4,4 });

@@ -138,6 +138,7 @@
     <ClCompile Include="Scripts\GameScene.cpp" />
     <ClCompile Include="Scripts\Goal.cpp" />
     <ClCompile Include="Scripts\main.cpp" />
+    <ClCompile Include="Scripts\Pebble.cpp" />
     <ClCompile Include="Scripts\Player.cpp" />
     <ClCompile Include="Scripts\PlayerMini.cpp" />
     <ClCompile Include="Scripts\Projectile.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="Scripts\FieldBox.h" />
     <ClInclude Include="Scripts\GameScene.h" />
     <ClInclude Include="Scripts\Goal.h" />
+    <ClInclude Include="Scripts\Pebble.h" />
     <ClInclude Include="Scripts\Player.h" />
     <ClInclude Include="Scripts\PlayerMini.h" />
     <ClInclude Include="Scripts\Projectile.h" />
