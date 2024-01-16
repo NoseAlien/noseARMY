@@ -2,7 +2,7 @@
 #include "ADXCamera.h"
 
 const float drag = 0.95f;
-const ADXVector3 gravity = { 0,-0.5f,0 };
+const ADXVector3 gravity = { 0,-0.01f,0 };
 
 void Pebble::UniqueInitialize()
 {

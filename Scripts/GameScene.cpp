@@ -72,6 +72,20 @@ void GameScene::Initialize()
 			{{ -18.5f,-14.8f,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,1 }), { 30,1,2 }},
 			{{ -40,-60,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,1,6 }},
 		};
+		//小石
+		pebbleGenerateData = {
+			{{-6,1,-2}, 0.5f},
+			{{4,1,5}, 0.4f},
+			{{-4,20,38}, 0.5f},
+			{{4,20,46}, 0.7f},
+			{{5,20,46}, 0.2f},
+			{{6,20,59}, 0.3f},
+			{{-2,20,67}, 0.2f},
+			{{-6,15,59}, 0.3f},
+			{{2,15,67}, 0.5f},
+			{{-8,15,70}, 0.8f},
+			{{4,15,62}, 0.2f},
+		};
 		//チュートリアルが表示されるエリア
 		tutorialAreaGenerateData = {
 			{{ 0,3,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 4,4,4 }, "texture/tutorial_move.png"},
