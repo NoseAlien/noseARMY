@@ -423,19 +423,6 @@ void ADXObject::StaticUpdate()
 
 	for (auto& itr : S_objs)
 	{
-		//全オブジェクトの情報をImGuiに表示
-		#ifdef _DEBUG
-		float pos[3] = { itr->transform_.localPosition_.x_,itr->transform_.localPosition_.y_,itr->transform_.localPosition_.z_ };
-
-		bool tool_active = true;
-		ImGui::Begin("My First Tool", &tool_active, ImGuiWindowFlags_MenuBar);
-		ImGui::InputFloat3("Position", pos);
-
-		ImGui::End();
-
-		itr->transform_.localPosition_ = { pos[0],pos[1],pos[2] };
-		#endif
-
 		//更新処理
 		itr->Update();
 		//オブジェクトが存在できる限界範囲内に収める
@@ -448,6 +435,17 @@ void ADXObject::StaticUpdate()
 				max(limitMinPos.z_, min(itrWorldPos.z_, limitMaxPos.z_))
 				});
 		}
+
+		//全オブジェクトの情報をImGuiに表示
+		float pos[3] = { itr->transform_.localPosition_.x_,itr->transform_.localPosition_.y_,itr->transform_.localPosition_.z_ };
+
+		bool tool_active = true;
+		ImGui::Begin("My First Tool", &tool_active, ImGuiWindowFlags_MenuBar);
+		ImGui::InputFloat3("Position", pos);
+
+		ImGui::End();
+
+		itr->transform_.localPosition_ = { pos[0],pos[1],pos[2] };
 	}
 }
 

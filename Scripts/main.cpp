@@ -49,9 +49,13 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 		config_.AddConfigCell({ "jump", {DIK_SPACE}, {ADXGamePadInput::B,ADXGamePadInput::X} });
 		config_.AddConfigCell({ "attack", {DIK_Z,DIK_X,DIK_C,DIK_V,DIK_B}, {ADXGamePadInput::A,ADXGamePadInput::Y} });
 		config_.AddVecConfigCell({ "vec",
-			{DIK_UP,DIK_W},{DIK_DOWN,DIK_S},{DIK_RIGHT,DIK_D},{DIK_LEFT,DIK_A},
+			{DIK_UP},{DIK_DOWN},{DIK_RIGHT},{DIK_LEFT},
 			{},{},{},{},
 			{ADXGamePadInput::LEFT} });
+		config_.AddVecConfigCell({ "cameraTilt",
+			{DIK_W},{DIK_S},{DIK_D},{DIK_A},
+			{},{},{},{},
+			{ADXGamePadInput::RIGHT} });
 		config_.AddConfigCell({ "select", {DIK_SPACE}, {ADXGamePadInput::B} });
 		config_.AddConfigCell({ "back", {DIK_Z,DIK_X,DIK_C,DIK_V,DIK_B}, {ADXGamePadInput::A} });
 		config_.AddConfigCell({ "return", {DIK_Q,DIK_BACKSPACE,DIK_RETURN}, {ADXGamePadInput::BACK} });

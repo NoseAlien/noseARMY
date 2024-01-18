@@ -84,6 +84,9 @@ public:
 	//方向入力の値を返す
 	ADXVector2 GetDirectionInput();
 
+	//カメラ制御用の方向入力の値を返す
+	ADXVector2 GetCameraControlInput();
+
 	//自機に割り当てられたカメラを返す
 	ADXCamera* GetCamera() { return camera_; };
 

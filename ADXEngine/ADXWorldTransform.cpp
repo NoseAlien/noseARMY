@@ -161,7 +161,7 @@ void ADXWorldTransform::SetWorldRotation(const ADXQuaternion& worldRot)
 
 ADXVector3 ADXWorldTransform::TransformPoint(const ADXVector3& pos) const
 {
-	ADXVector3 ret = ADXMatrix4::Transform(pos, matTrans_);
+	ADXVector3 ret = ADXMatrix4::Transform(pos, GetMatWorld());
 	return ret;
 }
 

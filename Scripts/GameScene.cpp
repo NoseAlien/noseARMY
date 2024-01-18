@@ -50,9 +50,9 @@ void GameScene::Initialize()
 			{{ 0,18,35 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,10,35 }},
 			{{ 0,18,66 }, ADXQuaternion::EulerToQuaternion({ 0.5f,0,0 }), { 10,9,10 }},
 			{{ 13.5,15,82 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 4.5,5,32 }},
-			{{ 3,15.5f,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6.1f,5,6 }},
-			{{ -22,-14,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,1 }), { 38,4,2 }},
-			{{ -40,-50,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,10,6 }},
+			{{ -1,15.5f,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,5,10 }},
+			{{ -30,-14,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,1 }), { 38,4,2 }},
+			{{ -48,-50,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,10,6 }},
 		};
 		//床
 		floorGenerateData = {
@@ -68,9 +68,9 @@ void GameScene::Initialize()
 			{{ 4,10,61 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 14,1,11 }},
 			{{ 13.5f,10,93 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 4.5f,1,21 }},
 			{{ 10,11.5f,85 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 1,0.5f,11 }},
-			{{ 3,10,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,1,6 }},
-			{{ -18.5f,-14.8f,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,1 }), { 30,1,2 }},
-			{{ -40,-60,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,1,6 }},
+			{{ -1,10,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,1,10 }},
+			{{ -26.5f,-14.8f,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,1 }), { 30,1,2 }},
+			{{ -48,-60,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,1,6 }},
 		};
 		//小石
 		pebbleGenerateData = {
@@ -85,6 +85,16 @@ void GameScene::Initialize()
 			{{2,15,67}, 0.5f},
 			{{-8,15,70}, 0.8f},
 			{{4,15,62}, 0.2f},
+			{{13,15,55}, 0.4f},
+			{{17,12,82}, 0.2f},
+			{{12,12,88}, 0.2f},
+			{{15,12,102}, 0.3f},
+			{{-1,12,116}, 0.4f},
+			{{7,12,114}, 0.2f},
+			{{0,12,109}, 0.2f},
+			{{7,12,106}, 0.3f},
+			{{7.5f,12,106.5f}, 0.2f},
+			{{-7,12,116}, 1},
 		};
 		//チュートリアルが表示されるエリア
 		tutorialAreaGenerateData = {
@@ -92,7 +102,7 @@ void GameScene::Initialize()
 			{{ 0,-1.5f,16 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,1,10 }, "texture/tutorial_jump.png"},
 			{{ 0,10,15.5f }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,10,4 }, "texture/tutorial_jump_2.png"},
 			{{ 0,23,38 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,4,15 }, "texture/tutorial_army.png"},
-			{{ 3,15.5,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,5,6 }, "texture/tutorial_army_2.png"},
+			{{ -1,15.5f,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,5,10 }, "texture/tutorial_army_2.png"},
 		};
 		//敵
 		enemySpawnData.SetSpawnList({
@@ -104,7 +114,7 @@ void GameScene::Initialize()
 			});
 		//入ると敵が出てくるエリア
 		battleFieldGenerateData = {
-			{{ 3,15.4f,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,5,6 },{
+			{{ -1,15.4f,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,5,10 },{
 			{EnemySpawnData::eType_Cub_E,{0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
 			{EnemySpawnData::eType_Clex,{0.5f,0,-0.5f},ADXQuaternion::IdentityQuaternion()},
 			{EnemySpawnData::eType_Cub_E,{-0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
@@ -113,7 +123,7 @@ void GameScene::Initialize()
 		};
 		//ゴール
 		goalGenerateData = {
-			{{ -40,-50,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,10,6 }}
+			{{ -48,-50,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 6,10,6 }}
 		};
 	}
 	else if (SceneGate::GetNextStageName() == "1-2")
@@ -153,6 +163,15 @@ void GameScene::Initialize()
 			{ EnemySpawnData::eType_Clex,{2,5,40},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
 			{ EnemySpawnData::eType_Clex,{-2,5,40},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
 		});
+		//入ると敵が出てくるエリア
+		battleFieldGenerateData = {
+			{{ 0,5,90 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,5,10 },{
+			{EnemySpawnData::eType_Cub_E,{0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
+			{EnemySpawnData::eType_Clex,{0.5f,0,-0.5f},ADXQuaternion::IdentityQuaternion()},
+			{EnemySpawnData::eType_Cub_E,{-0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
+			{EnemySpawnData::eType_Clex,{-0.5f,0,-0.5f},ADXQuaternion::IdentityQuaternion()},
+			}, "enemy"},
+		};
 		//工事中標識
 		constructionSignGenerateData = {
 			{{ 8,3,70 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 1,1,1 }},

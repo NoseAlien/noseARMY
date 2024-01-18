@@ -103,7 +103,7 @@ public:
 	ADXQuaternion InverseTransformRotation(const ADXQuaternion& rot) const;
 
 	//ワールド変換行列を取得する
-	ADXMatrix4 GetMatWorld() { return matWorld_; };
+	ADXMatrix4 GetMatWorld() const { return matWorld_; }
 
 	//ワールド変換逆行列を取得する
 	ADXMatrix4 GetMatWorldInverse() const;
