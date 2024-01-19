@@ -8,7 +8,8 @@
 const float uiExtendSpeed = 0.3f;
 const float tutorialWindowSize = 0.3f;
 const float deathCountUISize = 0.1f;
-const float cameraTiltSpeed = 0.5f;
+const float maxCameraTiltVelocity = 0.7f;
+const float cameraTiltForce = 0.3f;
 const float cameraDistance = 20;
 
 void Player::Initialize(ADXCamera* setCamera)
@@ -108,9 +109,11 @@ void Player::Move(float walkSpeed, float jumpPower)
 
 void Player::ViewUpdate()
 {
+
+	cameraTiltVelocity = ADXUtility::Lerp(cameraTiltVelocity, -GetCameraControlInput().x_ * maxCameraTiltVelocity, cameraTiltForce);
 	camera_->GetGameObject()->transform_.SetWorldPosition(
 		camera_->GetGameObject()->transform_.GetWorldPosition()
-		+ camera_->GetGameObject()->transform_.TransformPointOnlyRotation({ 1,0,0 }) * GetCameraControlInput().x_ * cameraTiltSpeed);
+		+ camera_->GetGameObject()->transform_.TransformPointOnlyRotation({ 1,0,0 }) * cameraTiltVelocity);
 
 	ADXVector3 cameraLocalPos = GetGameObject()->transform_.InverseTransformPoint(camera_->GetGameObject()->transform_.GetWorldPosition()).Normalize();
 	cameraLocalPos.y_ = 0.3f;

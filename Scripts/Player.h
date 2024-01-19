@@ -50,6 +50,7 @@ private:
 
 	ADXParticleSystem* deadParticle_ = nullptr;
 
+	float cameraTiltVelocity{};
 	ADXVector2 prevInputVec{};
 	std::list<PlayerMini*> minis_{};
 	int splitInterval_ = 0;
