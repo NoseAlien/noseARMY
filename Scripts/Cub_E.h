@@ -5,12 +5,12 @@ class Cub_E : public Enemy
 {
 private:
 	ADXModel rect_{};
-	uint32_t preAttackTex = 0;
-	uint32_t attackTex = 0;
+	uint32_t preAttackTex_ = 0;
+	uint32_t attackTex_ = 0;
 
-	ADXObject* hair = nullptr;
-	ADXObject* tailRig = nullptr;
-	ADXObject* tail = nullptr;
+	ADXObject* hair_ = nullptr;
+	ADXObject* tailRig_ = nullptr;
+	ADXObject* tail_ = nullptr;
 
 private:
 	void EnemyInitialize() final;

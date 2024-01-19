@@ -1,4 +1,4 @@
-﻿#include "LiveEntity.h"
+#include "LiveEntity.h"
 #include "ADXCamera.h"
 #include <time.h>
 
@@ -148,6 +148,7 @@ void LiveEntity::UniqueUpdate()
 			particle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 		}
 		particle_->animation_.delayFrame_ = 1;
+		particle_->lifeTime_ = particle_->animation_.GetLength() * 2;
 		for (int i = 0; i < 6; i++)
 		{
 			particle_->Emission();

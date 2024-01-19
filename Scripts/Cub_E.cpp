@@ -22,30 +22,30 @@ void Cub_E::EnemyInitialize()
 
 	nutralTex_ = ADXImage::LoadADXImage("texture/tex_Cub_E.png");
 	deadTex_ = ADXImage::LoadADXImage("texture/tex_Cub_E_4.png");
-	preAttackTex = ADXImage::LoadADXImage("texture/tex_Cub_E_2.png");
-	attackTex = ADXImage::LoadADXImage("texture/tex_Cub_E_3.png");
+	preAttackTex_ = ADXImage::LoadADXImage("texture/tex_Cub_E_2.png");
+	attackTex_ = ADXImage::LoadADXImage("texture/tex_Cub_E_3.png");
 
 	visual_->model_ = &enemyModel_;
 
 	//髪
-	hair = ADXObject::Create();
-	hair->transform_.parent_ = &visual_->transform_;
-	hair->model_ = &rect_;
-	hair->texture_ = ADXImage::LoadADXImage("texture/Cub_E_hair.png");
+	hair_ = ADXObject::Create();
+	hair_->transform_.parent_ = &visual_->transform_;
+	hair_->model_ = &rect_;
+	hair_->texture_ = ADXImage::LoadADXImage("texture/Cub_E_hair.png");
 	//体の一部として登録
-	bodyParts_.push_back(hair);
+	bodyParts_.push_back(hair_);
 
 	//尻尾のボーン
-	tailRig = ADXObject::Create();
-	tailRig->transform_.parent_ = &visual_->transform_;
+	tailRig_ = ADXObject::Create();
+	tailRig_->transform_.parent_ = &visual_->transform_;
 
 	//尻尾
-	tail = ADXObject::Create();
-	tail->transform_.parent_ = &tailRig->transform_;
-	tail->model_ = &rect_;
-	tail->texture_ = ADXImage::LoadADXImage("texture/Cub_E_tail.png");
+	tail_ = ADXObject::Create();
+	tail_->transform_.parent_ = &tailRig_->transform_;
+	tail_->model_ = &rect_;
+	tail_->texture_ = ADXImage::LoadADXImage("texture/Cub_E_tail.png");
 	//体の一部として登録
-	bodyParts_.push_back(tail);
+	bodyParts_.push_back(tail_);
 }
 
 void Cub_E::EnemyUpdate()
@@ -81,7 +81,7 @@ void Cub_E::EnemyUpdate()
 			GetGameObject()->transform_.localRotation_ = ADXQuaternion::Slerp(GetGameObject()->transform_.localRotation_,targetRot, aimSpeed);
 			GetGameObject()->transform_.localRotation_ = GetGameObject()->transform_.localRotation_.Normalized();
 
-			visual_->texture_ = preAttackTex;
+			visual_->texture_ = preAttackTex_;
 		}
 		//飛び上がる
 		else if (attackProgress_ > actKeyFrame_fall)
@@ -93,7 +93,7 @@ void Cub_E::EnemyUpdate()
 
 			finalTarget.y_ += jumpHeight;
 			rigidbody_->velocity_ = (finalTarget - GetGameObject()->transform_.localPosition_) * jumpSpeed;
-			visual_->texture_ = preAttackTex;
+			visual_->texture_ = preAttackTex_;
 
 		}
 		//落下して攻撃
@@ -106,36 +106,34 @@ void Cub_E::EnemyUpdate()
 					LiveEntity::SetAttackObj({ itr,this,attackPower });
 				}
 			}
-			visual_->texture_ = attackTex;
+			visual_->texture_ = attackTex_;
 		}
 	}
 	attackProgress_ = min(max(0, attackProgress_ - attackProgressSpeed), 1);
 
-	tailRig->transform_.localPosition_ = tailRigPos;
-	tailRig->transform_.localRotation_ = tailRigRot;
+	tailRig_->transform_.localPosition_ = tailRigPos;
+	tailRig_->transform_.localRotation_ = tailRigRot;
 }
 
 void Cub_E::LiveEntitiesOnPreRender()
 {
-	hair->transform_.localPosition_ = hairPos;
-	hair->transform_.localRotation_ = ADXQuaternion::IdentityQuaternion();
+	hair_->transform_.localPosition_ = hairPos;
+	hair_->transform_.localRotation_ = ADXQuaternion::IdentityQuaternion();
 
 	//髪をYビルボードにする
-	ADXVector3 cameraRelativePos = ADXMatrix4::Transform(
-		ADXCamera::GetCurrentCamera()->GetGameObject()->transform_.GetWorldPosition(),
-		GetGameObject()->transform_.GetMatWorldInverse());
-	hair->transform_.localRotation_ = ADXQuaternion::MakeAxisAngle({ 0,1,0 },
-		(float)atan2(cameraRelativePos.x_ - hair->transform_.localPosition_.x_, cameraRelativePos.z_ - hair->transform_.localPosition_.z_))
-		* hair->transform_.localRotation_;
+	ADXVector3 cameraRelativePos = GetGameObject()->transform_.InverseTransformPoint(
+		ADXCamera::GetCurrentCamera()->GetGameObject()->transform_.GetWorldPosition());
+	hair_->transform_.localRotation_ = ADXQuaternion::MakeAxisAngle({ 0,1,0 },
+		(float)atan2(cameraRelativePos.x_ - hair_->transform_.localPosition_.x_, cameraRelativePos.z_ - hair_->transform_.localPosition_.z_))
+		* hair_->transform_.localRotation_;
 
-	tail->transform_.localPosition_ = { 0,1,0 };
-	tail->transform_.localRotation_ = ADXQuaternion::IdentityQuaternion();
+	tail_->transform_.localPosition_ = { 0,1,0 };
+	tail_->transform_.localRotation_ = ADXQuaternion::IdentityQuaternion();
 
 	//尻尾をYビルボードにする
-	cameraRelativePos = ADXMatrix4::Transform(
-		ADXCamera::GetCurrentCamera()->GetGameObject()->transform_.GetWorldPosition(),
-		tailRig->transform_.GetMatWorldInverse());
-	tail->transform_.localRotation_ = ADXQuaternion::MakeAxisAngle(
-		{ 0,1,0 },(float)atan2(cameraRelativePos.x_ - tail->transform_.localPosition_.x_, cameraRelativePos.z_ - tail->transform_.localPosition_.z_))
-		* tail->transform_.localRotation_;
+	cameraRelativePos = tailRig_->transform_.InverseTransformPoint(
+		ADXCamera::GetCurrentCamera()->GetGameObject()->transform_.GetWorldPosition());
+	tail_->transform_.localRotation_ = ADXQuaternion::MakeAxisAngle(
+		{ 0,1,0 },(float)atan2(cameraRelativePos.x_ - tail_->transform_.localPosition_.x_, cameraRelativePos.z_ - tail_->transform_.localPosition_.z_))
+		* tail_->transform_.localRotation_;
 }

@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 #include "SceneTransition.h"
 #include "ADXTextRenderer.h"
 #include "ADXUtility.h"
@@ -130,6 +130,7 @@ void Player::ViewUpdate()
 
 	cameraVec = (camera_->GetGameObject()->transform_.GetWorldPosition() - GetGameObject()->transform_.GetWorldPosition()).Normalize();
 	camera_->GetGameObject()->transform_.SetWorldPosition(GetGameObject()->transform_.localPosition_ + cameraVec * cameraDistance);
+	camera_->GetGameObject()->transform_.UpdateMatrix();
 }
 
 void Player::LiveEntitiesInitialize()
@@ -491,11 +492,10 @@ void Player::DeadUpdate()
 	visual_->renderLayer_ = 4;
 	nose_->renderLayer_ = 4;
 
-	visual_->transform_.SetWorldRotation(camera_->GetGameObject()->transform_.GetWorldRotation());
-	visual_->transform_.UpdateMatrix();
-	visual_->transform_.SetWorldRotation(
-		ADXQuaternion::MakeAxisAngle(visual_->transform_.TransformPointOnlyRotation({ 0,1,0 }), ADXUtility::Pi)
-		* visual_->transform_.GetWorldRotation());
+	ADXVector3 cameraRelativePos = GetGameObject()->transform_.InverseTransformPoint(
+		camera_->GetGameObject()->transform_.GetWorldPosition());
+	visual_->transform_.localRotation_ = ADXQuaternion::MakeAxisAngle({ 0,1,0 },
+		(float)atan2(cameraRelativePos.x_ - visual_->transform_.localPosition_.x_, cameraRelativePos.z_ - visual_->transform_.localPosition_.z_));
 
 	nose_->transform_.localScale_ = ADXVector3{ 0.42f,0.35f,0.35f };
 	nose_->transform_.localPosition_ = { 0,sin(min(max(0,
@@ -507,9 +507,6 @@ void Player::DeadUpdate()
 	dead_->transform_.localPosition_ = { 0,0,0 };
 	dead_->transform_.SetWorldRotation(camera_->GetGameObject()->transform_.GetWorldRotation());
 	dead_->transform_.UpdateMatrix();
-	dead_->transform_.SetWorldRotation(
-		ADXQuaternion::MakeAxisAngle(dead_->transform_.TransformPointOnlyRotation({ 0,1,0 }), ADXUtility::Pi)
-		* dead_->transform_.GetWorldRotation());
 
 	visual_->isVisible_ = deadAnimationProgress_ < 0.3f;
 	nose_->isVisible_ = deadAnimationProgress_ < 0.8f;
@@ -571,7 +568,8 @@ void Player::DeadUpdate()
 			deadParticle_->lifeTime_ = deadParticle_->animation_.GetLength();
 			deadParticle_->Emission();
 			deadParticle_->particles_.back()->GetGameObject()->transform_.localPosition_ =
-				nose_->transform_.localPosition_ + ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize();
+				GetGameObject()->transform_.InverseTransformPoint(nose_->transform_.GetWorldPosition())
+				+ ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize();
 			deadParticle_->particles_.back()->moveVec_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize() * 0.1f;
 			float particleScale = 0.3f + (float)(rand() % 3) * 0.2f;
 			deadParticle_->particles_.back()->GetGameObject()->transform_.localScale_ = ADXVector3{ particleScale ,particleScale ,particleScale } * 0.3f;
@@ -592,6 +590,18 @@ void Player::DeadUpdate()
 				deadParticle_->particles_.back()->GetGameObject()->transform_.localScale_ = ADXVector3{ particleScale ,particleScale ,particleScale } * 3;
 				deadParticle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 				deadParticle_->particles_.back()->GetGameObject()->renderLayer_ = 5;
+			}
+			deadParticle_->animation_.delayFrame_ = 2;
+			deadParticle_->lifeTime_ = deadParticle_->animation_.GetLength() * 3;
+			for (int i = 0; i < 9; i++)
+			{
+				deadParticle_->Emission();
+				deadParticle_->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize();
+				deadParticle_->particles_.back()->moveVec_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize() * 0.3f;
+				float particleScale = 0.3f + (float)(rand() % 3) * 0.2f;
+				deadParticle_->particles_.back()->GetGameObject()->transform_.localScale_ = ADXVector3{ particleScale ,particleScale ,particleScale } * 0.5f;
+				deadParticle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
+				deadParticle_->particles_.back()->GetGameObject()->renderLayer_ = 4;
 			}
 		}
 

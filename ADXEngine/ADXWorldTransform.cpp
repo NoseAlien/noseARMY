@@ -103,7 +103,7 @@ void ADXWorldTransform::UpdateMatrix()
 
 	if (parent_ != nullptr)
 	{
-		matWorld_ *= parent_->matWorld_;//親の行列を掛け算する
+		matWorld_ *= parent_->GetMatWorld();//親の行列を掛け算する
 		matScale_ *= parent_->matScale_;//親のスケーリング行列も掛け算する
 		matRot_ *= parent_->matRot_;//親の回転行列も掛け算する
 		matTrans_ *= parent_->matTrans_;//親の平行移動行列も掛け算する
@@ -114,7 +114,7 @@ void ADXWorldTransform::UpdateMatrix()
 void ADXWorldTransform::UpdateConstBuffer()
 {
 	//定数バッファに転送
-	constMapTransform_->matWorld = GenerateMatTransform(modelPosition_,modelRotation_,modelScale_) * matWorld_;
+	constMapTransform_->matWorld = GenerateMatTransform(modelPosition_,modelRotation_,modelScale_) * GetMatWorld();
 	constMapTransform_->matWorldRot = modelRotation_.RotateMatrix() * matRot_;
 	constMapTransform_->matMVP = constMapTransform_->matWorld;
 	if (!rectTransform_)
@@ -127,7 +127,7 @@ void ADXWorldTransform::UpdateConstBuffer()
 ADXVector3 ADXWorldTransform::GetWorldPosition()
 {
 	UpdateMatrix();
-	return ADXMatrix4::Transform({ 0,0,0 }, matWorld_);
+	return TransformPoint({ 0,0,0 });
 }
 
 void ADXWorldTransform::SetWorldPosition(const ADXVector3& worldPos)
@@ -138,7 +138,7 @@ void ADXWorldTransform::SetWorldPosition(const ADXVector3& worldPos)
 	}
 	else
 	{
-		localPosition_ = ADXMatrix4::Transform(worldPos, parent_->matWorld_.Inverse());
+		localPosition_ = ADXMatrix4::Transform(worldPos, parent_->GetMatWorldInverse());
 	}
 }
 

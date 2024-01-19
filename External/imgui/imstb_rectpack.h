@@ -348,7 +348,7 @@ static stbrp__findresult stbrp__skyline_find_best_pos(stbrp_context *c, int widt
 {
    int best_waste = (1<<30), best_x, best_y = (1 << 30);
    stbrp__findresult fr;
-   stbrp_node **prev, *node, *tail, **best = NULL;
+   stbrp_node **prev, *node, *tail_, **best = NULL;
 
    // align to multiple of c->align
    width = (width + c->align - 1);
@@ -408,14 +408,14 @@ static stbrp__findresult stbrp__skyline_find_best_pos(stbrp_context *c, int widt
    // This makes BF take about 2x the time
 
    if (c->heuristic == STBRP_HEURISTIC_Skyline_BF_sortHeight) {
-      tail = c->active_head;
+      tail_ = c->active_head;
       node = c->active_head;
       prev = &c->active_head;
       // find first node that's admissible
-      while (tail->x < width)
-         tail = tail->next;
-      while (tail) {
-         int xpos = tail->x - width;
+      while (tail_->x < width)
+         tail_ = tail_->next;
+      while (tail_) {
+         int xpos = tail_->x - width;
          int y,waste;
          STBRP_ASSERT(xpos >= 0);
          // find the left position that matches this
@@ -436,7 +436,7 @@ static stbrp__findresult stbrp__skyline_find_best_pos(stbrp_context *c, int widt
                }
             }
          }
-         tail = tail->next;
+         tail_ = tail_->next;
       }
    }
 

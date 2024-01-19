@@ -165,7 +165,7 @@ void GameScene::Initialize()
 		});
 		//入ると敵が出てくるエリア
 		battleFieldGenerateData = {
-			{{ 0,5,90 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,5,10 },{
+			{{ 0,5,90 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,5,30 },{
 			{EnemySpawnData::eType_Cub_E,{0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
 			{EnemySpawnData::eType_Clex,{0.5f,0,-0.5f},ADXQuaternion::IdentityQuaternion()},
 			{EnemySpawnData::eType_Cub_E,{-0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
@@ -181,7 +181,11 @@ void GameScene::Initialize()
 		};
 		//工事案内
 		constructionInfoGenerateData = {
-			{{ 0,5,70 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 4,4,4 }},
+			//{{ 0,5,70 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 4,4,4 }},
+		};
+		//ゴール
+		goalGenerateData = {
+			{{ 0,5,140 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,10,10 }}
 		};
 	}
 

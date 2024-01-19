@@ -22,19 +22,19 @@ void Clex::EnemyInitialize()
 
 	nutralTex_ = ADXImage::LoadADXImage("texture/tex_Clex.png");
 	deadTex_ = ADXImage::LoadADXImage("texture/tex_Clex_3.png");
-	attackTex = ADXImage::LoadADXImage("texture/tex_Clex_2.png");
+	attackTex_ = ADXImage::LoadADXImage("texture/tex_Clex_2.png");
 
 	visual_->model_ = &enemyModel_;
 
 	//顔
-	face = ADXObject::Create();
-	face->transform_.parent_ = &visual_->transform_;
-	face->transform_.localPosition_ = facePos;
-	face->transform_.localRotation_ = faceRot;
-	face->model_ = &rect_;
-	face->texture_ = ADXImage::LoadADXImage("texture/Clex_face.png");
+	face_ = ADXObject::Create();
+	face_->transform_.parent_ = &visual_->transform_;
+	face_->transform_.localPosition_ = facePos;
+	face_->transform_.localRotation_ = faceRot;
+	face_->model_ = &rect_;
+	face_->texture_ = ADXImage::LoadADXImage("texture/Clex_face.png");
 	//体の一部として登録
-	bodyParts_.push_back(face);
+	bodyParts_.push_back(face_);
 
 	//胴体
 	body_ = ADXObject::Create();
@@ -45,16 +45,16 @@ void Clex::EnemyInitialize()
 	bodyParts_.push_back(body_);
 
 	//ツノのボーン
-	antennaRig = ADXObject::Create();
-	antennaRig->transform_.parent_ = &visual_->transform_;
+	antennaRig_ = ADXObject::Create();
+	antennaRig_->transform_.parent_ = &visual_->transform_;
 
 	//ツノ
-	antenna = ADXObject::Create();
-	antenna->transform_.parent_ = &antennaRig->transform_;
-	antenna->model_ = &rect_;
-	antenna->texture_ = ADXImage::LoadADXImage("texture/Clex_antenna.png");
+	antenna_ = ADXObject::Create();
+	antenna_->transform_.parent_ = &antennaRig_->transform_;
+	antenna_->model_ = &rect_;
+	antenna_->texture_ = ADXImage::LoadADXImage("texture/Clex_antenna.png");
 	//体の一部として登録
-	bodyParts_.push_back(antenna);
+	bodyParts_.push_back(antenna_);
 }
 
 void Clex::EnemyUpdate()
@@ -65,8 +65,8 @@ void Clex::EnemyUpdate()
 
 	GetGameObject()->sortingOrder_ = 1;
 
-	bodyScale = ADXUtility::Lerp(bodyScale, 1, bodyScalingSpeed);
-	antennaAngle = ADXUtility::Lerp(antennaAngle, 0, antennaRotSpeed);
+	bodyScale_ = ADXUtility::Lerp(bodyScale_, 1, bodyScalingSpeed);
+	antennaAngle_ = ADXUtility::Lerp(antennaAngle_, 0, antennaRotSpeed);
 
 	//攻撃動作中でない状態で自機を見つけたら
 	if (targetDetected_ && attackProgress_ <= 0)
@@ -86,7 +86,7 @@ void Clex::EnemyUpdate()
 
 	if (attackProgress_ > 0)
 	{
-		visual_->texture_ = attackTex;
+		visual_->texture_ = attackTex_;
 
 		ADXQuaternion targetRot = ADXQuaternion::EulerToQuaternion(
 			{ 0,(float)atan2(cursor_.x_ - GetGameObject()->transform_.localPosition_.x_,cursor_.z_ - GetGameObject()->transform_.localPosition_.z_),0 });
@@ -101,9 +101,9 @@ void Clex::EnemyUpdate()
 		else if (attackProgress_ > actKeyFrame_postAtk)
 		{
 			rigidbody_->velocity_ = (GetGameObject()->transform_.localPosition_ - cursor_).Normalize() * shotBackSpeed;
-			bodyScale = 0;
-			antennaAngle = 1;
-			if (!shotted)
+			bodyScale_ = 0;
+			antennaAngle_ = 1;
+			if (!shotted_)
 			{
 				ADXObject* projectileObj = ADXObject::Create(
 					GetGameObject()->transform_.GetWorldPosition(),
@@ -115,22 +115,22 @@ void Clex::EnemyUpdate()
 				projectile->SetData((GetGameObject()->transform_.localPosition_ - cursor_).Normalize() * -projectileSpeed, ADXImage::LoadADXImage("texture/Clex_projectile.png"));
 				projectile->LiveEntity::Initialize(GetTeam());
 
-				projectiles.push_back(projectile);
+				projectiles_.push_back(projectile);
 
-				shotted = true;
+				shotted_ = true;
 			}
 		}
 		else
 		{
-			bodyScale = 0;
-			shotted = false;
+			bodyScale_ = 0;
+			shotted_ = false;
 		}
 	}
 	attackProgress_ = min(max(0, attackProgress_ - 0.01f), 1);
 
-	body_->transform_.localScale_ = { bodyScale,bodyScale,bodyScale };
-	antennaRig->transform_.localPosition_ = ADXQuaternion::RotateVector({ 0,1,0 }, GetGameObject()->transform_.modelRotation_);
-	antennaRig->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ antennaAngle,0,0 });
+	body_->transform_.localScale_ = { bodyScale_,bodyScale_,bodyScale_ };
+	antennaRig_->transform_.localPosition_ = ADXQuaternion::RotateVector({ 0,1,0 }, GetGameObject()->transform_.modelRotation_);
+	antennaRig_->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ antennaAngle_,0,0 });
 
 }
 
@@ -139,14 +139,13 @@ void Clex::LiveEntitiesOnPreRender()
 	//胴体をビルボードにする
 	body_->transform_.SetWorldRotation(ADXCamera::GetCurrentCamera()->GetGameObject()->transform_.GetWorldRotation());
 
-	antenna->transform_.localPosition_ = { 0,1,0 };
-	antenna->transform_.localRotation_ = ADXQuaternion::IdentityQuaternion();
+	antenna_->transform_.localPosition_ = { 0,1,0 };
+	antenna_->transform_.localRotation_ = ADXQuaternion::IdentityQuaternion();
 
 	//ツノをYビルボードにする
-	ADXVector3 cameraRelativePos = ADXMatrix4::Transform(
-		ADXCamera::GetCurrentCamera()->GetGameObject()->transform_.GetWorldPosition(),
-		antennaRig->transform_.GetMatWorldInverse());
-	antenna->transform_.localRotation_ = ADXQuaternion::MakeAxisAngle(
-		{ 0,1,0 }, (float)atan2(cameraRelativePos.x_ - antenna->transform_.localPosition_.x_, cameraRelativePos.z_ - antenna->transform_.localPosition_.z_))
-		* antenna->transform_.localRotation_;
+	ADXVector3 cameraRelativePos = antennaRig_->transform_.InverseTransformPoint(
+		ADXCamera::GetCurrentCamera()->GetGameObject()->transform_.GetWorldPosition());
+	antenna_->transform_.localRotation_ = ADXQuaternion::MakeAxisAngle(
+		{ 0,1,0 }, (float)atan2(cameraRelativePos.x_ - antenna_->transform_.localPosition_.x_, cameraRelativePos.z_ - antenna_->transform_.localPosition_.z_))
+		* antenna_->transform_.localRotation_;
 }

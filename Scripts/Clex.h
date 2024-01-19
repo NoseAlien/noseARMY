@@ -5,18 +5,18 @@ class Clex : public Enemy
 {
 private:
 	ADXModel rect_{};
-	uint32_t attackTex = 0;
+	uint32_t attackTex_ = 0;
 
-	ADXObject* face = nullptr;
+	ADXObject* face_ = nullptr;
 	ADXObject* body_ = nullptr;
-	ADXObject* antennaRig = nullptr;
-	ADXObject* antenna = nullptr;
-	std::list<Enemy*> projectiles{};
+	ADXObject* antennaRig_ = nullptr;
+	ADXObject* antenna_ = nullptr;
+	std::list<Enemy*> projectiles_{};
 
-	float bodyScale = 1;
-	float antennaAngle = 0;
+	float bodyScale_ = 1;
+	float antennaAngle_ = 0;
 
-	bool shotted = false;
+	bool shotted_ = false;
 
 private:
 	void EnemyInitialize() final;
