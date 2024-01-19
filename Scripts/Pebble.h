@@ -16,6 +16,7 @@ private:
 	ADXVector3 prevPos_{};
 	ADXVector3 prevVel_{};
 	float rotAngle_ = 0;
+	bool mute_ = true;
 
 private:
 	//初期化

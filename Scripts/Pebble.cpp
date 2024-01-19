@@ -29,13 +29,14 @@ void Pebble::UniqueInitialize()
 	billBoard_->texture_ = billBoardTex_;
 
 	prevPos_ = GetGameObject()->transform_.localPosition_;
+	mute_ = true;
 }
 
 void Pebble::UniqueUpdate()
 {
 	rigidbody_->VelocityMove();
 
-	if (rigidbody_->velocity_.Length() > prevVel_.Length()
+	if (!mute_ && rigidbody_->velocity_.Length() > prevVel_.Length()
 		&& rigidbody_->velocity_.Normalize().Dot(prevVel_.Normalize()) <= 0.99f)
 	{
 		hitSE_.Play();
@@ -45,6 +46,8 @@ void Pebble::UniqueUpdate()
 
 	prevPos_ = GetGameObject()->transform_.localPosition_;
 	prevVel_ = rigidbody_->velocity_;
+
+	mute_ = false;
 }
 
 void Pebble::OnPreRender()
