@@ -107,6 +107,7 @@
     <ClCompile Include="ADXEngine\ADXImGuiManager.cpp" />
     <ClCompile Include="ADXEngine\ADXKeyBoardInput.cpp" />
     <ClCompile Include="ADXEngine\ADXLevelData.cpp" />
+    <ClCompile Include="ADXEngine\ADXListener.cpp" />
     <ClCompile Include="ADXEngine\ADXMaterial.cpp" />
     <ClCompile Include="ADXEngine\ADXMatrix4.cpp" />
     <ClCompile Include="ADXEngine\ADXModel.cpp" />
@@ -152,6 +153,7 @@
     <ClCompile Include="Scripts\TutorialArea.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ADXEngine\ADXAudioListener.h" />
     <ClInclude Include="ADXEngine\ADXAudioSource.h" />
     <ClInclude Include="ADXEngine\ADXCamera.h" />
     <ClInclude Include="ADXEngine\ADXCollider.h" />

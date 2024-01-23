@@ -7,10 +7,6 @@ Microsoft::WRL::ComPtr<IXAudio2> ADXAudioSource::S_xAudio2 = nullptr;
 IXAudio2MasteringVoice* ADXAudioSource::S_masterVoice = nullptr;
 uint32_t ADXAudioSource::S_currentSHandle = 0;
 
-ADXAudioSource::ADXAudioSource()
-{
-}
-
 void ADXAudioSource::StaticInitialize()
 {
 	HRESULT result;
@@ -167,7 +163,7 @@ float ADXAudioSource::GetVolume()
 
 void ADXAudioSource::UniqueUpdate()
 {
-	if (triDimention)
+	if (useDistanceFade_)
 	{
 
 	}

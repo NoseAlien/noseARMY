@@ -198,6 +198,9 @@
     <ClCompile Include="Scripts\Pebble.cpp">
       <Filter>ソース ファイル\GameScript</Filter>
     </ClCompile>
+    <ClCompile Include="ADXEngine\ADXListener.cpp">
+      <Filter>ソース ファイル\ADXEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ADXEngine\ADXAudioSource.h">
@@ -364,6 +367,9 @@
     </ClInclude>
     <ClInclude Include="Scripts\Pebble.h">
       <Filter>ヘッダー ファイル\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXEngine\ADXAudioListener.h">
+      <Filter>ヘッダー ファイル\ADXEngine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

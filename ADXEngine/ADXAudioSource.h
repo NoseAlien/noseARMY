@@ -36,7 +36,7 @@ private:
 	};
 
 public:
-	bool triDimention = false;
+	bool useDistanceFade_ = false;
 
 private:
 	std::string name_ = {};
@@ -47,9 +47,6 @@ private:
 	IXAudio2SourceVoice* pSourceVoice_ = nullptr;
 
 public:
-	//コンストラクタ
-	ADXAudioSource();
-
 	//音声データ読み込み
 	void LoadADXAudio(const std::string& filename);
 
