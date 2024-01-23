@@ -4,7 +4,7 @@
 #include "ADXObject.h"
 #include "ADXCamera.h"
 #include "ADXImage.h"
-#include "ADXAudio.h"
+#include "ADXAudioSource.h"
 #include "ADXKeyBoardInput.h"
 #include "ADXGamePadInput.h"
 
@@ -21,7 +21,7 @@ private:
 	uint32_t titleImg_ = 0;
 
 	//音声データ
-	ADXAudio logoJingle_{};
+	ADXAudioSource* logoJingle_ = nullptr;
 
 	//3Dモデル
 	ADXModel rect_{};

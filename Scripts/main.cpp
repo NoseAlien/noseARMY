@@ -8,7 +8,7 @@
 #include "ADXKeyConfig.h"
 #include "ADXTextRenderer.h"
 #include "ADXScene.h"
-#include "ADXAudio.h"
+#include "ADXAudioSource.h"
 #include "ADXImGuiManager.h"
 
 #include "SceneManager.h"
@@ -40,7 +40,7 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 		ADXImGuiManager adximgui;
 		adximgui.Initialize(&adxwindow);
 
-		ADXAudio::StaticInitialize();
+		ADXAudioSource::StaticInitialize();
 		ADXImage::StaticInitialize();
 		ADXObject::StaticInitialize();
 		SceneTransition::StaticInitialize();
@@ -92,7 +92,7 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 			adximgui.StaticDraw();
 			adxcommon.PostDraw();
 		}
-		ADXAudio::StaticFinalize();
+		ADXAudioSource::StaticFinalize();
 		adxwindow.Finalize();
 		adximgui.Finalize();
 	}

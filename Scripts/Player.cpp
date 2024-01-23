@@ -99,7 +99,7 @@ void Player::Move(float walkSpeed, float jumpPower)
 	if (GetInputStatusTrigger(jump))
 	{
 		rigidbody_->velocity_.y_ = jumpPower;
-		jumpSE_.Play();
+		jumpSE_->Play();
 	}
 	if (GetInputStatusRelease(jump) && rigidbody_->velocity_.y_ > 0)
 	{
@@ -138,10 +138,12 @@ void Player::ViewUpdate()
 
 void Player::LiveEntitiesInitialize()
 {
-	jumpSE_ = ADXAudio::LoadADXAudio("sound/jump.wav");
-	damageSE_ = ADXAudio::LoadADXAudio("sound/damage.wav");
-	defeatSE_ = ADXAudio::LoadADXAudio("sound/despawn.wav");
-	windowOpenSE_ = ADXAudio::LoadADXAudio("sound/windowOpen.wav");
+	damageSE_->LoadADXAudio("sound/damage.wav");
+	defeatSE_->LoadADXAudio("sound/despawn.wav");
+	jumpSE_ = GetGameObject()->AddComponent<ADXAudioSource>();
+	jumpSE_->LoadADXAudio("sound/jump.wav");
+	windowOpenSE_ = GetGameObject()->AddComponent<ADXAudioSource>();
+	windowOpenSE_->LoadADXAudio("sound/windowOpen.wav");
 
 	rect_ = ADXModel::CreateRect();
 	playerModel_ = ADXModel::LoadADXModel("model/sphere.obj");
@@ -392,7 +394,7 @@ void Player::LiveEntitiesUpdate()
 
 	if (windowOpening_ && !prevwindowOpening)
 	{
-		windowOpenSE_.Play();
+		windowOpenSE_->Play();
 	}
 
 	if (!windowClosing_)

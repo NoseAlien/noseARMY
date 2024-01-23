@@ -2,16 +2,12 @@
 #include <string>
 #include <vector>
 #include "ADXImage.h"
-#include "ADXAudio.h"
-#include "ADXModel.h"
 
 //読み込んだリソースを保管するクラス
 class ADXDataPool
 {
 private:
 	static std::vector<ADXImage> S_imgDataPool;
-	static std::vector<ADXAudio> S_audioDataPool;
-	static std::vector<ADXModel> S_modelDataPool;
 
 public:
 	//読み込んだ画像データを全て取得

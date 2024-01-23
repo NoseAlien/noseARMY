@@ -1,29 +1,29 @@
-﻿#include "ADXAudio.h"
+﻿#include "ADXAudioSource.h"
 #include <cassert>
 
 #pragma comment(lib,"xaudio2.lib")
 
-Microsoft::WRL::ComPtr<IXAudio2> ADXAudio::S_xAudio2 = nullptr;
-IXAudio2MasteringVoice* ADXAudio::S_masterVoice = nullptr;
-uint32_t ADXAudio::S_currentSHandle = 0;
+Microsoft::WRL::ComPtr<IXAudio2> ADXAudioSource::S_xAudio2 = nullptr;
+IXAudio2MasteringVoice* ADXAudioSource::S_masterVoice = nullptr;
+uint32_t ADXAudioSource::S_currentSHandle = 0;
 
-ADXAudio::ADXAudio()
+ADXAudioSource::ADXAudioSource()
 {
 }
 
-void ADXAudio::StaticInitialize()
+void ADXAudioSource::StaticInitialize()
 {
 	HRESULT result;
 	result = XAudio2Create(&S_xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
 	result = S_xAudio2->CreateMasteringVoice(&S_masterVoice);
 }
 
-void ADXAudio::StaticFinalize()
+void ADXAudioSource::StaticFinalize()
 {
 	S_xAudio2.Reset();
 }
 
-ADXAudio ADXAudio::LoadADXAudio(const std::string& filename)
+void ADXAudioSource::LoadADXAudio(const std::string& filename)
 {
 	//ファイル入力ストリームのインスタンス
 	std::ifstream file;
@@ -83,20 +83,15 @@ ADXAudio ADXAudio::LoadADXAudio(const std::string& filename)
 	//Waveファイルを閉じる
 	file.close();
 
-	//returnするための音声データ
-	ADXAudio audioData = {};
-
-	audioData.data_.wfex = format.fmt;
-	audioData.data_.pBuffer.reset(reinterpret_cast<BYTE*>(pBuffer));
-	audioData.data_.bufferSize = data.size;
-	audioData.sHandle_ = S_currentSHandle;
+	data_.wfex = format.fmt;
+	data_.pBuffer.reset(reinterpret_cast<BYTE*>(pBuffer));
+	data_.bufferSize = data.size;
+	sHandle_ = S_currentSHandle;
 
 	S_currentSHandle++;
-
-	return audioData;
 }
 
-void ADXAudio::Play(bool loop)
+void ADXAudioSource::Play(bool loop)
 {
 	Stop();
 
@@ -131,7 +126,7 @@ void ADXAudio::Play(bool loop)
 	result = pSourceVoice_->Start();
 }
 
-void ADXAudio::Stop(bool pause)
+void ADXAudioSource::Stop(bool pause)
 {
 	if (pSourceVoice_ != nullptr)
 	{
@@ -147,7 +142,7 @@ void ADXAudio::Stop(bool pause)
 	}
 }
 
-bool ADXAudio::IsPlaying()
+bool ADXAudioSource::IsPlaying()
 {
 	if (pSourceVoice_ == nullptr)
 	{
@@ -160,16 +155,24 @@ bool ADXAudio::IsPlaying()
 	return xa2state.BuffersQueued != 0;
 }
 
-void ADXAudio::SetVolume(float setVolume)
+void ADXAudioSource::SetVolume(float setVolume)
 {
 	volume_ = setVolume;
+}
+
+float ADXAudioSource::GetVolume()
+{
+	return volume_;
+}
+
+void ADXAudioSource::UniqueUpdate()
+{
+	if (triDimention)
+	{
+
+	}
 	if (pSourceVoice_ != nullptr)
 	{
 		pSourceVoice_->SetVolume(volume_);
 	}
-}
-
-float ADXAudio::GetVolume()
-{
-	return volume_;
 }

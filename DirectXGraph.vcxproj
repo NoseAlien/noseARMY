@@ -96,7 +96,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ADXEngine\ADXAudio.cpp" />
+    <ClCompile Include="ADXEngine\ADXAudioSource.cpp" />
     <ClCompile Include="ADXEngine\ADXCamera.cpp" />
     <ClCompile Include="ADXEngine\ADXCollider.cpp" />
     <ClCompile Include="ADXEngine\ADXCommon.cpp" />
@@ -152,7 +152,7 @@
     <ClCompile Include="Scripts\TutorialArea.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ADXEngine\ADXAudio.h" />
+    <ClInclude Include="ADXEngine\ADXAudioSource.h" />
     <ClInclude Include="ADXEngine\ADXCamera.h" />
     <ClInclude Include="ADXEngine\ADXCollider.h" />
     <ClInclude Include="ADXEngine\ADXCommon.h" />

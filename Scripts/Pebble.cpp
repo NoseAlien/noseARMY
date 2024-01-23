@@ -11,7 +11,8 @@ void Pebble::UniqueInitialize()
 	//ビルボード用の画像
 	billBoardTex_ = ADXImage::LoadADXImage("texture/pebble.png");
 	//何かに弾かれた時の音
-	hitSE_ = ADXAudio::LoadADXAudio("sound/knock.wav");
+	hitSE_ = GetGameObject()->AddComponent<ADXAudioSource>();
+	hitSE_->LoadADXAudio("sound/knock.wav");
 
 	//コライダー生成
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
@@ -39,7 +40,7 @@ void Pebble::UniqueUpdate()
 	if (!mute_ && rigidbody_->velocity_.Length() > prevVel_.Length()
 		&& rigidbody_->velocity_.Normalize().Dot(prevVel_.Normalize()) <= 0.99f)
 	{
-		hitSE_.Play();
+		hitSE_->Play();
 	}
 
 	rotAngle_ = fmodf(rotAngle_ + (GetGameObject()->transform_.localPosition_ - prevPos_).Length(), ADXUtility::Pi * 2);

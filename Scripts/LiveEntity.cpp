@@ -26,6 +26,9 @@ void LiveEntity::UniqueInitialize()
 	rect_ = ADXModel::CreateRect();
 	gaugeTex_ = ADXImage::LoadADXImage("texture/whiteDot.png");
 
+	damageSE_ = GetGameObject()->AddComponent<ADXAudioSource>();
+	defeatSE_ = GetGameObject()->AddComponent<ADXAudioSource>();
+
 	visual_ = ADXObject::Create();
 	visual_->transform_.parent_ = &GetGameObject()->transform_;
 
@@ -124,7 +127,7 @@ void LiveEntity::UniqueUpdate()
 				particle_->particles_.back()->GetGameObject()->transform_.localScale_ = { particleScale ,particleScale ,particleScale };
 				particle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 			}
-			defeatSE_.Play();
+			defeatSE_->Play();
 		}
 	}
 
@@ -162,7 +165,7 @@ void LiveEntity::UniqueUpdate()
 		visual_->transform_.localPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5)}.Normalize() * 0.3f;
 		hpGaugeBG_->transform_.localPosition_ = { 0,-1.5f + (float)sin(clock()) * 0.05f,0};
 		attackHitted_ = false;
-		damageSE_.Play();
+		damageSE_->Play();
 	}
 
 	if (IsLive() && ghostTime_ > 0 && ghostTime_ % 4 >= 2)

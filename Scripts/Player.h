@@ -4,7 +4,7 @@
 #include "ADXKeyBoardInput.h"
 #include "ADXGamePadInput.h"
 #include "ADXVector3.h"
-#include "ADXAudio.h"
+#include "ADXAudioSource.h"
 #include <vector>
 #include <list>
 #include "LiveEntity.h"
@@ -43,8 +43,8 @@ private:
 	ADXModel rect_{};
 	ADXModel playerModel_{};
 
-	ADXAudio jumpSE_{};
-	ADXAudio windowOpenSE_{};
+	ADXAudioSource* jumpSE_ = nullptr;
+	ADXAudioSource* windowOpenSE_ = nullptr;
 
 	ADXRigidbody* rigidbody_{};
 

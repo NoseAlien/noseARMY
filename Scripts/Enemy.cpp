@@ -13,8 +13,8 @@ const DirectX::XMFLOAT3 darkColor = { 0.2f,0.2f,0.2f };
 
 void Enemy::LiveEntitiesInitialize()
 {
-	damageSE_ = ADXAudio::LoadADXAudio("sound/knock.wav");
-	defeatSE_ = ADXAudio::LoadADXAudio("sound/slap.wav");
+	damageSE_->LoadADXAudio("sound/knock.wav");
+	defeatSE_->LoadADXAudio("sound/slap.wav");
 
 	enemyModel_ = ADXModel::LoadADXModel("model/groundBlock.obj");
 

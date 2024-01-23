@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "ADXComponent.h"
 #include "ADXRigidBody.h"
-#include "ADXAudio.h"
+#include "ADXAudioSource.h"
 
 class Pebble : public ADXComponent
 {
@@ -11,7 +11,7 @@ private:
 
 	ADXRigidbody* rigidbody_{};
 	ADXObject* billBoard_ = nullptr;
-	ADXAudio hitSE_{};
+	ADXAudioSource* hitSE_ = nullptr;
 
 	ADXVector3 prevPos_{};
 	ADXVector3 prevVel_{};

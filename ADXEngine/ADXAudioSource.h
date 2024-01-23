@@ -1,12 +1,13 @@
 ﻿#pragma once
 
+#include "ADXComponent.h"
 #include <xaudio2.h>
 #include <fstream>
 #include <wrl.h>
 #include <string>
 
-//音声データをロードし再生する機能
-class ADXAudio
+//音声データをロードし再生するコンポーネント
+class ADXAudioSource : public ADXComponent
 {
 private:
 	struct ChunkHeader // チャンクヘッダ
@@ -34,6 +35,9 @@ private:
 		uint32_t bufferSize = 0; // バッファのサイズ
 	};
 
+public:
+	bool triDimention = false;
+
 private:
 	std::string name_ = {};
 	uint32_t sHandle_ = 0;
@@ -44,7 +48,10 @@ private:
 
 public:
 	//コンストラクタ
-	ADXAudio();
+	ADXAudioSource();
+
+	//音声データ読み込み
+	void LoadADXAudio(const std::string& filename);
 
 	//音を再生、ループ再生するなら引数のloopをtrueに
 	void Play(bool loop = false);
@@ -64,6 +71,9 @@ public:
 	//音声データのハンドルを取得
 	uint32_t GetSHandle() { return sHandle_; };
 
+	//更新処理
+	void UniqueUpdate();
+
 private:
 	static Microsoft::WRL::ComPtr<IXAudio2> S_xAudio2;
 	static IXAudio2MasteringVoice* S_masterVoice;
@@ -75,7 +85,4 @@ public:
 
 	//クラスの終了処理
 	static void StaticFinalize();
-
-	//音声データ読み込み
-	static ADXAudio LoadADXAudio(const std::string& filename);
 };

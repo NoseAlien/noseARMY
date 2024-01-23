@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "ADXObject.h"
-#include "ADXAudio.h"
+#include "ADXAudioSource.h"
 #include "ADXParticleSystem.h"
 #include "FieldBox.h"
 #include <string>
@@ -31,8 +31,8 @@ protected:
 	float maxHP_ = basicHP;
 	float hpAmount_ = 1;
 	int32_t ghostTime_ = 0;
-	ADXAudio damageSE_{};
-	ADXAudio defeatSE_{};
+	ADXAudioSource* damageSE_ = nullptr;
+	ADXAudioSource* defeatSE_ = nullptr;
 	ADXObject* visual_ = nullptr;
 	std::vector<ADXObject*> bodyParts_{};
 

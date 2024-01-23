@@ -30,8 +30,6 @@ void ADXScene::Initialize()
 	logoImg_X_ = ADXImage::LoadADXImage("texture/logo_X.png");
 	logoImg_Engine_ = ADXImage::LoadADXImage("texture/logo_Engine.png");
 
-	logoJingle_ = ADXAudio::LoadADXAudio("sound/ADXJingle.wav");
-
 	//マテリアル
 	unlitMat_ = ADXMaterial::LoadMaterial("material/unlit.mtl");
 
@@ -48,6 +46,8 @@ void ADXScene::Initialize()
 	title_->model_ = &rect_;
 	title_->material_ = unlitMat_;
 	title_->material_.alpha_ = 0;
+	logoJingle_ = title_->AddComponent<ADXAudioSource>();
+	logoJingle_->LoadADXAudio("sound/ADXJingle.wav");
 
 	logo_A_ = ADXObject::Duplicate(*title_);
 	logo_A_->transform_.localPosition_ = logoTextPos;
@@ -67,7 +67,7 @@ void ADXScene::Initialize()
 	startTime_ = clock();
 
 	//ロゴ画面のジングルを再生
-	logoJingle_.Play();
+	logoJingle_->Play();
 }
 
 void ADXScene::Update()
@@ -113,7 +113,7 @@ void ADXScene::Update()
 		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(ADXGamePadInput::LT)
 		|| ADXGamePadInput::GetCurrentInstance()->GetButtonDown(ADXGamePadInput::RT))))
 	{
-		logoJingle_.Stop();
+		logoJingle_->Stop();
 		ADXSceneManager::GetCurrentInstance()->SetSceneIndex(titleSceneIndex);
 	}
 }

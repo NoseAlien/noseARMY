@@ -36,7 +36,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ADXEngine\ADXAudio.cpp">
+    <ClCompile Include="ADXEngine\ADXAudioSource.cpp">
       <Filter>ソース ファイル\ADXEngine</Filter>
     </ClCompile>
     <ClCompile Include="ADXEngine\ADXCamera.cpp">
@@ -200,7 +200,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ADXEngine\ADXAudio.h">
+    <ClInclude Include="ADXEngine\ADXAudioSource.h">
       <Filter>ヘッダー ファイル\ADXEngine</Filter>
     </ClInclude>
     <ClInclude Include="ADXEngine\ADXCamera.h">

@@ -1,8 +1,6 @@
 ﻿#include "ADXDataPool.h"
 
 std::vector<ADXImage> ADXDataPool::S_imgDataPool{};
-std::vector<ADXAudio> ADXDataPool::S_audioDataPool{};
-std::vector<ADXModel> ADXDataPool::S_modelDataPool{};
 
 ADXImage* ADXDataPool::GetImgData(const uint32_t& gHandle)
 {
