@@ -107,7 +107,7 @@
     <ClCompile Include="ADXEngine\ADXImGuiManager.cpp" />
     <ClCompile Include="ADXEngine\ADXKeyBoardInput.cpp" />
     <ClCompile Include="ADXEngine\ADXLevelData.cpp" />
-    <ClCompile Include="ADXEngine\ADXListener.cpp" />
+    <ClCompile Include="ADXEngine\ADXAudioListener.cpp" />
     <ClCompile Include="ADXEngine\ADXMaterial.cpp" />
     <ClCompile Include="ADXEngine\ADXMatrix4.cpp" />
     <ClCompile Include="ADXEngine\ADXModel.cpp" />

@@ -198,7 +198,7 @@
     <ClCompile Include="Scripts\Pebble.cpp">
       <Filter>ソース ファイル\GameScript</Filter>
     </ClCompile>
-    <ClCompile Include="ADXEngine\ADXListener.cpp">
+    <ClCompile Include="ADXEngine\ADXAudioListener.cpp">
       <Filter>ソース ファイル\ADXEngine</Filter>
     </ClCompile>
   </ItemGroup>
