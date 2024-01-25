@@ -12,6 +12,7 @@
 #include "TutorialArea.h"
 #include "ADXCamera.h"
 #include "ADXRigidbody.h"
+#include "ADXTextRenderer.h"
 
 //自機のオブジェクトに入れるコンポーネント
 class Player : public LiveEntity
@@ -46,12 +47,16 @@ private:
 	ADXAudioSource* jumpSE_ = nullptr;
 	ADXAudioSource* windowOpenSE_ = nullptr;
 
-	ADXRigidbody* rigidbody_{};
+	ADXRigidbody* rigidbody_ = nullptr;
+
+	ADXTextRenderer* controlTextVec_ = nullptr;
+	ADXTextRenderer* controlTextJump_ = nullptr;
+	ADXTextRenderer* controlTextAct_ = nullptr;
 
 	ADXParticleSystem* deadParticle_ = nullptr;
 
-	float cameraTiltVelocity{};
-	ADXVector2 prevInputVec{};
+	float cameraTiltVelocity_{};
+	ADXVector2 prevInputVec_{};
 	std::list<PlayerMini*> minis_{};
 	int splitInterval_ = 0;
 	bool splitable_ = true;

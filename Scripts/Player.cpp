@@ -1,6 +1,5 @@
 ﻿#include "Player.h"
 #include "SceneTransition.h"
-#include "ADXTextRenderer.h"
 #include "ADXUtility.h"
 #include "ADXKeyConfig.h"
 #include <time.h>
@@ -110,10 +109,10 @@ void Player::Move(float walkSpeed, float jumpPower)
 void Player::ViewUpdate()
 {
 
-	cameraTiltVelocity = ADXUtility::Lerp(cameraTiltVelocity, -GetCameraControlInput().x_ * maxCameraTiltVelocity, cameraTiltForce);
+	cameraTiltVelocity_ = ADXUtility::Lerp(cameraTiltVelocity_, -GetCameraControlInput().x_ * maxCameraTiltVelocity, cameraTiltForce);
 	camera_->GetGameObject()->transform_.SetWorldPosition(
 		camera_->GetGameObject()->transform_.GetWorldPosition()
-		+ camera_->GetGameObject()->transform_.TransformPointOnlyRotation({ 1,0,0 }) * cameraTiltVelocity);
+		+ camera_->GetGameObject()->transform_.TransformPointOnlyRotation({ 1,0,0 }) * cameraTiltVelocity_);
 
 	ADXVector3 cameraLocalPos = GetGameObject()->transform_.InverseTransformPoint(camera_->GetGameObject()->transform_.GetWorldPosition()).Normalize();
 	cameraLocalPos.y_ = 0.3f;
@@ -256,10 +255,50 @@ void Player::LiveEntitiesInitialize()
 	killCountUI_->transform_.localPosition_ = { -1.5f,-0.25f,0 };
 	killCountUI_->transform_.localScale_ *= 0.75f;
 
+	ADXObject* temp = ADXObject::Create();
+	temp->transform_.rectTransform_ = true;
+	temp->renderLayer_ = 5;
+	controlTextVec_ = temp->AddComponent<ADXTextRenderer>();
+	controlTextVec_->font_ = ADXTextRenderer::GetFont("texture/alphaNumber");
+	controlTextVec_->fontAspect_ = 0.75f;
+	controlTextVec_->fontExtend_ = 2;
+	controlTextVec_->anchor_ = ADXTextRenderer::middleLeft;
+	controlTextVec_->GetGameObject()->transform_.localPosition_ = {-0.9f,-0.6f,0};
+	controlTextVec_->GetGameObject()->transform_.localScale_.x_ /= ADXWindow::GetAspect();
+	controlTextVec_->GetGameObject()->transform_.localScale_ *= 0.05f;
+
+	temp = ADXObject::Create();
+	temp->transform_.rectTransform_ = true;
+	temp->renderLayer_ = 5;
+	controlTextJump_ = temp->AddComponent<ADXTextRenderer>();
+	controlTextJump_->font_ = ADXTextRenderer::GetFont("texture/alphaNumber");
+	controlTextJump_->fontAspect_ = 0.75f;
+	controlTextJump_->fontExtend_ = 2;
+	controlTextJump_->anchor_ = ADXTextRenderer::middleLeft;
+	controlTextJump_->GetGameObject()->transform_.localPosition_ = { -0.9f,-0.75f,0 };
+	controlTextJump_->GetGameObject()->transform_.localScale_.x_ /= ADXWindow::GetAspect();
+	controlTextJump_->GetGameObject()->transform_.localScale_ *= 0.05f;
+
+	temp = ADXObject::Create();
+	temp->transform_.rectTransform_ = true;
+	temp->renderLayer_ = 5;
+	controlTextAct_ = temp->AddComponent<ADXTextRenderer>();
+	controlTextAct_->font_ = ADXTextRenderer::GetFont("texture/alphaNumber");
+	controlTextAct_->fontAspect_ = 0.75f;
+	controlTextAct_->fontExtend_ = 2;
+	controlTextAct_->anchor_ = ADXTextRenderer::middleLeft;
+	controlTextAct_->GetGameObject()->transform_.localPosition_ = { -0.9f,-0.9f,0 };
+	controlTextAct_->GetGameObject()->transform_.localScale_.x_ /= ADXWindow::GetAspect();
+	controlTextAct_->GetGameObject()->transform_.localScale_ *= 0.05f;
 }
 
 void Player::LiveEntitiesUpdate()
 {
+	//操作説明テキストの初期値設定
+	controlTextVec_->text_ = "move";
+	controlTextJump_->text_ = "jump";
+	controlTextAct_->text_ = "split/fix";
+
 	visual_->renderLayer_ = 0;
 	nose_->renderLayer_ = 0;
 
@@ -294,11 +333,26 @@ void Player::LiveEntitiesUpdate()
 	{
 		rigidbody_->velocity_ *= 0.8f;
 		rigidbody_->gravityScale_ = 0;
-		if ((prevInputVec.Length() == 0 && GetDirectionInput().Length() != 0)
-			|| (prevInputVec.Length() != 0 && GetDirectionInput().Length() == 0)
+		if ((prevInputVec_.Length() == 0 && GetDirectionInput().Length() != 0)
+			|| (prevInputVec_.Length() != 0 && GetDirectionInput().Length() == 0)
 			|| GetInputStatusTrigger(jump) || GetInputStatusRelease(jump))
 		{
 			splitable_ = false;
+		}
+		if (!splitable_)
+		{
+			controlTextAct_->text_ = "fix";
+		}
+
+		if (minis_.size() == 0)
+		{
+			controlTextVec_->text_ = "_";
+			controlTextJump_->text_ = "_";
+		}
+		else
+		{
+			controlTextVec_->text_ = "move squad";
+			controlTextJump_->text_ = "jump squad";
 		}
 	}
 	else
@@ -306,6 +360,11 @@ void Player::LiveEntitiesUpdate()
 		rigidbody_->gravityScale_ = 0.01f;
 		rigidbody_->dragAxis_.y = false;
 		Move(0.05f, 0.4f);
+	}
+
+	if (minis_.size() >= maxMinisNum)
+	{
+		controlTextAct_->text_ = "fix";
 	}
 
 	for (auto& itr : minis_)
@@ -442,7 +501,11 @@ void Player::LiveEntitiesUpdate()
 		killCountIcon_->transform_.localScale_.x_ -= killCountIcon_->transform_.localScale_.x_ * uiExtendSpeed;
 	}
 
-	prevInputVec = GetDirectionInput();
+	prevInputVec_ = GetDirectionInput();
+
+	controlTextVec_->text_ = "[ARROW]" + controlTextVec_->text_;
+	controlTextJump_->text_ = "[SPACE]" + controlTextJump_->text_;
+	controlTextAct_->text_ = "[  C  ]" + controlTextAct_->text_;
 }
 
 void Player::LiveEntitiesOnCollisionHit(ADXCollider* col, [[maybe_unused]]ADXCollider* myCol)
@@ -462,7 +525,7 @@ void Player::LiveEntitiesOnCollisionHit(ADXCollider* col, [[maybe_unused]]ADXCol
 		setTutorialImg_ = col->GetGameObject()->GetComponent<TutorialArea>()->GetTutorialImg();
 	}
 
-	if (splitInterval_ <= -20)
+	if (GetInputStatus(attack) && splitInterval_ <= -20)
 	{
 		for (auto& itr : minis_)
 		{
