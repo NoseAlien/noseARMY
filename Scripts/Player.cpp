@@ -216,7 +216,7 @@ void Player::LiveEntitiesInitialize()
 	deathCountIcon_->model_ = &rect_;
 	deathCountIcon_->renderLayer_ = 5;
 	deathCountIcon_->texture_ = ADXImage::LoadADXImage("texture/apEG_dead.png");
-	deathCountIcon_->transform_.localPosition_ = { -0.85f,-0.8f,0 };
+	deathCountIcon_->transform_.localPosition_ = { 0.85f,0.5f,0 };
 	deathCountIcon_->transform_.localScale_ = { 0,0,0 };
 
 	deathCountUI_ = ADXObject::Create();
@@ -229,8 +229,8 @@ void Player::LiveEntitiesInitialize()
 	deathCountUI_->GetComponent<ADXTextRenderer>()->font_ = ADXTextRenderer::GetFont("texture/alphaNumber");
 	deathCountUI_->GetComponent<ADXTextRenderer>()->fontAspect_ = 0.75f;
 	deathCountUI_->GetComponent<ADXTextRenderer>()->fontExtend_ = 2;
-	deathCountUI_->GetComponent<ADXTextRenderer>()->anchor_ = ADXTextRenderer::middleLeft;
-	deathCountUI_->transform_.localPosition_ = {1.5f,-0.25f,0};
+	deathCountUI_->GetComponent<ADXTextRenderer>()->anchor_ = ADXTextRenderer::middleRight;
+	deathCountUI_->transform_.localPosition_ = { -1.5f,-0.25f,0 };
 	deathCountUI_->transform_.localScale_ *= 0.75f;
 
 	killCountIcon_ = ADXObject::Create();
@@ -238,7 +238,7 @@ void Player::LiveEntitiesInitialize()
 	killCountIcon_->model_ = &rect_;
 	killCountIcon_->renderLayer_ = 5;
 	killCountIcon_->texture_ = ADXImage::LoadADXImage("texture/Cub_E_dead.png");
-	killCountIcon_->transform_.localPosition_ = { 0.85f,-0.8f,0 };
+	killCountIcon_->transform_.localPosition_ = { 0.85f,0.8f,0 };
 	killCountIcon_->transform_.localScale_ = { 0,0,0 };
 
 	killCountUI_ = ADXObject::Create();
