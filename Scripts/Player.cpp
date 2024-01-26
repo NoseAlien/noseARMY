@@ -297,7 +297,7 @@ void Player::LiveEntitiesUpdate()
 	//操作説明テキストの初期値設定
 	controlTextVec_->text_ = "move";
 	controlTextJump_->text_ = "jump";
-	controlTextAct_->text_ = "split/fix";
+	controlTextAct_->text_ = "split";
 
 	visual_->renderLayer_ = 0;
 	nose_->renderLayer_ = 0;
@@ -329,6 +329,15 @@ void Player::LiveEntitiesUpdate()
 
 	rigidbody_->VelocityMove();
 
+	if (minis_.size() >= maxMinisNum)
+	{
+		controlTextAct_->text_ = "fix";
+	}
+	else if (minis_.size() != 0)
+	{
+		controlTextAct_->text_ = "split/fix";
+	}
+
 	if (GetInputStatus(attack))
 	{
 		rigidbody_->velocity_ *= 0.8f;
@@ -339,9 +348,24 @@ void Player::LiveEntitiesUpdate()
 		{
 			splitable_ = false;
 		}
-		if (!splitable_)
+
+		if (splitable_)
 		{
-			controlTextAct_->text_ = "fix";
+			if (minis_.size() >= maxMinisNum)
+			{
+				controlTextAct_->text_ = "fix";
+			}
+		}
+		else
+		{
+			if(minis_.size() == 0)
+			{
+				controlTextAct_->text_ = "_";
+			}
+			else
+			{
+				controlTextAct_->text_ = "fix";
+			}
 		}
 
 		if (minis_.size() == 0)
@@ -360,11 +384,6 @@ void Player::LiveEntitiesUpdate()
 		rigidbody_->gravityScale_ = 0.01f;
 		rigidbody_->dragAxis_.y = false;
 		Move(0.05f, 0.4f);
-	}
-
-	if (minis_.size() >= maxMinisNum)
-	{
-		controlTextAct_->text_ = "fix";
 	}
 
 	for (auto& itr : minis_)
