@@ -205,17 +205,11 @@ void GameScene::Initialize()
 	}
 
 	//設定された情報を元に生成
-	//自機とそのカメラ
-	temp = ADXObject::Create();
-	ADXCamera* camera = temp->AddComponent<ADXCamera>();
+	//自機
 	temp = ADXObject::Create(PlayerStartTransform.localPosition, PlayerStartTransform.localRotation);
 	temp->transform_.UpdateMatrix();
 	Player* tempPlayer = temp->AddComponent<Player>();
-	tempPlayer->Initialize(camera);
 	tempPlayer->LiveEntity::Initialize("player");
-	camera->GetGameObject()->transform_.SetWorldPosition(tempPlayer->GetGameObject()->transform_.TransformPoint({ 0,0,-1 }));
-	camera->GetGameObject()->transform_.SetWorldRotation(tempPlayer->GetGameObject()->transform_.GetWorldRotation());
-	camera->GetGameObject()->transform_.UpdateMatrix();
 	//自機や敵が動き回れる範囲
 	for (auto& itr : fieldGenerateData)
 	{

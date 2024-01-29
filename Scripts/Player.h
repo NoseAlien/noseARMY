@@ -75,9 +75,6 @@ private:
 	uint32_t deathCount_ = 0;
 
 public:
-	//初期化処理、主にカメラの割り当て
-	void Initialize(ADXCamera* setCamera);
-
 	//引数のアクションに割り当てられたボタンが押されている時にtrueを返す
 	bool GetInputStatus(actionsList action);
 

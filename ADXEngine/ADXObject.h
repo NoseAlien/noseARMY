@@ -154,7 +154,7 @@ public: // 静的メンバ関数
 	static ADXObject* Duplicate(const ADXObject& prefab);
 
 	//シーン切り替え時などに使用、今あるオブジェクトを全部消す
-	static void Annihilate() { S_objs.clear(); };
+	static void Annihilate();
 
 private:
 	// 描画前処理

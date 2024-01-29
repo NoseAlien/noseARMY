@@ -13,6 +13,7 @@ void Pebble::UniqueInitialize()
 	//何かに弾かれた時の音
 	hitSE_ = GetGameObject()->AddComponent<ADXAudioSource>();
 	hitSE_->LoadADXAudio("sound/knock.wav");
+	hitSE_->useDistanceFade_ = true;
 
 	//コライダー生成
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();

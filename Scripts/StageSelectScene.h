@@ -22,9 +22,6 @@ private:
 	ADXModel ground_{};
 	ADXModel rect_{};
 
-	//カメラ
-	ADXCamera* camera_ = nullptr;
-
 	//オブジェクト
 	SceneTransition* shutter_ = nullptr;
 	ADXObject* key_ = nullptr;

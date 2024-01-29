@@ -362,6 +362,14 @@ ADXObject* ADXObject::Duplicate(const ADXObject& prefab)
 	return ret;
 }
 
+void ADXObject::Annihilate()
+{
+	for (auto& itr : S_objs)
+	{
+		itr->Destroy();
+	}
+}
+
 void ADXObject::Update()
 {
 	//アクティブなオブジェクトの全コンポーネントの更新処理を呼ぶ

@@ -36,14 +36,17 @@ private:
 	};
 
 public:
+	float volume_ = 1.0f;
 	bool useDistanceFade_ = false;
+	float startFadeDistance_ = 0.0f;
+	float endFadeDistance_ = 1.0f;
+	float endFadeVolume_ = 0.0f;
 
 private:
 	std::string name_ = {};
 	uint32_t sHandle_ = 0;
 	SoundData data_{};
 	XAUDIO2_BUFFER buf_{};
-	float volume_ = 1.0f;
 	IXAudio2SourceVoice* pSourceVoice_ = nullptr;
 
 public:
@@ -58,12 +61,6 @@ public:
 
 	//音を再生中ならtrueを返す
 	bool IsPlaying();
-
-	//音量を設定
-	void SetVolume(float setVolume);
-
-	//現在の音量を取得
-	float GetVolume();
 
 	//音声データのハンドルを取得
 	uint32_t GetSHandle() { return sHandle_; };

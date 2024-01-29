@@ -21,12 +21,8 @@ void StageSelectScene::Initialize()
 	shutter_ = temp->AddComponent<SceneTransition>();
 
 
-	temp = ADXObject::Create({ 0,5,-20 }, ADXQuaternion::EulerToQuaternion({ 0.3f,0,0 }));
-	camera_ = temp->AddComponent<ADXCamera>();
-
 	temp = ADXObject::Create({ 0,2,0 });
 	player_ = temp->AddComponent<Player>();
-	player_->Initialize(camera_);
 	player_->LiveEntity::Initialize("player");
 
 	floors_.push_back(ADXObject::Create({ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 2,2,2 }));

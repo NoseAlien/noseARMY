@@ -1,4 +1,7 @@
 ﻿#include "ADXAudioSource.h"
+#include "ADXAudioListener.h"
+#include "ADXObject.h"
+#include "ADXUtility.h"
 #include <cassert>
 
 #pragma comment(lib,"xaudio2.lib")
@@ -151,24 +154,20 @@ bool ADXAudioSource::IsPlaying()
 	return xa2state.BuffersQueued != 0;
 }
 
-void ADXAudioSource::SetVolume(float setVolume)
-{
-	volume_ = setVolume;
-}
-
-float ADXAudioSource::GetVolume()
-{
-	return volume_;
-}
-
 void ADXAudioSource::UniqueUpdate()
 {
-	if (useDistanceFade_)
+	float fadedVolume = volume_;
+	ADXAudioListener* listener = ADXAudioListener::GetCurrentInstance();
+	if (useDistanceFade_ && listener != nullptr)
 	{
-
+		float distanceFromListener = min(max(endFadeDistance_ * listener->radius_,
+			(listener->GetGameObject()->transform_.GetWorldPosition() - GetGameObject()->transform_.GetWorldPosition()).Length())
+			, startFadeDistance_ * listener->radius_);
+		fadedVolume *= ADXUtility::ValueMapping(distanceFromListener,
+			endFadeDistance_ * listener->radius_, startFadeDistance_ * listener->radius_, endFadeVolume_, 1);
 	}
 	if (pSourceVoice_ != nullptr)
 	{
-		pSourceVoice_->SetVolume(volume_);
+		pSourceVoice_->SetVolume(fadedVolume);
 	}
 }

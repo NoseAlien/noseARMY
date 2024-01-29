@@ -2,6 +2,7 @@
 #include "SceneTransition.h"
 #include "ADXUtility.h"
 #include "ADXKeyConfig.h"
+#include "ADXAudioListener.h"
 #include <time.h>
 
 const float uiExtendSpeed = 0.3f;
@@ -10,11 +11,6 @@ const float deathCountUISize = 0.1f;
 const float maxCameraTiltVelocity = 0.7f;
 const float cameraTiltForce = 0.3f;
 const float cameraDistance = 20;
-
-void Player::Initialize(ADXCamera* setCamera)
-{
-	camera_ = setCamera;
-}
 
 bool Player::GetInputStatus(actionsList action)
 {
@@ -108,7 +104,6 @@ void Player::Move(float walkSpeed, float jumpPower)
 
 void Player::ViewUpdate()
 {
-
 	cameraTiltVelocity_ = ADXUtility::Lerp(cameraTiltVelocity_, -GetCameraControlInput().x_ * maxCameraTiltVelocity, cameraTiltForce);
 	camera_->GetGameObject()->transform_.SetWorldPosition(
 		camera_->GetGameObject()->transform_.GetWorldPosition()
@@ -159,6 +154,13 @@ void Player::LiveEntitiesInitialize()
 	nose_->texture_ = ADXImage::LoadADXImage("texture/apEGnoSE.png");
 	nose_->material_ = GetGameObject()->material_;
 	bodyParts_.push_back(nose_);
+
+	ADXObject* temp = ADXObject::Create();
+	temp->AddComponent<ADXAudioListener>();
+	camera_ = temp->AddComponent<ADXCamera>();
+	camera_->GetGameObject()->transform_.SetWorldPosition(GetGameObject()->transform_.TransformPoint({ 0,0,-1 }));
+	camera_->GetGameObject()->transform_.SetWorldRotation(GetGameObject()->transform_.GetWorldRotation());
+	camera_->GetGameObject()->transform_.UpdateMatrix();
 
 	tutorialWindow_ = ADXObject::Create();
 	tutorialWindow_->transform_.rectTransform_ = true;
@@ -255,7 +257,7 @@ void Player::LiveEntitiesInitialize()
 	killCountUI_->transform_.localPosition_ = { -1.5f,-0.25f,0 };
 	killCountUI_->transform_.localScale_ *= 0.75f;
 
-	ADXObject* temp = ADXObject::Create();
+	temp = ADXObject::Create();
 	temp->transform_.rectTransform_ = true;
 	temp->renderLayer_ = 5;
 	controlTextVec_ = temp->AddComponent<ADXTextRenderer>();
