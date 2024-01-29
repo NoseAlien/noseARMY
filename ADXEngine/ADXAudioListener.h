@@ -4,7 +4,7 @@
 class ADXAudioListener : public ADXComponent
 {
 public:
-	float radius_ = 10;
+	float radius_ = 1.0f;
 
 private:
 	//更新

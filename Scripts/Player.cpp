@@ -11,6 +11,7 @@ const float deathCountUISize = 0.1f;
 const float maxCameraTiltVelocity = 0.7f;
 const float cameraTiltForce = 0.3f;
 const float cameraDistance = 20;
+const float listenerRadius = 40;
 
 bool Player::GetInputStatus(actionsList action)
 {
@@ -157,6 +158,7 @@ void Player::LiveEntitiesInitialize()
 
 	ADXObject* temp = ADXObject::Create();
 	temp->AddComponent<ADXAudioListener>();
+	temp->GetComponent<ADXAudioListener>()->radius_ = listenerRadius;
 	camera_ = temp->AddComponent<ADXCamera>();
 	camera_->GetGameObject()->transform_.SetWorldPosition(GetGameObject()->transform_.TransformPoint({ 0,0,-1 }));
 	camera_->GetGameObject()->transform_.SetWorldRotation(GetGameObject()->transform_.GetWorldRotation());
