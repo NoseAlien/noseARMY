@@ -13,6 +13,7 @@ class ADXCommon
 {
 public:
 	static const float S_clearColor[4];
+	static const uint32_t S_frameRate = uint64_t(1000000.0f / 60.0f);
 
 private:
 	ADXWindow* adxwindow = nullptr;
@@ -32,6 +33,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12Fence> fence_ = nullptr;
 	uint64_t fenceVal_ = 0;
 	std::chrono::steady_clock::time_point reference_;
+	uint64_t elapsedMicroSeconds = 0;
 
 public:
 	//初期化処理

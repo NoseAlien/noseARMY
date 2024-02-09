@@ -85,10 +85,10 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 			SceneTransition::StaticUpdate();
 			LiveEntity::StaticUpdate();
 			ADXCollider::StaticUpdate();
-			adximgui.PostDraw();
 
 			adxcommon.PreDraw();
 			ADXObject::StaticDraw();
+			adximgui.PostDraw();
 			adximgui.StaticDraw();
 			adxcommon.PostDraw();
 		}

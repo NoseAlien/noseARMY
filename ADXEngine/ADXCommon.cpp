@@ -1,4 +1,5 @@
 ﻿#include "ADXCommon.h"
+#include <imgui.h>
 
 #include <cassert>
 
@@ -28,9 +29,7 @@ void ADXCommon::InitializeFixFPS()
 void ADXCommon::UpdateFixFPS()
 {
 	//1/60秒ぴったりの時間
-	const std::chrono::microseconds KMinTime(uint64_t(1000000.0f / 60.0f));
-	//1/60秒よりわずかに短い時間
-	const std::chrono::microseconds KMinCheckTime(uint64_t(1000000.0f / 65.0f));
+	const std::chrono::microseconds KMinTime(S_frameRate);
 
 	//現在の時間を取得する
 	std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
@@ -53,6 +52,8 @@ void ADXCommon::UpdateFixFPS()
 	}
 	//計測終了時間を計測開始時間に
 	reference_ = std::chrono::steady_clock::now();
+
+	elapsedMicroSeconds = elapsed.count();
 }
 
 void ADXCommon::Initialize(ADXWindow* setWindow)
@@ -337,6 +338,16 @@ void ADXCommon::PreDraw()
 	scissorRect.bottom = scissorRect.top + (LONG)ADXWindow::S_window_height; // 切り抜き座標下
 	// シザー矩形設定コマンドを、コマンドリストに積む
 	commandList_->RSSetScissorRects(1, &scissorRect);
+
+	//処理時間の情報を表示
+	float frameDigestionRate = (float)elapsedMicroSeconds / S_frameRate;
+
+	bool tool_active = true;
+	ImGui::Begin("ADXCommon", &tool_active, ImGuiWindowFlags_MenuBar);
+	ImGui::InputInt("elapsedMicroSeconds", (int*)&elapsedMicroSeconds);
+	ImGui::InputFloat("frameDigestionRate", &frameDigestionRate);
+
+	ImGui::End();
 
 	S_currentInstance = this;
 }

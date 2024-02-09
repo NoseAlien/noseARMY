@@ -12,6 +12,10 @@ const float maxCameraTiltVelocity = 0.7f;
 const float cameraTiltForce = 0.3f;
 const float cameraDistance = 20;
 const float listenerRadius = 40;
+const float idolAnimAmount = 0.05f;
+const float walkAnimAmount = 0.1f;
+const float jumpAnimVelocity = 0.5f;
+const float jumpAnimAmount = 1.5f;
 
 bool Player::GetInputStatus(actionsList action)
 {
@@ -87,10 +91,25 @@ void Player::Move(float walkSpeed, float jumpPower)
 	ADXVector2 inputVec = GetDirectionInput();
 	rigidbody_->velocity_ += (cameraRight * inputVec.x_ + cameraForward * inputVec.y_) * walkSpeed;
 
+	float modelScalingTime = (float)clock() * 0.002f;
+	float animAmount = idolAnimAmount;
+
 	if (inputVec != ADXVector2{ 0,0 })
 	{
 		GetGameObject()->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(rigidbody_->velocity_.x_, rigidbody_->velocity_.z_),0 });
+
+		if (!GetInputStatus(attack))
+		{
+			modelScalingTime = (float)clock() * 0.015f;
+			animAmount = walkAnimAmount;
+		}
 	}
+
+	visual_->transform_.localScale_ = { 1 + sinf(modelScalingTime) * animAmount,
+		(1 + cosf(modelScalingTime) * animAmount) * ADXUtility::ValueMapping(max(0,min(rigidbody_->velocity_.y_,jumpAnimVelocity)),0,jumpAnimVelocity,1,jumpAnimAmount),
+		1 + sinf(modelScalingTime) * animAmount };
+
+	nose_->transform_.localPosition_ = { 0,sinf(modelScalingTime) * animAmount,1.01f };
 
 	if (GetInputStatusTrigger(jump))
 	{
@@ -318,14 +337,7 @@ void Player::LiveEntitiesUpdate()
 	float scale = ADXUtility::ValueMapping((float)minis_.size(), 0, (float)maxMinisNum, 1, 0.25f);
 	GetGameObject()->transform_.localScale_ = { scale,scale,scale };
 
-	float modelScalingTime = (float)clock() * 0.002f;
-	if (!GetInputStatus(attack) && GetDirectionInput() != ADXVector2{ 0,0 })
-	{
-		modelScalingTime = (float)clock() * 0.015f;
-	}
-
 	visual_->transform_.localRotation_ = ADXQuaternion::IdentityQuaternion();
-	visual_->transform_.localScale_ = { 1 + sinf(modelScalingTime) * 0.03f,1 + cosf(modelScalingTime) * 0.03f,1 + sinf(modelScalingTime) * 0.03f };
 
 	ViewUpdate();
 
@@ -400,7 +412,6 @@ void Player::LiveEntitiesUpdate()
 	}
 
 	nose_->transform_.localScale_ = ADXVector3{ 0.42f,0.35f,0.35f } *(float)fmax(1, 1 + pow(fmax(0, splitInterval_), 2) * 0.02f);
-	nose_->transform_.localPosition_ = { 0,sinf(modelScalingTime) * 0.03f,1.01f };
 	nose_->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi,0 });
 
 	splitInterval_--;

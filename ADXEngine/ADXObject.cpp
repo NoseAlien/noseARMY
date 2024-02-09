@@ -448,7 +448,7 @@ void ADXObject::StaticUpdate()
 		float pos[3] = { itr->transform_.localPosition_.x_,itr->transform_.localPosition_.y_,itr->transform_.localPosition_.z_ };
 
 		bool tool_active = true;
-		ImGui::Begin("My First Tool", &tool_active, ImGuiWindowFlags_MenuBar);
+		ImGui::Begin("ADXObject", &tool_active, ImGuiWindowFlags_MenuBar);
 		ImGui::InputFloat3("Position", pos);
 
 		ImGui::End();
@@ -665,9 +665,9 @@ void ADXObject::Draw()
 		//定数バッファビュー(CBV)の設定コマンド
 		S_cmdList->SetGraphicsRootConstantBufferView(2, constBuffB1_->GetGPUVirtualAddress());
 
-		D3D12_GPU_DESCRIPTOR_HANDLE S_gpuDescHandleSRV;
-		S_gpuDescHandleSRV.ptr = S_GpuStartHandle + texture_;
-		S_cmdList->SetGraphicsRootDescriptorTable(1, S_gpuDescHandleSRV);
+		D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV;
+		gpuDescHandleSRV.ptr = S_GpuStartHandle + texture_;
+		S_cmdList->SetGraphicsRootDescriptorTable(1, gpuDescHandleSRV);
 		
 		transform_.UpdateConstBuffer();
 
