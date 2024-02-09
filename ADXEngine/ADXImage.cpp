@@ -5,6 +5,7 @@
 #include <DirectXTex.h>
 
 using namespace DirectX;
+using namespace ADXEngine;
 
 D3D12_CPU_DESCRIPTOR_HANDLE ADXImage::S_srvHandle = {};
 Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> ADXImage::S_srvHeap = nullptr;

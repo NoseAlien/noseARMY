@@ -1,5 +1,7 @@
 ﻿#include "ADXDataPool.h"
 
+using namespace ADXEngine;
+
 std::vector<ADXImage> ADXDataPool::S_imgDataPool{};
 
 ADXImage* ADXDataPool::GetImgData(const uint32_t& gHandle)
