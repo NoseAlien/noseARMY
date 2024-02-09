@@ -51,64 +51,19 @@ void Cub_E::EnemyInitialize()
 void Cub_E::EnemyUpdate()
 {
 	GetGameObject()->sortingOrder_ = 1;
-	//攻撃動作中でない状態で自機を見つけたら
-	if (targetDetected_ && attackProgress_ <= 0)
-	{
-		ADXVector3 targetRelativePos = targetPos_;
-		if (GetGameObject()->transform_.parent_ != nullptr)
-		{
-			targetRelativePos = ADXMatrix4::Transform(targetPos_, GetGameObject()->transform_.parent_->GetMatWorld());
-		}
-
-		//攻撃動作に移行
-		cursor_ = targetRelativePos;
-		attackProgress_ = 1;
-	}
-
+	rigidbody_->gravity_ = { 0,gravity,0 };
 	visual_->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
 
-	rigidbody_->gravity_ = { 0,gravity,0 };
-
-	if (attackProgress_ > 0)
+	switch (phase_)
 	{
-		ADXVector3 finalTarget = cursor_;
-		//自機の方を向く
-		if (attackProgress_ > actKeyFrame_jump)
-		{
-			ADXQuaternion targetRot = ADXQuaternion::EulerToQuaternion(
-				{ 0,(float)atan2(cursor_.x_ - GetGameObject()->transform_.localPosition_.x_,cursor_.z_ - GetGameObject()->transform_.localPosition_.z_),0 });
-
-			GetGameObject()->transform_.localRotation_ = ADXQuaternion::Slerp(GetGameObject()->transform_.localRotation_,targetRot, aimSpeed);
-			GetGameObject()->transform_.localRotation_ = GetGameObject()->transform_.localRotation_.Normalized();
-
-			visual_->texture_ = preAttackTex_;
-		}
-		//飛び上がる
-		else if (attackProgress_ > actKeyFrame_fall)
-		{
-			visual_->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({
-				ADXUtility::EaseIn(ADXUtility::ValueMapping(attackProgress_,actKeyFrame_jump,actKeyFrame_fall,1,0),jumpRotEasePower) * ADXUtility::Pi * -2,
-				0,
-				0 });
-
-			finalTarget.y_ += jumpHeight;
-			rigidbody_->velocity_ = (finalTarget - GetGameObject()->transform_.localPosition_) * jumpSpeed;
-			visual_->texture_ = preAttackTex_;
-
-		}
-		//落下して攻撃
-		else if (attackProgress_ > actKeyFrame_postAtk)
-		{
-			for (auto& itr : GetGameObject()->GetComponents<ADXCollider>())
-			{
-				if (!itr->isTrigger_)
-				{
-					LiveEntity::SetAttackObj({ itr,this,attackPower });
-				}
-			}
-			visual_->texture_ = attackTex_;
-		}
+	case phase::attack:
+		Attack();
+		break;
+	default:
+		Idol();
+		break;
 	}
+
 	attackProgress_ = min(max(0, attackProgress_ - attackProgressSpeed), 1);
 
 	tailRig_->transform_.localPosition_ = tailRigPos;
@@ -136,4 +91,67 @@ void Cub_E::LiveEntitiesOnPreRender()
 	tail_->transform_.localRotation_ = ADXQuaternion::MakeAxisAngle(
 		{ 0,1,0 },(float)atan2(cameraRelativePos.x_ - tail_->transform_.localPosition_.x_, cameraRelativePos.z_ - tail_->transform_.localPosition_.z_))
 		* tail_->transform_.localRotation_;
+}
+
+void Cub_E::Idol()
+{
+	//自機を見つけたら
+	if (targetDetected_)
+	{
+		ADXVector3 targetRelativePos = targetPos_;
+		if (GetGameObject()->transform_.parent_ != nullptr)
+		{
+			targetRelativePos = ADXMatrix4::Transform(targetPos_, GetGameObject()->transform_.parent_->GetMatWorld());
+		}
+
+		//攻撃動作に移行
+		cursor_ = targetRelativePos;
+		attackProgress_ = 1;
+		phase_ = phase::attack;
+	}
+}
+
+void Cub_E::Attack()
+{
+	ADXVector3 finalTarget = cursor_;
+	//自機の方を向く
+	if (attackProgress_ > actKeyFrame_jump)
+	{
+		ADXQuaternion targetRot = ADXQuaternion::EulerToQuaternion(
+			{ 0,(float)atan2(cursor_.x_ - GetGameObject()->transform_.localPosition_.x_,cursor_.z_ - GetGameObject()->transform_.localPosition_.z_),0 });
+
+		GetGameObject()->transform_.localRotation_ = ADXQuaternion::Slerp(GetGameObject()->transform_.localRotation_, targetRot, aimSpeed);
+		GetGameObject()->transform_.localRotation_ = GetGameObject()->transform_.localRotation_.Normalized();
+
+		visual_->texture_ = preAttackTex_;
+	}
+	//飛び上がる
+	else if (attackProgress_ > actKeyFrame_fall)
+	{
+		visual_->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({
+			ADXUtility::EaseIn(ADXUtility::ValueMapping(attackProgress_,actKeyFrame_jump,actKeyFrame_fall,1,0),jumpRotEasePower) * ADXUtility::Pi * -2,
+			0,
+			0 });
+
+		finalTarget.y_ += jumpHeight;
+		rigidbody_->velocity_ = (finalTarget - GetGameObject()->transform_.localPosition_) * jumpSpeed;
+		visual_->texture_ = preAttackTex_;
+
+	}
+	//落下して攻撃
+	else if (attackProgress_ > actKeyFrame_postAtk)
+	{
+		for (auto& itr : GetGameObject()->GetComponents<ADXCollider>())
+		{
+			if (!itr->isTrigger_)
+			{
+				LiveEntity::SetAttackObj({ itr,this,attackPower });
+			}
+		}
+		visual_->texture_ = attackTex_;
+	}
+	else if (attackProgress_ <= 0)
+	{
+		phase_ = phase::idol;
+	}
 }

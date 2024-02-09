@@ -4,8 +4,16 @@
 class Clex : public Enemy
 {
 private:
+	enum class phase
+	{
+		idol,
+		attack,
+	};
+
+private:
 	ADXModel rect_{};
 	uint32_t attackTex_ = 0;
+	phase phase_{};
 
 	ADXObject* face_ = nullptr;
 	ADXObject* body_ = nullptr;
@@ -22,4 +30,6 @@ private:
 	void EnemyInitialize() final;
 	void EnemyUpdate() final;
 	void LiveEntitiesOnPreRender() final;
+	void Idol();
+	void Attack();
 };

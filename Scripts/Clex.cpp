@@ -63,69 +63,22 @@ void Clex::EnemyUpdate()
 	rigidbody_->dragAxis_ = { true,true,true };
 	rigidbody_->gravity_ = { 0,0,0 };
 
+	GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
 	GetGameObject()->sortingOrder_ = 1;
 
 	bodyScale_ = ADXUtility::Lerp(bodyScale_, 1, bodyScalingSpeed);
 	antennaAngle_ = ADXUtility::Lerp(antennaAngle_, 0, antennaRotSpeed);
 
-	//攻撃動作中でない状態で自機を見つけたら
-	if (targetDetected_ && attackProgress_ <= 0)
+	switch (phase_)
 	{
-		ADXVector3 targetRelativePos = targetPos_;
-		if (GetGameObject()->transform_.parent_ != nullptr)
-		{
-			targetRelativePos = ADXMatrix4::Transform(targetPos_, GetGameObject()->transform_.parent_->GetMatWorld());
-		}
-
-		//攻撃動作に移行
-		cursor_ = targetRelativePos;
-		attackProgress_ = 1;
+	case phase::attack:
+		Attack();
+		break;
+	default:
+		Idol();
+		break;
 	}
 
-	GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
-
-	if (attackProgress_ > 0)
-	{
-		visual_->texture_ = attackTex_;
-
-		ADXQuaternion targetRot = ADXQuaternion::EulerToQuaternion(
-			{ 0,(float)atan2(cursor_.x_ - GetGameObject()->transform_.localPosition_.x_,cursor_.z_ - GetGameObject()->transform_.localPosition_.z_),0 });
-
-		GetGameObject()->transform_.localRotation_ = ADXQuaternion::Slerp(GetGameObject()->transform_.localRotation_, targetRot, aimSpeed);
-		GetGameObject()->transform_.localRotation_ = GetGameObject()->transform_.localRotation_.Normalized();
-		if (attackProgress_ > actKeyFrame_shot)
-		{
-
-		}
-		//弾を撃つ
-		else if (attackProgress_ > actKeyFrame_postAtk)
-		{
-			rigidbody_->velocity_ = (GetGameObject()->transform_.localPosition_ - cursor_).Normalize() * shotBackSpeed;
-			bodyScale_ = 0;
-			antennaAngle_ = 1;
-			if (!shotted_)
-			{
-				ADXObject* projectileObj = ADXObject::Create(
-					GetGameObject()->transform_.GetWorldPosition(),
-					GetGameObject()->transform_.GetWorldRotation(),
-					{1,1,1},
-					GetGameObject()->transform_.parent_);
-				Projectile* projectile = projectileObj->AddComponent<Projectile>();
-
-				projectile->SetData((GetGameObject()->transform_.localPosition_ - cursor_).Normalize() * -projectileSpeed, ADXImage::LoadADXImage("texture/Clex_projectile.png"));
-				projectile->LiveEntity::Initialize(GetTeam());
-
-				projectiles_.push_back(projectile);
-
-				shotted_ = true;
-			}
-		}
-		else
-		{
-			bodyScale_ = 0;
-			shotted_ = false;
-		}
-	}
 	attackProgress_ = min(max(0, attackProgress_ - 0.01f), 1);
 
 	body_->transform_.localScale_ = { bodyScale_,bodyScale_,bodyScale_ };
@@ -148,4 +101,69 @@ void Clex::LiveEntitiesOnPreRender()
 	antenna_->transform_.localRotation_ = ADXQuaternion::MakeAxisAngle(
 		{ 0,1,0 }, (float)atan2(cameraRelativePos.x_ - antenna_->transform_.localPosition_.x_, cameraRelativePos.z_ - antenna_->transform_.localPosition_.z_))
 		* antenna_->transform_.localRotation_;
+}
+
+void Clex::Idol()
+{
+	//自機を見つけたら
+	if (targetDetected_)
+	{
+		ADXVector3 targetRelativePos = targetPos_;
+		if (GetGameObject()->transform_.parent_ != nullptr)
+		{
+			targetRelativePos = ADXMatrix4::Transform(targetPos_, GetGameObject()->transform_.parent_->GetMatWorld());
+		}
+
+		//攻撃動作に移行
+		cursor_ = targetRelativePos;
+		attackProgress_ = 1;
+		phase_ = phase::attack;
+	}
+}
+
+void Clex::Attack()
+{
+	visual_->texture_ = attackTex_;
+
+	ADXQuaternion targetRot = ADXQuaternion::EulerToQuaternion(
+		{ 0,(float)atan2(cursor_.x_ - GetGameObject()->transform_.localPosition_.x_,cursor_.z_ - GetGameObject()->transform_.localPosition_.z_),0 });
+
+	GetGameObject()->transform_.localRotation_ = ADXQuaternion::Slerp(GetGameObject()->transform_.localRotation_, targetRot, aimSpeed);
+	GetGameObject()->transform_.localRotation_ = GetGameObject()->transform_.localRotation_.Normalized();
+	if (attackProgress_ > actKeyFrame_shot)
+	{
+
+	}
+	//弾を撃つ
+	else if (attackProgress_ > actKeyFrame_postAtk)
+	{
+		rigidbody_->velocity_ = (GetGameObject()->transform_.localPosition_ - cursor_).Normalize() * shotBackSpeed;
+		bodyScale_ = 0;
+		antennaAngle_ = 1;
+		if (!shotted_)
+		{
+			ADXObject* projectileObj = ADXObject::Create(
+				GetGameObject()->transform_.GetWorldPosition(),
+				GetGameObject()->transform_.GetWorldRotation(),
+				{ 1,1,1 },
+				GetGameObject()->transform_.parent_);
+			Projectile* projectile = projectileObj->AddComponent<Projectile>();
+
+			projectile->SetData((GetGameObject()->transform_.localPosition_ - cursor_).Normalize() * -projectileSpeed, ADXImage::LoadADXImage("texture/Clex_projectile.png"));
+			projectile->LiveEntity::Initialize(GetTeam());
+
+			projectiles_.push_back(projectile);
+
+			shotted_ = true;
+		}
+	}
+	else if (attackProgress_ > 0)
+	{
+		bodyScale_ = 0;
+		shotted_ = false;
+	}
+	else
+	{
+		phase_ = phase::idol;
+	}
 }
