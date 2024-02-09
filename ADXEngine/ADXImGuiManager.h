@@ -24,4 +24,20 @@ public:
 
 	//描画処理
 	void StaticDraw();
+
+private:
+	//コンストラクタ、デストラクタをprivateにしてシングルトンに
+
+	ADXImGuiManager() {};
+	~ADXImGuiManager() {};
+
+	ADXImGuiManager(const ADXImGuiManager&) = delete;
+	ADXImGuiManager& operator=(const ADXImGuiManager&) = delete;
+
+
+private:
+	static ADXImGuiManager S_instance;
+
+public:
+	static ADXImGuiManager* GetInstance() { return &S_instance; }
 };

@@ -37,8 +37,7 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 		ADXKeyBoardInput keyboard_(&adxwindow);
 		ADXGamePadInput gamePad_;
 
-		ADXImGuiManager adximgui;
-		adximgui.Initialize(&adxwindow);
+		ADXImGuiManager::GetInstance()->Initialize(&adxwindow);
 
 		ADXAudioSource::StaticInitialize();
 		ADXImage::StaticInitialize();
@@ -75,7 +74,7 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 				break;
 			}
 
-			adximgui.PreDraw();
+			ADXImGuiManager::GetInstance()->PreDraw();
 			keyboard_.Update();
 			gamePad_.Update();
 			config_.Update();
@@ -88,13 +87,13 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 
 			adxcommon.PreDraw();
 			ADXObject::StaticDraw();
-			adximgui.PostDraw();
-			adximgui.StaticDraw();
+			ADXImGuiManager::GetInstance()->PostDraw();
+			ADXImGuiManager::GetInstance()->StaticDraw();
 			adxcommon.PostDraw();
 		}
 		ADXAudioSource::StaticFinalize();
 		adxwindow.Finalize();
-		adximgui.Finalize();
+		ADXImGuiManager::GetInstance()->Finalize();
 	}
 	_CrtDumpMemoryLeaks();
 	return 0;
