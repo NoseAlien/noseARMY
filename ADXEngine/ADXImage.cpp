@@ -21,7 +21,7 @@ void ADXImage::StaticInitialize()
 {
 	HRESULT result;
 
-	ID3D12Device* device = ADXCommon::GetCurrentInstance()->GetDevice();
+	ID3D12Device* device = ADXCommon::GetInstance()->GetDevice();
 
 	//シェーダーリソースビューの最大個数
 	const uint32_t kMaxSRVCount = 2056;
@@ -46,7 +46,7 @@ void ADXImage::StaticInitialize()
 uint32_t ADXImage::LoadADXImage(const std::string& imgName, bool generateMipMaps)
 {
 	HRESULT result;
-	ID3D12Device* device = ADXCommon::GetCurrentInstance()->GetDevice();
+	ID3D12Device* device = ADXCommon::GetInstance()->GetDevice();
 
 	ADXImage image;
 
@@ -179,7 +179,7 @@ uint32_t ADXImage::LoadADXImage(const std::string& imgName, bool generateMipMaps
 uint32_t ADXImage::CreateADXImage(const uint64_t& width, const uint64_t& height, const std::string& imgName)
 {
 	HRESULT result;
-	ID3D12Device* device = ADXCommon::GetCurrentInstance()->GetDevice();
+	ID3D12Device* device = ADXCommon::GetInstance()->GetDevice();
 
 	ADXImage image;
 

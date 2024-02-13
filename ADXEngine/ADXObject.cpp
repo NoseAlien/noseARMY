@@ -225,7 +225,7 @@ void ADXObject::InitializeGraphicsPipeline()
 	rootSignatureDesc.pStaticSamplers = &samplerDesc;
 	rootSignatureDesc.NumStaticSamplers = 1;
 
-	ID3D12Device* device = ADXCommon::GetCurrentInstance()->GetDevice();
+	ID3D12Device* device = ADXCommon::GetInstance()->GetDevice();
 
 	//ルートシグネチャのシリアライズ
 	Microsoft::WRL::ComPtr<ID3DBlob> rootSigBlob = nullptr;
@@ -252,7 +252,7 @@ void ADXObject::InitializeGraphicsPipeline()
 
 void ADXObject::InitializeConstBufferTransform(Microsoft::WRL::ComPtr<ID3D12Resource>& constBuffTransform, ConstBufferDataTransform** constMapTransform)
 {
-	ID3D12Device* device = ADXCommon::GetCurrentInstance()->GetDevice();
+	ID3D12Device* device = ADXCommon::GetInstance()->GetDevice();
 
 	if (device != nullptr)
 	{
@@ -288,7 +288,7 @@ void ADXObject::InitializeConstBufferTransform(Microsoft::WRL::ComPtr<ID3D12Reso
 
 void ADXObject::InitializeConstBufferMaterial(Microsoft::WRL::ComPtr<ID3D12Resource>& constBuff)
 {
-	ID3D12Device* device = ADXCommon::GetCurrentInstance()->GetDevice();
+	ID3D12Device* device = ADXCommon::GetInstance()->GetDevice();
 
 	if (device != nullptr)
 	{
@@ -521,7 +521,7 @@ void ADXObject::StaticDraw()
 		// パイプラインステートの設定コマンド
 		S_cmdList->SetPipelineState(S_pipelineState.Get());
 		//全ピクセルの深度バッファ値を最奥の1.0にする
-		S_cmdList->ClearDepthStencilView(*ADXCommon::GetCurrentInstance()->GetDsvHandle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+		S_cmdList->ClearDepthStencilView(*ADXCommon::GetInstance()->GetDsvHandle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 		for (auto& itr : allObjPtr)
 		{
@@ -591,7 +591,7 @@ void ADXObject::PreDraw()
 	assert(ADXObject::S_cmdList == nullptr);
 
 	// コマンドリストをセット
-	ADXObject::S_cmdList = ADXCommon::GetCurrentInstance()->GetCommandList();
+	ADXObject::S_cmdList = ADXCommon::GetInstance()->GetCommandList();
 
 	// パイプラインステートの設定
 	ADXObject::S_cmdList->SetPipelineState(S_pipelineState.Get());
@@ -646,7 +646,7 @@ void ADXObject::Draw()
 	}
 
 	// nullptrチェック
-	[[maybe_unused]]ID3D12Device* device = ADXCommon::GetCurrentInstance()->GetDevice();
+	[[maybe_unused]]ID3D12Device* device = ADXCommon::GetInstance()->GetDevice();
 	assert(device);
 	assert(S_cmdList);
 

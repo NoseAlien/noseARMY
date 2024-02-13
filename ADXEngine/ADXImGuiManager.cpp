@@ -23,13 +23,13 @@ void ADXImGuiManager::Initialize(ADXWindow* window)
 	desc.NumDescriptors = 1;
 	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	//デスクリプタヒープ生成
-	result = ADXCommon::GetCurrentInstance()->GetDevice()->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&srvHeap_));
+	result = ADXCommon::GetInstance()->GetDevice()->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&srvHeap_));
 	assert(SUCCEEDED(result));
 
 	//DirectX12用初期化
 	ImGui_ImplDX12_Init(
-		ADXCommon::GetCurrentInstance()->GetDevice(),
-		(uint32_t)ADXCommon::GetCurrentInstance()->GetBackBufferCount(),
+		ADXCommon::GetInstance()->GetDevice(),
+		(uint32_t)ADXCommon::GetInstance()->GetBackBufferCount(),
 		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, srvHeap_.Get(),
 		srvHeap_->GetCPUDescriptorHandleForHeapStart(),
 		srvHeap_->GetGPUDescriptorHandleForHeapStart());
@@ -65,7 +65,7 @@ void ADXImGuiManager::PostDraw()
 
 void ADXImGuiManager::StaticDraw()
 {
-	ID3D12GraphicsCommandList* commandList = ADXCommon::GetCurrentInstance()->GetCommandList();
+	ID3D12GraphicsCommandList* commandList = ADXCommon::GetInstance()->GetCommandList();
 
 	//デスクリプタヒープの配列をセットするコマンド
 	ID3D12DescriptorHeap* ppHeaps[] = { srvHeap_.Get() };

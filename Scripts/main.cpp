@@ -30,8 +30,7 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 		//ウィンドウ生成
 		ADXWindow adxwindow(L"noseARMY");
 
-		ADXCommon adxcommon;
-		adxcommon.Initialize(&adxwindow);
+		ADXCommon::GetInstance()->Initialize(&adxwindow);
 
 		//キーボードデバイスの生成
 		ADXKeyBoardInput keyboard_(&adxwindow);
@@ -85,11 +84,11 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 			LiveEntity::StaticUpdate();
 			ADXCollider::StaticUpdate();
 
-			adxcommon.PreDraw();
+			ADXCommon::GetInstance()->PreDraw();
 			ADXObject::StaticDraw();
 			ADXImGuiManager::GetInstance()->PostDraw();
 			ADXImGuiManager::GetInstance()->StaticDraw();
-			adxcommon.PostDraw();
+			ADXCommon::GetInstance()->PostDraw();
 		}
 		ADXAudioSource::StaticFinalize();
 		adxwindow.Finalize();

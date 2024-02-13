@@ -540,6 +540,23 @@ void Player::LiveEntitiesUpdate()
 	controlTextVec_->text_ = "[ARROW]" + controlTextVec_->text_;
 	controlTextJump_->text_ = "[SPACE]" + controlTextJump_->text_;
 	controlTextAct_->text_ = "[  C  ]" + controlTextAct_->text_;
+
+	controlTextVec_->material_.ambient_ = { 1,1,1 };
+	controlTextJump_->material_.ambient_ = { 1,1,1 };
+	controlTextAct_->material_.ambient_ = { 1,1,1 };
+
+	if (GetDirectionInput() != ADXVector2{ 0,0 })
+	{
+		controlTextVec_->material_.ambient_ = { 1,1,0 };
+	}
+	if (GetInputStatus(jump))
+	{
+		controlTextJump_->material_.ambient_ = { 1,1,0 };
+	}
+	if (GetInputStatus(attack))
+	{
+		controlTextAct_->material_.ambient_ = { 1,1,0 };
+	}
 }
 
 void Player::LiveEntitiesOnCollisionHit(ADXCollider* col, [[maybe_unused]]ADXCollider* myCol)

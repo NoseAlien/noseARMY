@@ -85,10 +85,18 @@ private:
 	//フェンスの初期化
 	void InitializeFence();
 
+	//コンストラクタ、デストラクタをprivateにしてシングルトンに
+
+	ADXCommon() {};
+	~ADXCommon() {};
+
+	ADXCommon(const ADXCommon&) = delete;
+	ADXCommon& operator=(const ADXCommon&) = delete;
+
 private:
-	static ADXCommon* S_currentInstance;
+	static ADXCommon S_instance;
 
 public:
-	//このクラスのインスタンスを取得
-	static ADXCommon* GetCurrentInstance() { return S_currentInstance; };
+	//インスタンスを取得
+	static ADXCommon* GetInstance() { return &S_instance; }
 };

@@ -27,7 +27,7 @@ void ADXPostEffectLens::UniqueInitialize()
 
 	HRESULT result;
 
-	ID3D12Device* device = ADXCommon::GetCurrentInstance()->GetDevice();
+	ID3D12Device* device = ADXCommon::GetInstance()->GetDevice();
 	ID3D12Resource* texBuff = ADXDataPool::GetImgData(GetGameObject()->texture_)->GetTexBuff();
 
 	//デスクリプタヒープの設定
@@ -250,7 +250,7 @@ void ADXPostEffectLens::CreateGraphicsPipelineState()
 		&rootSigBlob, &errorBlob);
 	assert(SUCCEEDED(result));
 
-	ID3D12Device* device = ADXCommon::GetCurrentInstance()->GetDevice();
+	ID3D12Device* device = ADXCommon::GetInstance()->GetDevice();
 
 	//ルートシグネチャの生成
 	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
@@ -267,7 +267,7 @@ void ADXPostEffectLens::CreateGraphicsPipelineState()
 
 void ADXPostEffectLens::OnPreRender()
 {
-	ID3D12GraphicsCommandList* cmdList = ADXCommon::GetCurrentInstance()->GetCommandList();
+	ID3D12GraphicsCommandList* cmdList = ADXCommon::GetInstance()->GetCommandList();
 
 	//リソースバリアで書き込み可能に変更
 	CD3DX12_RESOURCE_BARRIER barrierDesc = CD3DX12_RESOURCE_BARRIER::Transition(
@@ -303,8 +303,8 @@ void ADXPostEffectLens::OnWillRenderObject()
 		ADXDataPool::GetImgData(GetGameObject()->texture_)->GetTexBuff(),
 		D3D12_RESOURCE_STATE_RENDER_TARGET,
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
-	ADXCommon::GetCurrentInstance()->GetCommandList()->ResourceBarrier(1, &barrierDesc);
+	ADXCommon::GetInstance()->GetCommandList()->ResourceBarrier(1, &barrierDesc);
 
 	//描画先を戻す
-	ADXCommon::GetCurrentInstance()->ReturnRenderTarget();
+	ADXCommon::GetInstance()->ReturnRenderTarget();
 }

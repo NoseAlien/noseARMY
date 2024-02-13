@@ -9,7 +9,7 @@
 
 using namespace Microsoft::WRL;
 
-ADXCommon* ADXCommon::S_currentInstance = nullptr;
+ADXCommon ADXCommon::S_instance{};
 const float ADXCommon::S_clearColor[4] = { 0.1f,0.8f,1.0f,0.0f };
 
 //対応レベルの配列
@@ -70,9 +70,6 @@ void ADXCommon::Initialize(ADXWindow* setWindow)
 	InitializeRenderTargetView();
 	InitializeDepthBuffer();
 	InitializeFence();
-
-	//これを現在のインスタンスとする
-	S_currentInstance = this;
 }
 
 void ADXCommon::InitializeDevice()
@@ -348,8 +345,6 @@ void ADXCommon::PreDraw()
 	ImGui::InputFloat("frameDigestionRate", &frameDigestionRate);
 
 	ImGui::End();
-
-	S_currentInstance = this;
 }
 
 void ADXCommon::PostDraw()

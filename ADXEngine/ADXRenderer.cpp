@@ -5,7 +5,7 @@
 void ADXRenderer::Rendering()
 {
 	// nullptrチェック
-	[[maybe_unused]] ID3D12Device* device = ADXCommon::GetCurrentInstance()->GetDevice();
+	[[maybe_unused]] ID3D12Device* device = ADXCommon::GetInstance()->GetDevice();
 	[[maybe_unused]] ID3D12GraphicsCommandList* cmdList = ADXObject::GetCmdList();
 	assert(device);
 	assert(cmdList);

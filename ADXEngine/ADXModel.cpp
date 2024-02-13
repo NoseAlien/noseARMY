@@ -169,7 +169,7 @@ void ADXModel::CreateVertexBufferView()
 	resDesc.SampleDesc.Count = 1;
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	//頂点バッファの生成
-	result = ADXCommon::GetCurrentInstance()->GetDevice()
+	result = ADXCommon::GetInstance()->GetDevice()
 		->CreateCommittedResource(
 			&heapProp,
 			D3D12_HEAP_FLAG_NONE,
@@ -221,7 +221,7 @@ void ADXModel::CreateIndexBufferView()
 	resDesc.SampleDesc.Count = 1;
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	//インデックスバッファの生成
-	result = ADXCommon::GetCurrentInstance()->GetDevice()
+	result = ADXCommon::GetInstance()->GetDevice()
 		->CreateCommittedResource(
 			&heapProp,
 			D3D12_HEAP_FLAG_NONE,

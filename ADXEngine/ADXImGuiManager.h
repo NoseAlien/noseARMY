@@ -34,10 +34,10 @@ private:
 	ADXImGuiManager(const ADXImGuiManager&) = delete;
 	ADXImGuiManager& operator=(const ADXImGuiManager&) = delete;
 
-
 private:
 	static ADXImGuiManager S_instance;
 
 public:
+	//インスタンスを取得
 	static ADXImGuiManager* GetInstance() { return &S_instance; }
 };
