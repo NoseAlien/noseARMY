@@ -43,7 +43,7 @@ void SceneGate::Initialize(const std::string& team, const std::string& stageName
 	stageNameUI_->GetComponent<ADXTextRenderer>()->fontExtend_ = 2;
 	stageNameUI_->GetComponent<ADXTextRenderer>()->anchor_ = ADXTextRenderer::middleCenter;
 	stageNameUI_->transform_.localPosition_ = { -0.9f,-0.9f,0 };
-	stageNameUI_->transform_.localScale_.x_ /= ADXWindow::GetAspect();
+	stageNameUI_->transform_.localScale_.x_ /= ADXWindow::GetInstance()->GetAspect();
 	stageNameUI_->transform_.localScale_ *= 0.1f;
 }
 
@@ -58,8 +58,8 @@ void SceneGate::UniqueUpdate()
 
 	if (hitted_)
 	{
-		keyUI_->transform_.localScale_.x_ += (0.45f / ADXWindow::GetAspect() - keyUI_->transform_.localScale_.x_) * 0.3f;
-		stageNameUI_->transform_.localScale_.x_ += (0.1f / ADXWindow::GetAspect() - stageNameUI_->transform_.localScale_.x_) * 0.3f;
+		keyUI_->transform_.localScale_.x_ += (0.45f / ADXWindow::GetInstance()->GetAspect() - keyUI_->transform_.localScale_.x_) * 0.3f;
+		stageNameUI_->transform_.localScale_.x_ += (0.1f / ADXWindow::GetInstance()->GetAspect() - stageNameUI_->transform_.localScale_.x_) * 0.3f;
 		if (ADXKeyConfig::GetCurrentInstance()->GetInputDown("select"))
 		{
 			S_nextStageName = stageName_;

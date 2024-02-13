@@ -55,7 +55,7 @@ void TitleScene::Initialize()
 	copyright_->GetComponent<ADXTextRenderer>()->anchor_ = ADXTextRenderer::lowerCenter;
 	copyright_->GetComponent<ADXTextRenderer>()->text_ = "2024 Terapeta";
 	copyright_->transform_.localPosition_ = { 0,-0.9f,0 };
-	copyright_->transform_.localScale_.x_ /= ADXWindow::GetAspect();
+	copyright_->transform_.localScale_.x_ /= ADXWindow::GetInstance()->GetAspect();
 	copyright_->transform_.localScale_ *= 0.05f;
 
 	version_ = ADXObject::Create();
@@ -71,7 +71,7 @@ void TitleScene::Initialize()
 	version_->GetComponent<ADXTextRenderer>()->anchor_ = ADXTextRenderer::lowerRight;
 	version_->GetComponent<ADXTextRenderer>()->text_ = "ver 0.1";
 	version_->transform_.localPosition_ = { 0.9f,-0.9f,0 };
-	version_->transform_.localScale_.x_ /= ADXWindow::GetAspect();
+	version_->transform_.localScale_.x_ /= ADXWindow::GetInstance()->GetAspect();
 	version_->transform_.localScale_ *= 0.05f;
 }
 

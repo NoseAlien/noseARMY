@@ -234,8 +234,8 @@ void ADXCommon::InitializeDepthBuffer()
 	//リソース設定
 	D3D12_RESOURCE_DESC depthResourceDesc{};
 	depthResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	depthResourceDesc.Width = ADXWindow::S_window_width; //レンダーターゲットに合わせる
-	depthResourceDesc.Height = ADXWindow::S_window_height; //レンダーターゲットに合わせる
+	depthResourceDesc.Width = ADXWindow::GetInstance()->window_width_; //レンダーターゲットに合わせる
+	depthResourceDesc.Height = ADXWindow::GetInstance()->window_height_; //レンダーターゲットに合わせる
 	depthResourceDesc.DepthOrArraySize = 1;
 	depthResourceDesc.Format = DXGI_FORMAT_D32_FLOAT; //深度値フォーマット
 	depthResourceDesc.SampleDesc.Count = 1;
@@ -317,8 +317,8 @@ void ADXCommon::PreDraw()
 
 	// ビューポート設定コマンド
 	D3D12_VIEWPORT viewport{};
-	viewport.Width = (FLOAT)ADXWindow::S_window_width;
-	viewport.Height = (FLOAT)ADXWindow::S_window_height;
+	viewport.Width = (FLOAT)ADXWindow::GetInstance()->window_width_;
+	viewport.Height = (FLOAT)ADXWindow::GetInstance()->window_height_;
 	viewport.TopLeftX = 0;
 	viewport.TopLeftY = 0;
 	viewport.MinDepth = 0.0f;
@@ -330,9 +330,9 @@ void ADXCommon::PreDraw()
 	// シザー矩形
 	D3D12_RECT scissorRect{};
 	scissorRect.left = 0; // 切り抜き座標左
-	scissorRect.right = scissorRect.left + (LONG)ADXWindow::S_window_width; // 切り抜き座標右
+	scissorRect.right = scissorRect.left + (LONG)ADXWindow::GetInstance()->window_width_; // 切り抜き座標右
 	scissorRect.top = 0; // 切り抜き座標上
-	scissorRect.bottom = scissorRect.top + (LONG)ADXWindow::S_window_height; // 切り抜き座標下
+	scissorRect.bottom = scissorRect.top + (LONG)ADXWindow::GetInstance()->window_height_; // 切り抜き座標下
 	// シザー矩形設定コマンドを、コマンドリストに積む
 	commandList_->RSSetScissorRects(1, &scissorRect);
 

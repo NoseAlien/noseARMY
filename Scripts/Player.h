@@ -53,6 +53,7 @@ private:
 	ADXTextRenderer* controlTextJump_ = nullptr;
 	ADXTextRenderer* controlTextAct_ = nullptr;
 
+	ADXParticleSystem* shardParticle_ = nullptr;
 	ADXParticleSystem* deadParticle_ = nullptr;
 
 	float cameraTiltVelocity_{};

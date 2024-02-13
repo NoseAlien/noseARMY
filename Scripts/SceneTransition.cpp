@@ -16,7 +16,7 @@ void SceneTransition::UniqueInitialize()
 void SceneTransition::UniqueUpdate()
 {
 	float shutterScale = sinf(((float)S_sceneChangeFrame / S_MaxSceneChangeFrame) * ADXUtility::Pi) * 2;
-	GetGameObject()->transform_.localScale_ = { shutterScale ,shutterScale * ADXWindow::GetAspect() ,shutterScale };
+	GetGameObject()->transform_.localScale_ = { shutterScale ,shutterScale * ADXWindow::GetInstance()->GetAspect() ,shutterScale };
 }
 
 void SceneTransition::StaticInitialize()

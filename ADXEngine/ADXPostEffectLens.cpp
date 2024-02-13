@@ -20,7 +20,7 @@ void ADXPostEffectLens::UniqueInitialize()
 	//GetGameObject()->transform.localScale_ = { 0.5f,0.5f,0.5f };
 	GetGameObject()->transform_.UpdateMatrix();
 	rect_ = ADXModel::CreateRect();
-	GetGameObject()->texture_ = ADXImage::CreateADXImage(ADXWindow::S_window_width, ADXWindow::S_window_height);
+	GetGameObject()->texture_ = ADXImage::CreateADXImage(ADXWindow::GetInstance()->window_width_, ADXWindow::GetInstance()->window_height_);
 	GetGameObject()->renderLayer_ = 100;
 	GetGameObject()->model_ = &rect_;
 
@@ -49,8 +49,8 @@ void ADXPostEffectLens::UniqueInitialize()
 	CD3DX12_RESOURCE_DESC depthResDesc =
 		CD3DX12_RESOURCE_DESC::Tex2D(
 			DXGI_FORMAT_D32_FLOAT,
-			ADXWindow::S_window_width,
-			ADXWindow::S_window_height,
+			ADXWindow::GetInstance()->window_width_,
+			ADXWindow::GetInstance()->window_height_,
 			1, 0, 1, 0,
 			D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL
 		);
@@ -283,12 +283,12 @@ void ADXPostEffectLens::OnPreRender()
 
 	// ビューポート設定
 	CD3DX12_VIEWPORT viewPort = CD3DX12_VIEWPORT(0.0f, 0.0f,
-		(float)ADXWindow::S_window_width, (float)ADXWindow::S_window_height);
+		(float)ADXWindow::GetInstance()->window_width_, (float)ADXWindow::GetInstance()->window_height_);
 	cmdList->RSSetViewports(1, &viewPort);
 
 	// シザー矩形設定
 	CD3DX12_RECT scissorRect = CD3DX12_RECT(0, 0,
-		ADXWindow::S_window_width, ADXWindow::S_window_height);
+		ADXWindow::GetInstance()->window_width_, ADXWindow::GetInstance()->window_height_);
 	cmdList->RSSetScissorRects(1, &scissorRect);
 
 	//色と深度を初期化

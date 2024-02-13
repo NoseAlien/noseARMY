@@ -71,6 +71,9 @@ public:
 	static float ValueMapping(float nowValue, float inputStart, float inputEnd,
 		float outputStart, float outputEnd);
 
+	//範囲内からランダムな値を出力
+	static float RandomRange(float min, float max);
+
 	//stringをwchar_t*に変換
 	static wchar_t* StringToWideChar(const std::string& pKey);
 };

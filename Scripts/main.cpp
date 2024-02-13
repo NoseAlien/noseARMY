@@ -28,15 +28,15 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 		//WinAPI初期化処理
 
 		//ウィンドウ生成
-		ADXWindow adxwindow(L"noseARMY");
+		ADXWindow::GetInstance()->Initialize(L"noseARMY");
 
-		ADXCommon::GetInstance()->Initialize(&adxwindow);
+		ADXCommon::GetInstance()->Initialize(ADXWindow::GetInstance());
 
 		//キーボードデバイスの生成
-		ADXKeyBoardInput keyboard_(&adxwindow);
+		ADXKeyBoardInput keyboard_(ADXWindow::GetInstance());
 		ADXGamePadInput gamePad_;
 
-		ADXImGuiManager::GetInstance()->Initialize(&adxwindow);
+		ADXImGuiManager::GetInstance()->Initialize(ADXWindow::GetInstance());
 
 		ADXAudioSource::StaticInitialize();
 		ADXImage::StaticInitialize();
@@ -68,7 +68,7 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 		//ゲームループ
 		while (true)
 		{
-			if (adxwindow.ProcessMessage() || keyboard_.GetKeyDown(DIK_ESCAPE))
+			if (ADXWindow::GetInstance()->ProcessMessage() || keyboard_.GetKeyDown(DIK_ESCAPE))
 			{
 				break;
 			}
@@ -91,7 +91,7 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 			ADXCommon::GetInstance()->PostDraw();
 		}
 		ADXAudioSource::StaticFinalize();
-		adxwindow.Finalize();
+		ADXWindow::GetInstance()->Finalize();
 		ADXImGuiManager::GetInstance()->Finalize();
 	}
 	_CrtDumpMemoryLeaks();

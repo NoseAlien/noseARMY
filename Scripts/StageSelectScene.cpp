@@ -86,7 +86,7 @@ void StageSelectScene::Update()
 {
 	key_->transform_.localPosition_ = { -0.65f,0.85f,0 };
 	key_->transform_.localPosition_.y_ += sinf(clock() * 0.001f) * 0.01f;
-	key_->transform_.localScale_ = { 0.45f / ADXWindow::GetAspect(),0.45f,1 };
+	key_->transform_.localScale_ = { 0.45f / ADXWindow::GetInstance()->GetAspect(),0.45f,1 };
 
 	if (ADXKeyConfig::GetCurrentInstance()->GetInputDown("return"))
 	{

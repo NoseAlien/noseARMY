@@ -52,14 +52,14 @@ void Goal::UniqueUpdate()
 	if (sceneTransitionCount_ != MaxSceneTransitionCount)
 	{
 		//「CLEAR」の文字を表示
-		clearUI_->transform_.localScale_.x_ += (clearUIScale / ADXWindow::GetAspect() - clearUI_->transform_.localScale_.x_) * uiExpandSpeed;
+		clearUI_->transform_.localScale_.x_ += (clearUIScale / ADXWindow::GetInstance()->GetAspect() - clearUI_->transform_.localScale_.x_) * uiExpandSpeed;
 		clearUI_->transform_.UpdateMatrix();
 
 		sceneTransitionCount_--;
 		if (sceneTransitionCount_ <= 0)
 		{
 			//「PRESS [SPACE]」の文字を表示
-			keyUI_->transform_.localScale_.x_ += (keyUIScale / ADXWindow::GetAspect() - keyUI_->transform_.localScale_.x_) * uiExpandSpeed;
+			keyUI_->transform_.localScale_.x_ += (keyUIScale / ADXWindow::GetInstance()->GetAspect() - keyUI_->transform_.localScale_.x_) * uiExpandSpeed;
 			if (ADXKeyConfig::GetCurrentInstance()->GetInputDown("select"))
 			{
 				SceneTransition::ChangeScene(2);

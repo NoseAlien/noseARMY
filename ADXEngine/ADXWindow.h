@@ -8,18 +8,16 @@ class ADXWindow
 {
 public:
 	RECT wrc_{};
+	uint32_t window_width_ = 1280;
+	uint32_t window_height_ = 720;
 
 private:
 	HWND hwnd_{};
 	WNDCLASSEX w_{};
 
 public:
-	static uint32_t S_window_width;
-	static uint32_t S_window_height;
-
-public:
 	//コンストラクタ
-	ADXWindow(
+	void Initialize(
 		const LPCTSTR& window_title);
 
 	//hwndを取得
@@ -28,16 +26,31 @@ public:
 	//hInstanceを取得
 	HINSTANCE GetHInstance() const { return w_.hInstance; }
 
+	//ウインドウのアスペクトを取得
+	float GetAspect() { return (float)window_width_ / window_height_; };
+
 	//xボタンが押されたか
 	bool ProcessMessage();
 
 	//終了処理
 	void Finalize();
 
+private:
+	//コンストラクタ、デストラクタをprivateにしてシングルトンに
+
+	ADXWindow() {};
+	~ADXWindow() {};
+
+	ADXWindow(const ADXWindow&) = delete;
+	ADXWindow& operator=(const ADXWindow&) = delete;
+
+private:
+	static ADXWindow S_instance;
+
 public:
 	//ウインドウプロシージャ
 	static LRESULT WindowProc(HWND hwnd, uint32_t msg, WPARAM wparam, LPARAM lparam);
 
-	//ウインドウのアスペクトを表示
-	static float GetAspect() { return (float)S_window_width / S_window_height; };
+	//インスタンスを取得
+	static ADXWindow* GetInstance() { return &S_instance; }
 };

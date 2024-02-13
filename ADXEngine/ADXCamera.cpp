@@ -12,7 +12,7 @@ void ADXCamera::UniqueInitialize()
 	matProjection_ = ADXMatrix4::ConvertToADXMatrix(
 		XMMatrixPerspectiveFovLH(
 			XMConvertToRadians(45.0f),//画角
-			(float)ADXWindow::S_window_width / ADXWindow::S_window_height,//アスペクト比
+			(float)ADXWindow::GetInstance()->window_width_ / ADXWindow::GetInstance()->window_height_,//アスペクト比
 			1.0f, 1000.0f));//ニア、ファークリップ
 
 	//ビュー変換行列

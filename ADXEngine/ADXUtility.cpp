@@ -72,6 +72,11 @@ float ADXUtility::ValueMapping(float nowValue, float inputStart, float inputEnd,
 	return outputStart + (outputEnd - outputStart) * ((nowValue - inputStart) / (inputEnd - inputStart));
 }
 
+float ADXUtility::RandomRange(float min, float max)
+{
+	return ValueMapping((float)rand(), 0, RAND_MAX, min, max);
+}
+
 wchar_t* ADXUtility::StringToWideChar(const std::string& pKey)
 {
 	const char* pCStrKey = pKey.c_str();

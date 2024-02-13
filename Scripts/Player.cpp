@@ -16,6 +16,9 @@ const float idolAnimAmount = 0.05f;
 const float walkAnimAmount = 0.1f;
 const float jumpAnimVelocity = 0.5f;
 const float jumpAnimAmount = 1.5f;
+const int gameOverLayer = 4;
+const int gameOverFilterLayer = 3;
+const int uiLayer = 5;
 
 bool Player::GetInputStatus(actionsList action)
 {
@@ -215,13 +218,19 @@ void Player::LiveEntitiesInitialize()
 	dead_->model_ = &rect_;
 	dead_->texture_ = ADXImage::LoadADXImage("texture/apEG_dead.png");
 	dead_->material_ = GetGameObject()->material_;
-	dead_->renderLayer_ = 4;
+	dead_->renderLayer_ = gameOverLayer;
 
 	keyUI_ = ADXObject::Create();
 	keyUI_->transform_.rectTransform_ = true;
 	keyUI_->model_ = &rect_;
-	keyUI_->renderLayer_ = 5;
+	keyUI_->renderLayer_ = uiLayer;
 	keyUI_->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
+
+	shardParticle_ = GetGameObject()->AddComponent<ADXParticleSystem>();
+	shardParticle_->animation_.Initialize({
+		ADXImage::LoadADXImage("texture/apEG_shard.png"), }, 0, false);
+	shardParticle_->lifeTime_ = shardParticle_->animation_.GetLength();
+	shardParticle_->particleModel_ = rect_;
 
 	deadParticle_ = GetGameObject()->AddComponent<ADXParticleSystem>();
 	deadParticle_->animation_.Initialize({
@@ -237,7 +246,7 @@ void Player::LiveEntitiesInitialize()
 	deathCountIcon_ = ADXObject::Create();
 	deathCountIcon_->transform_.rectTransform_ = true;
 	deathCountIcon_->model_ = &rect_;
-	deathCountIcon_->renderLayer_ = 5;
+	deathCountIcon_->renderLayer_ = uiLayer;
 	deathCountIcon_->texture_ = ADXImage::LoadADXImage("texture/apEG_dead.png");
 	deathCountIcon_->transform_.localPosition_ = { 0.85f,0.5f,0 };
 	deathCountIcon_->transform_.localScale_ = { 0,0,0 };
@@ -246,7 +255,7 @@ void Player::LiveEntitiesInitialize()
 	deathCountUI_->transform_.rectTransform_ = true;
 	deathCountUI_->transform_.parent_ = &deathCountIcon_->transform_;
 	deathCountUI_->model_ = &rect_;
-	deathCountUI_->renderLayer_ = 5;
+	deathCountUI_->renderLayer_ = uiLayer;
 	deathCountUI_->useDefaultDraw_ = false;
 	deathCountUI_->AddComponent<ADXTextRenderer>();
 	deathCountUI_->GetComponent<ADXTextRenderer>()->font_ = ADXTextRenderer::GetFont("texture/alphaNumber");
@@ -259,7 +268,7 @@ void Player::LiveEntitiesInitialize()
 	killCountIcon_ = ADXObject::Create();
 	killCountIcon_->transform_.rectTransform_ = true;
 	killCountIcon_->model_ = &rect_;
-	killCountIcon_->renderLayer_ = 5;
+	killCountIcon_->renderLayer_ = uiLayer;
 	killCountIcon_->texture_ = ADXImage::LoadADXImage("texture/Cub_E_dead.png");
 	killCountIcon_->transform_.localPosition_ = { 0.85f,0.8f,0 };
 	killCountIcon_->transform_.localScale_ = { 0,0,0 };
@@ -268,7 +277,7 @@ void Player::LiveEntitiesInitialize()
 	killCountUI_->transform_.rectTransform_ = true;
 	killCountUI_->transform_.parent_ = &killCountIcon_->transform_;
 	killCountUI_->model_ = &rect_;
-	killCountUI_->renderLayer_ = 5;
+	killCountUI_->renderLayer_ = uiLayer;
 	killCountUI_->useDefaultDraw_ = false;
 	killCountUI_->AddComponent<ADXTextRenderer>();
 	killCountUI_->GetComponent<ADXTextRenderer>()->font_ = ADXTextRenderer::GetFont("texture/alphaNumber");
@@ -280,38 +289,38 @@ void Player::LiveEntitiesInitialize()
 
 	temp = ADXObject::Create();
 	temp->transform_.rectTransform_ = true;
-	temp->renderLayer_ = 5;
+	temp->renderLayer_ = uiLayer;
 	controlTextVec_ = temp->AddComponent<ADXTextRenderer>();
 	controlTextVec_->font_ = ADXTextRenderer::GetFont("texture/alphaNumber");
 	controlTextVec_->fontAspect_ = 0.75f;
 	controlTextVec_->fontExtend_ = 2;
 	controlTextVec_->anchor_ = ADXTextRenderer::middleLeft;
 	controlTextVec_->GetGameObject()->transform_.localPosition_ = {-0.9f,-0.6f,0};
-	controlTextVec_->GetGameObject()->transform_.localScale_.x_ /= ADXWindow::GetAspect();
+	controlTextVec_->GetGameObject()->transform_.localScale_.x_ /= ADXWindow::GetInstance()->GetAspect();
 	controlTextVec_->GetGameObject()->transform_.localScale_ *= 0.05f;
 
 	temp = ADXObject::Create();
 	temp->transform_.rectTransform_ = true;
-	temp->renderLayer_ = 5;
+	temp->renderLayer_ = uiLayer;
 	controlTextJump_ = temp->AddComponent<ADXTextRenderer>();
 	controlTextJump_->font_ = ADXTextRenderer::GetFont("texture/alphaNumber");
 	controlTextJump_->fontAspect_ = 0.75f;
 	controlTextJump_->fontExtend_ = 2;
 	controlTextJump_->anchor_ = ADXTextRenderer::middleLeft;
 	controlTextJump_->GetGameObject()->transform_.localPosition_ = { -0.9f,-0.75f,0 };
-	controlTextJump_->GetGameObject()->transform_.localScale_.x_ /= ADXWindow::GetAspect();
+	controlTextJump_->GetGameObject()->transform_.localScale_.x_ /= ADXWindow::GetInstance()->GetAspect();
 	controlTextJump_->GetGameObject()->transform_.localScale_ *= 0.05f;
 
 	temp = ADXObject::Create();
 	temp->transform_.rectTransform_ = true;
-	temp->renderLayer_ = 5;
+	temp->renderLayer_ = uiLayer;
 	controlTextAct_ = temp->AddComponent<ADXTextRenderer>();
 	controlTextAct_->font_ = ADXTextRenderer::GetFont("texture/alphaNumber");
 	controlTextAct_->fontAspect_ = 0.75f;
 	controlTextAct_->fontExtend_ = 2;
 	controlTextAct_->anchor_ = ADXTextRenderer::middleLeft;
 	controlTextAct_->GetGameObject()->transform_.localPosition_ = { -0.9f,-0.9f,0 };
-	controlTextAct_->GetGameObject()->transform_.localScale_.x_ /= ADXWindow::GetAspect();
+	controlTextAct_->GetGameObject()->transform_.localScale_.x_ /= ADXWindow::GetInstance()->GetAspect();
 	controlTextAct_->GetGameObject()->transform_.localScale_ *= 0.05f;
 }
 
@@ -495,7 +504,7 @@ void Player::LiveEntitiesUpdate()
 		tutorialWindow_->texture_ = setTutorialImg_;
 	}
 
-	tutorialWindow_->transform_.localScale_ = ADXUtility::Lerp({ 0,tutorialWindowSize,0 }, { tutorialWindowSize / ADXWindow::GetAspect(),tutorialWindowSize,0 }, ADXUtility::EaseOut(tutorialWindowExAmount_, 4));
+	tutorialWindow_->transform_.localScale_ = ADXUtility::Lerp({ 0,tutorialWindowSize,0 }, { tutorialWindowSize / ADXWindow::GetInstance()->GetAspect(),tutorialWindowSize,0 }, ADXUtility::EaseOut(tutorialWindowExAmount_, 4));
 	tutorialWindow_->transform_.localPosition_ = { 0.65f,-0.65f + sin(clock() * 0.002f) * 0.01f,0 };
 
 
@@ -517,7 +526,7 @@ void Player::LiveEntitiesUpdate()
 	deathCountIcon_->transform_.localScale_ = { deathCountIcon_->transform_.localScale_.x_,deathCountUISize,deathCountUISize };
 	if (deathCount_ > 0)
 	{
-		deathCountIcon_->transform_.localScale_.x_ += (deathCountUISize / ADXWindow::GetAspect() - deathCountIcon_->transform_.localScale_.x_) * uiExtendSpeed;
+		deathCountIcon_->transform_.localScale_.x_ += (deathCountUISize / ADXWindow::GetInstance()->GetAspect() - deathCountIcon_->transform_.localScale_.x_) * uiExtendSpeed;
 	}
 	else
 	{
@@ -528,7 +537,7 @@ void Player::LiveEntitiesUpdate()
 	killCountIcon_->transform_.localScale_ = { killCountIcon_->transform_.localScale_.x_,deathCountUISize,deathCountUISize };
 	if (GetKillCount() > 0)
 	{
-		killCountIcon_->transform_.localScale_.x_ += (deathCountUISize / ADXWindow::GetAspect() - killCountIcon_->transform_.localScale_.x_) * uiExtendSpeed;
+		killCountIcon_->transform_.localScale_.x_ += (deathCountUISize / ADXWindow::GetInstance()->GetAspect() - killCountIcon_->transform_.localScale_.x_) * uiExtendSpeed;
 	}
 	else
 	{
@@ -604,12 +613,12 @@ void Player::DeadUpdate()
 		dead_->isVisible_ =
 		keyUI_->isVisible_ = true;
 
-	gameOverFilter_->renderLayer_ = 3;
+	gameOverFilter_->renderLayer_ = gameOverFilterLayer;
 	gameOverFilter_->material_.ambient_ = { 0,0,0 };
 	gameOverFilter_->material_.alpha_ = 0.8f;
 
-	visual_->renderLayer_ = 4;
-	nose_->renderLayer_ = 4;
+	visual_->renderLayer_ = gameOverLayer;
+	nose_->renderLayer_ = gameOverLayer;
 
 	ADXVector3 cameraRelativePos = GetGameObject()->transform_.InverseTransformPoint(
 		camera_->GetGameObject()->transform_.GetWorldPosition());
@@ -659,7 +668,7 @@ void Player::DeadUpdate()
 
 		if (deadAnimationProgress_ >= 1)
 		{
-			keyUI_->transform_.localScale_.x_ += (0.45f / ADXWindow::GetAspect() - keyUI_->transform_.localScale_.x_) * uiExtendSpeed;
+			keyUI_->transform_.localScale_.x_ += (0.45f / ADXWindow::GetInstance()->GetAspect() - keyUI_->transform_.localScale_.x_) * uiExtendSpeed;
 			if (GetInputStatusTrigger(attack))
 			{
 				restartAnimationAble_ = true;
@@ -688,12 +697,12 @@ void Player::DeadUpdate()
 			deadParticle_->Emission();
 			deadParticle_->particles_.back()->GetGameObject()->transform_.localPosition_ =
 				GetGameObject()->transform_.InverseTransformPoint(nose_->transform_.GetWorldPosition())
-				+ ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize();
-			deadParticle_->particles_.back()->moveVec_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize() * 0.1f;
-			float particleScale = 0.3f + (float)(rand() % 3) * 0.2f;
+				+ ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize();
+			deadParticle_->particles_.back()->moveVec_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize() * 0.1f;
+			float particleScale = ADXUtility::RandomRange(0.3f, 0.9f);
 			deadParticle_->particles_.back()->GetGameObject()->transform_.localScale_ = ADXVector3{ particleScale ,particleScale ,particleScale } * 0.3f;
 			deadParticle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
-			deadParticle_->particles_.back()->GetGameObject()->renderLayer_ = 4;
+			deadParticle_->particles_.back()->GetGameObject()->renderLayer_ = gameOverLayer;
 		}
 
 		if (dead_->isVisible_ && !prevDeadIsVisible)
@@ -703,24 +712,24 @@ void Player::DeadUpdate()
 			for (int i = 0; i < 9; i++)
 			{
 				deadParticle_->Emission();
-				deadParticle_->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize();
-				deadParticle_->particles_.back()->moveVec_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize() * 0.3f;
-				float particleScale = 0.3f + (float)(rand() % 3) * 0.2f;
+				deadParticle_->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize();
+				deadParticle_->particles_.back()->moveVec_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize() * 0.3f;
+				float particleScale = ADXUtility::RandomRange(0.3f, 0.9f);
 				deadParticle_->particles_.back()->GetGameObject()->transform_.localScale_ = ADXVector3{ particleScale ,particleScale ,particleScale } * 3;
 				deadParticle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
-				deadParticle_->particles_.back()->GetGameObject()->renderLayer_ = 5;
+				deadParticle_->particles_.back()->GetGameObject()->renderLayer_ = uiLayer;
 			}
 			deadParticle_->animation_.delayFrame_ = 2;
 			deadParticle_->lifeTime_ = deadParticle_->animation_.GetLength() * 3;
 			for (int i = 0; i < 9; i++)
 			{
 				deadParticle_->Emission();
-				deadParticle_->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize();
-				deadParticle_->particles_.back()->moveVec_ = ADXVector3{ (float)(rand() % 11 - 5),(float)(rand() % 11 - 5),(float)(rand() % 11 - 5) }.Normalize() * 0.3f;
-				float particleScale = 0.3f + (float)(rand() % 3) * 0.2f;
+				deadParticle_->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize();
+				deadParticle_->particles_.back()->moveVec_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize() * 0.3f;
+				float particleScale = ADXUtility::RandomRange(0.3f, 0.9f);
 				deadParticle_->particles_.back()->GetGameObject()->transform_.localScale_ = ADXVector3{ particleScale ,particleScale ,particleScale } * 0.5f;
 				deadParticle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
-				deadParticle_->particles_.back()->GetGameObject()->renderLayer_ = 4;
+				deadParticle_->particles_.back()->GetGameObject()->renderLayer_ = gameOverLayer;
 			}
 		}
 
@@ -739,7 +748,7 @@ void Player::DeadUpdate()
 	deathCountIcon_->transform_.localScale_ = { deathCountIcon_->transform_.localScale_.x_,deathCountUISize,deathCountUISize };
 	if (deathCount_ > 0)
 	{
-		deathCountIcon_->transform_.localScale_.x_ += (deathCountUISize / ADXWindow::GetAspect() - deathCountIcon_->transform_.localScale_.x_) * uiExtendSpeed;
+		deathCountIcon_->transform_.localScale_.x_ += (deathCountUISize / ADXWindow::GetInstance()->GetAspect() - deathCountIcon_->transform_.localScale_.x_) * uiExtendSpeed;
 	}
 	else
 	{
@@ -750,7 +759,7 @@ void Player::DeadUpdate()
 	killCountIcon_->transform_.localScale_ = { killCountIcon_->transform_.localScale_.x_,deathCountUISize,deathCountUISize };
 	if (GetKillCount() > 0)
 	{
-		killCountIcon_->transform_.localScale_.x_ += (deathCountUISize / ADXWindow::GetAspect() - killCountIcon_->transform_.localScale_.x_) * uiExtendSpeed;
+		killCountIcon_->transform_.localScale_.x_ += (deathCountUISize / ADXWindow::GetInstance()->GetAspect() - killCountIcon_->transform_.localScale_.x_) * uiExtendSpeed;
 	}
 	else
 	{

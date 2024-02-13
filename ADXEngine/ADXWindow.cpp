@@ -1,12 +1,11 @@
 ﻿#include "ADXWindow.h"
 #include <imgui_impl_win32.h>
 
-uint32_t ADXWindow::S_window_width = 1280;
-uint32_t ADXWindow::S_window_height = 720;
+ADXWindow ADXWindow::S_instance{};
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-ADXWindow::ADXWindow(const LPCTSTR& window_title)
+void ADXWindow::Initialize(const LPCTSTR& window_title)
 {
 	w_.cbSize = sizeof(WNDCLASSEX);
 	w_.lpfnWndProc = (WNDPROC)WindowProc;
@@ -16,7 +15,7 @@ ADXWindow::ADXWindow(const LPCTSTR& window_title)
 
 	RegisterClassEx(&w_);
 
-	wrc_ = { 0,0,(LONG)S_window_width,(LONG)S_window_height };
+	wrc_ = { 0,0,(LONG)window_width_,(LONG)window_height_ };
 
 	AdjustWindowRect(&wrc_, WS_OVERLAPPEDWINDOW, false);
 
