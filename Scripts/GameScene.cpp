@@ -209,7 +209,7 @@ void GameScene::Initialize()
 	temp = ADXObject::Create(PlayerStartTransform.localPosition, PlayerStartTransform.localRotation);
 	temp->transform_.UpdateMatrix();
 	Player* tempPlayer = temp->AddComponent<Player>();
-	tempPlayer->LiveEntity::Initialize("player");
+	tempPlayer->SetTeam("player");
 	//自機や敵が動き回れる範囲
 	for (auto& itr : fieldGenerateData)
 	{

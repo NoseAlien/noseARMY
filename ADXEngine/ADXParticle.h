@@ -6,8 +6,10 @@
 class ADXParticle : public ADXComponent
 {
 public:
-	ADXVector3 moveVec_{};
+	ADXVector3 velocity_{};
 	ADXQuaternion rotate_{};
+	float scale_ = 1;
+	float scaleRate_ = 1;
 	uint32_t maxLifeTime_ = 0;
 	int32_t lifeTime_ = 0;
 	ADXTexAnimation animation_{};

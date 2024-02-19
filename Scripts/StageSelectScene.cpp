@@ -23,7 +23,7 @@ void StageSelectScene::Initialize()
 
 	temp = ADXObject::Create({ 0,2,0 });
 	player_ = temp->AddComponent<Player>();
-	player_->LiveEntity::Initialize("player");
+	player_->SetTeam("player");
 
 	floors_.push_back(ADXObject::Create({ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 2,2,2 }));
 	floors_.back()->model_ = &ground_;
@@ -65,6 +65,10 @@ void StageSelectScene::Initialize()
 	temp = ADXObject::Create({ 10,1.01f,30 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 2,2,2 });
 	gates_.push_back(temp->AddComponent<SceneGate>());
 	gates_.back()->Initialize("player", "1-2");
+
+	temp = ADXObject::Create({ 20,1.01f,30 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 2,2,2 });
+	gates_.push_back(temp->AddComponent<SceneGate>());
+	gates_.back()->Initialize("player", "1-BOSS");
 
 
 	backGround_ = ADXObject::Create();

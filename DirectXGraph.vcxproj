@@ -131,6 +131,7 @@
     <ClCompile Include="ADXEngine\ADXWindow.cpp" />
     <ClCompile Include="ADXEngine\ADXWorldTransform.cpp" />
     <ClCompile Include="ADXEngine\ADXKeyConfig.cpp" />
+    <ClCompile Include="Scripts\Crazer_Unown.cpp" />
     <ClCompile Include="Scripts\BattleFieldBox.cpp" />
     <ClCompile Include="Scripts\Clex.cpp" />
     <ClCompile Include="Scripts\Cub_E.cpp" />
@@ -152,6 +153,7 @@
     <ClCompile Include="Scripts\StageSelectScene.cpp" />
     <ClCompile Include="Scripts\TitleScene.cpp" />
     <ClCompile Include="Scripts\TutorialArea.cpp" />
+    <ClCompile Include="Scripts\UnownFoot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ADXEngine\ADXAudioListener.h" />
@@ -190,6 +192,7 @@
     <ClInclude Include="ADXEngine\ADXWorldTransform.h" />
     <ClInclude Include="ADXEngine\json.hpp" />
     <ClInclude Include="ADXEngine\ADXKeyConfig.h" />
+    <ClInclude Include="Scripts\Crazer_Unown.h" />
     <ClInclude Include="Scripts\BattleFieldBox.h" />
     <ClInclude Include="Scripts\Clex.h" />
     <ClInclude Include="Scripts\Cub_E.h" />
@@ -210,6 +213,7 @@
     <ClInclude Include="Scripts\StageSelectScene.h" />
     <ClInclude Include="Scripts\TitleScene.h" />
     <ClInclude Include="Scripts\TutorialArea.h" />
+    <ClInclude Include="Scripts\UnownFoot.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\OBJPixelShader.hlsl">

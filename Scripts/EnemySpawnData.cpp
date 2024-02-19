@@ -46,7 +46,7 @@ std::list<Enemy*> EnemySpawnData::Spawn(const std::string& team, ADXWorldTransfo
 		}
 		temp->transform_.UpdateMatrix();
 		//引数に入れた配列に追加
-		ret.back()->LiveEntity::Initialize(team);
+		ret.back()->SetTeam(team);
 	}
 
 	return ret;

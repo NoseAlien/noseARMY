@@ -431,9 +431,7 @@ void Player::LiveEntitiesUpdate()
 		nose_->transform_.localScale_ = { 0.42f,0.35f,0.35f };
 		if (minis_.size() < maxMinisNum)
 		{
-			
-			ADXObject* miniObj = nullptr;
-			miniObj = ADXObject::Create();
+			ADXObject* miniObj = ADXObject::Create();
 			PlayerMini* mini = miniObj->AddComponent<PlayerMini>();
 			
 			mini->GetGameObject()->transform_.localScale_ = { 0.5f,0.5f,0.5f };
@@ -442,6 +440,21 @@ void Player::LiveEntitiesUpdate()
 			
 			mini->Initialize(this);
 			minis_.push_back(mini);
+
+			shardParticle_->animation_.delayFrame_ = 0;
+			shardParticle_->lifeTime_ = 15;
+			for (int i = 0; i < 5; i++)
+			{
+				shardParticle_->Emission();
+				shardParticle_->particles_.back()->GetGameObject()->transform_.localPosition_ =
+					nose_->transform_.localPosition_
+					+ ADXVector3{ ADXUtility::RandomRange(-1,1),ADXUtility::RandomRange(-1,1),ADXUtility::RandomRange(-1,1) }.Normalize() * 0.2f;
+				shardParticle_->particles_.back()->velocity_ =
+					ADXVector3{ ADXUtility::RandomRange(-1,1),ADXUtility::RandomRange(-1,1),ADXUtility::RandomRange(-1,1) }.Normalize() * ADXUtility::RandomRange(0.2f, 0.4f)
+					+ ADXVector3{ 0,0,0.4f };
+				shardParticle_->particles_.back()->scale_ = ADXUtility::RandomRange(0.1f, 0.4f);
+				shardParticle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
+			}
 		}
 		splitInterval_ = 7;
 	}
@@ -566,6 +579,13 @@ void Player::LiveEntitiesUpdate()
 	{
 		controlTextAct_->material_.ambient_ = { 1,1,0 };
 	}
+
+	for (auto& itr : shardParticle_->particles_)
+	{
+		itr->velocity_ *= 0.8f;
+		itr->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0.2f }) * itr->GetGameObject()->transform_.modelRotation_;
+		itr->scaleRate_ = ADXUtility::EaseOut(sinf((float)itr->lifeTime_ / itr->maxLifeTime_ * ADXUtility::Pi),2);
+	}
 }
 
 void Player::LiveEntitiesOnCollisionHit(ADXCollider* col, [[maybe_unused]]ADXCollider* myCol)
@@ -592,6 +612,29 @@ void Player::LiveEntitiesOnCollisionHit(ADXCollider* col, [[maybe_unused]]ADXCol
 			if (col->GetGameObject() == itr->GetGameObject())
 			{
 				splitable_ = false;
+
+				shardParticle_->animation_.delayFrame_ = 0;
+
+				shardParticle_->lifeTime_ = 5;
+				shardParticle_->Emission();
+				shardParticle_->particles_.back()->GetGameObject()->transform_.localPosition_ =
+					GetGameObject()->transform_.InverseTransformPoint(itr->GetGameObject()->transform_.GetWorldPosition());
+				shardParticle_->particles_.back()->scale_ = 1;
+				shardParticle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
+
+				shardParticle_->lifeTime_ = 15;
+				for (int i = 0; i < 4; i++)
+				{
+					shardParticle_->Emission();
+					shardParticle_->particles_.back()->GetGameObject()->transform_.localPosition_ =
+						GetGameObject()->transform_.InverseTransformPoint(itr->GetGameObject()->transform_.GetWorldPosition());
+					+ADXVector3{ ADXUtility::RandomRange(-1,1),ADXUtility::RandomRange(-1,1),ADXUtility::RandomRange(-1,1) }.Normalize() * 0.2f;
+					shardParticle_->particles_.back()->velocity_ =
+						ADXVector3{ ADXUtility::RandomRange(-1,1),ADXUtility::RandomRange(-1,1),ADXUtility::RandomRange(-1,1) }.Normalize() * ADXUtility::RandomRange(0.2f, 0.4f);
+					shardParticle_->particles_.back()->scale_ = ADXUtility::RandomRange(0.1f, 0.4f);
+					shardParticle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
+				}
+
 				itr->GetGameObject()->Destroy();
 			}
 		}
@@ -698,9 +741,8 @@ void Player::DeadUpdate()
 			deadParticle_->particles_.back()->GetGameObject()->transform_.localPosition_ =
 				GetGameObject()->transform_.InverseTransformPoint(nose_->transform_.GetWorldPosition())
 				+ ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize();
-			deadParticle_->particles_.back()->moveVec_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize() * 0.1f;
-			float particleScale = ADXUtility::RandomRange(0.3f, 0.9f);
-			deadParticle_->particles_.back()->GetGameObject()->transform_.localScale_ = ADXVector3{ particleScale ,particleScale ,particleScale } * 0.3f;
+			deadParticle_->particles_.back()->velocity_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize() * 0.1f;
+			deadParticle_->particles_.back()->scale_ = ADXUtility::RandomRange(0.1f, 0.3f);
 			deadParticle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 			deadParticle_->particles_.back()->GetGameObject()->renderLayer_ = gameOverLayer;
 		}
@@ -713,9 +755,8 @@ void Player::DeadUpdate()
 			{
 				deadParticle_->Emission();
 				deadParticle_->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize();
-				deadParticle_->particles_.back()->moveVec_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize() * 0.3f;
-				float particleScale = ADXUtility::RandomRange(0.3f, 0.9f);
-				deadParticle_->particles_.back()->GetGameObject()->transform_.localScale_ = ADXVector3{ particleScale ,particleScale ,particleScale } * 3;
+				deadParticle_->particles_.back()->velocity_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize() * 0.3f;
+				deadParticle_->particles_.back()->scale_ = ADXUtility::RandomRange(0.9f, 2.7f);
 				deadParticle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 				deadParticle_->particles_.back()->GetGameObject()->renderLayer_ = uiLayer;
 			}
@@ -725,9 +766,8 @@ void Player::DeadUpdate()
 			{
 				deadParticle_->Emission();
 				deadParticle_->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize();
-				deadParticle_->particles_.back()->moveVec_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize() * 0.3f;
-				float particleScale = ADXUtility::RandomRange(0.3f, 0.9f);
-				deadParticle_->particles_.back()->GetGameObject()->transform_.localScale_ = ADXVector3{ particleScale ,particleScale ,particleScale } * 0.5f;
+				deadParticle_->particles_.back()->velocity_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize() * 0.3f;
+				deadParticle_->particles_.back()->scale_ = ADXUtility::RandomRange(0.15f, 0.45f);
 				deadParticle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 				deadParticle_->particles_.back()->GetGameObject()->renderLayer_ = gameOverLayer;
 			}
@@ -735,8 +775,14 @@ void Player::DeadUpdate()
 
 		for (auto& itr : deadParticle_->particles_)
 		{
-			itr->moveVec_ *= 0.9f;
+			itr->velocity_ *= 0.9f;
 			itr->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0.01f }) * itr->GetGameObject()->transform_.modelRotation_;
+		}
+
+		for (auto& itr : shardParticle_->particles_)
+		{
+			itr->velocity_ *= 0.9f;
+			itr->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0.3f }) * itr->GetGameObject()->transform_.modelRotation_;
 		}
 
 		deadAnimationProgress_ = min(max(0, deadAnimationProgress_ + 0.01f), 1);

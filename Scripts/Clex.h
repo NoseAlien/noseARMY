@@ -19,7 +19,6 @@ private:
 	ADXObject* body_ = nullptr;
 	ADXObject* antennaRig_ = nullptr;
 	ADXObject* antenna_ = nullptr;
-	std::list<Enemy*> projectiles_{};
 
 	float bodyScale_ = 1;
 	float antennaAngle_ = 0;

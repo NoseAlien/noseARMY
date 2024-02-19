@@ -150,9 +150,7 @@ void Clex::Attack()
 			Projectile* projectile = projectileObj->AddComponent<Projectile>();
 
 			projectile->SetData((GetGameObject()->transform_.localPosition_ - cursor_).Normalize() * -projectileSpeed, ADXImage::LoadADXImage("texture/Clex_projectile.png"));
-			projectile->LiveEntity::Initialize(GetTeam());
-
-			projectiles_.push_back(projectile);
+			projectile->SetTeam(GetTeam());
 
 			shotted_ = true;
 		}

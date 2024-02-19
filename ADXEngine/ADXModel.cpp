@@ -178,25 +178,6 @@ void ADXModel::CreateVertexBufferView()
 			nullptr,
 			IID_PPV_ARGS(&vertBuff_));
 	assert(SUCCEEDED(result));
-
-	//GPU上のバッファに対応した仮想メモリ（メインメモリ上）を取得
-	Vertex* vertMap = nullptr;
-	result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
-	assert(SUCCEEDED(result));
-	//全頂点に対し座標をコピー
-	for (int32_t i = 0; i < vertices_.size(); i++)
-	{
-		vertMap[i] = vertices_[i];
-	}
-	//つながりを削除
-	vertBuff_->Unmap(0, nullptr);
-
-	//GPU仮想アドレス
-	vbView_.BufferLocation = vertBuff_->GetGPUVirtualAddress();
-	//頂点バッファのサイズ
-	vbView_.SizeInBytes = sizeVB;
-	//頂点一つ分のデータサイズ
-	vbView_.StrideInBytes = sizeof(vertices_[0]);
 }
 
 ///<summary>
@@ -230,21 +211,7 @@ void ADXModel::CreateIndexBufferView()
 			nullptr,
 			IID_PPV_ARGS(&indexBuff_));
 
-	//インデックスバッファをマッピング
-	uint16_t* indexMap = nullptr;
-	result = indexBuff_->Map(0, nullptr, (void**)&indexMap);
-	//全インデックスに対しインデックスをコピー
-	for (int32_t i = 0; i < indices_.size(); i++)
-	{
-		indexMap[i] = indices_[i];
-	}
-	//つながりを削除
-	indexBuff_->Unmap(0, nullptr);
-
-	//インデックスバッファビューの作成
-	ibView_.BufferLocation = indexBuff_->GetGPUVirtualAddress();
-	ibView_.Format = DXGI_FORMAT_R16_UINT;
-	ibView_.SizeInBytes = sizeIB;
+	
 }
 
 void ADXModel::Initialize()
@@ -257,14 +224,14 @@ void ADXModel::Initialize()
 
 	//インデックスバッファビュー作成
 	CreateIndexBufferView();
+
+	// モデルデータを更新
+	Update();
 }
 
 void ADXModel::Draw(ID3D12Resource* constBuffTransform)
 {
 	ID3D12GraphicsCommandList* commandList = ADXObject::GetCmdList();
-
-	// モデルデータを更新
-	Update();
 
 	// 頂点バッファビューの設定コマンド
 	commandList->IASetVertexBuffers(0, 1, &vbView_);
@@ -281,10 +248,10 @@ void ADXModel::Draw(ID3D12Resource* constBuffTransform)
 
 void ADXModel::Update()
 {
+	HRESULT result;
+
 	//法線を自動設定
 	SetNormal();
-
-	HRESULT result;
 
 	//頂点データ全体のサイズ = 一つの頂点データのサイズ * 頂点データの要素数
 	uint32_t sizeVB = static_cast<uint32_t>(sizeof(vertices_[0]) * vertices_.size());
@@ -307,7 +274,6 @@ void ADXModel::Update()
 	vbView_.SizeInBytes = sizeVB;
 	//頂点一つ分のデータサイズ
 	vbView_.StrideInBytes = sizeof(vertices_[0]);
-
 
 	//インデックスデータ全体のサイズ
 	uint32_t sizeIB = static_cast<uint32_t>(sizeof(uint16_t) * indices_.size());

@@ -52,7 +52,7 @@ private:
 
 public:
 	//チームIDを設定
-	void Initialize(const std::string& setTeam);
+	void SetTeam(const std::string& setTeam);
 
 	//体力が0でなければtrueを返す
 	bool IsLive() { return hpAmount_ > 0; }

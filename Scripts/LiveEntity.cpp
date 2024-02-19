@@ -1,4 +1,4 @@
-#include "LiveEntity.h"
+﻿#include "LiveEntity.h"
 #include "ADXCamera.h"
 #include <time.h>
 
@@ -13,7 +13,7 @@ std::vector<LiveEntity::AttackObject> LiveEntity::S_attackObjs = {};
 std::vector<LiveEntity::AttackObject> LiveEntity::S_allAttackObj = {};
 
 
-void LiveEntity::Initialize(const std::string& setTeam)
+void LiveEntity::SetTeam(const std::string& setTeam)
 {
 	team_ = setTeam;
 }
@@ -111,9 +111,8 @@ void LiveEntity::UniqueUpdate()
 			{
 				particle_->Emission();
 				particle_->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize();
-				particle_->particles_.back()->moveVec_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize() * 0.3f;
-				float particleScale = ADXUtility::RandomRange(3.5f, 4);
-				particle_->particles_.back()->GetGameObject()->transform_.localScale_ = { particleScale ,particleScale ,particleScale };
+				particle_->particles_.back()->velocity_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize() * 0.3f;
+				particle_->particles_.back()->scale_ = ADXUtility::RandomRange(3.5f, 4);
 				particle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 			}
 			particle_->animation_.delayFrame_ = 3;
@@ -122,9 +121,8 @@ void LiveEntity::UniqueUpdate()
 			{
 				particle_->Emission();
 				particle_->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize();
-				particle_->particles_.back()->moveVec_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize();
-				float particleScale = ADXUtility::RandomRange(0.1f, 0.7f);
-				particle_->particles_.back()->GetGameObject()->transform_.localScale_ = { particleScale ,particleScale ,particleScale };
+				particle_->particles_.back()->velocity_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize();
+				particle_->particles_.back()->scale_ = ADXUtility::RandomRange(0.1f, 0.7f);
 				particle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 			}
 			defeatSE_->Play();
@@ -133,7 +131,7 @@ void LiveEntity::UniqueUpdate()
 
 	for (auto& itr : particle_->particles_)
 	{
-		itr->moveVec_ *= 0.9f;
+		itr->velocity_ *= 0.9f;
 		itr->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0.01f }) * itr->GetGameObject()->transform_.modelRotation_;
 	}
 
@@ -145,9 +143,8 @@ void LiveEntity::UniqueUpdate()
 		{
 			particle_->Emission();
 			particle_->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize();
-			particle_->particles_.back()->moveVec_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize() * 0.1f;
-			float particleScale = ADXUtility::RandomRange(1, 1.5f);
-			particle_->particles_.back()->GetGameObject()->transform_.localScale_ = { particleScale ,particleScale ,particleScale };
+			particle_->particles_.back()->velocity_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize() * 0.1f;
+			particle_->particles_.back()->scale_ = ADXUtility::RandomRange(1, 1.5f);
 			particle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 		}
 		particle_->animation_.delayFrame_ = 1;
@@ -156,9 +153,8 @@ void LiveEntity::UniqueUpdate()
 		{
 			particle_->Emission();
 			particle_->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize();
-			particle_->particles_.back()->moveVec_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize() * 0.3f;
-			float particleScale = ADXUtility::RandomRange(0.2f, 0.5f);
-			particle_->particles_.back()->GetGameObject()->transform_.localScale_ = { particleScale ,particleScale ,particleScale };
+			particle_->particles_.back()->velocity_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize() * 0.3f;
+			particle_->particles_.back()->scale_ = ADXUtility::RandomRange(0.2f, 0.5f);
 			particle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 		}
 

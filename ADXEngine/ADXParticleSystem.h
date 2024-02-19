@@ -13,6 +13,7 @@ public:
 	uint32_t burstParticleNum_ = 1;
 	uint32_t coolTime_ = 0;
 	uint32_t maxParticleNum_ = 100;
+	float scale_ = 1;
 	int32_t lifeTime_ = 10;
 	ADXTexAnimation animation_{};
 	ADXModel particleModel_{};
