@@ -15,6 +15,7 @@ private:
 	phase phase_{};
 
 	std::list<Enemy*> foots_{};
+	int shotInterval_ = 0;
 
 private:
 	void EnemyInitialize() final;

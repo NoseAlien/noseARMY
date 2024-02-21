@@ -16,7 +16,6 @@ void GameScene::Initialize()
 	keyImg = ADXImage::LoadADXImage("texture/QUIT_TITLE.png");
 	backGroundTex = ADXImage::LoadADXImage("texture/skyBG.png");
 	groundImg = ADXImage::LoadADXImage("texture/GroundBlock.png");
-	//constructionSignImg = ADXImage::LoadADXImage("texture/constructionSign.png");
 	constructionInfoImg = ADXImage::LoadADXImage("texture/constructionInfo.png");
 
 	//3Dモデル
@@ -106,19 +105,19 @@ void GameScene::Initialize()
 		};
 		//敵
 		enemySpawnData.SetSpawnList({
-			{ EnemySpawnData::eType_Cub_E,{2,20,40},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
-			{ EnemySpawnData::eType_Cub_E,{-2,20,44},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
-			{ EnemySpawnData::eType_Clex,{0,21,55},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
-			{ EnemySpawnData::eType_Cub_E,{15,12,86},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
-			{ EnemySpawnData::eType_Cub_E,{14,12,100},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
+			{ EnemySpawnData::enemyType::Cub_E,{2,20,40},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
+			{ EnemySpawnData::enemyType::Cub_E,{-2,20,44},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
+			{ EnemySpawnData::enemyType::Clex,{0,21,55},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
+			{ EnemySpawnData::enemyType::Cub_E,{15,12,86},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
+			{ EnemySpawnData::enemyType::Cub_E,{14,12,100},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
 			});
 		//入ると敵が出てくるエリア
 		battleFieldGenerateData = {
 			{{ -1,15.4f,112 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,5,10 },{
-			{EnemySpawnData::eType_Cub_E,{0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
-			{EnemySpawnData::eType_Clex,{0.5f,0,-0.5f},ADXQuaternion::IdentityQuaternion()},
-			{EnemySpawnData::eType_Cub_E,{-0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
-			{EnemySpawnData::eType_Clex,{-0.5f,0,-0.5f},ADXQuaternion::IdentityQuaternion()},
+			{EnemySpawnData::enemyType::Cub_E,{0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
+			{EnemySpawnData::enemyType::Clex,{0.5f,0,-0.5f},ADXQuaternion::IdentityQuaternion()},
+			{EnemySpawnData::enemyType::Cub_E,{-0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
+			{EnemySpawnData::enemyType::Clex,{-0.5f,0,-0.5f},ADXQuaternion::IdentityQuaternion()},
 			}, "enemy"},
 		};
 		//ゴール
@@ -183,24 +182,53 @@ void GameScene::Initialize()
 		};
 		//敵
 		enemySpawnData.SetSpawnList({
-			{ EnemySpawnData::eType_Cub_E,{7,3,0},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi * 1.25f,0}) },
-			{ EnemySpawnData::eType_Cub_E,{-7,3,10},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi * 0.75f,0}) },
-			{ EnemySpawnData::eType_Clex,{0,8,40},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
-			{ EnemySpawnData::eType_Clex,{2,5,40},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
-			{ EnemySpawnData::eType_Clex,{-2,5,40},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
+			{ EnemySpawnData::enemyType::Cub_E,{7,3,0},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi * 1.25f,0}) },
+			{ EnemySpawnData::enemyType::Cub_E,{-7,3,10},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi * 0.75f,0}) },
+			{ EnemySpawnData::enemyType::Clex,{0,8,40},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
+			{ EnemySpawnData::enemyType::Clex,{2,5,40},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
+			{ EnemySpawnData::enemyType::Clex,{-2,5,40},ADXQuaternion::EulerToQuaternion({0,ADXUtility::Pi,0}) },
 		});
 		//入ると敵が出てくるエリア
 		battleFieldGenerateData = {
 			{{ 0,5,70 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,7,15 },{
-			{EnemySpawnData::eType_Cub_E,{0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
-			{EnemySpawnData::eType_Clex,{0.5f,0,-0.5f},ADXQuaternion::IdentityQuaternion()},
-			{EnemySpawnData::eType_Cub_E,{-0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
-			{EnemySpawnData::eType_Clex,{-0.5f,0,-0.5f},ADXQuaternion::IdentityQuaternion()},
+			{EnemySpawnData::enemyType::Cub_E,{0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
+			{EnemySpawnData::enemyType::Clex,{0.5f,0,-0.5f},ADXQuaternion::IdentityQuaternion()},
+			{EnemySpawnData::enemyType::Cub_E,{-0.5f,0,0.5f},ADXQuaternion::IdentityQuaternion()},
+			{EnemySpawnData::enemyType::Clex,{-0.5f,0,-0.5f},ADXQuaternion::IdentityQuaternion()},
 			}, "enemy"},
 		};
 		//ゴール
 		goalGenerateData = {
 			{{ 0,5,105 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,10,10 }}
+		};
+	}
+	else if (SceneGate::GetNextStageName() == "1-BOSS")
+	{
+		//自機のスタート位置
+		PlayerStartTransform = { {0,4,-19}, ADXQuaternion::EulerToQuaternion({ 0,0,0 }) };
+		//自機や敵が動き回れる範囲
+		fieldGenerateData = {
+			{{ 0,5,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,5,20 }},
+			{{ 0,100,120 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 100,100,100 }},
+		};
+		//床
+		floorGenerateData = {
+			{{ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,2,20 }},
+			{{ 0,-1,120 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 100,2,100 }},
+		};
+		//小石
+		pebbleGenerateData = {
+			{{3,3,3}, 1},
+		};
+		//入ると敵が出てくるエリア
+		battleFieldGenerateData = {
+			{{ 0,100,120 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 100,100,100 },{
+			{EnemySpawnData::enemyType::Crazer_Unown,{0,-0.5f,0},ADXQuaternion::IdentityQuaternion()},
+			}, "enemy"},
+		};
+		//ゴール
+		goalGenerateData = {
+			{{ 0,5,240 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,10,10 }}
 		};
 	}
 
@@ -255,13 +283,6 @@ void GameScene::Initialize()
 		Goal* tempGoal = temp->AddComponent<Goal>();
 		tempGoal->Initialize("player");
 	}
-	////工事中標識
-	//for (auto& itr : constructionSignGenerateData)
-	//{
-	//	temp = ADXObject::Create(itr.localPosition, itr.localRotation, itr.localScale);
-	//	temp->model_ = &rect_;
-	//	temp->texture_ = constructionSignImg;
-	//}
 	//工事案内
 	for (auto& itr : constructionInfoGenerateData)
 	{

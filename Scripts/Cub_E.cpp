@@ -1,7 +1,7 @@
 ﻿#include "Cub_E.h"
 #include "ADXCamera.h"
 
-const float attackProgressSpeed = 0.006f;
+const float actProgressSpeed = 0.006f;
 const float attackPower = 10;
 const float gravity = -2;
 const float jumpHeight = 6;
@@ -64,7 +64,7 @@ void Cub_E::EnemyUpdate()
 		break;
 	}
 
-	attackProgress_ = min(max(0, attackProgress_ - attackProgressSpeed), 1);
+	actProgress_ = min(max(0, actProgress_ - actProgressSpeed), 1);
 
 	tailRig_->transform_.localPosition_ = tailRigPos;
 	tailRig_->transform_.localRotation_ = tailRigRot;
@@ -106,16 +106,15 @@ void Cub_E::Idol()
 
 		//攻撃動作に移行
 		cursor_ = targetRelativePos;
-		attackProgress_ = 1;
+		actProgress_ = 1;
 		phase_ = phase::attack;
 	}
 }
 
 void Cub_E::Attack()
 {
-	ADXVector3 finalTarget = cursor_;
 	//自機の方を向く
-	if (attackProgress_ > actKeyFrame_jump)
+	if (actProgress_ > actKeyFrame_jump)
 	{
 		ADXQuaternion targetRot = ADXQuaternion::EulerToQuaternion(
 			{ 0,(float)atan2(cursor_.x_ - GetGameObject()->transform_.localPosition_.x_,cursor_.z_ - GetGameObject()->transform_.localPosition_.z_),0 });
@@ -126,20 +125,20 @@ void Cub_E::Attack()
 		visual_->texture_ = preAttackTex_;
 	}
 	//飛び上がる
-	else if (attackProgress_ > actKeyFrame_fall)
+	else if (actProgress_ > actKeyFrame_fall)
 	{
 		visual_->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({
-			ADXUtility::EaseIn(ADXUtility::ValueMapping(attackProgress_,actKeyFrame_jump,actKeyFrame_fall,1,0),jumpRotEasePower) * ADXUtility::Pi * -2,
+			ADXUtility::EaseIn(ADXUtility::ValueMapping(actProgress_,actKeyFrame_jump,actKeyFrame_fall,1,0),jumpRotEasePower) * ADXUtility::Pi * -2,
 			0,
 			0 });
 
-		finalTarget.y_ += jumpHeight;
+		ADXVector3 finalTarget = cursor_ + ADXVector3{ 0,jumpHeight,0 };
 		rigidbody_->velocity_ = (finalTarget - GetGameObject()->transform_.localPosition_) * jumpSpeed;
 		visual_->texture_ = preAttackTex_;
 
 	}
 	//落下して攻撃
-	else if (attackProgress_ > actKeyFrame_postAtk)
+	else if (actProgress_ > actKeyFrame_postAtk)
 	{
 		for (auto& itr : GetGameObject()->GetComponents<ADXCollider>())
 		{
@@ -150,7 +149,7 @@ void Cub_E::Attack()
 		}
 		visual_->texture_ = attackTex_;
 	}
-	else if (attackProgress_ <= 0)
+	else if (actProgress_ <= 0)
 	{
 		phase_ = phase::idol;
 	}

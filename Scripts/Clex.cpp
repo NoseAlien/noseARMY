@@ -3,7 +3,7 @@
 #include "ADXUtility.h"
 #include "Projectile.h"
 
-const float attackProgressSpeed = 0.01f;
+const float actProgressSpeed = 0.01f;
 const float drag = 0.9f;
 const float actKeyFrame_shot = 0.6f;
 const float actKeyFrame_postAtk = 0.5f;
@@ -79,7 +79,7 @@ void Clex::EnemyUpdate()
 		break;
 	}
 
-	attackProgress_ = min(max(0, attackProgress_ - 0.01f), 1);
+	actProgress_ = min(max(0, actProgress_ - 0.01f), 1);
 
 	body_->transform_.localScale_ = { bodyScale_,bodyScale_,bodyScale_ };
 	antennaRig_->transform_.localPosition_ = ADXQuaternion::RotateVector({ 0,1,0 }, GetGameObject()->transform_.modelRotation_);
@@ -116,7 +116,7 @@ void Clex::Idol()
 
 		//攻撃動作に移行
 		cursor_ = targetRelativePos;
-		attackProgress_ = 1;
+		actProgress_ = 1;
 		phase_ = phase::attack;
 	}
 }
@@ -130,12 +130,12 @@ void Clex::Attack()
 
 	GetGameObject()->transform_.localRotation_ = ADXQuaternion::Slerp(GetGameObject()->transform_.localRotation_, targetRot, aimSpeed);
 	GetGameObject()->transform_.localRotation_ = GetGameObject()->transform_.localRotation_.Normalized();
-	if (attackProgress_ > actKeyFrame_shot)
+	if (actProgress_ > actKeyFrame_shot)
 	{
 
 	}
 	//弾を撃つ
-	else if (attackProgress_ > actKeyFrame_postAtk)
+	else if (actProgress_ > actKeyFrame_postAtk)
 	{
 		rigidbody_->velocity_ = (GetGameObject()->transform_.localPosition_ - cursor_).Normalize() * shotBackSpeed;
 		bodyScale_ = 0;
@@ -155,7 +155,7 @@ void Clex::Attack()
 			shotted_ = true;
 		}
 	}
-	else if (attackProgress_ > 0)
+	else if (actProgress_ > 0)
 	{
 		bodyScale_ = 0;
 		shotted_ = false;

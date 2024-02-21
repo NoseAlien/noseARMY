@@ -2,6 +2,7 @@
 
 #include "Cub_E.h"
 #include "Clex.h"
+#include "Crazer_Unown.h"
 
 void EnemySpawnData::SetSpawnList(const std::vector<SpawnData>& setSpawnList)
 {
@@ -22,11 +23,14 @@ std::list<Enemy*> EnemySpawnData::Spawn(const std::string& team, ADXWorldTransfo
 		//設定されている種類と同じ敵を生成
 		switch (spawnItr.specie)
 		{
-		case eType_Cub_E:
+		case enemyType::Cub_E:
 			ret.push_back(temp->AddComponent<Cub_E>());
 			break;
-		case eType_Clex:
+		case enemyType::Clex:
 			ret.push_back(temp->AddComponent<Clex>());
+			break;
+		case enemyType::Crazer_Unown:
+			ret.push_back(temp->AddComponent<Crazer_Unown>());
 			break;
 		default:
 			ret.push_back(temp->AddComponent<Enemy>());

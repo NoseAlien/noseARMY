@@ -17,10 +17,11 @@ protected:
 	uint32_t nutralTex_ = 0;
 	uint32_t deadTex_ = 0;
 
+	float scale_ = 1;
 	ADXVector3 targetPos_{};
 	bool targetDetected_ = false;
 	ADXVector3 cursor_{};
-	float attackProgress_ = 0;
+	float actProgress_ = 0;
 
 	PlayerMini* grabber_ = nullptr;
 

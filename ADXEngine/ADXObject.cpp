@@ -18,7 +18,7 @@ uint64_t ADXObject::S_GpuStartHandle = 0;
 std::list<std::unique_ptr<ADXObject, ADXUtility::NPManager<ADXObject>>> ADXObject::S_objs{};
 std::vector<ADXCamera*> ADXObject::S_allCameraPtr{};
 ADXVector3 ADXObject::S_limitPos1 = { -300,-300,-100 };
-ADXVector3 ADXObject::S_limitPos2 = { 100,100,150 };
+ADXVector3 ADXObject::S_limitPos2 = { 300,300,300 };
 bool ADXObject::S_highQualityZSort = false;
 
 

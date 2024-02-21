@@ -10,13 +10,13 @@ private:
 
 	LiveEntity* parent_ = nullptr;
 	ADXObject* billBoard_ = nullptr;
-	uint32_t maxLifeTime_ = 30;
+	uint32_t maxLifeTime_ = 0;
 	int32_t lifeTime_ = 0;
 
 	ADXVector3 direction_ = { 0,0,0 };
 
 public:
-	void SetData(const ADXVector3& setDirection, uint32_t setVisual);
+	void SetData(const ADXVector3& setDirection, uint32_t setVisual, uint32_t setLifeTime = 30);
 
 private:
 	void EnemyInitialize() final;

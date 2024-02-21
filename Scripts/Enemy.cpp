@@ -39,9 +39,13 @@ void Enemy::LiveEntitiesUpdate()
 	rigidbody_->gravity_ = { 0,-1,0 };
 	rigidbody_->gravityScale_ = gravityScale;
 
+	scale_ = 1;
+
 	visual_->texture_ = nutralTex_;
 
 	EnemyUpdate();
+
+	GetGameObject()->transform_.localScale_ = { scale_,scale_,scale_ };
 
 	targetDetected_ = false;
 	carcassLifeTime_ = maxCarcassLifeTime;

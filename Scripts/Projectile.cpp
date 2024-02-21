@@ -3,10 +3,11 @@
 
 const float attackPower = 20;
 
-void Projectile::SetData(const ADXVector3& setDirection, uint32_t setVisual)
+void Projectile::SetData(const ADXVector3& setDirection, uint32_t setVisual, uint32_t setLifeTime)
 {
 	direction_ = setDirection;
 	billBoardTex_ = setVisual;
+	lifeTime_ = setLifeTime;
 }
 
 void Projectile::EnemyInitialize()
@@ -24,8 +25,6 @@ void Projectile::EnemyInitialize()
 	billBoard_->texture_ = billBoardTex_;
 	//体の一部として登録
 	bodyParts_.push_back(billBoard_);
-
-	lifeTime_ = maxLifeTime_;
 }
 
 void Projectile::EnemyUpdate()
