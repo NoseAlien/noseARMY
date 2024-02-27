@@ -1,23 +1,28 @@
 ﻿#include "Crazer_Unown.h"
+#include "UnownFoot.h"
 #include "Projectile.h"
 
 const float actProgressSpeed = 0.006f;
-const int maxFootsNum = 4;
+const int maxFootsNum = 6;
+const float footRadius = 2;
+const float footStepRange = 0.5f;
+const int footStepNum = 4;
+const ADXVector3 launcherLocalPos = { 0,0,1 };
 const float projectileSpeed = 2;
-const int maxShotInterval = 4;
+const int maxShotInterval = 6;
 const int projectileLifeTime = 90;
 const float aimSpeed = 0.3f;
 const float actKeyFrame_shot = 0.8f;
 const float actKeyFrame_postAtk = 0.2f;
-const int walkStepNum = 4;
 
 void Crazer_Unown::EnemyInitialize()
 {
+	nutralTex_ = ADXImage::LoadADXImage("texture/tempBossTex.png");
 }
 
 void Crazer_Unown::EnemyUpdate()
 {
-	scale_ = 30;
+	scale_ = 20;
 
 	if (!foots_.empty())
 	{
@@ -26,6 +31,7 @@ void Crazer_Unown::EnemyUpdate()
 		{
 			bodyWorldPoint += itr->GetGameObject()->transform_.GetWorldPosition();
 		}
+		bodyWorldPoint /= (float)foots_.size();
 
 		GetGameObject()->GetComponent<ADXRigidbody>()->velocity_ =
 			(bodyWorldPoint - GetGameObject()->transform_.GetWorldPosition()) * 0.5f;
@@ -76,7 +82,51 @@ void Crazer_Unown::Walk()
 {
 	if (actProgress_ > 0)
 	{
+		//足りない分の足を生成
+		size_t needSpawnFootNum = maxFootsNum - foots_.size();
+		for (int i = 0; i < needSpawnFootNum; i++)
+		{
+			float footRad = 0;
+			ADXVector3 footLocalPos = ADXVector3{ sinf(footRad),0,cosf(footRad) } * footRadius;
 
+			ADXObject* footObj = ADXObject::Create(
+				GetGameObject()->transform_.TransformPoint(footLocalPos),
+				GetGameObject()->transform_.GetWorldRotation(),
+				{ 1,1,1 },
+				GetGameObject()->transform_.parent_);
+			foots_.push_back(footObj->AddComponent<UnownFoot>());
+			foots_.back()->SetTeam(GetTeam());
+		}
+
+		bool walkOddIndexFoot = (actProgress_ <= 1 && actProgress_ > 0.75f) || (actProgress_ <= 0.5f && actProgress_ > 0.25f);
+
+		if(walkOddIndexFoot != prevWalkOddIndexFoot_)
+		{
+			//歩く
+			int index = 0;
+			for (auto& itr : foots_)
+			{
+				bool attack = false;
+
+				float footRad = ADXUtility::Pi * 2 / foots_.size() * index;
+				ADXVector3 footLocalPos = ADXVector3{ sinf(footRad),0,cosf(footRad) } * footRadius
+					+ ADXVector3{ 0,0,footStepRange };
+
+				if ((walkOddIndexFoot && index % 2 != 0) || (!walkOddIndexFoot && index % 2 == 0))
+				{
+					footLocalPos = GetGameObject()->transform_.InverseTransformPoint(
+						itr->GetGameObject()->transform_.GetWorldPosition());
+					footLocalPos.y_ = -1;
+					attack = true;
+				}
+
+				itr->PlayWalkPhase(GetGameObject()->transform_.TransformPoint(footLocalPos),attack,0.03f,0.1f);
+
+				index++;
+			}
+		}
+
+		prevWalkOddIndexFoot_ = walkOddIndexFoot;
 	}
 	else
 	{
@@ -117,15 +167,18 @@ void Crazer_Unown::Shot()
 		shotInterval_--;
 		if(shotInterval_ <= 0)
 		{
+			ADXVector3 launcherWorldPos =
+				GetGameObject()->transform_.TransformPoint(launcherLocalPos);
+
 			ADXObject* projectileObj = ADXObject::Create(
-				GetGameObject()->transform_.TransformPoint({ 0,0,1 }),
+				launcherWorldPos,
 				GetGameObject()->transform_.GetWorldRotation(),
 				{ 1,1,1 },
 				GetGameObject()->transform_.parent_);
 			Projectile* projectile = projectileObj->AddComponent<Projectile>();
 
-			projectile->SetData((GetGameObject()->transform_.localPosition_ - cursor_).Normalize() * -projectileSpeed,
-				ADXImage::LoadADXImage("texture/Clex_projectile.png"),
+			projectile->SetData((launcherWorldPos - cursor_).Normalize() * -projectileSpeed,
+				ADXImage::LoadADXImage("texture/Crazer_Unown_projectile.png"),
 				projectileLifeTime);
 			projectile->SetTeam(GetTeam());
 			

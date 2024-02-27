@@ -2,7 +2,7 @@
 
 #include "Crazer_Unown.h"
 
-class Unownfoot : public Enemy
+class UnownFoot : public Enemy
 {
 	enum class phase
 	{
@@ -11,14 +11,17 @@ class Unownfoot : public Enemy
 	};
 
 private:
+	uint32_t attackTex_ = 0;
 	phase phase_{};
 
 	ADXVector3 targetPoint_;
+	bool attack_ = false;
 	float actProgressSpeed_ = 0;
 	float walkSpeed_ = 0;
 	
 public:
-	void PlayWalkPhase(ADXVector3 setTargetPoint, float setActProgressSpeed = 0.1f, float setWalkSpeed = 0.5f);
+	void PlayWalkPhase(const ADXVector3& setTargetPoint, bool setAttack = false,
+		float setActProgressSpeed = 0.1f, float setWalkSpeed = 0.5f);
 
 private:
 	void EnemyInitialize() final;

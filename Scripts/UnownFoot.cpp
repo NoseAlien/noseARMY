@@ -1,8 +1,13 @@
-﻿#include "UnownFoot.h"
+#include "UnownFoot.h"
 
-void Unownfoot::PlayWalkPhase(ADXVector3 setTargetPoint, float setActProgressSpeed, float setWalkSpeed)
+const float gravity = -1;
+const float attackPower = 30;
+
+void UnownFoot::PlayWalkPhase(const ADXVector3& setTargetPoint, bool setAttack,
+	float setActProgressSpeed, float setWalkSpeed)
 {
 	targetPoint_ = setTargetPoint;
+	attack_ = setAttack;
 	actProgressSpeed_ = setActProgressSpeed;
 	walkSpeed_ = setWalkSpeed;
 
@@ -10,12 +15,17 @@ void Unownfoot::PlayWalkPhase(ADXVector3 setTargetPoint, float setActProgressSpe
 	phase_ = phase::walk;
 }
 
-void Unownfoot::EnemyInitialize()
+void UnownFoot::EnemyInitialize()
 {
+	nutralTex_ = ADXImage::LoadADXImage("texture/tempBossTex.png");
+	attackTex_ = ADXImage::LoadADXImage("texture/whiteDot.png");
 }
 
-void Unownfoot::EnemyUpdate()
+void UnownFoot::EnemyUpdate()
 {
+	rigidbody_->gravity_ = { 0,gravity,0 };
+	scale_ = 6;
+
 	switch (phase_)
 	{
 	case phase::walk:
@@ -29,15 +39,29 @@ void Unownfoot::EnemyUpdate()
 	actProgress_ = min(max(0, actProgress_ - actProgressSpeed_), 1);
 }
 
-void Unownfoot::Idol()
+void UnownFoot::Idol()
 {
 }
 
-void Unownfoot::Walk()
+void UnownFoot::Walk()
 {
 	if (actProgress_ > 0)
 	{
+		GetGameObject()->GetComponent<ADXRigidbody>()->velocity_ =
+			(targetPoint_ - GetGameObject()->transform_.GetWorldPosition()) * walkSpeed_;
 
+		if (attack_)
+		{
+			visual_->texture_ = attackTex_;
+			for (auto& itr : GetGameObject()->GetComponents<ADXCollider>())
+			{
+				if (!itr->isTrigger_)
+				{
+					//当たったらダメージを受けるオブジェクトとして登録
+					LiveEntity::SetAttackObj({ itr,this,attackPower });
+				}
+			}
+		}
 	}
 	else
 	{
