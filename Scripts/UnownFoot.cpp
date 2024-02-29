@@ -18,7 +18,12 @@ void UnownFoot::PlayWalkPhase(const ADXVector3& setTargetPoint, bool setAttack,
 void UnownFoot::EnemyInitialize()
 {
 	nutralTex_ = ADXImage::LoadADXImage("texture/tempBossTex.png");
+	deadTex_ = ADXImage::LoadADXImage("texture/tempBossTex.png");
 	attackTex_ = ADXImage::LoadADXImage("texture/whiteDot.png");
+
+	enemyModel_ = ADXModel::LoadADXModel("model/UnownFoot.obj");
+
+	visual_->model_ = &enemyModel_;
 }
 
 void UnownFoot::EnemyUpdate()

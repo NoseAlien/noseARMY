@@ -16,6 +16,7 @@ const float idolAnimAmount = 0.05f;
 const float walkAnimAmount = 0.1f;
 const float jumpAnimVelocity = 0.5f;
 const float jumpAnimAmount = 1.5f;
+const float aimSpeed = 0.3f;
 const int gameOverLayer = 4;
 const int gameOverFilterLayer = 3;
 const int uiLayer = 5;
@@ -99,7 +100,7 @@ void Player::Move(float walkSpeed, float jumpPower)
 
 	if (inputVec != ADXVector2{ 0,0 })
 	{
-		GetGameObject()->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(rigidbody_->velocity_.x_, rigidbody_->velocity_.z_),0 });
+		targetRot_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(rigidbody_->velocity_.x_, rigidbody_->velocity_.z_),0 });
 
 		if (!GetInputStatus(attack))
 		{
@@ -322,6 +323,8 @@ void Player::LiveEntitiesInitialize()
 	controlTextAct_->GetGameObject()->transform_.localPosition_ = { -0.9f,-0.9f,0 };
 	controlTextAct_->GetGameObject()->transform_.localScale_.x_ /= ADXWindow::GetInstance()->GetAspect();
 	controlTextAct_->GetGameObject()->transform_.localScale_ *= 0.05f;
+
+	targetRot_ = GetGameObject()->transform_.localRotation_;
 }
 
 void Player::LiveEntitiesUpdate()
@@ -410,6 +413,8 @@ void Player::LiveEntitiesUpdate()
 		rigidbody_->dragAxis_.y = false;
 		Move(0.05f, 0.4f);
 	}
+
+	GetGameObject()->transform_.localRotation_ = ADXQuaternion::Slerp(GetGameObject()->transform_.localRotation_, targetRot_, aimSpeed);
 
 	for (auto& itr : minis_)
 	{

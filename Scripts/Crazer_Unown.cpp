@@ -2,22 +2,25 @@
 #include "UnownFoot.h"
 #include "Projectile.h"
 
-const int maxFootsNum = 6;
+const int maxFootsNum = 8;
 const float footRadius = 2;
 const float footStepRange = 0.5f;
-const int footStepNum = 4;
+const int footStepNum = 3;
 const ADXVector3 launcherLocalPos = { 0,0,1 };
 const float projectileSpeed = 2;
 const int maxShotInterval = 6;
 const int projectileLifeTime = 90;
-const float aimSpeed = 0.3f;
-const float actProgressSpeed = 0.003f;
+const float aimSpeed = 0.1f;
+const float actProgressSpeed = 0.002f;
 const float actKeyFrame_shot = 0.7f;
 const float actKeyFrame_postAtk = 0.2f;
+const float actKeyFrame_walk = 0.8f;
+const float actKeyFrame_postWalk = 0.1f;
 
 void Crazer_Unown::EnemyInitialize()
 {
 	nutralTex_ = ADXImage::LoadADXImage("texture/tempBossTex.png");
+	deadTex_ = ADXImage::LoadADXImage("texture/tempBossTex.png");
 }
 
 void Crazer_Unown::EnemyUpdate()
@@ -80,13 +83,16 @@ void Crazer_Unown::Idol()
 
 void Crazer_Unown::Walk()
 {
-	if (actProgress_ > 0)
+	if (actProgress_ <= actKeyFrame_walk && actProgress_ > actKeyFrame_postWalk)
 	{
+		float walkProgress = ADXUtility::ValueMapping(actProgress_, actKeyFrame_walk, actKeyFrame_postWalk, 1, 0);
+
 		//足りない分の足を生成
 		size_t needSpawnFootNum = maxFootsNum - foots_.size();
+		size_t currentFootsNum = foots_.size();
 		for (int i = 0; i < needSpawnFootNum; i++)
 		{
-			float footRad = 0;
+			float footRad = ADXUtility::Pi * 2 / maxFootsNum * currentFootsNum + i;
 			ADXVector3 footLocalPos = ADXVector3{ sinf(footRad),0,cosf(footRad) } * footRadius;
 
 			ADXObject* footObj = ADXObject::Create(
@@ -98,37 +104,31 @@ void Crazer_Unown::Walk()
 			foots_.back()->SetTeam(GetTeam());
 		}
 
-		bool walkOddIndexFoot = (actProgress_ <= 1 && actProgress_ > 0.75f) || (actProgress_ <= 0.5f && actProgress_ > 0.25f);
+		float stepLoopProgress = fmodf(walkProgress * footStepNum, 1);
+		float oneStepProgress = fmodf(stepLoopProgress * 2, 1);
+		bool walkOddIndexFoot = stepLoopProgress >= 0.5f;
 
-		if(walkOddIndexFoot != prevWalkOddIndexFoot_)
+		//歩く
+		int index = 0;
+		for (auto& itr : foots_)
 		{
-			//歩く
-			int index = 0;
-			for (auto& itr : foots_)
+			if ((walkOddIndexFoot && index % 2 != 0) || (!walkOddIndexFoot && index % 2 == 0))
 			{
-				bool attack = false;
-
 				float footRad = ADXUtility::Pi * 2 / foots_.size() * index;
-				ADXVector3 footLocalPos = ADXVector3{ sinf(footRad),0,cosf(footRad) } * footRadius
-					+ ADXVector3{ 0,0,footStepRange };
+				ADXVector3 footLocalPos = ADXVector3{ sinf(footRad),
+					-1 + fabsf(sinf(oneStepProgress * ADXUtility::Pi)),
+					cosf(footRad) } * footRadius
+					+ ADXVector3{ 0,0,footStepRange * (1 - oneStepProgress)};
 
-				if ((walkOddIndexFoot && index % 2 != 0) || (!walkOddIndexFoot && index % 2 == 0))
-				{
-					footLocalPos = GetGameObject()->transform_.InverseTransformPoint(
-						itr->GetGameObject()->transform_.GetWorldPosition());
-					footLocalPos.y_ = -1;
-					attack = true;
-				}
-
-				itr->PlayWalkPhase(GetGameObject()->transform_.TransformPoint(footLocalPos),attack,0.03f,0.1f);
-
-				index++;
+				itr->PlayWalkPhase(GetGameObject()->transform_.TransformPoint(footLocalPos), true, 0.5f,0.5f);
 			}
+
+			index++;
 		}
 
 		prevWalkOddIndexFoot_ = walkOddIndexFoot;
 	}
-	else
+	else if(actProgress_ <= 0)
 	{
 		//仮で待機フェーズへ移行する
 		phase_ = phase::idol;

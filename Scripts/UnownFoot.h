@@ -21,7 +21,7 @@ private:
 	
 public:
 	void PlayWalkPhase(const ADXVector3& setTargetPoint, bool setAttack = false,
-		float setActProgressSpeed = 0.1f, float setWalkSpeed = 0.5f);
+		float setActProgressSpeed = 1, float setWalkSpeed = 1);
 
 private:
 	void EnemyInitialize() final;

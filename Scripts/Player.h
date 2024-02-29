@@ -58,6 +58,7 @@ private:
 
 	float cameraTiltVelocity_{};
 	ADXVector2 prevInputVec_{};
+	ADXQuaternion targetRot_{};
 	std::list<PlayerMini*> minis_{};
 	int splitInterval_ = 0;
 	bool splitable_ = true;
