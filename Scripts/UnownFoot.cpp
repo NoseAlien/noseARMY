@@ -3,6 +3,12 @@
 const float gravity = -1;
 const float attackPower = 30;
 
+void UnownFoot::SetParent(LiveEntity* setParent)
+{
+	parent_ = setParent;
+	SetTeam(parent_->GetTeam());
+}
+
 void UnownFoot::PlayWalkPhase(const ADXVector3& setTargetPoint, bool setAttack,
 	float setActProgressSpeed, float setWalkSpeed)
 {
@@ -17,8 +23,8 @@ void UnownFoot::PlayWalkPhase(const ADXVector3& setTargetPoint, bool setAttack,
 
 void UnownFoot::EnemyInitialize()
 {
-	nutralTex_ = ADXImage::LoadADXImage("texture/tempBossTex.png");
-	deadTex_ = ADXImage::LoadADXImage("texture/tempBossTex.png");
+	nutralTex_ = ADXImage::LoadADXImage("texture/tempBossFootTex.png");
+	deadTex_ = ADXImage::LoadADXImage("texture/tempBossFootTex.png");
 	attackTex_ = ADXImage::LoadADXImage("texture/whiteDot.png");
 
 	enemyModel_ = ADXModel::LoadADXModel("model/UnownFoot.obj");
@@ -42,6 +48,32 @@ void UnownFoot::EnemyUpdate()
 	}
 
 	actProgress_ = min(max(0, actProgress_ - actProgressSpeed_), 1);
+
+	//足の持ち主がいない、もしくは死んでいたら自爆する
+	if (parent_ == nullptr || !parent_->IsLive())
+	{
+		Detonate();
+	}
+	else
+	{
+		GetGameObject()->transform_.SetWorldRotation(parent_->GetGameObject()->transform_.GetWorldRotation());
+		GetGameObject()->transform_.UpdateMatrix();
+
+		ADXVector3 parentRelativePos = parent_->GetGameObject()->transform_.GetWorldPosition();
+			parentRelativePos = GetGameObject()->transform_.InverseTransformPoint(parentRelativePos);
+
+		GetGameObject()->transform_.localRotation_ =
+			ADXQuaternion::MakeAxisAngle(ADXVector3{0,1,0}, atan2(parentRelativePos.x_, parentRelativePos.z_))
+			* GetGameObject()->transform_.localRotation_;
+	}
+}
+
+void UnownFoot::EnemySafetyPhase()
+{
+	if (parent_ != nullptr && parent_->GetGameObject()->GetDeleteFlag())
+	{
+		parent_ = nullptr;
+	}
 }
 
 void UnownFoot::Idol()

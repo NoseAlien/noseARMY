@@ -67,6 +67,9 @@ protected:
 	//ダメージを受ける
 	void Damage(float damage);
 
+	//もし生きていたら自爆する
+	void Detonate();
+
 	//もし死んでいたら復活する
 	void Revive();
 

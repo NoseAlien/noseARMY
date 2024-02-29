@@ -194,6 +194,14 @@ void LiveEntity::Damage(float damage)
 	}
 }
 
+void LiveEntity::Detonate()
+{
+	if (IsLive())
+	{
+		hpAmount_ = 0;
+	}
+}
+
 void LiveEntity::Revive()
 {
 	if (!IsLive())
