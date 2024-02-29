@@ -2,7 +2,6 @@
 #include "UnownFoot.h"
 #include "Projectile.h"
 
-const float actProgressSpeed = 0.006f;
 const int maxFootsNum = 6;
 const float footRadius = 2;
 const float footStepRange = 0.5f;
@@ -12,7 +11,8 @@ const float projectileSpeed = 2;
 const int maxShotInterval = 6;
 const int projectileLifeTime = 90;
 const float aimSpeed = 0.3f;
-const float actKeyFrame_shot = 0.8f;
+const float actProgressSpeed = 0.003f;
+const float actKeyFrame_shot = 0.7f;
 const float actKeyFrame_postAtk = 0.2f;
 
 void Crazer_Unown::EnemyInitialize()
@@ -153,16 +153,23 @@ void Crazer_Unown::Walk()
 void Crazer_Unown::Shot()
 {
 	//自機の方を向く
+	ADXVector3 targetRelativePos = targetPos_;
+	if (GetGameObject()->transform_.parent_ != nullptr)
+	{
+		targetRelativePos = ADXMatrix4::Transform(targetPos_, GetGameObject()->transform_.parent_->GetMatWorld());
+	}
+
+	ADXQuaternion targetRot = ADXQuaternion::EulerToQuaternion(
+		{ 0,(float)atan2(targetRelativePos.x_ - GetGameObject()->transform_.localPosition_.x_,targetRelativePos.z_ - GetGameObject()->transform_.localPosition_.z_),0 });
+
+	GetGameObject()->transform_.localRotation_ = ADXQuaternion::Slerp(GetGameObject()->transform_.localRotation_, targetRot, aimSpeed);
+	GetGameObject()->transform_.localRotation_ = GetGameObject()->transform_.localRotation_.Normalized();
 	if (actProgress_ > actKeyFrame_shot)
 	{
-		ADXQuaternion targetRot = ADXQuaternion::EulerToQuaternion(
-			{ 0,(float)atan2(cursor_.x_ - GetGameObject()->transform_.localPosition_.x_,cursor_.z_ - GetGameObject()->transform_.localPosition_.z_),0 });
-
-		GetGameObject()->transform_.localRotation_ = ADXQuaternion::Slerp(GetGameObject()->transform_.localRotation_, targetRot, aimSpeed);
-		GetGameObject()->transform_.localRotation_ = GetGameObject()->transform_.localRotation_.Normalized();
+		
 	}
 	//撃つ
-	if (actProgress_ > actKeyFrame_postAtk)
+	else if (actProgress_ > actKeyFrame_postAtk)
 	{
 		shotInterval_--;
 		if(shotInterval_ <= 0)
@@ -177,7 +184,7 @@ void Crazer_Unown::Shot()
 				GetGameObject()->transform_.parent_);
 			Projectile* projectile = projectileObj->AddComponent<Projectile>();
 
-			projectile->SetData((launcherWorldPos - cursor_).Normalize() * -projectileSpeed,
+			projectile->SetData((launcherWorldPos - targetPos_).Normalize() * -projectileSpeed,
 				ADXImage::LoadADXImage("texture/Crazer_Unown_projectile.png"),
 				projectileLifeTime);
 			projectile->SetTeam(GetTeam());

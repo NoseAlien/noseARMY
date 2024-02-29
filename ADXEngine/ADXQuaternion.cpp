@@ -174,11 +174,11 @@ ADXQuaternion ADXQuaternion::Slerp(const ADXQuaternion& q0, const ADXQuaternion&
 		ADXQuaternion ret =
 		{
 			{
-				(1.0f - t) * q0.v_.x_ + t * q1.v_.x_,
-				(1.0f - t) * q0.v_.y_ + t * q1.v_.y_,
-				(1.0f - t) * q0.v_.z_ + t * q1.v_.z_,
+				(1.0f - t) * q0f.v_.x_ + t * q1f.v_.x_,
+				(1.0f - t) * q0f.v_.y_ + t * q1f.v_.y_,
+				(1.0f - t) * q0f.v_.z_ + t * q1f.v_.z_,
 			},
-			(1.0f - t) * q0.w_ + t * q1.w_
+			(1.0f - t) * q0f.w_ + t * q1f.w_
 		};
 
 		return ret;
@@ -208,11 +208,11 @@ ADXQuaternion ADXQuaternion::Slerp(const ADXQuaternion& q0, const ADXQuaternion&
 	ADXQuaternion ret =
 	{
 		{
-			scale0 * q0.v_.x_ + scale1 * q1.v_.x_,
-			scale0 * q0.v_.y_ + scale1 * q1.v_.y_,
-			scale0 * q0.v_.z_ + scale1 * q1.v_.z_,
+			scale0 * q0f.v_.x_ + scale1 * q1f.v_.x_,
+			scale0 * q0f.v_.y_ + scale1 * q1f.v_.y_,
+			scale0 * q0f.v_.z_ + scale1 * q1f.v_.z_,
 		},
-		scale0 * q0.w_ + scale1 * q1.w_
+		scale0 * q0f.w_ + scale1 * q1f.w_
 	};
 
 	return ret;
