@@ -208,17 +208,28 @@ void GameScene::Initialize()
 		PlayerStartTransform = { {0,4,-19}, ADXQuaternion::EulerToQuaternion({ 0,0,0 }) };
 		//自機や敵が動き回れる範囲
 		fieldGenerateData = {
-			{{ 0,5,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,5,20 }},
+			{{ 0,20,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,20,20 }},
 			{{ 0,100,120 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 100,100,100 }},
+			{{ 0,20,250 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 20,20,30 }},
+
 		};
 		//床
 		floorGenerateData = {
 			{{ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,2,20 }},
 			{{ 0,-1,120 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 100,2,100 }},
+			{{ 0,3,120 }, ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi / 4,0 }), { 20,4,20 }},
+			{{ 50,1,170 }, ADXQuaternion::EulerToQuaternion({ -0.2f,ADXUtility::Pi / 4,0.2f }), { 20,5,20 }},
+			{{ 50,1,70 }, ADXQuaternion::EulerToQuaternion({ 0.2f,ADXUtility::Pi / 4,0.2f }), { 20,5,20 }},
+			{{ -50,1,70 }, ADXQuaternion::EulerToQuaternion({ 0.2f,ADXUtility::Pi / 4,-0.2f }), { 20,5,20 }},
+			{{ -50,1,170 }, ADXQuaternion::EulerToQuaternion({ -0.2f,ADXUtility::Pi / 4,-0.2f }), { 20,5,20 }},
+			{{ 0,-1,250 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 20,2,30 }},
 		};
 		//小石
 		pebbleGenerateData = {
 			{{3,3,3}, 1},
+			{{20,3,200}, 1},
+			{{-20,3,100}, 1},
+			{{80,3,70}, 1},
 		};
 		//入ると敵が出てくるエリア
 		battleFieldGenerateData = {
@@ -228,7 +239,7 @@ void GameScene::Initialize()
 		};
 		//ゴール
 		goalGenerateData = {
-			{{ 0,5,240 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 10,10,10 }}
+			{{ 0,20.5f,260 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 20,19.49f,20 }}
 		};
 	}
 

@@ -1,13 +1,12 @@
 ﻿#include "Projectile.h"
 #include "ADXCamera.h"
 
-const float attackPower = 20;
-
-void Projectile::SetData(const ADXVector3& setDirection, uint32_t setVisual, uint32_t setLifeTime)
+void Projectile::SetData(const ADXVector3& setDirection, uint32_t setVisual, uint32_t setLifeTime, float setAttackPower)
 {
 	direction_ = setDirection;
 	billBoardTex_ = setVisual;
 	lifeTime_ = setLifeTime;
+	attackPower_ = setAttackPower;
 }
 
 void Projectile::EnemyInitialize()
@@ -41,7 +40,7 @@ void Projectile::EnemyUpdate()
 			if (!itr->isTrigger_)
 			{
 				//当たったらダメージを受けるオブジェクトとして登録
-				LiveEntity::SetAttackObj({ itr,this,attackPower });
+				LiveEntity::SetAttackObj({ itr,this,attackPower_ });
 			}
 		}
 		lifeTime_--;

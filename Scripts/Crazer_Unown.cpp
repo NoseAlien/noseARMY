@@ -4,10 +4,11 @@
 
 const int maxFootsNum = 8;
 const float footRadius = 2;
-const float footStepRange = 0.2f;
-const int footStepNum = 5;
+const float footStepRange = 0.15f;
+const int footStepNum = 6;
 const ADXVector3 launcherLocalPos = { 0,0,1 };
 const float projectileSpeed = 2;
+const float projectileAttackPower = 5;
 const int maxShotInterval = 6;
 const int projectileLifeTime = 90;
 const float aimSpeed = 0.1f;
@@ -224,7 +225,7 @@ void Crazer_Unown::Shot()
 
 			projectile->SetData((launcherWorldPos - targetPos_).Normalize() * -projectileSpeed,
 				ADXImage::LoadADXImage("texture/Crazer_Unown_projectile.png"),
-				projectileLifeTime);
+				projectileLifeTime, projectileAttackPower);
 			projectile->SetTeam(GetTeam());
 			
 			shotInterval_ = maxShotInterval;
