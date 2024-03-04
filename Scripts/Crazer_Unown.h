@@ -15,6 +15,9 @@ class Crazer_Unown : public Enemy
 private:
 	phase phase_{};
 
+	std::vector<uint32_t> attackTexs_ = {};
+	float attackTexIndex_ = 0;
+
 	std::list<UnownFoot*> foots_{};
 	bool prevWalkOddIndexFoot_ = false;
 	int shotInterval_ = 0;

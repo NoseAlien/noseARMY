@@ -3,15 +3,16 @@
 #include "Projectile.h"
 
 const int maxFootsNum = 8;
-const float footRadius = 2;
+const float footRadius = 1;
 const float footStepRange = 0.15f;
 const int footStepNum = 6;
-const ADXVector3 launcherLocalPos = { 0,0,1 };
+const ADXVector3 launcherLocalPos = { 0,0.65f,1 };
 const float projectileSpeed = 2;
 const float projectileAttackPower = 5;
 const int maxShotInterval = 6;
 const int projectileLifeTime = 90;
 const float aimSpeed = 0.1f;
+const float attackAnimProgressSpeed = 0.3f;
 const float actProgressSpeed = 0.002f;
 const float actKeyFrame_shot = 0.7f;
 const float actKeyFrame_postAtk = 0.2f;
@@ -20,8 +21,15 @@ const float actKeyFrame_postWalk = 0.1f;
 
 void Crazer_Unown::EnemyInitialize()
 {
-	nutralTex_ = ADXImage::LoadADXImage("texture/tempBossTex.png");
-	deadTex_ = ADXImage::LoadADXImage("texture/tempBossTex.png");
+	nutralTex_ = ADXImage::LoadADXImage("texture/tex_Crazer_Unown.png");
+	deadTex_ = ADXImage::LoadADXImage("texture/tex_Crazer_Unown_2.png");
+	attackTexs_ = {
+		ADXImage::LoadADXImage("texture/tex_Crazer_Unown_3.png"),
+		ADXImage::LoadADXImage("texture/tex_Crazer_Unown_4.png"),
+		ADXImage::LoadADXImage("texture/tex_Crazer_Unown_5.png")
+	};
+
+	enemyModel_ = ADXModel::LoadADXModel("model/Crazer_Unown.obj");
 
 	//足りない分の足を生成
 	size_t needSpawnFootNum = maxFootsNum - foots_.size();
@@ -202,6 +210,9 @@ void Crazer_Unown::Shot()
 
 	GetGameObject()->transform_.localRotation_ = ADXQuaternion::Slerp(GetGameObject()->transform_.localRotation_, targetRot, aimSpeed);
 	GetGameObject()->transform_.localRotation_ = GetGameObject()->transform_.localRotation_.Normalized();
+
+	attackTexIndex_ = fmodf((attackTexIndex_ + attackAnimProgressSpeed), (float)attackTexs_.size());
+	visual_->texture_ = attackTexs_[(int)attackTexIndex_];
 
 	if (actProgress_ > actKeyFrame_shot)
 	{
