@@ -45,6 +45,8 @@ private:
 	ADXModel playerModel_{};
 
 	ADXAudioSource* jumpSE_ = nullptr;
+	ADXAudioSource* splitSE_ = nullptr;
+	ADXAudioSource* absorbSE_ = nullptr;
 	ADXAudioSource* windowOpenSE_ = nullptr;
 
 	ADXRigidbody* rigidbody_ = nullptr;

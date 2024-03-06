@@ -235,8 +235,13 @@ void Crazer_Unown::Shot()
 			Projectile* projectile = projectileObj->AddComponent<Projectile>();
 
 			projectile->SetData((launcherWorldPos - targetPos_).Normalize() * -projectileSpeed,
-				ADXImage::LoadADXImage("texture/Crazer_Unown_projectile.png"),
-				projectileLifeTime, projectileAttackPower);
+				{
+					ADXImage::LoadADXImage("texture/Crazer_Unown_projectile.png"),
+					ADXImage::LoadADXImage("texture/Crazer_Unown_projectile_2.png"),
+					ADXImage::LoadADXImage("texture/Crazer_Unown_projectile_3.png"),
+					ADXImage::LoadADXImage("texture/Crazer_Unown_projectile_4.png"),
+					ADXImage::LoadADXImage("texture/Crazer_Unown_projectile_5.png"),
+				}, 1, projectileLifeTime, projectileAttackPower);
 			projectile->SetTeam(GetTeam());
 			
 			shotInterval_ = maxShotInterval;

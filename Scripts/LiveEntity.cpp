@@ -27,7 +27,9 @@ void LiveEntity::UniqueInitialize()
 	gaugeTex_ = ADXImage::LoadADXImage("texture/whiteDot.png");
 
 	damageSE_ = GetGameObject()->AddComponent<ADXAudioSource>();
+	damageSE_->useDistanceFade_ = true;
 	defeatSE_ = GetGameObject()->AddComponent<ADXAudioSource>();
+	defeatSE_->useDistanceFade_ = true;
 
 	visual_ = ADXObject::Create();
 	visual_->transform_.parent_ = &GetGameObject()->transform_;

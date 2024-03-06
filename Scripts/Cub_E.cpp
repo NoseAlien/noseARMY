@@ -25,6 +25,10 @@ void Cub_E::EnemyInitialize()
 	preAttackTex_ = ADXImage::LoadADXImage("texture/tex_Cub_E_2.png");
 	attackTex_ = ADXImage::LoadADXImage("texture/tex_Cub_E_3.png");
 
+	jumpSE_ = GetGameObject()->AddComponent<ADXAudioSource>();
+	jumpSE_->LoadADXAudio("sound/Cub_E_jump.wav");
+	jumpSE_->useDistanceFade_ = true;
+
 	visual_->model_ = &enemyModel_;
 
 	//髪
@@ -64,6 +68,7 @@ void Cub_E::EnemyUpdate()
 		break;
 	}
 
+	prevActProgress_ = actProgress_;
 	actProgress_ = min(max(0, actProgress_ - actProgressSpeed), 1);
 
 	tailRig_->transform_.localPosition_ = tailRigPos;
@@ -136,6 +141,10 @@ void Cub_E::Attack()
 		rigidbody_->velocity_ = (finalTarget - GetGameObject()->transform_.localPosition_) * jumpSpeed;
 		visual_->texture_ = preAttackTex_;
 
+		if (prevActProgress_ > actKeyFrame_jump)
+		{
+			jumpSE_->Play();
+		}
 	}
 	//落下して攻撃
 	else if (actProgress_ > actKeyFrame_postAtk)

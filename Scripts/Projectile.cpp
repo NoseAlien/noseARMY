@@ -1,10 +1,11 @@
 ﻿#include "Projectile.h"
 #include "ADXCamera.h"
 
-void Projectile::SetData(const ADXVector3& setDirection, uint32_t setVisual, uint32_t setLifeTime, float setAttackPower)
+void Projectile::SetData(const ADXVector3& setDirection, std::vector<uint32_t> setTexs, float setAnimProgressSpeed, uint32_t setLifeTime, float setAttackPower)
 {
 	direction_ = setDirection;
-	billBoardTex_ = setVisual;
+	texs_ = setTexs;
+	animProgressSpeed_ = setAnimProgressSpeed;
 	lifeTime_ = setLifeTime;
 	attackPower_ = setAttackPower;
 }
@@ -21,7 +22,6 @@ void Projectile::EnemyInitialize()
 	billBoard_ = ADXObject::Create();
 	billBoard_->transform_.parent_ = &visual_->transform_;
 	billBoard_->model_ = &rect_;
-	billBoard_->texture_ = billBoardTex_;
 	//体の一部として登録
 	bodyParts_.push_back(billBoard_);
 }
@@ -43,6 +43,10 @@ void Projectile::EnemyUpdate()
 				LiveEntity::SetAttackObj({ itr,this,attackPower_ });
 			}
 		}
+
+		texIndex_ = fmodf((texIndex_ + animProgressSpeed_), (float)texs_.size());
+		billBoard_->texture_ = texs_[(int)texIndex_];
+
 		lifeTime_--;
 	}
 }

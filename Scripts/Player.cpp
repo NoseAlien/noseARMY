@@ -160,8 +160,15 @@ void Player::LiveEntitiesInitialize()
 	defeatSE_->LoadADXAudio("sound/despawn.wav");
 	jumpSE_ = GetGameObject()->AddComponent<ADXAudioSource>();
 	jumpSE_->LoadADXAudio("sound/jump.wav");
+	jumpSE_->useDistanceFade_ = true;
 	windowOpenSE_ = GetGameObject()->AddComponent<ADXAudioSource>();
 	windowOpenSE_->LoadADXAudio("sound/windowOpen.wav");
+	splitSE_ = GetGameObject()->AddComponent<ADXAudioSource>();
+	splitSE_->LoadADXAudio("sound/split.wav");
+	splitSE_->useDistanceFade_ = true;
+	absorbSE_ = GetGameObject()->AddComponent<ADXAudioSource>();
+	absorbSE_->LoadADXAudio("sound/split.wav");
+	absorbSE_->useDistanceFade_ = true;
 
 	rect_ = ADXModel::CreateRect();
 	playerModel_ = ADXModel::LoadADXModel("model/sphere.obj");
@@ -422,6 +429,7 @@ void Player::LiveEntitiesUpdate()
 			&& ADXMatrix4::Transform(itr->GetGameObject()->transform_.localPosition_, GetGameObject()->transform_.GetMatWorldInverse()).Length() > 30 / scale)
 		{
 			itr->GetGameObject()->Destroy();
+			absorbSE_->Play();
 		}
 	}
 
@@ -459,7 +467,10 @@ void Player::LiveEntitiesUpdate()
 					+ ADXVector3{ 0,0,0.4f };
 				shardParticle_->particles_.back()->scale_ = ADXUtility::RandomRange(0.1f, 0.4f);
 				shardParticle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
+
 			}
+
+			splitSE_->Play();
 		}
 		splitInterval_ = 7;
 	}
@@ -641,6 +652,7 @@ void Player::LiveEntitiesOnCollisionHit(ADXCollider* col, [[maybe_unused]]ADXCol
 				}
 
 				itr->GetGameObject()->Destroy();
+				absorbSE_->Play();
 			}
 		}
 	}
@@ -651,6 +663,7 @@ void Player::DeadUpdate()
 	for (auto& itr : minis_)
 	{
 		itr->GetGameObject()->Destroy();
+		absorbSE_->Play();
 	}
 
 	bool prevDeadIsVisible = dead_->isVisible_;

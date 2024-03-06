@@ -6,7 +6,9 @@ class Projectile : public Enemy
 {
 private:
 	ADXModel rect_{};
-	uint32_t billBoardTex_ = 0;
+	std::vector<uint32_t> texs_ = {};
+	float texIndex_ = 0;
+	float animProgressSpeed_ = 0;
 
 	LiveEntity* parent_ = nullptr;
 	ADXObject* billBoard_ = nullptr;
@@ -17,7 +19,7 @@ private:
 	ADXVector3 direction_ = { 0,0,0 };
 
 public:
-	void SetData(const ADXVector3& setDirection, uint32_t setVisual, uint32_t setLifeTime = 30, float setAttackPower = 20);
+	void SetData(const ADXVector3& setDirection, std::vector<uint32_t> setTexs, float setAnimProgressSpeed = 1, uint32_t setLifeTime = 30, float setAttackPower = 20);
 
 private:
 	void EnemyInitialize() final;
