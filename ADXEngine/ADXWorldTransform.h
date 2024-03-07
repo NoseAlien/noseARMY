@@ -78,6 +78,9 @@ public:
 	//ワールド回転角を代入する
 	void SetWorldRotation(const ADXQuaternion& worldRot);
 
+	//ワールド座標から見た大まかなスケールを取得する
+	ADXVector3 GetLossyScale() const;
+
 	//ローカル座標をワールド座標に変換
 	ADXVector3 TransformPoint(const ADXVector3& pos) const;
 

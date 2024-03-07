@@ -159,9 +159,15 @@ void ADXWorldTransform::SetWorldRotation(const ADXQuaternion& worldRot)
 	}
 }
 
+ADXVector3 ADXWorldTransform::GetLossyScale() const
+{
+	ADXVector3 ret = TransformPointWithoutTranslation({1,1,1});
+	return ret;
+}
+
 ADXVector3 ADXWorldTransform::TransformPoint(const ADXVector3& pos) const
 {
-	ADXVector3 ret = ADXMatrix4::Transform(pos, GetMatWorld());
+	ADXVector3 ret = ADXMatrix4::Transform(pos, matScale_);
 	return ret;
 }
 

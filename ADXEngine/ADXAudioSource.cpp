@@ -160,11 +160,16 @@ void ADXAudioSource::UniqueUpdate()
 	ADXAudioListener* listener = ADXAudioListener::GetCurrentInstance();
 	if (useDistanceFade_ && listener != nullptr)
 	{
-		float distanceFromListener = max(min(endFadeDistance_ * listener->radius_,
+		ADXVector3 objectLossyScale = GetGameObject()->transform_.GetLossyScale();
+		float objectRadius = max(objectLossyScale.x_, max(objectLossyScale.y_, objectLossyScale.z_));
+		float scaledStartFadeDistance = startFadeDistance_ * objectRadius;
+		float scaledEndFadeDistance = endFadeDistance_ * objectRadius;
+
+		float distanceFromListener = max(min(scaledEndFadeDistance * listener->radius_,
 			(listener->GetGameObject()->transform_.GetWorldPosition() - GetGameObject()->transform_.GetWorldPosition()).Length())
-			, startFadeDistance_ * listener->radius_);
+			, scaledStartFadeDistance * listener->radius_);
 		fadedVolume *= ADXUtility::ValueMapping(distanceFromListener,
-			startFadeDistance_ * listener->radius_, endFadeDistance_ * listener->radius_, 1, endFadeVolume_);
+			scaledStartFadeDistance * listener->radius_, scaledEndFadeDistance * listener->radius_, 1, endFadeVolume_);
 	}
 	if (pSourceVoice_ != nullptr)
 	{
