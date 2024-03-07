@@ -38,7 +38,7 @@ private:
 public:
 	float volume_ = 1.0f;
 	bool useDistanceFade_ = false;
-	float startFadeDistance_ = 0.0f;
+	float startFadeDistance_ = 0.5f;
 	float endFadeDistance_ = 1.0f;
 	float endFadeVolume_ = 0.0f;
 
