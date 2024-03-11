@@ -15,6 +15,7 @@ private:
 
 	Player* parent_ = nullptr;
 
+	ADXQuaternion targetRot_{};
 	ADXRigidbody* rigidbody_ = nullptr;
 	float bodyRotAngle_ = 0;
 	bool destroyFlag_ = false;

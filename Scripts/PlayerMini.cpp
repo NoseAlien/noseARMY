@@ -1,6 +1,8 @@
 ﻿#include "PlayerMini.h"
 #include "Player.h"
 
+const float aimSpeed = 0.3f;
+
 void PlayerMini::Initialize(Player* setParent)
 {
 	parent_ = setParent;
@@ -19,7 +21,7 @@ void PlayerMini::Move(float walkSpeed, float jumpPower)
 
 	if (inputVec != ADXVector2{ 0,0 })
 	{
-		GetGameObject()->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(rigidbody_->velocity_.x_, rigidbody_->velocity_.z_),0 });
+		targetRot_ = ADXQuaternion::EulerToQuaternion({ 0,atan2(rigidbody_->velocity_.x_, rigidbody_->velocity_.z_),0 });
 	}
 
 	if (parent_->GetInputStatusTrigger(Player::jump))
@@ -57,6 +59,8 @@ void PlayerMini::UniqueInitialize()
 	body_->model_ = &rect_;
 	body_->texture_ = ADXImage::LoadADXImage("texture/apEGopTIon_fur.png");
 	body_->material_ = GetGameObject()->material_;
+
+	targetRot_ = GetGameObject()->transform_.localRotation_;
 }
 
 void PlayerMini::UniqueUpdate()
@@ -77,6 +81,8 @@ void PlayerMini::UniqueUpdate()
 		Move(0.05f, 0.4f);
 		rigidbody_->gravityScale_ = 0.01f;
 	}
+
+	GetGameObject()->transform_.localRotation_ = ADXQuaternion::Slerp(GetGameObject()->transform_.localRotation_, targetRot_, aimSpeed);
 
 	bodyRotAngle_ = fmodf(bodyRotAngle_ + 0.01f + rigidbody_->velocity_.Length(), ADXUtility::Pi);
 }
