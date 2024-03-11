@@ -13,10 +13,8 @@
 
 #include "SceneManager.h"
 #include "SceneTransition.h"
-#include "FieldBox.h"
-#include "TutorialArea.h"
 #include "LiveEntity.h"
-#include "PlayerMini.h"
+#include "ShadowRenderer.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
@@ -42,6 +40,7 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 		ADXImage::StaticInitialize();
 		ADXObject::StaticInitialize();
 		SceneTransition::StaticInitialize();
+		ShadowRenderer::UniqueInitialize();
 
 		ADXKeyConfig config_;
 		config_.AddConfigCell({ "jump", {DIK_SPACE}, {ADXGamePadInput::B,ADXGamePadInput::X} });

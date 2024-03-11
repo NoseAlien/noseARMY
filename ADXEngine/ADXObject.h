@@ -139,6 +139,9 @@ public: // 静的メンバ関数
 	//SRVヒープの先頭ハンドルを取得
 	static uint64_t GetGpuStartHandle() { return S_GpuStartHandle; };
 
+	//グラフィックスパイプラインの初期値を自動生成して取得
+	static D3D12_GRAPHICS_PIPELINE_STATE_DESC CreateDefaultPipelineDesc(ID3DBlob* vsBlob, ID3DBlob* psBlob, D3D12_INPUT_ELEMENT_DESC inputLayout[], uint32_t numElements);
+
 	// 全オブジェクトを取得
 	static std::list<ADXObject*> GetObjs();
 

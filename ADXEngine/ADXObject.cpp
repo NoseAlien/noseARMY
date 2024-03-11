@@ -132,52 +132,7 @@ void ADXObject::InitializeGraphicsPipeline()
 	};
 
 	//グラフィックスパイプラインの設定
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
-
-	//シェーダーの設定
-	pipelineDesc.VS.pShaderBytecode = vsBlob->GetBufferPointer();
-	pipelineDesc.VS.BytecodeLength = vsBlob->GetBufferSize();
-	pipelineDesc.PS.pShaderBytecode = psBlob->GetBufferPointer();
-	pipelineDesc.PS.BytecodeLength = psBlob->GetBufferSize();
-
-	//サンプルマスクの設定
-	pipelineDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
-
-	//ラスタライザの設定
-	pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK; //背面をカリング
-	pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
-	pipelineDesc.RasterizerState.DepthClipEnable = true;
-
-	//デプスステンシルステートの設定
-	pipelineDesc.DepthStencilState.DepthEnable = true; //深度テストを行う
-	pipelineDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL; //書き込み許可
-	pipelineDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL; //同じか小さければ合格
-	pipelineDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
-	pipelineDesc.BlendState.AlphaToCoverageEnable = true;
-
-	//レンダーターゲットのブレンド設定
-	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc.BlendState.RenderTarget[0];
-	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	blenddesc.BlendEnable = true;
-	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
-	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
-	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
-
-	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
-	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
-	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
-
-	//頂点レイアウトの設定
-	pipelineDesc.InputLayout.pInputElementDescs = inputLayout;
-	pipelineDesc.InputLayout.NumElements = _countof(inputLayout);
-
-	//図形の形状設定（三角形）
-	pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-
-	//その他の設定
-	pipelineDesc.NumRenderTargets = 1;
-	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-	pipelineDesc.SampleDesc.Count = 1;
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc = CreateDefaultPipelineDesc(vsBlob.Get(), psBlob.Get(), inputLayout, _countof(inputLayout));
 
 	//デスクリプタレンジの設定
 	D3D12_DESCRIPTOR_RANGE descriptorRange{};
@@ -240,13 +195,6 @@ void ADXObject::InitializeGraphicsPipeline()
 	pipelineDesc.pRootSignature = S_rootSignature.Get();
 	// パイプラインステートの生成
 	result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&S_pipelineState));
-	assert(SUCCEEDED(result));
-
-	//デプスステンシルステートの設定
-	pipelineDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO; //書き込み不可
-
-	// パイプラインステートの生成
-	result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&S_pipelineStateAlpha));
 	assert(SUCCEEDED(result));
 }
 
@@ -622,6 +570,57 @@ void ADXObject::PostDraw()
 	ADXObject::S_cmdList = nullptr;
 	//ソート用配列を空にする
 	S_allCameraPtr.clear();
+}
+
+D3D12_GRAPHICS_PIPELINE_STATE_DESC ADXObject::CreateDefaultPipelineDesc(ID3DBlob* vsBlob, ID3DBlob* psBlob, D3D12_INPUT_ELEMENT_DESC inputLayout[], uint32_t numElements)
+{
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC ret{};
+
+	//シェーダーの設定
+	ret.VS.pShaderBytecode = vsBlob->GetBufferPointer();
+	ret.VS.BytecodeLength = vsBlob->GetBufferSize();
+	ret.PS.pShaderBytecode = psBlob->GetBufferPointer();
+	ret.PS.BytecodeLength = psBlob->GetBufferSize();
+
+	//サンプルマスクの設定
+	ret.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
+
+	//ラスタライザの設定
+	ret.RasterizerState.CullMode = D3D12_CULL_MODE_BACK; //背面をカリング
+	ret.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
+	ret.RasterizerState.DepthClipEnable = true;
+
+	//デプスステンシルステートの設定
+	ret.DepthStencilState.DepthEnable = true; //深度テストを行う
+	ret.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL; //書き込み許可
+	ret.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL; //同じか小さければ合格
+	ret.DSVFormat = DXGI_FORMAT_D32_FLOAT;
+	ret.BlendState.AlphaToCoverageEnable = true; //アルファが低い所は深度を書き込まない
+
+	//レンダーターゲットのブレンド設定
+	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = ret.BlendState.RenderTarget[0];
+	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+	blenddesc.BlendEnable = true;
+	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
+	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
+	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
+
+	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
+	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+
+	//頂点レイアウトの設定
+	ret.InputLayout.pInputElementDescs = inputLayout;
+	ret.InputLayout.NumElements = numElements;
+
+	//図形の形状設定（三角形）
+	ret.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+
+	//その他の設定
+	ret.NumRenderTargets = 1;
+	ret.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+	ret.SampleDesc.Count = 1;
+	return ret;
 }
 
 std::list<ADXObject*> ADXObject::GetObjs()

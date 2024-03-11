@@ -207,6 +207,9 @@
     <ClCompile Include="Scripts\UnownFoot.cpp">
       <Filter>ソース ファイル\GameScript\Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\ShadowRenderer.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ADXEngine\ADXAudioSource.h">
@@ -382,6 +385,9 @@
     </ClInclude>
     <ClInclude Include="Scripts\UnownFoot.h">
       <Filter>ヘッダー ファイル\GameScript\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\ShadowRenderer.h">
+      <Filter>ヘッダー ファイル\GameScript</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
