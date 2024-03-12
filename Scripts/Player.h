@@ -52,13 +52,15 @@ private:
 	ADXRigidbody* rigidbody_ = nullptr;
 
 	ADXTextRenderer* controlTextVec_ = nullptr;
+	ADXTextRenderer* controlTextCam_ = nullptr;
 	ADXTextRenderer* controlTextJump_ = nullptr;
 	ADXTextRenderer* controlTextAct_ = nullptr;
 
 	ADXParticleSystem* shardParticle_ = nullptr;
 	ADXParticleSystem* deadParticle_ = nullptr;
 
-	float cameraTiltVelocity_{};
+	ADXVector2 cameraTiltVelocity_{};
+	float cameraHeight_ = 0.3f;
 	ADXVector2 prevInputVec_{};
 	ADXQuaternion targetRot_{};
 	std::list<PlayerMini*> minis_{};

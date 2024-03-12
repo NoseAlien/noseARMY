@@ -1,4 +1,4 @@
-﻿#include "Player.h"
+#include "Player.h"
 #include "SceneTransition.h"
 #include "ADXUtility.h"
 #include "ADXKeyConfig.h"
@@ -10,6 +10,8 @@ const float tutorialWindowSize = 0.3f;
 const float deathCountUISize = 0.1f;
 const float maxCameraTiltVelocity = 0.7f;
 const float cameraTiltForce = 0.3f;
+const float cameraTiltSpeedY = 0.1f;
+const ADXVector2 cameraHeightLimit = { 0,1 };
 const float cameraDistance = 20;
 const float listenerRadius = 40;
 const float idolAnimAmount = 0.05f;
@@ -128,13 +130,17 @@ void Player::Move(float walkSpeed, float jumpPower)
 
 void Player::ViewUpdate()
 {
-	cameraTiltVelocity_ = ADXUtility::Lerp(cameraTiltVelocity_, -GetCameraControlInput().x_ * maxCameraTiltVelocity, cameraTiltForce);
+	cameraTiltVelocity_.x_ = ADXUtility::Lerp(cameraTiltVelocity_.x_, -GetCameraControlInput().x_ * maxCameraTiltVelocity, cameraTiltForce);
+	cameraTiltVelocity_.y_ = ADXUtility::Lerp(cameraTiltVelocity_.y_, GetCameraControlInput().y_ * maxCameraTiltVelocity, cameraTiltForce);
+
 	camera_->GetGameObject()->transform_.SetWorldPosition(
 		camera_->GetGameObject()->transform_.GetWorldPosition()
-		+ camera_->GetGameObject()->transform_.TransformPointOnlyRotation({ 1,0,0 }) * cameraTiltVelocity_);
+		+ camera_->GetGameObject()->transform_.TransformPointOnlyRotation({ 1,0,0 }) * cameraTiltVelocity_.x_);
+
+	cameraHeight_ = max(cameraHeightLimit.x_, min(cameraHeight_ + cameraTiltVelocity_.y_ * cameraTiltSpeedY, cameraHeightLimit.y_));
 
 	ADXVector3 cameraLocalPos = GetGameObject()->transform_.InverseTransformPoint(camera_->GetGameObject()->transform_.GetWorldPosition()).Normalize();
-	cameraLocalPos.y_ = 0.3f;
+	cameraLocalPos.y_ = cameraHeight_;
 	camera_->GetGameObject()->transform_.SetWorldPosition(GetGameObject()->transform_.TransformPoint(cameraLocalPos));
 
 	camera_->GetGameObject()->transform_.UpdateMatrix();
@@ -303,9 +309,21 @@ void Player::LiveEntitiesInitialize()
 	controlTextVec_->fontAspect_ = 0.75f;
 	controlTextVec_->fontExtend_ = 2;
 	controlTextVec_->anchor_ = ADXTextRenderer::middleLeft;
-	controlTextVec_->GetGameObject()->transform_.localPosition_ = {-0.9f,-0.6f,0};
+	controlTextVec_->GetGameObject()->transform_.localPosition_ = { -0.9f,-0.45f,0 };
 	controlTextVec_->GetGameObject()->transform_.localScale_.x_ /= ADXWindow::GetInstance()->GetAspect();
 	controlTextVec_->GetGameObject()->transform_.localScale_ *= 0.05f;
+
+	temp = ADXObject::Create();
+	temp->transform_.rectTransform_ = true;
+	temp->renderLayer_ = uiLayer;
+	controlTextCam_ = temp->AddComponent<ADXTextRenderer>();
+	controlTextCam_->font_ = ADXTextRenderer::GetFont("texture/alphaNumber");
+	controlTextCam_->fontAspect_ = 0.75f;
+	controlTextCam_->fontExtend_ = 2;
+	controlTextCam_->anchor_ = ADXTextRenderer::middleLeft;
+	controlTextCam_->GetGameObject()->transform_.localPosition_ = {-0.9f,-0.6f,0};
+	controlTextCam_->GetGameObject()->transform_.localScale_.x_ /= ADXWindow::GetInstance()->GetAspect();
+	controlTextCam_->GetGameObject()->transform_.localScale_ *= 0.05f;
 
 	temp = ADXObject::Create();
 	temp->transform_.rectTransform_ = true;
@@ -338,6 +356,7 @@ void Player::LiveEntitiesUpdate()
 {
 	//操作説明テキストの初期値設定
 	controlTextVec_->text_ = "move";
+	controlTextCam_->text_ = "camera tilt";
 	controlTextJump_->text_ = "jump";
 	controlTextAct_->text_ = "split";
 
@@ -576,16 +595,22 @@ void Player::LiveEntitiesUpdate()
 	prevInputVec_ = GetDirectionInput();
 
 	controlTextVec_->text_ = "[ARROW]" + controlTextVec_->text_;
+	controlTextCam_->text_ = "[WASD ]" + controlTextCam_->text_;
 	controlTextJump_->text_ = "[SPACE]" + controlTextJump_->text_;
 	controlTextAct_->text_ = "[  C  ]" + controlTextAct_->text_;
 
 	controlTextVec_->material_.ambient_ = { 1,1,1 };
+	controlTextCam_->material_.ambient_ = { 1,1,1 };
 	controlTextJump_->material_.ambient_ = { 1,1,1 };
 	controlTextAct_->material_.ambient_ = { 1,1,1 };
 
 	if (GetDirectionInput() != ADXVector2{ 0,0 })
 	{
 		controlTextVec_->material_.ambient_ = { 1,1,0 };
+	}
+	if (GetCameraControlInput() != ADXVector2{ 0,0 })
+	{
+		controlTextCam_->material_.ambient_ = { 1,1,0 };
 	}
 	if (GetInputStatus(jump))
 	{
