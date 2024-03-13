@@ -10,8 +10,8 @@ const float tutorialWindowSize = 0.3f;
 const float deathCountUISize = 0.1f;
 const float maxCameraTiltVelocity = 0.7f;
 const float cameraTiltForce = 0.3f;
-const float cameraTiltSpeedY = 0.05f;
-const ADXVector2 cameraHeightLimit = { 0,2 };
+const float cameraTiltSpeedY = 0.08f;
+const ADXVector2 cameraHeightLimit = { 0,4 };
 const float cameraDistance = 17;
 const float listenerRadius = 40;
 const float idolAnimAmount = 0.05f;
@@ -130,6 +130,8 @@ void Player::Move(float walkSpeed, float jumpPower)
 
 void Player::ViewUpdate()
 {
+	GetGameObject()->transform_.UpdateMatrix();
+
 	cameraTiltVelocity_.x_ = ADXUtility::Lerp(cameraTiltVelocity_.x_, -GetCameraControlInput().x_ * maxCameraTiltVelocity, cameraTiltForce);
 	cameraTiltVelocity_.y_ = ADXUtility::Lerp(cameraTiltVelocity_.y_, GetCameraControlInput().y_ * maxCameraTiltVelocity, cameraTiltForce);
 
@@ -143,7 +145,7 @@ void Player::ViewUpdate()
 	cameraLocalPos.y_ = 0;
 	cameraLocalPos = cameraLocalPos.Normalize();
 	cameraLocalPos.y_ = cameraHeight_;
-	camera_->GetGameObject()->transform_.SetWorldPosition(GetGameObject()->transform_.TransformPoint(cameraLocalPos * cameraDistance));
+	camera_->GetGameObject()->transform_.SetWorldPosition(GetGameObject()->transform_.TransformPoint(cameraLocalPos * cameraDistance / scale_));
 
 	camera_->GetGameObject()->transform_.UpdateMatrix();
 
@@ -373,8 +375,8 @@ void Player::LiveEntitiesUpdate()
 
 	deadAnimationProgress_ = 0;
 
-	float scale = ADXUtility::ValueMapping((float)minis_.size(), 0, (float)maxMinisNum, 1, 0.25f);
-	GetGameObject()->transform_.localScale_ = { scale,scale,scale };
+	scale_ = ADXUtility::ValueMapping((float)minis_.size(), 0, (float)maxMinisNum, 1, 0.25f);
+	GetGameObject()->transform_.localScale_ = { scale_,scale_,scale_ };
 
 	visual_->transform_.localRotation_ = ADXQuaternion::IdentityQuaternion();
 
@@ -446,7 +448,7 @@ void Player::LiveEntitiesUpdate()
 	for (auto& itr : minis_)
 	{
 		if (itr->GetGameObject() != nullptr
-			&& ADXMatrix4::Transform(itr->GetGameObject()->transform_.localPosition_, GetGameObject()->transform_.GetMatWorldInverse()).Length() > 30 / scale)
+			&& ADXMatrix4::Transform(itr->GetGameObject()->transform_.localPosition_, GetGameObject()->transform_.GetMatWorldInverse()).Length() > 30 / scale_)
 		{
 			itr->GetGameObject()->Destroy();
 			absorbSE_->Play();

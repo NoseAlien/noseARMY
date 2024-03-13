@@ -59,6 +59,7 @@ private:
 	ADXParticleSystem* shardParticle_ = nullptr;
 	ADXParticleSystem* deadParticle_ = nullptr;
 
+	float scale_ = 1;
 	ADXVector2 cameraTiltVelocity_{};
 	float cameraHeight_ = 0.3f;
 	ADXVector2 prevInputVec_{};
