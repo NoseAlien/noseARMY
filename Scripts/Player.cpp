@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 #include "SceneTransition.h"
 #include "ADXUtility.h"
 #include "ADXKeyConfig.h"
@@ -10,9 +10,9 @@ const float tutorialWindowSize = 0.3f;
 const float deathCountUISize = 0.1f;
 const float maxCameraTiltVelocity = 0.7f;
 const float cameraTiltForce = 0.3f;
-const float cameraTiltSpeedY = 0.1f;
-const ADXVector2 cameraHeightLimit = { 0,1 };
-const float cameraDistance = 20;
+const float cameraTiltSpeedY = 0.05f;
+const ADXVector2 cameraHeightLimit = { 0,2 };
+const float cameraDistance = 17;
 const float listenerRadius = 40;
 const float idolAnimAmount = 0.05f;
 const float walkAnimAmount = 0.1f;
@@ -139,25 +139,26 @@ void Player::ViewUpdate()
 
 	cameraHeight_ = max(cameraHeightLimit.x_, min(cameraHeight_ + cameraTiltVelocity_.y_ * cameraTiltSpeedY, cameraHeightLimit.y_));
 
-	ADXVector3 cameraLocalPos = GetGameObject()->transform_.InverseTransformPoint(camera_->GetGameObject()->transform_.GetWorldPosition()).Normalize();
+	ADXVector3 cameraLocalPos = GetGameObject()->transform_.InverseTransformPoint(camera_->GetGameObject()->transform_.GetWorldPosition());
+	cameraLocalPos.y_ = 0;
+	cameraLocalPos = cameraLocalPos.Normalize();
 	cameraLocalPos.y_ = cameraHeight_;
-	camera_->GetGameObject()->transform_.SetWorldPosition(GetGameObject()->transform_.TransformPoint(cameraLocalPos));
+	camera_->GetGameObject()->transform_.SetWorldPosition(GetGameObject()->transform_.TransformPoint(cameraLocalPos * cameraDistance));
 
 	camera_->GetGameObject()->transform_.UpdateMatrix();
 
-	ADXVector3 cameraVec = camera_->GetGameObject()->transform_.GetWorldPosition() - GetGameObject()->transform_.GetWorldPosition();
-	cameraVec.y_ = 0;
-	cameraVec = cameraVec.Normalize();
-	camera_->GetGameObject()->transform_.SetWorldRotation(ADXQuaternion::EulerToQuaternion({ 0,atan2(-cameraVec.x_, -cameraVec.z_),0 }));
+	camera_->GetGameObject()->transform_.SetWorldRotation(GetGameObject()->transform_.GetWorldRotation());
 	camera_->GetGameObject()->transform_.UpdateMatrix();
 	cameraLocalPos = camera_->GetGameObject()->transform_.InverseTransformPoint(GetGameObject()->transform_.GetWorldPosition());
 	camera_->GetGameObject()->transform_.SetWorldRotation(
-		ADXQuaternion::MakeAxisAngle(camera_->GetGameObject()->transform_.TransformPointOnlyRotation({ 1,0,0 }),atan2(-cameraLocalPos.y_, cameraLocalPos.z_))
+		ADXQuaternion::MakeAxisAngle(camera_->GetGameObject()->transform_.TransformPointOnlyRotation({ 0,1,0 }), atan2(cameraLocalPos.x_, cameraLocalPos.z_))
 		* camera_->GetGameObject()->transform_.GetWorldRotation());
 
-	cameraVec = (camera_->GetGameObject()->transform_.GetWorldPosition() - GetGameObject()->transform_.GetWorldPosition()).Normalize();
-	camera_->GetGameObject()->transform_.SetWorldPosition(GetGameObject()->transform_.localPosition_ + cameraVec * cameraDistance);
 	camera_->GetGameObject()->transform_.UpdateMatrix();
+	cameraLocalPos = camera_->GetGameObject()->transform_.InverseTransformPoint(GetGameObject()->transform_.GetWorldPosition());
+	camera_->GetGameObject()->transform_.SetWorldRotation(
+		ADXQuaternion::MakeAxisAngle(camera_->GetGameObject()->transform_.TransformPointOnlyRotation({ 1,0,0 }), atan2(-cameraLocalPos.y_, cameraLocalPos.z_))
+		* camera_->GetGameObject()->transform_.GetWorldRotation());
 }
 
 void Player::LiveEntitiesInitialize()
