@@ -56,7 +56,7 @@ ADXMatrix4 ADXWorldTransform::GenerateMatTransform(const ADXVector3& localPositi
 
 void ADXWorldTransform::Initialize(ADXObject* obj)
 {
-	ADXObject::InitializeConstBufferTransform(constBuffTransform_, &constMapTransform_);
+	ADXObject::InitializeConstBufferTransform(&constBuffTransform_, &constMapTransform_);
 
 	matWorld_ = IdentityMatrix();
 	gameObject_ = obj;

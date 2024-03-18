@@ -208,7 +208,7 @@
       <Filter>ソース ファイル\GameScript\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\ShadowRenderer.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\GameScript</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

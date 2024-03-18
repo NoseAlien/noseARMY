@@ -1,6 +1,10 @@
 ﻿#include "ShadowRenderer.h"
 #include "ADXObject.h"
 
+Microsoft::WRL::ComPtr<ID3D12PipelineState> ShadowRenderer::S_pipelineStateStencil = nullptr;
+Microsoft::WRL::ComPtr<ID3D12PipelineState> ShadowRenderer::S_pipelineStateDraw = nullptr;
+Microsoft::WRL::ComPtr<ID3D12PipelineState> ShadowRenderer::S_pipelineStateAntiStencil = nullptr;
+
 void ShadowRenderer::UniqueRendering([[maybe_unused]] ID3D12Device* device, ID3D12GraphicsCommandList* cmdList)
 {
 	if (model_ != nullptr)
@@ -18,6 +22,47 @@ void ShadowRenderer::UniqueRendering([[maybe_unused]] ID3D12Device* device, ID3D
 
 void ShadowRenderer::UniqueInitialize()
 {
+	//頂点レイアウト
+	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
+		{//三次元座標
+			"POSITION",
+			0,
+			DXGI_FORMAT_R32G32B32_FLOAT,
+			0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
+			0
+		},
+		{//法線ベクトル
+			"NORMAL",
+			0,
+			DXGI_FORMAT_R32G32B32_FLOAT,
+			0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
+			0
+		},
+		{//uv座標
+			"TEXCOORD",
+			0,
+			DXGI_FORMAT_R32G32_FLOAT,
+			0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
+			0
+		}
+	};
+
+	Microsoft::WRL::ComPtr<ID3DBlob> vsBlob; // 頂点シェーダオブジェクト
+	Microsoft::WRL::ComPtr<ID3DBlob> psBlob; // ピクセルシェーダオブジェクト
+
+	ADXObject::LoadShader(&vsBlob, L"Resources/shader/OBJVertexShader.hlsl", "vs_5_0");
+	ADXObject::LoadShader(&psBlob, L"Resources/shader/OBJPixelShader.hlsl", "ps_5_0");
+
+	//グラフィックスパイプラインの設定
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc =
+		ADXObject::CreateDefaultPipelineDesc(vsBlob.Get(), psBlob.Get(), inputLayout, _countof(inputLayout));
+
 	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
 
 	depthStencilDesc.DepthEnable = true; //深度テストを行う
@@ -35,6 +80,10 @@ void ShadowRenderer::UniqueInitialize()
 	depthStencilDesc.BackFace.StencilPassOp = depthStencilDesc.FrontFace.StencilPassOp;
 	depthStencilDesc.BackFace.StencilFunc = depthStencilDesc.FrontFace.StencilFunc;
 
+	pipelineDesc.DepthStencilState = depthStencilDesc;
+	ADXObject::CreateGraphicsPipelineState(&pipelineDesc, &S_pipelineStateStencil);
+
+
 	depthStencilDesc.DepthEnable = true; //深度テストを行う
 	depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO; //書き込み不可
 	depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_GREATER; //大きければ合格
@@ -50,6 +99,10 @@ void ShadowRenderer::UniqueInitialize()
 	depthStencilDesc.BackFace.StencilPassOp = depthStencilDesc.FrontFace.StencilPassOp;
 	depthStencilDesc.BackFace.StencilFunc = depthStencilDesc.FrontFace.StencilFunc;
 
+	pipelineDesc.DepthStencilState = depthStencilDesc;
+	ADXObject::CreateGraphicsPipelineState(&pipelineDesc, &S_pipelineStateDraw);
+
+
 	depthStencilDesc.DepthEnable = true; //深度テストを行う
 	depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO; //書き込み不可
 	depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL; //同じか小さければ合格
@@ -64,4 +117,7 @@ void ShadowRenderer::UniqueInitialize()
 	depthStencilDesc.BackFace.StencilDepthFailOp = depthStencilDesc.FrontFace.StencilDepthFailOp;
 	depthStencilDesc.BackFace.StencilPassOp = depthStencilDesc.FrontFace.StencilPassOp;
 	depthStencilDesc.BackFace.StencilFunc = depthStencilDesc.FrontFace.StencilFunc;
+
+	pipelineDesc.DepthStencilState = depthStencilDesc;
+	ADXObject::CreateGraphicsPipelineState(&pipelineDesc, &S_pipelineStateAntiStencil);
 }

@@ -12,7 +12,6 @@ uint64_t ADXObject::S_descriptorHandleIncrementSize = 0;
 ID3D12GraphicsCommandList* ADXObject::S_cmdList = nullptr;
 Microsoft::WRL::ComPtr<ID3D12RootSignature> ADXObject::S_rootSignature;
 Microsoft::WRL::ComPtr<ID3D12PipelineState> ADXObject::S_pipelineState;
-Microsoft::WRL::ComPtr<ID3D12PipelineState> ADXObject::S_pipelineStateAlpha;
 
 uint64_t ADXObject::S_GpuStartHandle = 0;
 std::list<std::unique_ptr<ADXObject, ADXUtility::NPManager<ADXObject>>> ADXObject::S_objs{};
@@ -37,68 +36,58 @@ void ADXObject::Initialize()
 
 void ADXObject::CreateConstBuffer()
 {
-	InitializeConstBufferMaterial(constBuffB1_);
+	InitializeConstBufferMaterial(&constBuffB1_);
 }
 
 void ADXObject::InitializeGraphicsPipeline()
 {
-	HRESULT result = S_FALSE;
+	//デスクリプタレンジの設定
+	D3D12_DESCRIPTOR_RANGE descriptorRange{};
+	descriptorRange.NumDescriptors = 1;//一度の描画に使う画像が1枚なので
+	descriptorRange.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	descriptorRange.BaseShaderRegister = 0;//テクスチャレジスタ0番
+	descriptorRange.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
-	Microsoft::WRL::ComPtr<ID3DBlob> vsBlob; // 頂点シェーダオブジェクト
-	Microsoft::WRL::ComPtr<ID3DBlob> psBlob;	// ピクセルシェーダオブジェクト
-	Microsoft::WRL::ComPtr<ID3DBlob> errorBlob; // エラーオブジェクト
+	//テクスチャサンプラーの設定
+	D3D12_STATIC_SAMPLER_DESC samplerDesc{};
+	samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;//横繰り返し(タイリング)
+	samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;//縦繰り返し(タイリング)
+	samplerDesc.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;//奥行繰り返し(タイリング)
+	samplerDesc.BorderColor = D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;//ボーダーの時は黒
+	samplerDesc.Filter = D3D12_FILTER_MIN_MAG_POINT_MIP_LINEAR;//全てリニア補完
+	samplerDesc.MaxLOD = D3D12_FLOAT32_MAX;//ミップマップ最大値
+	samplerDesc.MinLOD = 0.0f;//ミップマップ最小値
+	samplerDesc.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
+	samplerDesc.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;//ピクセルシェーダーからのみ使用可能
 
-	//頂点シェーダーの読み込みとコンパイル
-	result = D3DCompileFromFile(
-		L"Resources/shader/OBJVertexShader.hlsl",
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE,
-		"main", "vs_5_0",
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,
-		0,
-		&vsBlob, &errorBlob);
+	//ルートパラメーターの設定
+	D3D12_ROOT_PARAMETER rootParams[3] = {};
+	//定数バッファ0番
+	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;//種類
+	rootParams[0].Descriptor.ShaderRegister = 0;//定数バッファ番号
+	rootParams[0].Descriptor.RegisterSpace = 0;//デフォルト値
+	rootParams[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;//全てのシェーダーから見える
+	//テクスチャレジスタ0番
+	rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;//種類
+	rootParams[1].DescriptorTable.pDescriptorRanges = &descriptorRange;//デスクリプタレンジ
+	rootParams[1].DescriptorTable.NumDescriptorRanges = 1;//デスクリプタレンジ数
+	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;//全てのシェーダーから見える
+	//定数バッファ1番
+	rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;//種類
+	rootParams[2].Descriptor.ShaderRegister = 1;//定数バッファ番号
+	rootParams[2].Descriptor.RegisterSpace = 0;//デフォルト値
+	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;//全てのシェーダーから見える
 
-	//上の読み込みでエラーが起きたら出力ウィンドウに内容を表示
-	if (FAILED(result))
-	{
-		//errorBlobからエラー内容をstring型にコピー
-		std::string error;
-		error.resize(errorBlob->GetBufferSize());
+	//ルートシグネチャの設定
+	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
+	rootSignatureDesc.Flags =
+		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+	rootSignatureDesc.pParameters = rootParams;//ルートパラメーターの先頭アドレス
+	rootSignatureDesc.NumParameters = _countof(rootParams);//ルートパラメーター数
+	rootSignatureDesc.pStaticSamplers = &samplerDesc;
+	rootSignatureDesc.NumStaticSamplers = 1;
 
-		std::copy_n((char*)errorBlob->GetBufferPointer(),
-			errorBlob->GetBufferSize(),
-			error.begin());
-		error += "\n";
-
-		OutputDebugStringA(error.c_str());
-		assert(0);
-	}
-
-	//ピクセルシェーダーの読み込みとコンパイル
-	result = D3DCompileFromFile(
-		L"Resources/shader/OBJPixelShader.hlsl",
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE,
-		"main", "ps_5_0",
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,
-		0,
-		&psBlob, &errorBlob);
-
-	//上の読み込みでエラーが起きたら出力ウィンドウに内容を表示
-	if (FAILED(result))
-	{
-		//errorBlobからエラー内容をstring型にコピー
-		std::string error;
-		error.resize(errorBlob->GetBufferSize());
-
-		std::copy_n((char*)errorBlob->GetBufferPointer(),
-			errorBlob->GetBufferSize(),
-			error.begin());
-		error += "\n";
-
-		OutputDebugStringA(error.c_str());
-		assert(0);
-	}
+	CreateRootSignature(&rootSignatureDesc);
 
 	//頂点レイアウト
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
@@ -131,74 +120,20 @@ void ADXObject::InitializeGraphicsPipeline()
 		}
 	};
 
+	Microsoft::WRL::ComPtr<ID3DBlob> vsBlob; // 頂点シェーダオブジェクト
+	Microsoft::WRL::ComPtr<ID3DBlob> psBlob; // ピクセルシェーダオブジェクト
+
+	LoadShader(&vsBlob, L"Resources/shader/OBJVertexShader.hlsl", "vs_5_0");
+	LoadShader(&psBlob, L"Resources/shader/OBJPixelShader.hlsl", "ps_5_0");
+
 	//グラフィックスパイプラインの設定
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc = CreateDefaultPipelineDesc(vsBlob.Get(), psBlob.Get(), inputLayout, _countof(inputLayout));
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc = 
+		CreateDefaultPipelineDesc(vsBlob.Get(), psBlob.Get(), inputLayout, _countof(inputLayout));
 
-	//デスクリプタレンジの設定
-	D3D12_DESCRIPTOR_RANGE descriptorRange{};
-	descriptorRange.NumDescriptors = 1;//一度の描画に使う画像が1枚なので
-	descriptorRange.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-	descriptorRange.BaseShaderRegister = 0;//テクスチャレジスタ0番
-	descriptorRange.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
-
-	//ルートパラメーターの設定
-	D3D12_ROOT_PARAMETER rootParams[3] = {};
-	//定数バッファ0番
-	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;//種類
-	rootParams[0].Descriptor.ShaderRegister = 0;//定数バッファ番号
-	rootParams[0].Descriptor.RegisterSpace = 0;//デフォルト値
-	rootParams[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;//全てのシェーダーから見える
-	//テクスチャレジスタ0番
-	rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;//種類
-	rootParams[1].DescriptorTable.pDescriptorRanges = &descriptorRange;//デスクリプタレンジ
-	rootParams[1].DescriptorTable.NumDescriptorRanges = 1;//デスクリプタレンジ数
-	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;//全てのシェーダーから見える
-	//定数バッファ1番
-	rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;//種類
-	rootParams[2].Descriptor.ShaderRegister = 1;//定数バッファ番号
-	rootParams[2].Descriptor.RegisterSpace = 0;//デフォルト値
-	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;//全てのシェーダーから見える
-
-	//テクスチャサンプラーの設定
-	D3D12_STATIC_SAMPLER_DESC samplerDesc{};
-	samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;//横繰り返し(タイリング)
-	samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;//縦繰り返し(タイリング)
-	samplerDesc.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;//奥行繰り返し(タイリング)
-	samplerDesc.BorderColor = D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;//ボーダーの時は黒
-	samplerDesc.Filter = D3D12_FILTER_MIN_MAG_POINT_MIP_LINEAR;//全てリニア補完
-	samplerDesc.MaxLOD = D3D12_FLOAT32_MAX;//ミップマップ最大値
-	samplerDesc.MinLOD = 0.0f;//ミップマップ最小値
-	samplerDesc.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
-	samplerDesc.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;//ピクセルシェーダーからのみ使用可能
-
-	//ルートシグネチャの設定
-	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
-	rootSignatureDesc.Flags =
-		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
-	rootSignatureDesc.pParameters = rootParams;//ルートパラメーターの先頭アドレス
-	rootSignatureDesc.NumParameters = _countof(rootParams);//ルートパラメーター数
-	rootSignatureDesc.pStaticSamplers = &samplerDesc;
-	rootSignatureDesc.NumStaticSamplers = 1;
-
-	ID3D12Device* device = ADXCommon::GetInstance()->GetDevice();
-
-	//ルートシグネチャのシリアライズ
-	Microsoft::WRL::ComPtr<ID3DBlob> rootSigBlob = nullptr;
-	result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
-		&rootSigBlob, &errorBlob);
-	assert(SUCCEEDED(result));
-	//ルートシグネチャの生成
-	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
-		IID_PPV_ARGS(&S_rootSignature));
-	assert(SUCCEEDED(result));
-	//パイプラインにルートシグネチャをセット
-	pipelineDesc.pRootSignature = S_rootSignature.Get();
-	// パイプラインステートの生成
-	result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&S_pipelineState));
-	assert(SUCCEEDED(result));
+	CreateGraphicsPipelineState(&pipelineDesc, &S_pipelineState);
 }
 
-void ADXObject::InitializeConstBufferTransform(Microsoft::WRL::ComPtr<ID3D12Resource>& constBuffTransform, ConstBufferDataTransform** constMapTransform)
+void ADXObject::InitializeConstBufferTransform(ID3D12Resource** constBuffTransform, ConstBufferDataTransform** constMapTransform)
 {
 	ID3D12Device* device = ADXCommon::GetInstance()->GetDevice();
 
@@ -225,16 +160,18 @@ void ADXObject::InitializeConstBufferTransform(Microsoft::WRL::ComPtr<ID3D12Reso
 			&cbResourceDesc,
 			D3D12_RESOURCE_STATE_GENERIC_READ,
 			nullptr,
-			IID_PPV_ARGS(&constBuffTransform));
+			IID_PPV_ARGS(constBuffTransform));
 		assert(SUCCEEDED(result));
 
 		//定数バッファのマッピング
-		result = constBuffTransform->Map(0, nullptr, (void**)constMapTransform);//マッピング
+		ID3D12Resource* constBuff = *constBuffTransform;
+
+		result = constBuff->Map(0, nullptr, (void**)constMapTransform);//マッピング
 		assert(SUCCEEDED(result));
 	}
 }
 
-void ADXObject::InitializeConstBufferMaterial(Microsoft::WRL::ComPtr<ID3D12Resource>& constBuff)
+void ADXObject::InitializeConstBufferMaterial(ID3D12Resource** constBuff)
 {
 	ID3D12Device* device = ADXCommon::GetInstance()->GetDevice();
 
@@ -261,7 +198,7 @@ void ADXObject::InitializeConstBufferMaterial(Microsoft::WRL::ComPtr<ID3D12Resou
 			&cbResourceDesc,
 			D3D12_RESOURCE_STATE_GENERIC_READ,
 			nullptr,
-			IID_PPV_ARGS(&constBuff));
+			IID_PPV_ARGS(constBuff));
 		assert(SUCCEEDED(result));
 	}
 }
@@ -572,6 +509,55 @@ void ADXObject::PostDraw()
 	S_allCameraPtr.clear();
 }
 
+void ADXObject::CreateRootSignature(D3D12_ROOT_SIGNATURE_DESC* rootSignatureDesc)
+{
+	HRESULT result = S_FALSE;
+	Microsoft::WRL::ComPtr<ID3DBlob> rootSigBlob = nullptr;
+	Microsoft::WRL::ComPtr<ID3DBlob> errorBlob; // エラーオブジェクト
+
+	//ルートシグネチャのシリアライズ
+	result = D3D12SerializeRootSignature(rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
+		&rootSigBlob, &errorBlob);
+	assert(SUCCEEDED(result));
+	//ルートシグネチャの生成
+	result = ADXCommon::GetInstance()->GetDevice()->
+		CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
+		IID_PPV_ARGS(&S_rootSignature));
+	assert(SUCCEEDED(result));
+}
+
+void ADXObject::LoadShader(ID3DBlob** shaderBlob, LPCWSTR filePath, LPCSTR pEntryPoint)
+{
+	HRESULT result = S_FALSE;
+	Microsoft::WRL::ComPtr<ID3DBlob> errorBlob; // エラーオブジェクト
+
+	//シェーダーの読み込みとコンパイル
+	result = D3DCompileFromFile(
+		filePath,
+		nullptr,
+		D3D_COMPILE_STANDARD_FILE_INCLUDE,
+		"main", pEntryPoint,
+		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,
+		0,
+		shaderBlob, &errorBlob);
+
+	//上の読み込みでエラーが起きたら出力ウィンドウに内容を表示
+	if (FAILED(result))
+	{
+		//errorBlobからエラー内容をstring型にコピー
+		std::string error;
+		error.resize(errorBlob->GetBufferSize());
+
+		std::copy_n((char*)errorBlob->GetBufferPointer(),
+			errorBlob->GetBufferSize(),
+			error.begin());
+		error += "\n";
+
+		OutputDebugStringA(error.c_str());
+		assert(0);
+	}
+}
+
 D3D12_GRAPHICS_PIPELINE_STATE_DESC ADXObject::CreateDefaultPipelineDesc(ID3DBlob* vsBlob, ID3DBlob* psBlob, D3D12_INPUT_ELEMENT_DESC inputLayout[], uint32_t numElements)
 {
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC ret{};
@@ -621,6 +607,18 @@ D3D12_GRAPHICS_PIPELINE_STATE_DESC ADXObject::CreateDefaultPipelineDesc(ID3DBlob
 	ret.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	ret.SampleDesc.Count = 1;
 	return ret;
+}
+
+void ADXObject::CreateGraphicsPipelineState(D3D12_GRAPHICS_PIPELINE_STATE_DESC* pipelineDesc, ID3D12PipelineState** pipelineState)
+{
+	HRESULT result = S_FALSE;
+
+	//パイプラインにルートシグネチャをセット
+	pipelineDesc->pRootSignature = S_rootSignature.Get();
+	// パイプラインステートの生成
+	result = ADXCommon::GetInstance()->GetDevice()->
+		CreateGraphicsPipelineState(pipelineDesc, IID_PPV_ARGS(pipelineState));
+	assert(SUCCEEDED(result));
 }
 
 std::list<ADXObject*> ADXObject::GetObjs()

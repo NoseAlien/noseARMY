@@ -89,9 +89,6 @@ private: // 静的メンバ変数
 	// パイプラインステートオブジェクト（不透明オブジェクト用）
 	static Microsoft::WRL::ComPtr<ID3D12PipelineState> S_pipelineState;
 
-	// パイプラインステートオブジェクト（半透明オブジェクト用）
-	static Microsoft::WRL::ComPtr<ID3D12PipelineState> S_pipelineStateAlpha;
-
 	// デスクリプタサイズ
 	static uint64_t S_descriptorHandleIncrementSize;
 
@@ -125,22 +122,34 @@ public: // 静的メンバ関数
 	static void InitializeGraphicsPipeline();
 
 	// トランスフォーム用定数バッファ生成
-	static void InitializeConstBufferTransform(Microsoft::WRL::ComPtr<ID3D12Resource>& constBuff, ConstBufferDataTransform** constMap);
+	static void InitializeConstBufferTransform(ID3D12Resource** constBuff, ConstBufferDataTransform** constMap);
 
 	// マテリアル用定数バッファ生成
-	static void InitializeConstBufferMaterial(Microsoft::WRL::ComPtr<ID3D12Resource>& constBuff);
+	static void InitializeConstBufferMaterial(ID3D12Resource** constBuff);
 
 	// 全オブジェクトに対する描画処理
 	static void StaticDraw();
 
+	// ルートシグネチャを取得
+	static ID3D12RootSignature* GetRootSignature() { return S_rootSignature.Get(); };
+
 	// コマンドリストを取得
 	static ID3D12GraphicsCommandList* GetCmdList() { return S_cmdList; };
 
-	//SRVヒープの先頭ハンドルを取得
+	// SRVヒープの先頭ハンドルを取得
 	static uint64_t GetGpuStartHandle() { return S_GpuStartHandle; };
 
-	//グラフィックスパイプラインの初期値を自動生成して取得
+	// ルートシグネチャの生成
+	static void CreateRootSignature(D3D12_ROOT_SIGNATURE_DESC* rootSignatureDesc);
+
+	// シェーダーの読み込みとコンパイル
+	static void LoadShader(ID3DBlob** shaderBlob, LPCWSTR filePath, LPCSTR pEntryPoint);
+
+	// グラフィックスパイプラインの初期値を自動生成して取得
 	static D3D12_GRAPHICS_PIPELINE_STATE_DESC CreateDefaultPipelineDesc(ID3DBlob* vsBlob, ID3DBlob* psBlob, D3D12_INPUT_ELEMENT_DESC inputLayout[], uint32_t numElements);
+
+	// パイプラインステートを生成
+	static void CreateGraphicsPipelineState(D3D12_GRAPHICS_PIPELINE_STATE_DESC* pipelineDesc, ID3D12PipelineState** pipelineState);
 
 	// 全オブジェクトを取得
 	static std::list<ADXObject*> GetObjs();

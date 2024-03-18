@@ -758,11 +758,11 @@ void Player::DeadUpdate()
 		if (deadAnimationProgress_ >= 1)
 		{
 			keyUI_->transform_.localScale_.x_ += (0.45f / ADXWindow::GetInstance()->GetAspect() - keyUI_->transform_.localScale_.x_) * uiExtendSpeed;
-			if (GetInputStatusTrigger(attack))
+			/*if (GetInputStatusTrigger(attack))
 			{
 				restartAnimationAble_ = true;
-			}
-			if (GetInputStatusTrigger(jump))
+			}*/
+			if (GetInputStatusTrigger(jump) || GetInputStatusTrigger(attack))
 			{
 				deathCount_++;
 				Revive();
