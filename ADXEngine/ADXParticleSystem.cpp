@@ -1,4 +1,5 @@
 ﻿#include "ADXParticleSystem.h"
+#include "ADXModelRenderer.h"
 
 void ADXParticleSystem::Emission()
 {
@@ -12,7 +13,7 @@ void ADXParticleSystem::Emission()
 		//設定を反映
 		temp->transform_.parent_ = parent_;
 		temp->transform_.UpdateMatrix();
-		temp->model_ = &particleModel_;
+		temp->GetComponent<ADXModelRenderer>()->model_ = &particleModel_;
 		particle_->animation_ = animation_;
 		particle_->scale_ = scale_;
 		particle_->maxLifeTime_ = lifeTime_;

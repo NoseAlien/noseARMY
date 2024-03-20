@@ -29,7 +29,7 @@ void UnownFoot::EnemyInitialize()
 
 	enemyModel_ = ADXModel::LoadADXModel("model/UnownFoot.obj");
 
-	visual_->model_ = &enemyModel_;
+	visual_->GetComponent<ADXModelRenderer>()->model_ = &enemyModel_;
 }
 
 void UnownFoot::EnemyUpdate()
@@ -89,7 +89,7 @@ void UnownFoot::Walk()
 
 		if (attack_)
 		{
-			visual_->texture_ = attackTex_;
+			visual_->GetComponent<ADXModelRenderer>()->texture_ = attackTex_;
 			for (auto& itr : GetGameObject()->GetComponents<ADXCollider>())
 			{
 				if (!itr->isTrigger_)

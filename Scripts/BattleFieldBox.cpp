@@ -1,4 +1,5 @@
 ﻿#include "BattleFieldBox.h"
+#include "ADXModelRenderer.h"
 #include "LiveEntity.h"
 
 const float animationProgressSpeed = 0.2f;
@@ -13,8 +14,8 @@ void BattleFieldBox::Initialize(const std::vector<EnemySpawnData::SpawnData>& se
 void BattleFieldBox::FieldInitialize()
 {
 	boxModel_ = ADXModel::LoadADXModel("model/battleBox.obj");
-	GetGameObject()->model_ = &boxModel_;
-	GetGameObject()->texture_ = ADXImage::LoadADXImage("texture/battleField.png");
+	GetGameObject()->GetComponent<ADXModelRenderer>()->model_ = &boxModel_;
+	GetGameObject()->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/battleField.png");
 
 	GetGameObject()->sortingOrder_ = 2;
 

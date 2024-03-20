@@ -4,6 +4,7 @@
 #include "ADXWindow.h"
 #include "ADXDataPool.h"
 #include "ADXCommon.h"
+#include "ADXModelRenderer.h"
 
 #pragma comment(lib, "d3dcompiler.lib")
 
@@ -20,15 +21,15 @@ void ADXPostEffectLens::UniqueInitialize()
 	//GetGameObject()->transform.localScale_ = { 0.5f,0.5f,0.5f };
 	GetGameObject()->transform_.UpdateMatrix();
 	rect_ = ADXModel::CreateRect();
-	GetGameObject()->texture_ = ADXImage::CreateADXImage(ADXWindow::GetInstance()->window_width_, ADXWindow::GetInstance()->window_height_);
+	GetGameObject()->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::CreateADXImage(ADXWindow::GetInstance()->window_width_, ADXWindow::GetInstance()->window_height_);
 	GetGameObject()->renderLayer_ = 100;
-	GetGameObject()->model_ = &rect_;
+	GetGameObject()->GetComponent<ADXModelRenderer>()->model_ = &rect_;
 
 
 	HRESULT result;
 
 	ID3D12Device* device = ADXCommon::GetInstance()->GetDevice();
-	ID3D12Resource* texBuff = ADXDataPool::GetImgData(GetGameObject()->texture_)->GetTexBuff();
+	ID3D12Resource* texBuff = ADXDataPool::GetImgData(GetGameObject()->GetComponent<ADXModelRenderer>()->texture_)->GetTexBuff();
 
 	//デスクリプタヒープの設定
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
@@ -271,7 +272,7 @@ void ADXPostEffectLens::OnPreRender()
 
 	//リソースバリアで書き込み可能に変更
 	CD3DX12_RESOURCE_BARRIER barrierDesc = CD3DX12_RESOURCE_BARRIER::Transition(
-		ADXDataPool::GetImgData(GetGameObject()->texture_)->GetTexBuff(),
+		ADXDataPool::GetImgData(GetGameObject()->GetComponent<ADXModelRenderer>()->texture_)->GetTexBuff(),
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
 		D3D12_RESOURCE_STATE_RENDER_TARGET);
 	cmdList->ResourceBarrier(1, &barrierDesc);
@@ -300,7 +301,7 @@ void ADXPostEffectLens::OnWillRenderObject()
 {
 	//リソースバリアを戻す
 	CD3DX12_RESOURCE_BARRIER barrierDesc = CD3DX12_RESOURCE_BARRIER::Transition(
-		ADXDataPool::GetImgData(GetGameObject()->texture_)->GetTexBuff(),
+		ADXDataPool::GetImgData(GetGameObject()->GetComponent<ADXModelRenderer>()->texture_)->GetTexBuff(),
 		D3D12_RESOURCE_STATE_RENDER_TARGET,
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 	ADXCommon::GetInstance()->GetCommandList()->ResourceBarrier(1, &barrierDesc);

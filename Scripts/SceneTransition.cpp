@@ -1,4 +1,5 @@
 ﻿#include "SceneTransition.h"
+#include "ADXModelRenderer.h"
 
 bool SceneTransition::S_sceneChanging = false;
 int32_t SceneTransition::S_sceneChangeFrame = 0;
@@ -8,8 +9,8 @@ ADXModel SceneTransition::S_rect{};
 void SceneTransition::UniqueInitialize()
 {
 	GetGameObject()->transform_.rectTransform_ = true;
-	GetGameObject()->model_ = &S_rect;
-	GetGameObject()->texture_ = ADXImage::LoadADXImage("texture/apEGnoSE.png");
+	GetGameObject()->GetComponent<ADXModelRenderer>()->model_ = &S_rect;
+	GetGameObject()->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/apEGnoSE.png");
 	GetGameObject()->renderLayer_ = 10;
 }
 

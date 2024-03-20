@@ -18,29 +18,15 @@ public:
 		DirectX::XMMATRIX mat;
 	};
 
-	struct ConstBufferDataB1 {
-		DirectX::XMFLOAT3 ambient;
-		float pad1;
-		DirectX::XMFLOAT3 diffuse;
-		float pad2;
-		DirectX::XMFLOAT3 specular;
-		float alpha;
-	};
-
 public:
 	ADXWorldTransform transform_{};
-	ADXModel* model_ = nullptr;
-	ADXMaterial material_{};
-	uint32_t texture_ = 0;
 	int32_t renderLayer_ = 0;
 	int32_t sortingOrder_ = 0;
 	bool alphaTex_ = false;
 	bool isVisible_ = true;
 	bool isActive_ = true;
-	bool useDefaultDraw_ = true;
 
 private:
-	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffB1_ = nullptr;
 	std::list<std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>>> components_{};
 	bool deleteFlag_ = false;
 
@@ -69,9 +55,6 @@ public:
 	//このオブジェクトが次の更新処理の前に削除される状態ならtrueを返す
 	bool GetDeleteFlag() { return deleteFlag_; };
 
-	//定数バッファ用データ構造体（マテリアル）を取得
-	ID3D12Resource* GetConstBuffB1() { return constBuffB1_.Get(); };
-
 private:
 	//初期化処理
 	void Initialize();
@@ -79,15 +62,9 @@ private:
 	//更新処理
 	void Update();
 
-	//定数バッファ用データ構造体（マテリアル）を生成
-	void CreateConstBuffer();
-
 private: // 静的メンバ変数
 	// ルートシグネチャ
 	static Microsoft::WRL::ComPtr<ID3D12RootSignature> S_rootSignature;
-
-	// パイプラインステートオブジェクト（不透明オブジェクト用）
-	static Microsoft::WRL::ComPtr<ID3D12PipelineState> S_pipelineState;
 
 	// デスクリプタサイズ
 	static uint64_t S_descriptorHandleIncrementSize;
@@ -124,9 +101,6 @@ public: // 静的メンバ関数
 	// トランスフォーム用定数バッファ生成
 	static void InitializeConstBufferTransform(ID3D12Resource** constBuff, ConstBufferDataTransform** constMap);
 
-	// マテリアル用定数バッファ生成
-	static void InitializeConstBufferMaterial(ID3D12Resource** constBuff);
-
 	// 全オブジェクトに対する描画処理
 	static void StaticDraw();
 
@@ -141,15 +115,6 @@ public: // 静的メンバ関数
 
 	// ルートシグネチャの生成
 	static void CreateRootSignature(D3D12_ROOT_SIGNATURE_DESC* rootSignatureDesc);
-
-	// シェーダーの読み込みとコンパイル
-	static void LoadShader(ID3DBlob** shaderBlob, LPCWSTR filePath, LPCSTR pEntryPoint);
-
-	// グラフィックスパイプラインの初期値を自動生成して取得
-	static D3D12_GRAPHICS_PIPELINE_STATE_DESC CreateDefaultPipelineDesc(ID3DBlob* vsBlob, ID3DBlob* psBlob, D3D12_INPUT_ELEMENT_DESC inputLayout[], uint32_t numElements);
-
-	// パイプラインステートを生成
-	static void CreateGraphicsPipelineState(D3D12_GRAPHICS_PIPELINE_STATE_DESC* pipelineDesc, ID3D12PipelineState** pipelineState);
 
 	// 全オブジェクトを取得
 	static std::list<ADXObject*> GetObjs();

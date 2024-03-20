@@ -1,4 +1,5 @@
 ﻿#include "ADXSprite.h"
+#include "ADXModelRenderer.h"
 #include "ADXUtility.h"
 
 void ADXSprite::SetClippingStatus(const ADXVector3& maxBoxRUF, const ADXVector3& maxBoxLDB, 
@@ -19,7 +20,7 @@ void ADXSprite::UniqueInitialize()
 
 void ADXSprite::UniqueUpdate()
 {
-	GetGameObject()->model_ = &rect_;
+	GetGameObject()->GetComponent<ADXModelRenderer>()->model_ = &rect_;
 
 	//モデルのuv座標を設定
 	rect_.vertices_ = {

@@ -2,6 +2,7 @@
 
 #include "ADXObject.h"
 #include "ADXAudioSource.h"
+#include "ADXModelRenderer.h"
 #include "ADXParticleSystem.h"
 #include "FieldBox.h"
 #include <string>

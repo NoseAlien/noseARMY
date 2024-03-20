@@ -1,4 +1,5 @@
 ﻿#include "Pebble.h"
+#include "ADXModelRenderer.h"
 #include "ADXCamera.h"
 
 const float drag = 0.95f;
@@ -27,8 +28,8 @@ void Pebble::UniqueInitialize()
 	//ビルボード用のモデルを作成
 	billBoard_ = ADXObject::Create();
 	billBoard_->transform_.parent_ = &GetGameObject()->transform_;
-	billBoard_->model_ = &rect_;
-	billBoard_->texture_ = billBoardTex_;
+	billBoard_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
+	billBoard_->GetComponent<ADXModelRenderer>()->texture_ = billBoardTex_;
 
 	prevPos_ = GetGameObject()->transform_.localPosition_;
 	mute_ = true;

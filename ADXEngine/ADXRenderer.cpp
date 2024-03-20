@@ -16,17 +16,54 @@ void ADXRenderer::Rendering()
 	HRESULT result = S_FALSE;
 	//定数バッファへデータ転送
 	ConstBufferDataB1* constMap1 = nullptr;
-	result = GetGameObject()->GetConstBuffB1()->Map(0, nullptr, (void**)&constMap1);
+	result = constBuffB1_->Map(0, nullptr, (void**)&constMap1);
 	constMap1->ambient = material_.ambient_;
 	constMap1->diffuse = material_.diffuse_;
 	constMap1->specular = material_.specular_;
 	constMap1->alpha = material_.alpha_;
-	GetGameObject()->GetConstBuffB1()->Unmap(0, nullptr);
+	constBuffB1_->Unmap(0, nullptr);
 
 	//定数バッファビュー(CBV)の設定コマンド
-	cmdList->SetGraphicsRootConstantBufferView(2, GetGameObject()->GetConstBuffB1()->GetGPUVirtualAddress());
+	cmdList->SetGraphicsRootConstantBufferView(2, constBuffB1_->GetGPUVirtualAddress());
 
 	UniqueRendering(device, cmdList);
+}
+
+void ADXRenderer::UniqueInitialize()
+{
+	InitializeConstBufferMaterial(&constBuffB1_);
+}
+
+void ADXRenderer::InitializeConstBufferMaterial(ID3D12Resource** constBuff)
+{
+	ID3D12Device* device = ADXCommon::GetInstance()->GetDevice();
+
+	if (device != nullptr)
+	{
+		HRESULT result = S_FALSE;
+
+		//ヒープ設定
+		D3D12_HEAP_PROPERTIES cbHeapProp{};
+		cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+		//リソース設定
+		D3D12_RESOURCE_DESC cbResourceDesc{};
+		cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+		cbResourceDesc.Width = (sizeof(ConstBufferDataB1) + 0xff) & ~0xff;//256バイトアラインメント
+		cbResourceDesc.Height = 1;
+		cbResourceDesc.DepthOrArraySize = 1;
+		cbResourceDesc.MipLevels = 1;
+		cbResourceDesc.SampleDesc.Count = 1;
+		cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+		//定数バッファの生成
+		result = device->CreateCommittedResource(
+			&cbHeapProp,
+			D3D12_HEAP_FLAG_NONE,
+			&cbResourceDesc,
+			D3D12_RESOURCE_STATE_GENERIC_READ,
+			nullptr,
+			IID_PPV_ARGS(constBuff));
+		assert(SUCCEEDED(result));
+	}
 }
 
 void ADXRenderer::LoadShader(ID3DBlob** shaderBlob, LPCWSTR filePath, LPCSTR pEntryPoint)

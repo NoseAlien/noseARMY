@@ -212,7 +212,7 @@ void Crazer_Unown::Shot()
 	GetGameObject()->transform_.localRotation_ = GetGameObject()->transform_.localRotation_.Normalized();
 
 	attackTexIndex_ = fmodf((attackTexIndex_ + attackAnimProgressSpeed), (float)attackTexs_.size());
-	visual_->texture_ = attackTexs_[(int)attackTexIndex_];
+	visual_->GetComponent<ADXModelRenderer>()->texture_ = attackTexs_[(int)attackTexIndex_];
 
 	if (actProgress_ > actKeyFrame_shot)
 	{

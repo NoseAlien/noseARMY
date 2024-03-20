@@ -1,6 +1,7 @@
 ﻿#include "ADXScene.h"
 #include "ADXSceneManager.h"
 #include "ADXUtility.h"
+#include "ADXModelRenderer.h"
 #include <time.h>
 
 const int32_t logoSceneTimeFrame = 7000;
@@ -42,26 +43,31 @@ void ADXScene::Initialize()
 
 	title_ = ADXObject::Create();
 	title_->transform_.UpdateMatrix();
-	title_->texture_ = titleImg_;
-	title_->model_ = &rect_;
-	title_->material_ = unlitMat_;
-	title_->material_.alpha_ = 0;
+	ADXModelRenderer* tenpRenderer = title_->AddComponent<ADXModelRenderer>();
+	tenpRenderer->texture_ = titleImg_;
+	tenpRenderer->model_ = &rect_;
+	tenpRenderer->material_ = unlitMat_;
+	tenpRenderer->material_.alpha_ = 0;
 	logoJingle_ = title_->AddComponent<ADXAudioSource>();
 	logoJingle_->LoadADXAudio("sound/ADXJingle.wav");
 
 	logo_A_ = ADXObject::Duplicate(*title_);
 	logo_A_->transform_.localPosition_ = logoTextPos;
 	logo_A_->transform_.localScale_ = { 1,logoTextAspect,1 };
-	logo_A_->texture_ = logoImg_A_;
+	logo_A_->AddComponent<ADXModelRenderer>();
+	logo_A_->GetComponent<ADXModelRenderer>()->texture_ = logoImg_A_;
 
 	logo_D_ = ADXObject::Duplicate(*logo_A_);
-	logo_D_->texture_ = logoImg_D_;
+	logo_D_->AddComponent<ADXModelRenderer>();
+	logo_D_->GetComponent<ADXModelRenderer>()->texture_ = logoImg_D_;
 
 	logo_X_ = ADXObject::Duplicate(*logo_A_);
-	logo_X_->texture_ = logoImg_X_;
+	logo_X_->AddComponent<ADXModelRenderer>();
+	logo_X_->GetComponent<ADXModelRenderer>()->texture_ = logoImg_X_;
 
 	logo_Engine_ = ADXObject::Duplicate(*logo_A_);
-	logo_Engine_->texture_ = logoImg_Engine_;
+	logo_Engine_->AddComponent<ADXModelRenderer>();
+	logo_Engine_->GetComponent<ADXModelRenderer>()->texture_ = logoImg_Engine_;
 
 
 	startTime_ = clock();
@@ -73,24 +79,24 @@ void ADXScene::Initialize()
 void ADXScene::Update()
 {
 	//エンジンロゴの見た目が時間と共に変化していく
-	title_->material_.alpha_ = (float)(clock() - startTime_) * logoAlphaSpeed;
+	title_->GetComponent<ADXModelRenderer>()->material_.alpha_ = (float)(clock() - startTime_) * logoAlphaSpeed;
 
-	logo_A_->material_.alpha_ = ADXUtility::ValueMapping((float)(clock() - startTime_),
+	logo_A_->GetComponent<ADXModelRenderer>()->material_.alpha_ = ADXUtility::ValueMapping((float)(clock() - startTime_),
 		logo_A_displayTime.x_, logo_A_displayTime.y_, 0, 1);
 	logo_A_->transform_.localPosition_.y_ = (float)pow(max(ADXUtility::ValueMapping((float)(clock() - startTime_),
 		logo_A_displayTime.x_, logo_A_displayTime.y_, logoStartHeight, 0), 0), logoAnimationPow);
 
-	logo_D_->material_.alpha_ = ADXUtility::ValueMapping((float)(clock() - startTime_),
+	logo_D_->GetComponent<ADXModelRenderer>()->material_.alpha_ = ADXUtility::ValueMapping((float)(clock() - startTime_),
 		logo_D_displayTime.x_, logo_D_displayTime.y_, 0, 1);
 	logo_D_->transform_.localPosition_.y_ = (float)pow(max(ADXUtility::ValueMapping((float)(clock() - startTime_),
 		logo_D_displayTime.x_, logo_D_displayTime.y_, logoStartHeight, 0), 0), logoAnimationPow);
 
-	logo_X_->material_.alpha_ = ADXUtility::ValueMapping((float)(clock() - startTime_),
+	logo_X_->GetComponent<ADXModelRenderer>()->material_.alpha_ = ADXUtility::ValueMapping((float)(clock() - startTime_),
 		logo_X_displayTime.x_, logo_X_displayTime.y_, 0, 1);
 	logo_X_->transform_.localPosition_.y_ = (float)pow(max(ADXUtility::ValueMapping((float)(clock() - startTime_),
 		logo_X_displayTime.x_, logo_X_displayTime.y_, logoStartHeight, 0), 0), logoAnimationPow);
 
-	logo_Engine_->material_.alpha_ = ADXUtility::ValueMapping((float)(clock() - startTime_),
+	logo_Engine_->GetComponent<ADXModelRenderer>()->material_.alpha_ = ADXUtility::ValueMapping((float)(clock() - startTime_),
 		logo_Engine_displayTime.x_, logo_Engine_displayTime.y_, 0, 1);
 	logo_Engine_->transform_.localPosition_.y_ = (float)pow(max(ADXUtility::ValueMapping((float)(clock() - startTime_),
 		logo_Engine_displayTime.x_, logo_Engine_displayTime.y_, logoStartHeight, 0), 0), logoAnimationPow);

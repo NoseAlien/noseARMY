@@ -56,12 +56,12 @@ void ShadowRenderer::UniqueInitialize()
 	Microsoft::WRL::ComPtr<ID3DBlob> vsBlob; // 頂点シェーダオブジェクト
 	Microsoft::WRL::ComPtr<ID3DBlob> psBlob; // ピクセルシェーダオブジェクト
 
-	ADXObject::LoadShader(&vsBlob, L"Resources/shader/OBJVertexShader.hlsl", "vs_5_0");
-	ADXObject::LoadShader(&psBlob, L"Resources/shader/OBJPixelShader.hlsl", "ps_5_0");
+	LoadShader(&vsBlob, L"Resources/shader/OBJVertexShader.hlsl", "vs_5_0");
+	LoadShader(&psBlob, L"Resources/shader/OBJPixelShader.hlsl", "ps_5_0");
 
 	//グラフィックスパイプラインの設定
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc =
-		ADXObject::CreateDefaultPipelineDesc(vsBlob.Get(), psBlob.Get(), inputLayout, _countof(inputLayout));
+		CreateDefaultPipelineDesc(vsBlob.Get(), psBlob.Get(), inputLayout, _countof(inputLayout));
 
 	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
 
@@ -81,7 +81,7 @@ void ShadowRenderer::UniqueInitialize()
 	depthStencilDesc.BackFace.StencilFunc = depthStencilDesc.FrontFace.StencilFunc;
 
 	pipelineDesc.DepthStencilState = depthStencilDesc;
-	ADXObject::CreateGraphicsPipelineState(&pipelineDesc, &S_pipelineStateStencil);
+	CreateGraphicsPipelineState(&pipelineDesc, &S_pipelineStateStencil);
 
 
 	depthStencilDesc.DepthEnable = true; //深度テストを行う
@@ -100,7 +100,7 @@ void ShadowRenderer::UniqueInitialize()
 	depthStencilDesc.BackFace.StencilFunc = depthStencilDesc.FrontFace.StencilFunc;
 
 	pipelineDesc.DepthStencilState = depthStencilDesc;
-	ADXObject::CreateGraphicsPipelineState(&pipelineDesc, &S_pipelineStateDraw);
+	CreateGraphicsPipelineState(&pipelineDesc, &S_pipelineStateDraw);
 
 
 	depthStencilDesc.DepthEnable = true; //深度テストを行う
@@ -119,5 +119,5 @@ void ShadowRenderer::UniqueInitialize()
 	depthStencilDesc.BackFace.StencilFunc = depthStencilDesc.FrontFace.StencilFunc;
 
 	pipelineDesc.DepthStencilState = depthStencilDesc;
-	ADXObject::CreateGraphicsPipelineState(&pipelineDesc, &S_pipelineStateAntiStencil);
+	CreateGraphicsPipelineState(&pipelineDesc, &S_pipelineStateAntiStencil);
 }

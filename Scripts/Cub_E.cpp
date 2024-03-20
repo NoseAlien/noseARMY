@@ -29,13 +29,13 @@ void Cub_E::EnemyInitialize()
 	jumpSE_->LoadADXAudio("sound/Cub_E_jump.wav");
 	jumpSE_->useDistanceFade_ = true;
 
-	visual_->model_ = &enemyModel_;
+	visual_->GetComponent<ADXModelRenderer>()->model_ = &enemyModel_;
 
 	//髪
 	hair_ = ADXObject::Create();
 	hair_->transform_.parent_ = &visual_->transform_;
-	hair_->model_ = &rect_;
-	hair_->texture_ = ADXImage::LoadADXImage("texture/Cub_E_hair.png");
+	hair_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
+	hair_->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/Cub_E_hair.png");
 	//体の一部として登録
 	bodyParts_.push_back(hair_);
 
@@ -46,8 +46,8 @@ void Cub_E::EnemyInitialize()
 	//尻尾
 	tail_ = ADXObject::Create();
 	tail_->transform_.parent_ = &tailRig_->transform_;
-	tail_->model_ = &rect_;
-	tail_->texture_ = ADXImage::LoadADXImage("texture/Cub_E_tail.png");
+	tail_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
+	tail_->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/Cub_E_tail.png");
 	//体の一部として登録
 	bodyParts_.push_back(tail_);
 }
@@ -127,7 +127,7 @@ void Cub_E::Attack()
 		GetGameObject()->transform_.localRotation_ = ADXQuaternion::Slerp(GetGameObject()->transform_.localRotation_, targetRot, aimSpeed);
 		GetGameObject()->transform_.localRotation_ = GetGameObject()->transform_.localRotation_.Normalized();
 
-		visual_->texture_ = preAttackTex_;
+		visual_->GetComponent<ADXModelRenderer>()->texture_ = preAttackTex_;
 	}
 	//飛び上がる
 	else if (actProgress_ > actKeyFrame_fall)
@@ -139,7 +139,7 @@ void Cub_E::Attack()
 
 		ADXVector3 finalTarget = cursor_ + ADXVector3{ 0,jumpHeight,0 };
 		rigidbody_->velocity_ = (finalTarget - GetGameObject()->transform_.localPosition_) * jumpSpeed;
-		visual_->texture_ = preAttackTex_;
+		visual_->GetComponent<ADXModelRenderer>()->texture_ = preAttackTex_;
 
 		if (prevActProgress_ > actKeyFrame_jump)
 		{
@@ -156,7 +156,7 @@ void Cub_E::Attack()
 				LiveEntity::SetAttackObj({ itr,this,attackPower });
 			}
 		}
-		visual_->texture_ = attackTex_;
+		visual_->GetComponent<ADXModelRenderer>()->texture_ = attackTex_;
 	}
 	else if (actProgress_ <= 0)
 	{

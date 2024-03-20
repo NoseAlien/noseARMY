@@ -19,9 +19,23 @@ public:
 public:
 	ADXMaterial material_{};
 
+private:
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffB1_ = nullptr;
+
 public:
 	//描画処理
 	void Rendering();
+
+private:
+	//初期化処理
+	void UniqueInitialize() final;
+
+	//子クラス毎の固有描画処理
+	virtual void UniqueRendering([[maybe_unused]] ID3D12Device* device, [[maybe_unused]] ID3D12GraphicsCommandList* cmdList) {};
+
+private:
+	// マテリアル用定数バッファ生成
+	static void InitializeConstBufferMaterial(ID3D12Resource** constBuff);
 
 protected:
 	// シェーダーの読み込みとコンパイル
@@ -32,8 +46,4 @@ protected:
 
 	// パイプラインステートを生成
 	static void CreateGraphicsPipelineState(D3D12_GRAPHICS_PIPELINE_STATE_DESC* pipelineDesc, ID3D12PipelineState** pipelineState);
-
-private:
-	//子クラス毎の固有描画処理
-	virtual void UniqueRendering([[maybe_unused]]ID3D12Device* device, [[maybe_unused]] ID3D12GraphicsCommandList* cmdList) {};
 };

@@ -2,6 +2,7 @@
 #include "SceneTransition.h"
 #include "ADXKeyConfig.h"
 #include "ADXTextRenderer.h"
+#include "ADXModelRenderer.h"
 
 void TitleScene::Initialize()
 {
@@ -25,29 +26,28 @@ void TitleScene::Initialize()
 
 	title_ = ADXObject::Create();
 	title_->transform_.UpdateMatrix();
-	title_->texture_ = titleImg_;
-	title_->model_ = &rect_;
-	title_->material_ = unlitMat_;
+	title_->GetComponent<ADXModelRenderer>()->texture_ = titleImg_;
+	title_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
+	title_->GetComponent<ADXModelRenderer>()->material_ = unlitMat_;
 	title_->renderLayer_ = 1;
 
 	key_ = ADXObject::Duplicate(*title_);
 	key_->transform_.localScale_ = { 0.5,0.5,0.5 };
-	key_->texture_ = keyImg_;
+	key_->GetComponent<ADXModelRenderer>()->texture_ = keyImg_;
 	key_->renderLayer_ = 1;
 
 	backGround_ = ADXObject::Create();
 	backGround_->transform_.rectTransform_ = true;
 	backGround_->transform_.UpdateMatrix();
-	backGround_->model_ = &rect_;
-	backGround_->texture_ = backGroundTex_;
+	backGround_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
+	backGround_->GetComponent<ADXModelRenderer>()->texture_ = backGroundTex_;
 	backGround_->renderLayer_ = -1;
 
 	copyright_ = ADXObject::Create();
 	copyright_->transform_.rectTransform_ = true;
-	copyright_->model_ = &rect_;
-	copyright_->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
+	copyright_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
+	copyright_->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
 	copyright_->renderLayer_ = 1;
-	copyright_->useDefaultDraw_ = false;
 	copyright_->AddComponent<ADXTextRenderer>();
 	copyright_->GetComponent<ADXTextRenderer>()->font_ = ADXTextRenderer::GetFont("texture/alphaNumber");
 	copyright_->GetComponent<ADXTextRenderer>()->fontAspect_ = 0.75f;
@@ -60,10 +60,9 @@ void TitleScene::Initialize()
 
 	version_ = ADXObject::Create();
 	version_->transform_.rectTransform_ = true;
-	version_->model_ = &rect_;
-	version_->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
+	version_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
+	version_->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
 	version_->renderLayer_ = 1;
-	version_->useDefaultDraw_ = false;
 	version_->AddComponent<ADXTextRenderer>();
 	version_->GetComponent<ADXTextRenderer>()->font_ = ADXTextRenderer::GetFont("texture/alphaNumber");
 	version_->GetComponent<ADXTextRenderer>()->fontAspect_ = 0.75f;

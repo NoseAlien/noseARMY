@@ -14,14 +14,14 @@ void Projectile::EnemyInitialize()
 {
 	rect_ = ADXModel::CreateRect();
 
-	GetGameObject()->material_.alpha_ = 0;
+	GetGameObject()->GetComponent<ADXModelRenderer>()->material_.alpha_ = 0;
 
-	visual_->model_ = nullptr;
+	visual_->GetComponent<ADXModelRenderer>()->model_ = nullptr;
 
 	//ビルボード用のモデルを作成
 	billBoard_ = ADXObject::Create();
 	billBoard_->transform_.parent_ = &visual_->transform_;
-	billBoard_->model_ = &rect_;
+	billBoard_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
 	//体の一部として登録
 	bodyParts_.push_back(billBoard_);
 }
@@ -45,7 +45,7 @@ void Projectile::EnemyUpdate()
 		}
 
 		texIndex_ = fmodf((texIndex_ + animProgressSpeed_), (float)texs_.size());
-		billBoard_->texture_ = texs_[(int)texIndex_];
+		billBoard_->GetComponent<ADXModelRenderer>()->texture_ = texs_[(int)texIndex_];
 
 		lifeTime_--;
 	}

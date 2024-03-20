@@ -13,7 +13,7 @@ const ADXVector3 keyUIPos = { 0,-0.5f,0 };
 
 void Goal::Initialize(const std::string& setTeam)
 {
-	GetGameObject()->texture_ = ADXImage::LoadADXImage("texture/goalField.png");
+	GetGameObject()->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/goalField.png");
 	GetGameObject()->sortingOrder_ = 1;
 
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
@@ -26,16 +26,16 @@ void Goal::Initialize(const std::string& setTeam)
 	rectModel_ = ADXModel::CreateRect();
 	boxModel_ = ADXModel::LoadADXModel("model/battleBox.obj");
 
-	GetGameObject()->model_ = &boxModel_;
+	GetGameObject()->GetComponent<ADXModelRenderer>()->model_ = &boxModel_;
 
 	clearUI_ = ADXObject::Create();
 	clearUI_->transform_.rectTransform_ = true;
-	clearUI_->model_ = &rectModel_;
-	clearUI_->texture_ = ADXImage::LoadADXImage("texture/clear.png");
+	clearUI_->GetComponent<ADXModelRenderer>()->model_ = &rectModel_;
+	clearUI_->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/clear.png");
 	clearUI_->renderLayer_ = 5;
 
 	keyUI_ = ADXObject::Duplicate(*clearUI_);
-	keyUI_->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
+	keyUI_->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
 }
 
 void Goal::UniqueUpdate()

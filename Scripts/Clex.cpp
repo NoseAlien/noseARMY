@@ -24,23 +24,23 @@ void Clex::EnemyInitialize()
 	deadTex_ = ADXImage::LoadADXImage("texture/tex_Clex_3.png");
 	attackTex_ = ADXImage::LoadADXImage("texture/tex_Clex_2.png");
 
-	visual_->model_ = &enemyModel_;
+	visual_->GetComponent<ADXModelRenderer>()->model_ = &enemyModel_;
 
 	//顔
 	face_ = ADXObject::Create();
 	face_->transform_.parent_ = &visual_->transform_;
 	face_->transform_.localPosition_ = facePos;
 	face_->transform_.localRotation_ = faceRot;
-	face_->model_ = &rect_;
-	face_->texture_ = ADXImage::LoadADXImage("texture/Clex_face.png");
+	face_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
+	face_->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/Clex_face.png");
 	//体の一部として登録
 	bodyParts_.push_back(face_);
 
 	//胴体
 	body_ = ADXObject::Create();
 	body_->transform_.parent_ = &visual_->transform_;
-	body_->model_ = &rect_;
-	body_->texture_ = ADXImage::LoadADXImage("texture/Clex_projectile.png");
+	body_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
+	body_->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/Clex_projectile.png");
 	//体の一部として登録
 	bodyParts_.push_back(body_);
 
@@ -51,8 +51,8 @@ void Clex::EnemyInitialize()
 	//ツノ
 	antenna_ = ADXObject::Create();
 	antenna_->transform_.parent_ = &antennaRig_->transform_;
-	antenna_->model_ = &rect_;
-	antenna_->texture_ = ADXImage::LoadADXImage("texture/Clex_antenna.png");
+	antenna_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
+	antenna_->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/Clex_antenna.png");
 	//体の一部として登録
 	bodyParts_.push_back(antenna_);
 }
@@ -123,7 +123,7 @@ void Clex::Idol()
 
 void Clex::Attack()
 {
-	visual_->texture_ = attackTex_;
+	visual_->GetComponent<ADXModelRenderer>()->texture_ = attackTex_;
 
 	ADXQuaternion targetRot = ADXQuaternion::EulerToQuaternion(
 		{ 0,(float)atan2(cursor_.x_ - GetGameObject()->transform_.localPosition_.x_,cursor_.z_ - GetGameObject()->transform_.localPosition_.z_),0 });

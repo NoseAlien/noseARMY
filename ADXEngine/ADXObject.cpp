@@ -2,7 +2,7 @@
 #include "ADXCommon.h"
 #include "ADXSceneManager.h"
 #include "ADXCamera.h"
-#include "ADXRenderer.h"
+#include "ADXModelRenderer.h"
 #include <d3dcompiler.h>
 #include <imgui.h>
 
@@ -11,7 +11,6 @@
 uint64_t ADXObject::S_descriptorHandleIncrementSize = 0;
 ID3D12GraphicsCommandList* ADXObject::S_cmdList = nullptr;
 Microsoft::WRL::ComPtr<ID3D12RootSignature> ADXObject::S_rootSignature;
-Microsoft::WRL::ComPtr<ID3D12PipelineState> ADXObject::S_pipelineState;
 
 uint64_t ADXObject::S_GpuStartHandle = 0;
 std::list<std::unique_ptr<ADXObject, ADXUtility::NPManager<ADXObject>>> ADXObject::S_objs{};
@@ -30,13 +29,7 @@ void ADXObject::StaticInitialize()
 void ADXObject::Initialize()
 {
 	*this = {};
-	CreateConstBuffer();
 	transform_.Initialize(this);
-}
-
-void ADXObject::CreateConstBuffer()
-{
-	InitializeConstBufferMaterial(&constBuffB1_);
 }
 
 void ADXObject::InitializeGraphicsPipeline()
@@ -88,49 +81,6 @@ void ADXObject::InitializeGraphicsPipeline()
 	rootSignatureDesc.NumStaticSamplers = 1;
 
 	CreateRootSignature(&rootSignatureDesc);
-
-	//頂点レイアウト
-	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
-		{//三次元座標
-			"POSITION",
-			0,
-			DXGI_FORMAT_R32G32B32_FLOAT,
-			0,
-			D3D12_APPEND_ALIGNED_ELEMENT,
-			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
-			0
-		},
-		{//法線ベクトル
-			"NORMAL",
-			0,
-			DXGI_FORMAT_R32G32B32_FLOAT,
-			0,
-			D3D12_APPEND_ALIGNED_ELEMENT,
-			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
-			0
-		},
-		{//uv座標
-			"TEXCOORD",
-			0,
-			DXGI_FORMAT_R32G32_FLOAT,
-			0,
-			D3D12_APPEND_ALIGNED_ELEMENT,
-			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
-			0
-		}
-	};
-
-	Microsoft::WRL::ComPtr<ID3DBlob> vsBlob; // 頂点シェーダオブジェクト
-	Microsoft::WRL::ComPtr<ID3DBlob> psBlob; // ピクセルシェーダオブジェクト
-
-	LoadShader(&vsBlob, L"Resources/shader/OBJVertexShader.hlsl", "vs_5_0");
-	LoadShader(&psBlob, L"Resources/shader/OBJPixelShader.hlsl", "ps_5_0");
-
-	//グラフィックスパイプラインの設定
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc = 
-		CreateDefaultPipelineDesc(vsBlob.Get(), psBlob.Get(), inputLayout, _countof(inputLayout));
-
-	CreateGraphicsPipelineState(&pipelineDesc, &S_pipelineState);
 }
 
 void ADXObject::InitializeConstBufferTransform(ID3D12Resource** constBuffTransform, ConstBufferDataTransform** constMapTransform)
@@ -171,38 +121,6 @@ void ADXObject::InitializeConstBufferTransform(ID3D12Resource** constBuffTransfo
 	}
 }
 
-void ADXObject::InitializeConstBufferMaterial(ID3D12Resource** constBuff)
-{
-	ID3D12Device* device = ADXCommon::GetInstance()->GetDevice();
-
-	if (device != nullptr)
-	{
-		HRESULT result = S_FALSE;
-
-		//ヒープ設定
-		D3D12_HEAP_PROPERTIES cbHeapProp{};
-		cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-		//リソース設定
-		D3D12_RESOURCE_DESC cbResourceDesc{};
-		cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-		cbResourceDesc.Width = (sizeof(ConstBufferDataB1) + 0xff) & ~0xff;//256バイトアラインメント
-		cbResourceDesc.Height = 1;
-		cbResourceDesc.DepthOrArraySize = 1;
-		cbResourceDesc.MipLevels = 1;
-		cbResourceDesc.SampleDesc.Count = 1;
-		cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-		//定数バッファの生成
-		result = device->CreateCommittedResource(
-			&cbHeapProp,
-			D3D12_HEAP_FLAG_NONE,
-			&cbResourceDesc,
-			D3D12_RESOURCE_STATE_GENERIC_READ,
-			nullptr,
-			IID_PPV_ARGS(constBuff));
-		assert(SUCCEEDED(result));
-	}
-}
-
 void ADXObject::SetAllCameraPtr(ADXCamera* camPtr)
 {
 	S_allCameraPtr.push_back(camPtr);
@@ -234,15 +152,11 @@ ADXObject* ADXObject::Duplicate(const ADXObject& prefab)
 	ret->transform_.modelPosition_ = prefab.transform_.modelPosition_;
 	ret->transform_.modelRotation_ = prefab.transform_.modelRotation_;
 	ret->transform_.modelScale_ = prefab.transform_.modelScale_;
-	ret->model_ = prefab.model_;
-	ret->material_ = prefab.material_;
-	ret->texture_ = prefab.texture_;
 	ret->renderLayer_ = prefab.renderLayer_;
 	ret->sortingOrder_ = prefab.sortingOrder_;
 	ret->alphaTex_ = prefab.alphaTex_;
 	ret->isVisible_ = prefab.isVisible_;
 	ret->isActive_ = prefab.isActive_;
-	ret->useDefaultDraw_ = prefab.useDefaultDraw_;
 	//ここで生成したオブジェクトを返す
 	return ret;
 }
@@ -429,12 +343,12 @@ void ADXObject::StaticDraw()
 				{
 					float nearestVertDepth = 999;
 
-					if (thisLayerObjPtr[j]->model_ != nullptr)
+					if (thisLayerObjPtr[j]->GetComponent<ADXModelRenderer>()->model_ != nullptr)
 					{
-						for (int32_t k = 0; k < thisLayerObjPtr[j]->model_->vertices_.size(); k++)
+						for (int32_t k = 0; k < thisLayerObjPtr[j]->GetComponent<ADXModelRenderer>()->model_->vertices_.size(); k++)
 						{
 							float VertDepth;
-							ADXVector3 vertLocalPos = { thisLayerObjPtr[j]->model_->vertices_[k].pos.x,thisLayerObjPtr[j]->model_->vertices_[k].pos.y,thisLayerObjPtr[j]->model_->vertices_[k].pos.z };
+							ADXVector3 vertLocalPos = { thisLayerObjPtr[j]->GetComponent<ADXModelRenderer>()->model_->vertices_[k].pos.x,thisLayerObjPtr[j]->GetComponent<ADXModelRenderer>()->model_->vertices_[k].pos.y,thisLayerObjPtr[j]->GetComponent<ADXModelRenderer>()->model_->vertices_[k].pos.z };
 							VertDepth = ADXMatrix4::Transform(ADXMatrix4::Transform(vertLocalPos, thisLayerObjPtr[j]->transform_.GetMatWorld()), ADXWorldTransform::GetViewProjection()).Length();
 
 							if (VertDepth <= nearestVertDepth)
@@ -471,38 +385,36 @@ void ADXObject::StaticDraw()
 void ADXObject::PreDraw()
 {
 	// PreDrawとPostDrawがペアで呼ばれていなければエラー
-	assert(ADXObject::S_cmdList == nullptr);
+	assert(S_cmdList == nullptr);
 
 	// コマンドリストをセット
-	ADXObject::S_cmdList = ADXCommon::GetInstance()->GetCommandList();
+	S_cmdList = ADXCommon::GetInstance()->GetCommandList();
 
-	// パイプラインステートの設定
-	ADXObject::S_cmdList->SetPipelineState(S_pipelineState.Get());
 	// ルートシグネチャの設定
-	ADXObject::S_cmdList->SetGraphicsRootSignature(S_rootSignature.Get());
+	S_cmdList->SetGraphicsRootSignature(S_rootSignature.Get());
 	// プリミティブ形状を設定
-	ADXObject::S_cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST); // 三角形リスト
+	S_cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST); // 三角形リスト
 
 
 	ID3D12DescriptorHeap* srvHeap = ADXImage::GetSrvHeap();
 
 	//SRVヒープの設定コマンド
 	ID3D12DescriptorHeap* ppHeaps[] = { srvHeap };
-	ADXObject::S_cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	S_cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	//SRVヒープの先頭ハンドルを取得(SRVを指しているはず)
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
 	//SRVヒープの先頭にあるSRVをルートパラメーター1番に設定
-	ADXObject::S_cmdList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+	S_cmdList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 	S_GpuStartHandle = srvGpuHandle.ptr;
 
 	// ルートシグネチャの設定コマンド
-	ADXObject::S_cmdList->SetGraphicsRootSignature(S_rootSignature.Get());
+	S_cmdList->SetGraphicsRootSignature(S_rootSignature.Get());
 }
 
 void ADXObject::PostDraw()
 {
 	// コマンドリストを解除
-	ADXObject::S_cmdList = nullptr;
+	S_cmdList = nullptr;
 	//ソート用配列を空にする
 	S_allCameraPtr.clear();
 }
@@ -521,101 +433,6 @@ void ADXObject::CreateRootSignature(D3D12_ROOT_SIGNATURE_DESC* rootSignatureDesc
 	result = ADXCommon::GetInstance()->GetDevice()->
 		CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
 		IID_PPV_ARGS(&S_rootSignature));
-	assert(SUCCEEDED(result));
-}
-
-void ADXObject::LoadShader(ID3DBlob** shaderBlob, LPCWSTR filePath, LPCSTR pEntryPoint)
-{
-	HRESULT result = S_FALSE;
-	Microsoft::WRL::ComPtr<ID3DBlob> errorBlob; // エラーオブジェクト
-
-	//シェーダーの読み込みとコンパイル
-	result = D3DCompileFromFile(
-		filePath,
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE,
-		"main", pEntryPoint,
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,
-		0,
-		shaderBlob, &errorBlob);
-
-	//上の読み込みでエラーが起きたら出力ウィンドウに内容を表示
-	if (FAILED(result))
-	{
-		//errorBlobからエラー内容をstring型にコピー
-		std::string error;
-		error.resize(errorBlob->GetBufferSize());
-
-		std::copy_n((char*)errorBlob->GetBufferPointer(),
-			errorBlob->GetBufferSize(),
-			error.begin());
-		error += "\n";
-
-		OutputDebugStringA(error.c_str());
-		assert(0);
-	}
-}
-
-D3D12_GRAPHICS_PIPELINE_STATE_DESC ADXObject::CreateDefaultPipelineDesc(ID3DBlob* vsBlob, ID3DBlob* psBlob, D3D12_INPUT_ELEMENT_DESC inputLayout[], uint32_t numElements)
-{
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC ret{};
-
-	//シェーダーの設定
-	ret.VS.pShaderBytecode = vsBlob->GetBufferPointer();
-	ret.VS.BytecodeLength = vsBlob->GetBufferSize();
-	ret.PS.pShaderBytecode = psBlob->GetBufferPointer();
-	ret.PS.BytecodeLength = psBlob->GetBufferSize();
-
-	//サンプルマスクの設定
-	ret.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
-
-	//ラスタライザの設定
-	ret.RasterizerState.CullMode = D3D12_CULL_MODE_BACK; //背面をカリング
-	ret.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
-	ret.RasterizerState.DepthClipEnable = true;
-
-	//デプスステンシルステートの設定
-	ret.DepthStencilState.DepthEnable = true; //深度テストを行う
-	ret.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL; //書き込み許可
-	ret.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL; //同じか小さければ合格
-	ret.DSVFormat = DXGI_FORMAT_D32_FLOAT;
-	ret.BlendState.AlphaToCoverageEnable = true; //アルファが低い所は深度を書き込まない
-
-	//レンダーターゲットのブレンド設定
-	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = ret.BlendState.RenderTarget[0];
-	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	blenddesc.BlendEnable = true;
-	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
-	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
-	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
-
-	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
-	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
-	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
-
-	//頂点レイアウトの設定
-	ret.InputLayout.pInputElementDescs = inputLayout;
-	ret.InputLayout.NumElements = numElements;
-
-	//図形の形状設定（三角形）
-	ret.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-
-	//その他の設定
-	ret.NumRenderTargets = 1;
-	ret.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-	ret.SampleDesc.Count = 1;
-	return ret;
-}
-
-void ADXObject::CreateGraphicsPipelineState(D3D12_GRAPHICS_PIPELINE_STATE_DESC* pipelineDesc, ID3D12PipelineState** pipelineState)
-{
-	HRESULT result = S_FALSE;
-
-	//パイプラインにルートシグネチャをセット
-	pipelineDesc->pRootSignature = S_rootSignature.Get();
-	// パイプラインステートの生成
-	result = ADXCommon::GetInstance()->GetDevice()->
-		CreateGraphicsPipelineState(pipelineDesc, IID_PPV_ARGS(pipelineState));
 	assert(SUCCEEDED(result));
 }
 
@@ -643,34 +460,6 @@ void ADXObject::Draw()
 	for (auto& itr : components_)
 	{
 		itr->OnWillRenderObject();
-	}
-
-	if (useDefaultDraw_ && model_ != nullptr)
-	{
-		HRESULT result = S_FALSE;
-		//定数バッファへデータ転送
-		ConstBufferDataB1* constMap1 = nullptr;
-		result = constBuffB1_->Map(0, nullptr, (void**)&constMap1);
-		constMap1->ambient = material_.ambient_;
-		constMap1->diffuse = material_.diffuse_;
-		constMap1->specular = material_.specular_;
-		constMap1->alpha = material_.alpha_;
-		constBuffB1_->Unmap(0, nullptr);
-
-		//定数バッファビュー(CBV)の設定コマンド
-		S_cmdList->SetGraphicsRootConstantBufferView(2, constBuffB1_->GetGPUVirtualAddress());
-
-		D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV;
-		gpuDescHandleSRV.ptr = S_GpuStartHandle + texture_;
-		S_cmdList->SetGraphicsRootDescriptorTable(1, gpuDescHandleSRV);
-
-		// パイプラインステートの設定コマンド
-		S_cmdList->SetPipelineState(S_pipelineState.Get());
-		
-		transform_.UpdateConstBuffer();
-
-		// 描画コマンド
-		model_->Draw(transform_.constBuffTransform_.Get());
 	}
 
 	//コンポーネントの描画処理

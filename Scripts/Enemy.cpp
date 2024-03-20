@@ -18,8 +18,8 @@ void Enemy::LiveEntitiesInitialize()
 
 	enemyModel_ = ADXModel::LoadADXModel("model/groundBlock.obj");
 
-	visual_->model_ = &enemyModel_;
-	visual_->texture_ = ADXImage::LoadADXImage("texture/battleField.png");
+	visual_->GetComponent<ADXModelRenderer>()->model_ = &enemyModel_;
+	visual_->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/battleField.png");
 
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
 	tempCol->isTrigger_ = true;
@@ -41,7 +41,7 @@ void Enemy::LiveEntitiesUpdate()
 
 	scale_ = 1;
 
-	visual_->texture_ = nutralTex_;
+	visual_->GetComponent<ADXModelRenderer>()->texture_ = nutralTex_;
 
 	EnemyUpdate();
 
@@ -64,17 +64,17 @@ void Enemy::DeadUpdate()
 		itr->pushBackPriority_ = -2;
 	}
 
-	visual_->texture_ = deadTex_;
+	visual_->GetComponent<ADXModelRenderer>()->texture_ = deadTex_;
 
 	//死骸を点滅させる、消えそうなときは早く点滅
 	if (clock() % maxCarcassAnimationFrame < carcassBlackOutFrame
 		|| (carcassLifeTime_ <= (int32_t)maxCarcassLifeTime / lowCarcassLifeTimeDivNum
 			&& clock() % maxCarcassAnimationFrame_lowLifeTime < carcassBlackOutFrame))
 	{
-		visual_->material_.ambient_ = darkColor;
+		visual_->GetComponent<ADXModelRenderer>()->material_.ambient_ = darkColor;
 		for (auto& itr : bodyParts_)
 		{
-			itr->material_.ambient_ = darkColor;
+			itr->GetComponent<ADXModelRenderer>()->material_.ambient_ = darkColor;
 		}
 	}
 

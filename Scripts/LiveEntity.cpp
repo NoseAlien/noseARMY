@@ -37,15 +37,15 @@ void LiveEntity::UniqueInitialize()
 	hpGaugeBG_ = ADXObject::Create();
 	hpGaugeBG_->transform_.parent_ = &GetGameObject()->transform_;
 	hpGaugeBG_->transform_.UpdateMatrix();
-	hpGaugeBG_->model_ = &rect_;
-	hpGaugeBG_->texture_ = gaugeTex_;
+	hpGaugeBG_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
+	hpGaugeBG_->GetComponent<ADXModelRenderer>()->texture_ = gaugeTex_;
 	hpGaugeBG_->renderLayer_ = 1;
 
 	hpGauge_ = ADXObject::Create();
 	hpGauge_->transform_.parent_ = &hpGaugeBG_->transform_;
 	hpGauge_->transform_.UpdateMatrix();
-	hpGauge_->model_ = &rect_;
-	hpGauge_->texture_ = gaugeTex_;
+	hpGauge_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
+	hpGauge_->GetComponent<ADXModelRenderer>()->texture_ = gaugeTex_;
 	hpGauge_->renderLayer_ = 2;
 
 	particle_ = GetGameObject()->AddComponent<ADXParticleSystem>();
@@ -80,17 +80,17 @@ void LiveEntity::UniqueUpdate()
 
 	hpAmount_ = min(max(0, hpAmount_), 1);
 
-	hpGaugeBG_->material_.ambient_ = { 0.1f,0.1f,0.1f };
-	hpGauge_->material_.ambient_ = { 0.1f,1,0.3f };
+	hpGaugeBG_->GetComponent<ADXModelRenderer>()->material_.ambient_ = { 0.1f,0.1f,0.1f };
+	hpGauge_->GetComponent<ADXModelRenderer>()->material_.ambient_ = { 0.1f,1,0.3f };
 
 	hpGaugeBG_->transform_.localPosition_ = { 0,-1.5f,0 };
 	hpGauge_->transform_.localPosition_ = { (1 - hpAmount_),0,0 };
 	hpGauge_->transform_.localScale_ = { hpAmount_,1,1 };
 
-	visual_->material_.ambient_ = { 1,1,1 };
+	visual_->GetComponent<ADXModelRenderer>()->material_.ambient_ = { 1,1,1 };
 	for (auto& itr : bodyParts_)
 	{
-		itr->material_.ambient_ = { 1,1,1 };
+		itr->GetComponent<ADXModelRenderer>()->material_.ambient_ = { 1,1,1 };
 	}
 
 	visual_->transform_.localPosition_ *= 0.8f;
@@ -168,10 +168,10 @@ void LiveEntity::UniqueUpdate()
 
 	if (IsLive() && ghostTime_ > 0 && ghostTime_ % 4 >= 2)
 	{
-		visual_->material_.ambient_ = { 1,0.2f,0.2f };
+		visual_->GetComponent<ADXModelRenderer>()->material_.ambient_ = { 1,0.2f,0.2f };
 		for (auto& itr : bodyParts_)
 		{
-			itr->material_.ambient_ = { 1,0.2f,0.2f };
+			itr->GetComponent<ADXModelRenderer>()->material_.ambient_ = { 1,0.2f,0.2f };
 		}
 	}
 
