@@ -26,27 +26,27 @@ void TitleScene::Initialize()
 
 	title_ = ADXObject::Create();
 	title_->transform_.UpdateMatrix();
-	ADXModelRenderer* tenpRenderer = title_->AddComponent<ADXModelRenderer>();
-	tenpRenderer->texture_ = titleImg_;
-	tenpRenderer->model_ = &rect_;
-	tenpRenderer->material_ = unlitMat_;
+	ADXModelRenderer* tempRenderer = title_->AddComponent<ADXModelRenderer>();
+	tempRenderer->texture_ = titleImg_;
+	tempRenderer->model_ = &rect_;
+	tempRenderer->material_ = unlitMat_;
 	title_->renderLayer_ = 1;
 
 	key_ = ADXObject::Duplicate(*title_);
 	key_->transform_.localScale_ = { 0.5,0.5,0.5 };
-	tenpRenderer = key_->AddComponent<ADXModelRenderer>();
-	tenpRenderer->texture_ = keyImg_;
-	tenpRenderer->model_ = &rect_;
-	tenpRenderer->material_ = unlitMat_;
+	tempRenderer = key_->AddComponent<ADXModelRenderer>();
+	tempRenderer->texture_ = keyImg_;
+	tempRenderer->model_ = &rect_;
+	tempRenderer->material_ = unlitMat_;
 	key_->renderLayer_ = 1;
 
 	backGround_ = ADXObject::Create();
 	backGround_->transform_.rectTransform_ = true;
 	backGround_->transform_.UpdateMatrix();
-	tenpRenderer = backGround_->AddComponent<ADXModelRenderer>();
-	tenpRenderer->texture_ = backGroundTex_;
-	tenpRenderer->model_ = &rect_;
-	tenpRenderer->material_ = unlitMat_;
+	tempRenderer = backGround_->AddComponent<ADXModelRenderer>();
+	tempRenderer->texture_ = backGroundTex_;
+	tempRenderer->model_ = &rect_;
+	tempRenderer->material_ = unlitMat_;
 	backGround_->renderLayer_ = -1;
 
 	copyright_ = ADXObject::Create();

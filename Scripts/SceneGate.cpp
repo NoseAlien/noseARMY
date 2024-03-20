@@ -9,8 +9,8 @@ std::string SceneGate::S_nextStageName = "";
 
 void SceneGate::Initialize(const std::string& team, const std::string& stageName)
 {
-	ADXModelRenderer* tenpRenderer = GetGameObject()->AddComponent<ADXModelRenderer>();
-	tenpRenderer->texture_ = ADXImage::LoadADXImage("texture/goalField.png");
+	ADXModelRenderer* tempRenderer = GetGameObject()->AddComponent<ADXModelRenderer>();
+	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/goalField.png");
 	GetGameObject()->sortingOrder_ = 1;
 
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
@@ -23,21 +23,21 @@ void SceneGate::Initialize(const std::string& team, const std::string& stageName
 	rectModel_ = ADXModel::CreateRect();
 	boxModel_ = ADXModel::LoadADXModel("model/battleBox.obj");
 
-	tenpRenderer->model_ = &boxModel_;
+	tempRenderer->model_ = &boxModel_;
 
 	keyUI_ = ADXObject::Create();
 	keyUI_->transform_.rectTransform_ = true;
-	tenpRenderer = keyUI_->AddComponent<ADXModelRenderer>();
-	tenpRenderer->model_ = &rectModel_;
-	tenpRenderer->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
+	tempRenderer = keyUI_->AddComponent<ADXModelRenderer>();
+	tempRenderer->model_ = &rectModel_;
+	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
 	keyUI_->renderLayer_ = 5;
 	keyUI_->transform_.localScale_ = { 0,0,0 };
 
 	stageNameUI_ = ADXObject::Create();
 	stageNameUI_->transform_.rectTransform_ = true;
-	tenpRenderer = stageNameUI_->AddComponent<ADXModelRenderer>();
-	tenpRenderer->model_ = &rectModel_;
-	tenpRenderer->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
+	tempRenderer = stageNameUI_->AddComponent<ADXModelRenderer>();
+	tempRenderer->model_ = &rectModel_;
+	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
 	stageNameUI_->renderLayer_ = 5;
 	stageNameUI_->AddComponent<ADXTextRenderer>();
 	stageNameUI_->GetComponent<ADXTextRenderer>()->font_ = ADXTextRenderer::GetFont("texture/alphaNumber");

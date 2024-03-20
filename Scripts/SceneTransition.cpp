@@ -9,9 +9,9 @@ ADXModel SceneTransition::S_rect{};
 void SceneTransition::UniqueInitialize()
 {
 	GetGameObject()->transform_.rectTransform_ = true;
-	ADXModelRenderer* tenpRenderer = GetGameObject()->AddComponent<ADXModelRenderer>();
-	tenpRenderer->texture_ = ADXImage::LoadADXImage("texture/apEGnoSE.png");
-	tenpRenderer->model_ = &S_rect;
+	ADXModelRenderer* tempRenderer = GetGameObject()->AddComponent<ADXModelRenderer>();
+	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/apEGnoSE.png");
+	tempRenderer->model_ = &S_rect;
 	GetGameObject()->renderLayer_ = 10;
 }
 

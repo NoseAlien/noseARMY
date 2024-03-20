@@ -38,17 +38,17 @@ void LiveEntity::UniqueInitialize()
 	hpGaugeBG_ = ADXObject::Create();
 	hpGaugeBG_->transform_.parent_ = &GetGameObject()->transform_;
 	hpGaugeBG_->transform_.UpdateMatrix();
-	ADXModelRenderer* tenpRenderer = hpGaugeBG_->AddComponent<ADXModelRenderer>();
-	tenpRenderer->model_ = &rect_;
-	tenpRenderer->texture_ = gaugeTex_;
+	ADXModelRenderer* tempRenderer = hpGaugeBG_->AddComponent<ADXModelRenderer>();
+	tempRenderer->model_ = &rect_;
+	tempRenderer->texture_ = gaugeTex_;
 	hpGaugeBG_->renderLayer_ = 1;
 
 	hpGauge_ = ADXObject::Create();
 	hpGauge_->transform_.parent_ = &hpGaugeBG_->transform_;
 	hpGauge_->transform_.UpdateMatrix();
-	tenpRenderer = hpGauge_->AddComponent<ADXModelRenderer>();
-	tenpRenderer->model_ = &rect_;
-	tenpRenderer->texture_ = gaugeTex_;
+	tempRenderer = hpGauge_->AddComponent<ADXModelRenderer>();
+	tempRenderer->model_ = &rect_;
+	tempRenderer->texture_ = gaugeTex_;
 	hpGauge_->renderLayer_ = 2;
 
 	particle_ = GetGameObject()->AddComponent<ADXParticleSystem>();
