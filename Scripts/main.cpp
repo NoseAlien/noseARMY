@@ -6,6 +6,7 @@
 #include "ADXKeyBoardInput.h"
 #include "ADXGamePadInput.h"
 #include "ADXKeyConfig.h"
+#include "ADXModelRenderer.h"
 #include "ADXTextRenderer.h"
 #include "ADXScene.h"
 #include "ADXAudioSource.h"
@@ -40,7 +41,8 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 		ADXImage::StaticInitialize();
 		ADXObject::StaticInitialize();
 		SceneTransition::StaticInitialize();
-		ShadowRenderer::UniqueInitialize();
+		ShadowRenderer::StaticInitialize();
+		ADXModelRenderer::StaticInitialize();
 
 		ADXKeyConfig config_;
 		config_.AddConfigCell({ "jump", {DIK_SPACE}, {ADXGamePadInput::B,ADXGamePadInput::X} });

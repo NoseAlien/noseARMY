@@ -54,20 +54,32 @@ void ADXScene::Initialize()
 	logo_A_ = ADXObject::Duplicate(*title_);
 	logo_A_->transform_.localPosition_ = logoTextPos;
 	logo_A_->transform_.localScale_ = { 1,logoTextAspect,1 };
-	logo_A_->AddComponent<ADXModelRenderer>();
-	logo_A_->GetComponent<ADXModelRenderer>()->texture_ = logoImg_A_;
+	tenpRenderer = logo_A_->AddComponent<ADXModelRenderer>();
+	tenpRenderer->texture_ = logoImg_A_;
+	tenpRenderer->model_ = &rect_;
+	tenpRenderer->material_ = unlitMat_;
+	tenpRenderer->material_.alpha_ = 0;
 
 	logo_D_ = ADXObject::Duplicate(*logo_A_);
-	logo_D_->AddComponent<ADXModelRenderer>();
-	logo_D_->GetComponent<ADXModelRenderer>()->texture_ = logoImg_D_;
+	tenpRenderer = logo_D_->AddComponent<ADXModelRenderer>();
+	tenpRenderer->texture_ = logoImg_D_;
+	tenpRenderer->model_ = &rect_;
+	tenpRenderer->material_ = unlitMat_;
+	tenpRenderer->material_.alpha_ = 0;
 
 	logo_X_ = ADXObject::Duplicate(*logo_A_);
-	logo_X_->AddComponent<ADXModelRenderer>();
-	logo_X_->GetComponent<ADXModelRenderer>()->texture_ = logoImg_X_;
+	tenpRenderer = logo_X_->AddComponent<ADXModelRenderer>();
+	tenpRenderer->texture_ = logoImg_X_;
+	tenpRenderer->model_ = &rect_;
+	tenpRenderer->material_ = unlitMat_;
+	tenpRenderer->material_.alpha_ = 0;
 
 	logo_Engine_ = ADXObject::Duplicate(*logo_A_);
-	logo_Engine_->AddComponent<ADXModelRenderer>();
-	logo_Engine_->GetComponent<ADXModelRenderer>()->texture_ = logoImg_Engine_;
+	tenpRenderer = logo_Engine_->AddComponent<ADXModelRenderer>();
+	tenpRenderer->texture_ = logoImg_Engine_;
+	tenpRenderer->model_ = &rect_;
+	tenpRenderer->material_ = unlitMat_;
+	tenpRenderer->material_.alpha_ = 0;
 
 
 	startTime_ = clock();

@@ -22,5 +22,5 @@ private:
 
 public:
 	//クラスを初期化
-	static void UniqueInitialize();
+	static void StaticInitialize();
 };

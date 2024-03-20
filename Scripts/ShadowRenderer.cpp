@@ -20,7 +20,7 @@ void ShadowRenderer::UniqueRendering([[maybe_unused]] ID3D12Device* device, ID3D
 	}
 }
 
-void ShadowRenderer::UniqueInitialize()
+void ShadowRenderer::StaticInitialize()
 {
 	//頂点レイアウト
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {

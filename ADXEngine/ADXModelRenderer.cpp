@@ -8,21 +8,21 @@ void ADXModelRenderer::UniqueRendering([[maybe_unused]] ID3D12Device* device, ID
 {
 	if (model_ != nullptr)
 	{
-		D3D12_GPU_DESCRIPTOR_HANDLE S_gpuDescHandleSRV;
-		S_gpuDescHandleSRV.ptr = ADXObject::GetGpuStartHandle() + texture_;
-		cmdList->SetGraphicsRootDescriptorTable(1, S_gpuDescHandleSRV);
-
-		GetGameObject()->transform_.UpdateConstBuffer();
+		D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV;
+		gpuDescHandleSRV.ptr = ADXObject::GetGpuStartHandle() + texture_;
+		cmdList->SetGraphicsRootDescriptorTable(1, gpuDescHandleSRV);
 
 		// パイプラインステートの設定コマンド
 		cmdList->SetPipelineState(S_pipelineState.Get());
+
+		GetGameObject()->transform_.UpdateConstBuffer();
 
 		// 描画コマンド
 		model_->Draw(GetGameObject()->transform_.constBuffTransform_.Get());
 	}
 }
 
-void ADXModelRenderer::UniqueInitialize()
+void ADXModelRenderer::StaticInitialize()
 {
 	//頂点レイアウト
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
