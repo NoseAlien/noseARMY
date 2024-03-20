@@ -403,8 +403,6 @@ void ADXObject::StaticDraw()
 	{
 		std::vector<ADXObject*> thisLayerObjPtr;
 
-		// パイプラインステートの設定コマンド
-		S_cmdList->SetPipelineState(S_pipelineState.Get());
 		//全ピクセルの深度バッファ値を最奥の1.0にする
 		S_cmdList->ClearDepthStencilView(*ADXCommon::GetInstance()->GetDsvHandle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
@@ -636,16 +634,16 @@ std::list<ADXObject*> ADXObject::GetObjs()
 
 void ADXObject::Draw()
 {
+	// nullptrチェック
+	[[maybe_unused]] ID3D12Device* device = ADXCommon::GetInstance()->GetDevice();
+	assert(device);
+	assert(S_cmdList);
+
 	//コンポーネントの描画前処理
 	for (auto& itr : components_)
 	{
 		itr->OnWillRenderObject();
 	}
-
-	// nullptrチェック
-	[[maybe_unused]]ID3D12Device* device = ADXCommon::GetInstance()->GetDevice();
-	assert(device);
-	assert(S_cmdList);
 
 	if (useDefaultDraw_ && model_ != nullptr)
 	{
@@ -665,6 +663,9 @@ void ADXObject::Draw()
 		D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV;
 		gpuDescHandleSRV.ptr = S_GpuStartHandle + texture_;
 		S_cmdList->SetGraphicsRootDescriptorTable(1, gpuDescHandleSRV);
+
+		// パイプラインステートの設定コマンド
+		S_cmdList->SetPipelineState(S_pipelineState.Get());
 		
 		transform_.UpdateConstBuffer();
 
