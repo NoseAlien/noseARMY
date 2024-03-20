@@ -1,8 +1,8 @@
-﻿#include "ADXModelRenderer.h"
+#include "ADXModelRenderer.h"
 #include "ADXObject.h"
 #include "ADXCommon.h"
 
-Microsoft::WRL::ComPtr<ID3D12PipelineState> ADXModelRenderer::S_pipelineState;
+Microsoft::WRL::ComPtr<ID3D12PipelineState> ADXModelRenderer::S_pipelineState = nullptr;
 
 void ADXModelRenderer::UniqueRendering([[maybe_unused]] ID3D12Device* device, ID3D12GraphicsCommandList* cmdList)
 {

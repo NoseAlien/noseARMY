@@ -1,7 +1,8 @@
-﻿#include "ADXTextRenderer.h"
+#include "ADXTextRenderer.h"
 #include "ADXObject.h"
 
-std::vector<ADXTextRenderer::font> ADXTextRenderer::fonts_{};
+Microsoft::WRL::ComPtr<ID3D12PipelineState> ADXTextRenderer::S_pipelineState = nullptr;
+std::vector<ADXTextRenderer::font> ADXTextRenderer::S_fonts{};
 
 uint32_t ADXTextRenderer::GetFontTex(const char& character)
 {
@@ -21,6 +22,10 @@ uint32_t ADXTextRenderer::GetFontTex(const char& character)
 
 void ADXTextRenderer::UniqueRendering([[maybe_unused]] ID3D12Device* device, ID3D12GraphicsCommandList* cmdList)
 {
+
+	// パイプラインステートの設定コマンド
+	cmdList->SetPipelineState(S_pipelineState.Get());
+
 	GetGameObject()->transform_.UpdateConstBuffer();
 
 	float fontWidth = fontSize_ * fontAspect_;
@@ -78,6 +83,52 @@ void ADXTextRenderer::UniqueRendering([[maybe_unused]] ID3D12Device* device, ID3
 	}
 }
 
+void ADXTextRenderer::StaticInitialize()
+{
+	//頂点レイアウト
+	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
+		{//三次元座標
+			"POSITION",
+			0,
+			DXGI_FORMAT_R32G32B32_FLOAT,
+			0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
+			0
+		},
+		{//法線ベクトル
+			"NORMAL",
+			0,
+			DXGI_FORMAT_R32G32B32_FLOAT,
+			0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
+			0
+		},
+		{//uv座標
+			"TEXCOORD",
+			0,
+			DXGI_FORMAT_R32G32_FLOAT,
+			0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
+			0
+		}
+	};
+
+	Microsoft::WRL::ComPtr<ID3DBlob> vsBlob; // 頂点シェーダオブジェクト
+	Microsoft::WRL::ComPtr<ID3DBlob> psBlob; // ピクセルシェーダオブジェクト
+
+	LoadShader(&vsBlob, L"Resources/shader/OBJVertexShader.hlsl", "vs_5_0");
+	LoadShader(&psBlob, L"Resources/shader/OBJPixelShader.hlsl", "ps_5_0");
+
+	//グラフィックスパイプラインの設定
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc =
+		CreateDefaultPipelineDesc(vsBlob.Get(), psBlob.Get(), inputLayout, _countof(inputLayout));
+
+	CreateGraphicsPipelineState(&pipelineDesc, &S_pipelineState);
+}
+
 void ADXTextRenderer::AddFont(const std::string letters, const std::string& folderPath, const std::string& largeLetterFolderPath,
 	const std::vector<charAndString>& translateFileNameDatas)
 {
@@ -85,7 +136,7 @@ void ADXTextRenderer::AddFont(const std::string letters, const std::string& fold
 
 	//既に設定されている場合は上書き、そうでなければ新規作成
 	bool hitted = false;
-	for (auto& itr : fonts_)
+	for (auto& itr : S_fonts)
 	{
 		if (itr.name == folderPath)
 		{
@@ -96,8 +147,8 @@ void ADXTextRenderer::AddFont(const std::string letters, const std::string& fold
 	}
 	if (!hitted)
 	{
-		fonts_.push_back(font());
-		targetFont = &fonts_.back();
+		S_fonts.push_back(font());
+		targetFont = &S_fonts.back();
 	}
 	
 	//一文字ずつ生成
@@ -130,7 +181,7 @@ void ADXTextRenderer::AddFont(const std::string letters, const std::string& fold
 ADXTextRenderer::font* ADXTextRenderer::GetFont(const std::string fontName)
 {
 	//同じ名前のフォントを検索し、ヒットしたらそれを返す
-	for (auto& itr : fonts_)
+	for (auto& itr : S_fonts)
 	{
 		if (itr.name == fontName)
 		{

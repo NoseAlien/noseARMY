@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ADXRenderer.h"
 #include "ADXMaterial.h"
@@ -9,7 +9,6 @@ class ADXModelRenderer : public ADXRenderer
 {
 public:
 	ADXModel* model_ = nullptr;
-	ADXMaterial material_{};
 	uint32_t texture_ = 0;
 
 private:

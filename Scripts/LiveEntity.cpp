@@ -1,4 +1,4 @@
-﻿#include "LiveEntity.h"
+#include "LiveEntity.h"
 #include "ADXCamera.h"
 #include <time.h>
 
@@ -32,20 +32,23 @@ void LiveEntity::UniqueInitialize()
 	defeatSE_->useDistanceFade_ = true;
 
 	visual_ = ADXObject::Create();
+	visual_->AddComponent<ADXModelRenderer>();
 	visual_->transform_.parent_ = &GetGameObject()->transform_;
 
 	hpGaugeBG_ = ADXObject::Create();
 	hpGaugeBG_->transform_.parent_ = &GetGameObject()->transform_;
 	hpGaugeBG_->transform_.UpdateMatrix();
-	hpGaugeBG_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
-	hpGaugeBG_->GetComponent<ADXModelRenderer>()->texture_ = gaugeTex_;
+	ADXModelRenderer* tenpRenderer = hpGaugeBG_->AddComponent<ADXModelRenderer>();
+	tenpRenderer->model_ = &rect_;
+	tenpRenderer->texture_ = gaugeTex_;
 	hpGaugeBG_->renderLayer_ = 1;
 
 	hpGauge_ = ADXObject::Create();
 	hpGauge_->transform_.parent_ = &hpGaugeBG_->transform_;
 	hpGauge_->transform_.UpdateMatrix();
-	hpGauge_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
-	hpGauge_->GetComponent<ADXModelRenderer>()->texture_ = gaugeTex_;
+	tenpRenderer = hpGauge_->AddComponent<ADXModelRenderer>();
+	tenpRenderer->model_ = &rect_;
+	tenpRenderer->texture_ = gaugeTex_;
 	hpGauge_->renderLayer_ = 2;
 
 	particle_ = GetGameObject()->AddComponent<ADXParticleSystem>();

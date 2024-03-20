@@ -1,4 +1,4 @@
-﻿#define _CRTDBG_MAP_ALLOC
+#define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 #include <cstdlib>
 #include "ADXCommon.h"
@@ -41,8 +41,9 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 		ADXImage::StaticInitialize();
 		ADXObject::StaticInitialize();
 		SceneTransition::StaticInitialize();
-		ShadowRenderer::StaticInitialize();
 		ADXModelRenderer::StaticInitialize();
+		ADXTextRenderer::StaticInitialize();
+		ShadowRenderer::StaticInitialize();
 
 		ADXKeyConfig config_;
 		config_.AddConfigCell({ "jump", {DIK_SPACE}, {ADXGamePadInput::B,ADXGamePadInput::X} });

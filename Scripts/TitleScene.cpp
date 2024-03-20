@@ -1,4 +1,4 @@
-﻿#include "TitleScene.h"
+#include "TitleScene.h"
 #include "SceneTransition.h"
 #include "ADXKeyConfig.h"
 #include "ADXTextRenderer.h"
@@ -26,27 +26,31 @@ void TitleScene::Initialize()
 
 	title_ = ADXObject::Create();
 	title_->transform_.UpdateMatrix();
-	title_->GetComponent<ADXModelRenderer>()->texture_ = titleImg_;
-	title_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
-	title_->GetComponent<ADXModelRenderer>()->material_ = unlitMat_;
+	ADXModelRenderer* tenpRenderer = title_->AddComponent<ADXModelRenderer>();
+	tenpRenderer->texture_ = titleImg_;
+	tenpRenderer->model_ = &rect_;
+	tenpRenderer->material_ = unlitMat_;
 	title_->renderLayer_ = 1;
 
 	key_ = ADXObject::Duplicate(*title_);
 	key_->transform_.localScale_ = { 0.5,0.5,0.5 };
-	key_->GetComponent<ADXModelRenderer>()->texture_ = keyImg_;
+	tenpRenderer = key_->AddComponent<ADXModelRenderer>();
+	tenpRenderer->texture_ = keyImg_;
+	tenpRenderer->model_ = &rect_;
+	tenpRenderer->material_ = unlitMat_;
 	key_->renderLayer_ = 1;
 
 	backGround_ = ADXObject::Create();
 	backGround_->transform_.rectTransform_ = true;
 	backGround_->transform_.UpdateMatrix();
-	backGround_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
-	backGround_->GetComponent<ADXModelRenderer>()->texture_ = backGroundTex_;
+	tenpRenderer = backGround_->AddComponent<ADXModelRenderer>();
+	tenpRenderer->texture_ = backGroundTex_;
+	tenpRenderer->model_ = &rect_;
+	tenpRenderer->material_ = unlitMat_;
 	backGround_->renderLayer_ = -1;
 
 	copyright_ = ADXObject::Create();
 	copyright_->transform_.rectTransform_ = true;
-	copyright_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
-	copyright_->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
 	copyright_->renderLayer_ = 1;
 	copyright_->AddComponent<ADXTextRenderer>();
 	copyright_->GetComponent<ADXTextRenderer>()->font_ = ADXTextRenderer::GetFont("texture/alphaNumber");
@@ -60,8 +64,6 @@ void TitleScene::Initialize()
 
 	version_ = ADXObject::Create();
 	version_->transform_.rectTransform_ = true;
-	version_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
-	version_->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
 	version_->renderLayer_ = 1;
 	version_->AddComponent<ADXTextRenderer>();
 	version_->GetComponent<ADXTextRenderer>()->font_ = ADXTextRenderer::GetFont("texture/alphaNumber");

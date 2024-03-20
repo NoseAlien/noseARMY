@@ -1,4 +1,4 @@
-﻿#include "StageSelectScene.h"
+#include "StageSelectScene.h"
 #include "SceneTransition.h"
 #include "ADXModelRenderer.h"
 #include "ADXKeyConfig.h"
@@ -27,14 +27,16 @@ void StageSelectScene::Initialize()
 	player_->SetTeam("player");
 
 	floors_.push_back(ADXObject::Create({ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 2,2,2 }));
-	floors_.back()->GetComponent<ADXModelRenderer>()->model_ = &ground_;
-	floors_.back()->GetComponent<ADXModelRenderer>()->texture_ = groundImg_;
+	ADXModelRenderer* tenpRenderer = floors_.back()->AddComponent<ADXModelRenderer>();
+	tenpRenderer->model_ = &ground_;
+	tenpRenderer->texture_ = groundImg_;
 	ADXCollider* tempCol = floors_.back()->AddComponent<ADXCollider>();
 	tempCol->colType_ = ADXCollider::box;
 
 	floors_.push_back(ADXObject::Create({ 0,-2,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 50,1,50 }));
-	floors_.back()->GetComponent<ADXModelRenderer>()->model_ = &ground_;
-	floors_.back()->GetComponent<ADXModelRenderer>()->texture_ = groundImg_;
+	tenpRenderer = floors_.back()->AddComponent<ADXModelRenderer>();
+	tenpRenderer->model_ = &ground_;
+	tenpRenderer->texture_ = groundImg_;
 	tempCol = floors_.back()->AddComponent<ADXCollider>();
 	tempCol->colType_ = ADXCollider::box;
 
@@ -75,15 +77,17 @@ void StageSelectScene::Initialize()
 	backGround_ = ADXObject::Create();
 	backGround_->transform_.rectTransform_ = true;
 	backGround_->transform_.UpdateMatrix();
-	backGround_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
-	backGround_->GetComponent<ADXModelRenderer>()->texture_ = backGroundTex_;
+	tenpRenderer = backGround_->AddComponent<ADXModelRenderer>();
+	tenpRenderer->model_ = &rect_;
+	tenpRenderer->texture_ = backGroundTex_;
 	backGround_->renderLayer_ = -1;
 
 	key_ = ADXObject::Duplicate(*backGround_);
 	key_->transform_.localPosition_ = { -0.65f,0.85f,0 };
 	key_->transform_.localScale_ = { 0.3f,0.45f,1 };
 	key_->transform_.UpdateMatrix();
-	key_->GetComponent<ADXModelRenderer>()->texture_ = keyImg_;
+	tenpRenderer = key_->AddComponent<ADXModelRenderer>();
+	tenpRenderer->texture_ = keyImg_;
 	key_->renderLayer_ = 1;
 }
 

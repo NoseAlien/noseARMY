@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <string>
 #include <vector>
@@ -62,10 +62,16 @@ private:
 	void UniqueRendering(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList);
 
 private:
+	// パイプラインステートオブジェクト
+	static Microsoft::WRL::ComPtr<ID3D12PipelineState> S_pipelineState;
+
 	//フォント
-	static std::vector<font> fonts_;
+	static std::vector<font> S_fonts;
 
 public:
+	//クラスを初期化
+	static void StaticInitialize();
+
 	//フォントを追加
 	static void AddFont(const std::string letters, const std::string& folderPath, const std::string& largeLetterFolderPath,
 		const std::vector<charAndString>& translateFileNameDatas);

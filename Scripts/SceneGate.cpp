@@ -1,4 +1,4 @@
-﻿#include "SceneGate.h"
+#include "SceneGate.h"
 #include "LiveEntity.h"
 #include "SceneTransition.h"
 #include "ADXCollider.h"
@@ -9,7 +9,8 @@ std::string SceneGate::S_nextStageName = "";
 
 void SceneGate::Initialize(const std::string& team, const std::string& stageName)
 {
-	GetGameObject()->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/goalField.png");
+	ADXModelRenderer* tenpRenderer = GetGameObject()->AddComponent<ADXModelRenderer>();
+	tenpRenderer->texture_ = ADXImage::LoadADXImage("texture/goalField.png");
 	GetGameObject()->sortingOrder_ = 1;
 
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
@@ -22,19 +23,21 @@ void SceneGate::Initialize(const std::string& team, const std::string& stageName
 	rectModel_ = ADXModel::CreateRect();
 	boxModel_ = ADXModel::LoadADXModel("model/battleBox.obj");
 
-	GetGameObject()->GetComponent<ADXModelRenderer>()->model_ = &boxModel_;
+	tenpRenderer->model_ = &boxModel_;
 
 	keyUI_ = ADXObject::Create();
 	keyUI_->transform_.rectTransform_ = true;
-	keyUI_->GetComponent<ADXModelRenderer>()->model_ = &rectModel_;
-	keyUI_->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
+	tenpRenderer = keyUI_->AddComponent<ADXModelRenderer>();
+	tenpRenderer->model_ = &rectModel_;
+	tenpRenderer->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
 	keyUI_->renderLayer_ = 5;
 	keyUI_->transform_.localScale_ = { 0,0,0 };
 
 	stageNameUI_ = ADXObject::Create();
 	stageNameUI_->transform_.rectTransform_ = true;
-	stageNameUI_->GetComponent<ADXModelRenderer>()->model_ = &rectModel_;
-	stageNameUI_->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
+	tenpRenderer = stageNameUI_->AddComponent<ADXModelRenderer>();
+	tenpRenderer->model_ = &rectModel_;
+	tenpRenderer->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
 	stageNameUI_->renderLayer_ = 5;
 	stageNameUI_->AddComponent<ADXTextRenderer>();
 	stageNameUI_->GetComponent<ADXTextRenderer>()->font_ = ADXTextRenderer::GetFont("texture/alphaNumber");
