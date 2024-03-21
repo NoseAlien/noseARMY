@@ -1,4 +1,4 @@
-#define _CRTDBG_MAP_ALLOC
+﻿#define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 #include <cstdlib>
 #include "ADXCommon.h"

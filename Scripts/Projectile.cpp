@@ -14,14 +14,13 @@ void Projectile::EnemyInitialize()
 {
 	rect_ = ADXModel::CreateRect();
 
-	GetGameObject()->GetComponent<ADXModelRenderer>()->material_.alpha_ = 0;
-
 	visual_->GetComponent<ADXModelRenderer>()->model_ = nullptr;
 
 	//ビルボード用のモデルを作成
 	billBoard_ = ADXObject::Create();
 	billBoard_->transform_.parent_ = &visual_->transform_;
-	billBoard_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
+	ADXModelRenderer* tempRenderer = billBoard_->AddComponent<ADXModelRenderer>();
+	tempRenderer->model_ = &rect_;
 	//体の一部として登録
 	bodyParts_.push_back(billBoard_);
 }

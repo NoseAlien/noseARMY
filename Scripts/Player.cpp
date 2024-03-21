@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 #include "SceneTransition.h"
 #include "ADXUtility.h"
 #include "ADXKeyConfig.h"
@@ -193,7 +193,7 @@ void Player::LiveEntitiesInitialize()
 	ADXModelRenderer* tempRenderer = nose_->AddComponent<ADXModelRenderer>();
 	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/apEGnoSE.png");
-	tempRenderer->material_ = GetGameObject()->GetComponent<ADXModelRenderer>()->material_;
+	tempRenderer->material_ = visual_->GetComponent<ADXModelRenderer>()->material_;
 	bodyParts_.push_back(nose_);
 
 	ADXObject* temp = ADXObject::Create();
@@ -210,7 +210,7 @@ void Player::LiveEntitiesInitialize()
 	tempRenderer = tutorialWindow_->AddComponent<ADXModelRenderer>();
 	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/WhiteDot.png");
-	tempRenderer->material_ = GetGameObject()->GetComponent<ADXModelRenderer>()->material_;
+	tempRenderer->material_ = visual_->GetComponent<ADXModelRenderer>()->material_;
 	tutorialWindow_->renderLayer_ = 1;
 
 	outOfField_ = ADXObject::Create();
@@ -219,7 +219,7 @@ void Player::LiveEntitiesInitialize()
 	tempRenderer = outOfField_->AddComponent<ADXModelRenderer>();
 	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/outOfField.png");
-	tempRenderer->material_ = GetGameObject()->GetComponent<ADXModelRenderer>()->material_;
+	tempRenderer->material_ = visual_->GetComponent<ADXModelRenderer>()->material_;
 	outOfField_->renderLayer_ = 1;
 
 	gameOverFilter_ = ADXObject::Create();
@@ -228,7 +228,7 @@ void Player::LiveEntitiesInitialize()
 	tempRenderer = gameOverFilter_->AddComponent<ADXModelRenderer>();
 	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/WhiteDot.png");
-	tempRenderer->material_ = GetGameObject()->GetComponent<ADXModelRenderer>()->material_;
+	tempRenderer->material_ = visual_->GetComponent<ADXModelRenderer>()->material_;
 	gameOverFilter_->renderLayer_ = 1;
 
 	dead_ = ADXObject::Create();
@@ -239,7 +239,7 @@ void Player::LiveEntitiesInitialize()
 	tempRenderer = dead_->AddComponent<ADXModelRenderer>();
 	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/apEG_dead.png");
-	tempRenderer->material_ = GetGameObject()->GetComponent<ADXModelRenderer>()->material_;
+	tempRenderer->material_ = visual_->GetComponent<ADXModelRenderer>()->material_;
 	dead_->renderLayer_ = gameOverLayer;
 
 	keyUI_ = ADXObject::Create();

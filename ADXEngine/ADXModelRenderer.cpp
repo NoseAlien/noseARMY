@@ -1,4 +1,4 @@
-#include "ADXModelRenderer.h"
+﻿#include "ADXModelRenderer.h"
 #include "ADXObject.h"
 #include "ADXCommon.h"
 

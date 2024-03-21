@@ -14,8 +14,9 @@ void BattleFieldBox::Initialize(const std::vector<EnemySpawnData::SpawnData>& se
 void BattleFieldBox::FieldInitialize()
 {
 	boxModel_ = ADXModel::LoadADXModel("model/battleBox.obj");
-	GetGameObject()->GetComponent<ADXModelRenderer>()->model_ = &boxModel_;
-	GetGameObject()->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/battleField.png");
+	ADXModelRenderer* tempRenderer = GetGameObject()->AddComponent<ADXModelRenderer>();
+	tempRenderer->model_ = &boxModel_;
+	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/battleField.png");
 
 	GetGameObject()->sortingOrder_ = 2;
 

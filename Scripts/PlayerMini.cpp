@@ -50,15 +50,15 @@ void PlayerMini::UniqueInitialize()
 
 	nose_ = ADXObject::Create({ 0,0,0.7f }, ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi,0 }), { 0.42f,0.35f,0.35f });
 	nose_->transform_.parent_ = &GetGameObject()->transform_;
-	nose_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
-	nose_->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/apEGnoSE.png");
-	nose_->GetComponent<ADXModelRenderer>()->material_ = GetGameObject()->GetComponent<ADXModelRenderer>()->material_;
+	ADXModelRenderer* tempRenderer = nose_->AddComponent<ADXModelRenderer>();
+	tempRenderer->model_ = &rect_;
+	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/apEGnoSE.png");
 
 	body_ = ADXObject::Create();
 	body_->transform_.parent_ = &GetGameObject()->transform_;
-	body_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
-	body_->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/apEGopTIon_fur.png");
-	body_->GetComponent<ADXModelRenderer>()->material_ = GetGameObject()->GetComponent<ADXModelRenderer>()->material_;
+	tempRenderer = body_->AddComponent<ADXModelRenderer>();
+	tempRenderer->model_ = &rect_;
+	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/apEGopTIon_fur.png");
 
 	targetRot_ = GetGameObject()->transform_.localRotation_;
 }

@@ -1,4 +1,4 @@
-#include "SceneTransition.h"
+﻿#include "SceneTransition.h"
 #include "ADXModelRenderer.h"
 
 bool SceneTransition::S_sceneChanging = false;

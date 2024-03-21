@@ -7,45 +7,6 @@
 class ADXUtility
 {
 public:
-	template<typename T = void>
-	struct NPManager
-	{
-		constexpr NPManager() noexcept = default;
-
-		// 別の Deleter オブジェクトから Deleter オブジェクトを構築します。
-		// このコンストラクタは U* が T* に暗黙に変換可能な場合にのみ、オーバーロード解決に参加します。
-		template<
-			typename U,
-			typename std::enable_if<std::is_convertible<U*, T*>::value, std::nullptr_t>::type = nullptr
-		>
-		NPManager(const NPManager<U>&) noexcept {}
-
-		void operator()(T* ptr) const {
-			delete ptr;
-			ptr = nullptr;
-		}
-	};
-
-	template<typename T>
-	struct NPManager<T[]>
-	{
-		constexpr NPManager() noexcept = default;
-
-		// 別の Deleter オブジェクトから Deleter オブジェクトを構築します。
-		// このコンストラクタは U(*)[] が T(*)[] に暗黙に変換可能な場合にのみ、オーバーロード解決に参加します。
-		template<
-			typename U,
-			typename std::enable_if<std::is_convertible<U(*)[], T(*)[]>::value, std::nullptr_t>::type = nullptr
-		>
-		NPManager(const NPManager<U[]>&) noexcept {}
-
-		void operator()(T* ptr) const {
-			delete[] ptr;
-			for (auto& itr : ptr)itr = nullptr;
-		}
-	};
-
-public:
 	static const float Pi;
 
 public:

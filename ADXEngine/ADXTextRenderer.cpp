@@ -1,4 +1,4 @@
-#include "ADXTextRenderer.h"
+﻿#include "ADXTextRenderer.h"
 #include "ADXObject.h"
 
 Microsoft::WRL::ComPtr<ID3D12PipelineState> ADXTextRenderer::S_pipelineState = nullptr;

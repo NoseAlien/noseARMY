@@ -29,13 +29,12 @@ void Cub_E::EnemyInitialize()
 	jumpSE_->LoadADXAudio("sound/Cub_E_jump.wav");
 	jumpSE_->useDistanceFade_ = true;
 
-	visual_->GetComponent<ADXModelRenderer>()->model_ = &enemyModel_;
-
 	//髪
 	hair_ = ADXObject::Create();
 	hair_->transform_.parent_ = &visual_->transform_;
-	hair_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
-	hair_->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/Cub_E_hair.png");
+	ADXModelRenderer* tempRenderer = hair_->AddComponent<ADXModelRenderer>();
+	tempRenderer->model_ = &rect_;
+	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/Cub_E_hair.png");
 	//体の一部として登録
 	bodyParts_.push_back(hair_);
 
@@ -46,8 +45,9 @@ void Cub_E::EnemyInitialize()
 	//尻尾
 	tail_ = ADXObject::Create();
 	tail_->transform_.parent_ = &tailRig_->transform_;
-	tail_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
-	tail_->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/Cub_E_tail.png");
+	tempRenderer = tail_->AddComponent<ADXModelRenderer>();
+	tempRenderer->model_ = &rect_;
+	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/Cub_E_tail.png");
 	//体の一部として登録
 	bodyParts_.push_back(tail_);
 }

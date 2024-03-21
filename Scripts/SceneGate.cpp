@@ -1,4 +1,4 @@
-#include "SceneGate.h"
+﻿#include "SceneGate.h"
 #include "LiveEntity.h"
 #include "SceneTransition.h"
 #include "ADXCollider.h"
@@ -9,21 +9,20 @@ std::string SceneGate::S_nextStageName = "";
 
 void SceneGate::Initialize(const std::string& team, const std::string& stageName)
 {
-	ADXModelRenderer* tempRenderer = GetGameObject()->AddComponent<ADXModelRenderer>();
-	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/goalField.png");
-	GetGameObject()->sortingOrder_ = 1;
-
-	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
-	tempCol->isTrigger_ = true;
-	tempCol->colType_ = ADXCollider::box;
-
 	team_ = team;
 	stageName_ = stageName;
 
 	rectModel_ = ADXModel::CreateRect();
 	boxModel_ = ADXModel::LoadADXModel("model/battleBox.obj");
 
+	ADXModelRenderer* tempRenderer = GetGameObject()->AddComponent<ADXModelRenderer>();
+	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/goalField.png");
 	tempRenderer->model_ = &boxModel_;
+	GetGameObject()->sortingOrder_ = 1;
+
+	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
+	tempCol->isTrigger_ = true;
+	tempCol->colType_ = ADXCollider::box;
 
 	keyUI_ = ADXObject::Create();
 	keyUI_->transform_.rectTransform_ = true;
@@ -35,9 +34,6 @@ void SceneGate::Initialize(const std::string& team, const std::string& stageName
 
 	stageNameUI_ = ADXObject::Create();
 	stageNameUI_->transform_.rectTransform_ = true;
-	tempRenderer = stageNameUI_->AddComponent<ADXModelRenderer>();
-	tempRenderer->model_ = &rectModel_;
-	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
 	stageNameUI_->renderLayer_ = 5;
 	stageNameUI_->AddComponent<ADXTextRenderer>();
 	stageNameUI_->GetComponent<ADXTextRenderer>()->font_ = ADXTextRenderer::GetFont("texture/alphaNumber");

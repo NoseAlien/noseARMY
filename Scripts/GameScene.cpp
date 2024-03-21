@@ -255,8 +255,9 @@ void GameScene::Initialize()
 	for (auto& itr : floorGenerateData)
 	{
 		temp = ADXObject::Create(itr.localPosition, itr.localRotation, itr.localScale);
-		temp->GetComponent<ADXModelRenderer>()->model_ = &ground_;
-		temp->GetComponent<ADXModelRenderer>()->texture_ = groundImg;
+		ADXModelRenderer* tempRenderer = temp->AddComponent<ADXModelRenderer>();
+		tempRenderer->model_ = &ground_;
+		tempRenderer->texture_ = groundImg;
 		ADXCollider* tempCol = temp->AddComponent<ADXCollider>();
 		tempCol->colType_ = ADXCollider::box;
 	}
@@ -294,22 +295,25 @@ void GameScene::Initialize()
 	for (auto& itr : constructionInfoGenerateData)
 	{
 		temp = ADXObject::Create(itr.localPosition, itr.localRotation, itr.localScale);
-		temp->GetComponent<ADXModelRenderer>()->model_ = &rect_;
-		temp->GetComponent<ADXModelRenderer>()->texture_ = constructionInfoImg;
+		ADXModelRenderer* tempRenderer = temp->AddComponent<ADXModelRenderer>();
+		tempRenderer->model_ = &rect_;
+		tempRenderer->texture_ = constructionInfoImg;
 	}
 
 	ADXObject* backGround = ADXObject::Create();
 	backGround->transform_.rectTransform_ = true;
 	backGround->transform_.UpdateMatrix();
-	backGround->GetComponent<ADXModelRenderer>()->model_ = &rect_;
-	backGround->GetComponent<ADXModelRenderer>()->texture_ = backGroundTex;
+	ADXModelRenderer* tempRenderer = backGround->AddComponent<ADXModelRenderer>();
+	tempRenderer->model_ = &rect_;
+	tempRenderer->texture_ = backGroundTex;
 	backGround->renderLayer_ = -1;
 
 	key_ = ADXObject::Duplicate(*backGround);
 	key_->transform_.localPosition_ = { -0.65f,0.85f,0 };
 	key_->transform_.localScale_ = { 0.3f,0.45f,1 };
 	key_->transform_.UpdateMatrix();
-	key_->GetComponent<ADXModelRenderer>()->texture_ = keyImg;
+	tempRenderer = key_->AddComponent<ADXModelRenderer>();
+	tempRenderer->texture_ = keyImg;
 	key_->renderLayer_ = 1;
 }
 

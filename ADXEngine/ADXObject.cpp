@@ -13,7 +13,7 @@ ID3D12GraphicsCommandList* ADXObject::S_cmdList = nullptr;
 Microsoft::WRL::ComPtr<ID3D12RootSignature> ADXObject::S_rootSignature;
 
 uint64_t ADXObject::S_GpuStartHandle = 0;
-std::list<std::unique_ptr<ADXObject, ADXUtility::NPManager<ADXObject>>> ADXObject::S_objs{};
+std::list<std::unique_ptr<ADXObject>> ADXObject::S_objs{};
 std::vector<ADXCamera*> ADXObject::S_allCameraPtr{};
 ADXVector3 ADXObject::S_limitPos1 = { -300,-300,-100 };
 ADXVector3 ADXObject::S_limitPos2 = { 300,300,300 };
@@ -130,7 +130,7 @@ ADXObject* ADXObject::Create(const ADXVector3& setLocalPosition, const ADXQuater
 	const ADXVector3& setLocalScale, ADXWorldTransform* setParent)
 {
 	//オブジェクトを生成
-	std::unique_ptr<ADXObject, ADXUtility::NPManager<ADXObject>> obj(new ADXObject);
+	std::unique_ptr<ADXObject> obj(new ADXObject);
 	obj->Initialize();
 	//引数のトランスフォーム情報を代入
 	obj->transform_.localPosition_ = setLocalPosition;

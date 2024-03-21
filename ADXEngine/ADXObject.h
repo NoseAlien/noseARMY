@@ -27,7 +27,7 @@ public:
 	bool isActive_ = true;
 
 private:
-	std::list<std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>>> components_{};
+	std::list<std::unique_ptr<ADXComponent>> components_{};
 	bool deleteFlag_ = false;
 
 public:
@@ -76,7 +76,7 @@ private: // 静的メンバ変数
 	static uint64_t S_GpuStartHandle;
 
 	// 全てのオブジェクトが入った配列
-	static std::list<std::unique_ptr<ADXObject, ADXUtility::NPManager<ADXObject>>> S_objs;
+	static std::list<std::unique_ptr<ADXObject>> S_objs;
 
 	// 全てのカメラを入れる配列
 	static std::vector<ADXCamera*> S_allCameraPtr;
@@ -145,7 +145,7 @@ template<class Type>
 inline Type* ADXObject::AddComponent()
 {
 	Type* p = new Type();
-	std::unique_ptr<ADXComponent, ADXUtility::NPManager<ADXComponent>> temp(p);
+	std::unique_ptr<ADXComponent> temp(p);
 	temp->SetGameObject(this);
 	components_.push_back(move(temp));
 	return p;
