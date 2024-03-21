@@ -37,6 +37,7 @@ void Goal::Initialize(const std::string& setTeam)
 
 	keyUI_ = ADXObject::Duplicate(*clearUI_);
 	tempRenderer = keyUI_->AddComponent<ADXModelRenderer>();
+	tempRenderer->model_ = &rectModel_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
 }
 

@@ -13,6 +13,11 @@ void ADXRenderer::Rendering()
 	assert(device);
 	assert(cmdList);
 
+	if (!constBuffB1_)
+	{
+		return;
+	}
+
 	HRESULT result = S_FALSE;
 	//定数バッファへデータ転送
 	ConstBufferDataB1* constMap1 = nullptr;
