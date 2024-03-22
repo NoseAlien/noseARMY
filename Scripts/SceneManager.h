@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include "ADXSceneManager.h"
-#include "TitleScene.h"
-#include "StageSelectScene.h"
-#include "GameScene.h"
+#include "Scenes/TitleScene.h"
+#include "Scenes/StageSelectScene.h"
+#include "Scenes/GameScene.h"
 
 //このゲームのシーンマネージャー
 class SceneManager : public ADXSceneManager

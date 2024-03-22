@@ -8,6 +8,9 @@
 
 #pragma comment(lib, "d3dcompiler.lib")
 
+const FLOAT ADXObject::ClearDepth = 1.0f;
+const UINT8 ADXObject::ClearStencil = 0;
+
 uint64_t ADXObject::S_descriptorHandleIncrementSize = 0;
 ID3D12GraphicsCommandList* ADXObject::S_cmdList = nullptr;
 Microsoft::WRL::ComPtr<ID3D12RootSignature> ADXObject::S_rootSignature;
@@ -103,6 +106,7 @@ void ADXObject::InitializeConstBufferTransform(ID3D12Resource** constBuffTransfo
 		cbResourceDesc.MipLevels = 1;
 		cbResourceDesc.SampleDesc.Count = 1;
 		cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
 		//定数バッファの生成
 		result = device->CreateCommittedResource(
 			&cbHeapProp,
@@ -295,8 +299,8 @@ void ADXObject::StaticDraw()
 	{
 		std::vector<ADXObject*> thisLayerObjPtr;
 
-		//全ピクセルの深度バッファ値を最奥の1.0にする
-		S_cmdList->ClearDepthStencilView(*ADXCommon::GetInstance()->GetDsvHandle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+		//全ピクセルの深度バッファ値とステンシル値を初期化
+		S_cmdList->ClearDepthStencilView(*ADXCommon::GetInstance()->GetDsvHandle(), D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, ClearDepth, ClearStencil, 0, nullptr);
 
 		for (auto& itr : allObjPtr)
 		{

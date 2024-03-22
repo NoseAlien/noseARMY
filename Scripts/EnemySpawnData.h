@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Enemy.h"
+#include "Enemies/Enemy.h"
 #include "ADXUtility.h"
 #include <memory>
 

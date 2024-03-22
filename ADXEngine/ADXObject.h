@@ -19,6 +19,10 @@ public:
 	};
 
 public:
+	static const FLOAT ClearDepth;
+	static const UINT8 ClearStencil;
+
+public:
 	ADXWorldTransform transform_{};
 	int32_t renderLayer_ = 0;
 	int32_t sortingOrder_ = 0;

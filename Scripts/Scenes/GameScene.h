@@ -11,7 +11,7 @@
 #include "ADXUtility.h"
 #include "SceneTransition.h"
 #include "Player.h"
-#include "Enemy.h"
+#include "Enemies/Enemy.h"
 #include "FieldBox.h"
 #include "BattleFieldBox.h"
 #include "Goal.h"

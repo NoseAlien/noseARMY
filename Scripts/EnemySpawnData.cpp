@@ -1,8 +1,8 @@
 ﻿#include "EnemySpawnData.h"
 
-#include "Cub_E.h"
-#include "Clex.h"
-#include "Crazer_Unown.h"
+#include "Enemies/Cub_E.h"
+#include "Enemies/Clex.h"
+#include "Enemies/Crazer_Unown.h"
 
 void EnemySpawnData::SetSpawnList(const std::vector<SpawnData>& setSpawnList)
 {

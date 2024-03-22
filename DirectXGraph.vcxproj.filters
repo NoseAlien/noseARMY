@@ -19,9 +19,6 @@
     <Filter Include="ソース ファイル\GameScript">
       <UniqueIdentifier>{bafc91d2-57ea-4c7d-8ab6-3c9e7b0c764e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\GameScript\Enemies">
-      <UniqueIdentifier>{22973afb-5fcb-4574-8fa5-a429d989f6a9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\GameScript">
       <UniqueIdentifier>{400845be-b8eb-420d-9a55-448ae6664607}</UniqueIdentifier>
     </Filter>
@@ -33,6 +30,15 @@
     </Filter>
     <Filter Include="ヘッダー ファイル\ADXEngine">
       <UniqueIdentifier>{0bacb6f0-cd8b-44f4-9243-eaa11159dd3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameScript\Enemies">
+      <UniqueIdentifier>{22973afb-5fcb-4574-8fa5-a429d989f6a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameScript\Scenes">
+      <UniqueIdentifier>{53677448-9f94-4862-b51c-6cb1746b6e12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GameScript\Scenes">
+      <UniqueIdentifier>{e61b57e2-cade-4ef2-8561-6f902c72d4bf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -117,28 +123,22 @@
     <ClCompile Include="ADXEngine\ADXParticle.cpp">
       <Filter>ソース ファイル\ADXEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\Cub_E.cpp">
+    <ClCompile Include="Scripts\Enemies\Cub_E.cpp">
       <Filter>ソース ファイル\GameScript\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\Clex.cpp">
+    <ClCompile Include="Scripts\Enemies\Clex.cpp">
       <Filter>ソース ファイル\GameScript\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\Projectile.cpp">
+    <ClCompile Include="Scripts\Enemies\Projectile.cpp">
       <Filter>ソース ファイル\GameScript\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\BattleFieldBox.cpp">
-      <Filter>ソース ファイル\GameScript</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\Enemy.cpp">
       <Filter>ソース ファイル\GameScript</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\EnemySpawnData.cpp">
       <Filter>ソース ファイル\GameScript</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\FieldBox.cpp">
-      <Filter>ソース ファイル\GameScript</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\GameScene.cpp">
       <Filter>ソース ファイル\GameScript</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\Goal.cpp">
@@ -168,12 +168,6 @@
     <ClCompile Include="Scripts\SceneTransition.cpp">
       <Filter>ソース ファイル\GameScript</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\StageSelectScene.cpp">
-      <Filter>ソース ファイル\GameScript</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\TitleScene.cpp">
-      <Filter>ソース ファイル\GameScript</Filter>
-    </ClCompile>
     <ClCompile Include="Scripts\TutorialArea.cpp">
       <Filter>ソース ファイル\GameScript</Filter>
     </ClCompile>
@@ -201,14 +195,26 @@
     <ClCompile Include="ADXEngine\ADXAudioListener.cpp">
       <Filter>ソース ファイル\ADXEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\Crazer_Unown.cpp">
+    <ClCompile Include="Scripts\Enemies\Crazer_Unown.cpp">
       <Filter>ソース ファイル\GameScript\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\UnownFoot.cpp">
+    <ClCompile Include="Scripts\Enemies\UnownFoot.cpp">
       <Filter>ソース ファイル\GameScript\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\ShadowRenderer.cpp">
       <Filter>ソース ファイル\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Enemies\Enemy.cpp">
+      <Filter>ソース ファイル\GameScript\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Scenes\StageSelectScene.cpp">
+      <Filter>ソース ファイル\GameScript\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Scenes\GameScene.cpp">
+      <Filter>ソース ファイル\GameScript\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Scenes\TitleScene.cpp">
+      <Filter>ソース ファイル\GameScript\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -299,28 +305,22 @@
     <ClInclude Include="ADXEngine\json.hpp">
       <Filter>ヘッダー ファイル\ADXEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\Cub_E.h">
+    <ClInclude Include="Scripts\Enemies\Cub_E.h">
       <Filter>ヘッダー ファイル\GameScript\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\Clex.h">
+    <ClInclude Include="Scripts\Enemies\Clex.h">
       <Filter>ヘッダー ファイル\GameScript\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\Projectile.h">
+    <ClInclude Include="Scripts\Enemies\Projectile.h">
       <Filter>ヘッダー ファイル\GameScript\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\BattleFieldBox.h">
-      <Filter>ヘッダー ファイル\GameScript</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\Enemy.h">
       <Filter>ヘッダー ファイル\GameScript</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\EnemySpawnData.h">
       <Filter>ヘッダー ファイル\GameScript</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\FieldBox.h">
-      <Filter>ヘッダー ファイル\GameScript</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\GameScene.h">
       <Filter>ヘッダー ファイル\GameScript</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\Goal.h">
@@ -345,12 +345,6 @@
       <Filter>ヘッダー ファイル\GameScript</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\SceneTransition.h">
-      <Filter>ヘッダー ファイル\GameScript</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\StageSelectScene.h">
-      <Filter>ヘッダー ファイル\GameScript</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\TitleScene.h">
       <Filter>ヘッダー ファイル\GameScript</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\TutorialArea.h">
@@ -380,14 +374,26 @@
     <ClInclude Include="ADXEngine\ADXAudioListener.h">
       <Filter>ヘッダー ファイル\ADXEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\Crazer_Unown.h">
+    <ClInclude Include="Scripts\Enemies\Crazer_Unown.h">
       <Filter>ヘッダー ファイル\GameScript\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\UnownFoot.h">
+    <ClInclude Include="Scripts\Enemies\UnownFoot.h">
       <Filter>ヘッダー ファイル\GameScript\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\ShadowRenderer.h">
       <Filter>ヘッダー ファイル\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Enemies\Enemy.h">
+      <Filter>ヘッダー ファイル\GameScript\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Scenes\GameScene.h">
+      <Filter>ヘッダー ファイル\GameScript\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Scenes\StageSelectScene.h">
+      <Filter>ヘッダー ファイル\GameScript\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Scenes\TitleScene.h">
+      <Filter>ヘッダー ファイル\GameScript\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

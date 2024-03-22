@@ -237,7 +237,7 @@ void ADXCommon::InitializeDepthBuffer()
 	depthResourceDesc.Width = ADXWindow::GetInstance()->window_width_; //レンダーターゲットに合わせる
 	depthResourceDesc.Height = ADXWindow::GetInstance()->window_height_; //レンダーターゲットに合わせる
 	depthResourceDesc.DepthOrArraySize = 1;
-	depthResourceDesc.Format = DXGI_FORMAT_D32_FLOAT; //深度値フォーマット
+	depthResourceDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; //深度値+ステンシル値フォーマット
 	depthResourceDesc.SampleDesc.Count = 1;
 	depthResourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL; //デプスステンシル
 
@@ -247,7 +247,7 @@ void ADXCommon::InitializeDepthBuffer()
 	//深度値のクリア設定
 	D3D12_CLEAR_VALUE depthClearValue{};
 	depthClearValue.DepthStencil.Depth = 1.0f; //深度値1.0f（最大値）でクリア
-	depthClearValue.Format = DXGI_FORMAT_D32_FLOAT; //深度値フォーマット
+	depthClearValue.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; //深度値+ステンシル値フォーマット
 
 	//リソース生成
 	result = device_->CreateCommittedResource(
@@ -266,7 +266,7 @@ void ADXCommon::InitializeDepthBuffer()
 
 	//深度ビュー作成
 	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
-	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
+	dsvDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; //深度値+ステンシル値フォーマット
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
 	device_->CreateDepthStencilView(
 		depthBuff_.Get(),

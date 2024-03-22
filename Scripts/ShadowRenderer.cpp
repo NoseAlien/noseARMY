@@ -15,6 +15,18 @@ void ShadowRenderer::UniqueRendering([[maybe_unused]] ID3D12Device* device, ID3D
 
 		GetGameObject()->transform_.UpdateConstBuffer();
 
+		// パイプラインステートの設定コマンド
+		cmdList->SetPipelineState(S_pipelineStateStencil.Get());
+		// 描画コマンド
+		model_->Draw(GetGameObject()->transform_.constBuffTransform_.Get());
+
+		// パイプラインステートの設定コマンド
+		cmdList->SetPipelineState(S_pipelineStateDraw.Get());
+		// 描画コマンド
+		model_->Draw(GetGameObject()->transform_.constBuffTransform_.Get());
+
+		// パイプラインステートの設定コマンド
+		cmdList->SetPipelineState(S_pipelineStateAntiStencil.Get());
 		// 描画コマンド
 		model_->Draw(GetGameObject()->transform_.constBuffTransform_.Get());
 	}

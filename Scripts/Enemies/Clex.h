@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Enemy.h"
+#include "Enemies/Enemy.h"
 
 class Clex : public Enemy
 {

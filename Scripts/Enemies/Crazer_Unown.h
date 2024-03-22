@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "Enemy.h"
+#include "Enemies/Enemy.h"
 
 class UnownFoot;
 class Crazer_Unown : public Enemy

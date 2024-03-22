@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "FieldBox.h"
-#include "Enemy.h"
+#include "Enemies/Enemy.h"
 #include "EnemySpawnData.h"
 
 //バトルしないと出られない部屋
