@@ -8,8 +8,8 @@
 
 #pragma comment(lib, "d3dcompiler.lib")
 
-const FLOAT ADXObject::ClearDepth = 1.0f;
-const UINT8 ADXObject::ClearStencil = 0;
+const FLOAT ADXObject::clearDepth = 1.0f;
+const UINT8 ADXObject::clearStencil = 0;
 
 uint64_t ADXObject::S_descriptorHandleIncrementSize = 0;
 ID3D12GraphicsCommandList* ADXObject::S_cmdList = nullptr;
@@ -300,7 +300,7 @@ void ADXObject::StaticDraw()
 		std::vector<ADXObject*> thisLayerObjPtr;
 
 		//全ピクセルの深度バッファ値とステンシル値を初期化
-		S_cmdList->ClearDepthStencilView(*ADXCommon::GetInstance()->GetDsvHandle(), D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, ClearDepth, ClearStencil, 0, nullptr);
+		S_cmdList->ClearDepthStencilView(*ADXCommon::GetInstance()->GetDsvHandle(), D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, clearDepth, clearStencil, 0, nullptr);
 
 		for (auto& itr : allObjPtr)
 		{

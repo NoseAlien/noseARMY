@@ -7,8 +7,14 @@ class ShadowRenderer : public ADXRenderer
 {
 public:
 	ADXModel* model_ = nullptr;
+	uint32_t texture_ = 0;
 
 private:
+	ADXMaterial stencilMat{};
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffStencil_ = nullptr;
+
+private:
+	void RendererInitialize() final;
 	//描画処理
 	void UniqueRendering(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList);
 

@@ -37,6 +37,7 @@ void ADXRenderer::Rendering()
 void ADXRenderer::UniqueInitialize()
 {
 	InitializeConstBufferMaterial(&constBuffB1_);
+	RendererInitialize();
 }
 
 void ADXRenderer::InitializeConstBufferMaterial(ID3D12Resource** constBuff)

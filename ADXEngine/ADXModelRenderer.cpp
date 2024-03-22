@@ -8,6 +8,7 @@ void ADXModelRenderer::UniqueRendering([[maybe_unused]] ID3D12Device* device, ID
 {
 	if (model_ != nullptr)
 	{
+		//モデルに貼り付ける画像を設定
 		D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV;
 		gpuDescHandleSRV.ptr = ADXObject::GetGpuStartHandle() + texture_;
 		cmdList->SetGraphicsRootDescriptorTable(1, gpuDescHandleSRV);

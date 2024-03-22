@@ -71,7 +71,6 @@ void Enemy::DeadUpdate()
 		|| (carcassLifeTime_ <= (int32_t)maxCarcassLifeTime / lowCarcassLifeTimeDivNum
 			&& clock() % maxCarcassAnimationFrame_lowLifeTime < carcassBlackOutFrame))
 	{
-		visual_->GetComponent<ADXModelRenderer>()->material_.ambient_ = darkColor;
 		for (auto& itr : bodyParts_)
 		{
 			itr->GetComponent<ADXModelRenderer>()->material_.ambient_ = darkColor;

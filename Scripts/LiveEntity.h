@@ -19,6 +19,7 @@ public:
 	static const uint32_t maxRepairCoolTime;
 	static const uint32_t basicGhostTimeFrame;
 	static const uint32_t reviveGhostTimeFrame;
+	static const int32_t liveEntitySortingOrder;
 
 public:
 	struct AttackObject
@@ -39,10 +40,13 @@ protected:
 
 private:
 	ADXModel rect_{};
+	ADXModel shadowModel_{};
 	uint32_t gaugeTex_ = 0;
-	ADXParticleSystem* particle_ = nullptr;
+	uint32_t shadowTex_ = 0;
+	ADXParticleSystem* damageParticle_ = nullptr;
 	ADXObject* hpGauge_ = nullptr;
 	ADXObject* hpGaugeBG_ = nullptr;
+	ADXObject* shadow_ = nullptr;
 	std::string team_ = "";
 	bool attackHitted_ = false;
 

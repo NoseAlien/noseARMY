@@ -19,8 +19,8 @@ public:
 	};
 
 public:
-	static const FLOAT ClearDepth;
-	static const UINT8 ClearStencil;
+	static const FLOAT clearDepth;
+	static const UINT8 clearStencil;
 
 public:
 	ADXWorldTransform transform_{};

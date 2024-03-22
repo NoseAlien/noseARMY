@@ -1,5 +1,6 @@
 ﻿#include "LiveEntity.h"
 #include "ADXCamera.h"
+#include "ShadowRenderer.h"
 #include <time.h>
 
 const float LiveEntity::basicHP = 50;
@@ -8,6 +9,7 @@ const float LiveEntity::repairPower = 0.005f;
 const uint32_t LiveEntity::maxRepairCoolTime = 400;
 const uint32_t LiveEntity::basicGhostTimeFrame = 40;
 const uint32_t LiveEntity::reviveGhostTimeFrame = 60;
+const int32_t LiveEntity::liveEntitySortingOrder = 2;
 
 std::vector<LiveEntity::AttackObject> LiveEntity::S_attackObjs = {};
 std::vector<LiveEntity::AttackObject> LiveEntity::S_allAttackObj = {};
@@ -24,7 +26,9 @@ void LiveEntity::UniqueInitialize()
 	tempCol->pushable_ = true;
 
 	rect_ = ADXModel::CreateRect();
+	shadowModel_ = ADXModel::LoadADXModel("model/cylinder.obj");
 	gaugeTex_ = ADXImage::LoadADXImage("texture/whiteDot.png");
+	shadowTex_ = ADXImage::LoadADXImage("texture/whiteDot.png");
 
 	damageSE_ = GetGameObject()->AddComponent<ADXAudioSource>();
 	damageSE_->useDistanceFade_ = true;
@@ -34,6 +38,7 @@ void LiveEntity::UniqueInitialize()
 	visual_ = ADXObject::Create();
 	visual_->AddComponent<ADXModelRenderer>();
 	visual_->transform_.parent_ = &GetGameObject()->transform_;
+	bodyParts_.push_back(visual_);
 
 	hpGaugeBG_ = ADXObject::Create();
 	hpGaugeBG_->transform_.parent_ = &GetGameObject()->transform_;
@@ -51,16 +56,27 @@ void LiveEntity::UniqueInitialize()
 	tempRenderer->texture_ = gaugeTex_;
 	hpGauge_->renderLayer_ = 2;
 
-	particle_ = GetGameObject()->AddComponent<ADXParticleSystem>();
-	particle_->animation_.Initialize({
+	shadow_ = ADXObject::Create();
+	shadow_->transform_.localPosition_ = { 0,-6,0 };
+	shadow_->transform_.localScale_ = { 1,6,1 };
+	shadow_->transform_.parent_ = &GetGameObject()->transform_;
+	ShadowRenderer* tempShadowRenderer = shadow_->AddComponent<ShadowRenderer>();
+	tempShadowRenderer->model_ = &shadowModel_;
+	tempShadowRenderer->texture_ = shadowTex_;
+	tempShadowRenderer->material_.ambient_ = { 0,0,0 };
+	tempShadowRenderer->material_.alpha_ = 0.6f;
+	shadow_->sortingOrder_ = 1;
+
+	damageParticle_ = GetGameObject()->AddComponent<ADXParticleSystem>();
+	damageParticle_->animation_.Initialize({
 		ADXImage::LoadADXImage("texture/particle_defeat/000.png"), ADXImage::LoadADXImage("texture/particle_defeat/001.png"),
 		ADXImage::LoadADXImage("texture/particle_defeat/002.png"), ADXImage::LoadADXImage("texture/particle_defeat/003.png"),
 		ADXImage::LoadADXImage("texture/particle_defeat/004.png"), ADXImage::LoadADXImage("texture/particle_defeat/005.png"),
 		ADXImage::LoadADXImage("texture/particle_defeat/006.png"), ADXImage::LoadADXImage("texture/particle_defeat/007.png"),
 		ADXImage::LoadADXImage("texture/particle_defeat/008.png"), ADXImage::LoadADXImage("texture/particle_defeat/009.png"),
 		ADXImage::LoadADXImage("texture/particle_defeat/010.png"), }, 0, false);
-	particle_->lifeTime_ = particle_->animation_.GetLength();
-	particle_->particleModel_ = rect_;
+	damageParticle_->lifeTime_ = damageParticle_->animation_.GetLength();
+	damageParticle_->particleModel_ = rect_;
 
 	LiveEntitiesInitialize();
 }
@@ -90,10 +106,10 @@ void LiveEntity::UniqueUpdate()
 	hpGauge_->transform_.localPosition_ = { (1 - hpAmount_),0,0 };
 	hpGauge_->transform_.localScale_ = { hpAmount_,1,1 };
 
-	visual_->GetComponent<ADXModelRenderer>()->material_.ambient_ = { 1,1,1 };
 	for (auto& itr : bodyParts_)
 	{
 		itr->GetComponent<ADXModelRenderer>()->material_.ambient_ = { 1,1,1 };
+		itr->sortingOrder_ = liveEntitySortingOrder;
 	}
 
 	visual_->transform_.localPosition_ *= 0.8f;
@@ -110,31 +126,31 @@ void LiveEntity::UniqueUpdate()
 
 		if (attackHitted_)
 		{
-			particle_->animation_.delayFrame_ = 0;
-			particle_->lifeTime_ = particle_->animation_.GetLength();
+			damageParticle_->animation_.delayFrame_ = 0;
+			damageParticle_->lifeTime_ = damageParticle_->animation_.GetLength();
 			for (int i = 0; i < 10; i++)
 			{
-				particle_->Emission();
-				particle_->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize();
-				particle_->particles_.back()->velocity_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize() * 0.3f;
-				particle_->particles_.back()->scale_ = ADXUtility::RandomRange(3.5f, 4);
-				particle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
+				damageParticle_->Emission();
+				damageParticle_->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize();
+				damageParticle_->particles_.back()->velocity_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize() * 0.3f;
+				damageParticle_->particles_.back()->scale_ = ADXUtility::RandomRange(3.5f, 4);
+				damageParticle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 			}
-			particle_->animation_.delayFrame_ = 3;
-			particle_->lifeTime_ = particle_->animation_.GetLength() * 4;
+			damageParticle_->animation_.delayFrame_ = 3;
+			damageParticle_->lifeTime_ = damageParticle_->animation_.GetLength() * 4;
 			for (int i = 0; i < 30; i++)
 			{
-				particle_->Emission();
-				particle_->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize();
-				particle_->particles_.back()->velocity_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize();
-				particle_->particles_.back()->scale_ = ADXUtility::RandomRange(0.1f, 0.7f);
-				particle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
+				damageParticle_->Emission();
+				damageParticle_->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize();
+				damageParticle_->particles_.back()->velocity_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize();
+				damageParticle_->particles_.back()->scale_ = ADXUtility::RandomRange(0.1f, 0.7f);
+				damageParticle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 			}
 			defeatSE_->Play();
 		}
 	}
 
-	for (auto& itr : particle_->particles_)
+	for (auto& itr : damageParticle_->particles_)
 	{
 		itr->velocity_ *= 0.9f;
 		itr->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0.01f }) * itr->GetGameObject()->transform_.modelRotation_;
@@ -142,25 +158,25 @@ void LiveEntity::UniqueUpdate()
 
 	if (attackHitted_)
 	{
-		particle_->animation_.delayFrame_ = 0;
-		particle_->lifeTime_ = particle_->animation_.GetLength();
+		damageParticle_->animation_.delayFrame_ = 0;
+		damageParticle_->lifeTime_ = damageParticle_->animation_.GetLength();
 		for (int i = 0; i < 2; i++)
 		{
-			particle_->Emission();
-			particle_->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize();
-			particle_->particles_.back()->velocity_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize() * 0.1f;
-			particle_->particles_.back()->scale_ = ADXUtility::RandomRange(1, 1.5f);
-			particle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
+			damageParticle_->Emission();
+			damageParticle_->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize();
+			damageParticle_->particles_.back()->velocity_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize() * 0.1f;
+			damageParticle_->particles_.back()->scale_ = ADXUtility::RandomRange(1, 1.5f);
+			damageParticle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 		}
-		particle_->animation_.delayFrame_ = 1;
-		particle_->lifeTime_ = particle_->animation_.GetLength() * 2;
+		damageParticle_->animation_.delayFrame_ = 1;
+		damageParticle_->lifeTime_ = damageParticle_->animation_.GetLength() * 2;
 		for (int i = 0; i < 6; i++)
 		{
-			particle_->Emission();
-			particle_->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize();
-			particle_->particles_.back()->velocity_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize() * 0.3f;
-			particle_->particles_.back()->scale_ = ADXUtility::RandomRange(0.2f, 0.5f);
-			particle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
+			damageParticle_->Emission();
+			damageParticle_->particles_.back()->GetGameObject()->transform_.localPosition_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize();
+			damageParticle_->particles_.back()->velocity_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5) }.Normalize() * 0.3f;
+			damageParticle_->particles_.back()->scale_ = ADXUtility::RandomRange(0.2f, 0.5f);
+			damageParticle_->particles_.back()->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,(float)rand() });
 		}
 
 		visual_->transform_.localPosition_ = ADXVector3{ ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5),ADXUtility::RandomRange(-5,5)}.Normalize() * 0.3f;
@@ -171,7 +187,6 @@ void LiveEntity::UniqueUpdate()
 
 	if (IsLive() && ghostTime_ > 0 && ghostTime_ % 4 >= 2)
 	{
-		visual_->GetComponent<ADXModelRenderer>()->material_.ambient_ = { 1,0.2f,0.2f };
 		for (auto& itr : bodyParts_)
 		{
 			itr->GetComponent<ADXModelRenderer>()->material_.ambient_ = { 1,0.2f,0.2f };
