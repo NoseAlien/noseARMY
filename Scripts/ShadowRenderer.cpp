@@ -1,4 +1,4 @@
-#include "ShadowRenderer.h"
+﻿#include "ShadowRenderer.h"
 #include "ADXObject.h"
 
 const UINT8 shadowStencil = 1;
