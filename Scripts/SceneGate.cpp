@@ -18,7 +18,7 @@ void SceneGate::Initialize(const std::string& team, const std::string& stageName
 	ADXModelRenderer* tempRenderer = GetGameObject()->AddComponent<ADXModelRenderer>();
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/goalField.png");
 	tempRenderer->model_ = &boxModel_;
-	GetGameObject()->sortingOrder_ = 1;
+	GetGameObject()->sortingOrder_ = 3;
 
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
 	tempCol->isTrigger_ = true;

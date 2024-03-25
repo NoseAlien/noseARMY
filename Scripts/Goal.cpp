@@ -24,7 +24,7 @@ void Goal::Initialize(const std::string& setTeam)
 	boxModel_ = ADXModel::LoadADXModel("model/battleBox.obj");
 
 	ADXModelRenderer* tempRenderer = GetGameObject()->AddComponent<ADXModelRenderer>();
-	GetGameObject()->sortingOrder_ = 1;
+	GetGameObject()->sortingOrder_ = 3;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/goalField.png");
 	tempRenderer->model_ = &boxModel_;
 

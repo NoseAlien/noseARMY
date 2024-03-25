@@ -7,10 +7,13 @@ class Pebble : public ADXComponent
 {
 private:
 	ADXModel rect_{};
+	ADXModel shadowModel_{};
 	uint32_t billBoardTex_ = 0;
+	uint32_t shadowTex_ = 0;
 
 	ADXRigidbody* rigidbody_{};
 	ADXObject* billBoard_ = nullptr;
+	ADXObject* shadow_ = nullptr;
 	ADXAudioSource* hitSE_ = nullptr;
 
 	ADXVector3 prevPos_{};

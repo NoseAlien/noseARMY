@@ -20,6 +20,7 @@ public:
 	static const uint32_t basicGhostTimeFrame;
 	static const uint32_t reviveGhostTimeFrame;
 	static const int32_t liveEntitySortingOrder;
+	static const int32_t shadowSortingOrder;
 
 public:
 	struct AttackObject

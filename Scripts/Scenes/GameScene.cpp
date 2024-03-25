@@ -313,6 +313,7 @@ void GameScene::Initialize()
 	key_->transform_.localScale_ = { 0.3f,0.45f,1 };
 	key_->transform_.UpdateMatrix();
 	tempRenderer = key_->AddComponent<ADXModelRenderer>();
+	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = keyImg;
 	key_->renderLayer_ = 1;
 }

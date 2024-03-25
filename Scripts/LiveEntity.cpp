@@ -10,6 +10,7 @@ const uint32_t LiveEntity::maxRepairCoolTime = 400;
 const uint32_t LiveEntity::basicGhostTimeFrame = 40;
 const uint32_t LiveEntity::reviveGhostTimeFrame = 60;
 const int32_t LiveEntity::liveEntitySortingOrder = 2;
+const int32_t LiveEntity::shadowSortingOrder = 1;
 
 std::vector<LiveEntity::AttackObject> LiveEntity::S_attackObjs = {};
 std::vector<LiveEntity::AttackObject> LiveEntity::S_allAttackObj = {};
@@ -65,7 +66,7 @@ void LiveEntity::UniqueInitialize()
 	tempShadowRenderer->texture_ = shadowTex_;
 	tempShadowRenderer->material_.ambient_ = { 0,0,0 };
 	tempShadowRenderer->material_.alpha_ = 0.6f;
-	shadow_->sortingOrder_ = 1;
+	shadow_->sortingOrder_ = shadowSortingOrder;
 
 	damageParticle_ = GetGameObject()->AddComponent<ADXParticleSystem>();
 	damageParticle_->animation_.Initialize({

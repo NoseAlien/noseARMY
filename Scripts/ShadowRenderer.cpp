@@ -38,6 +38,8 @@ void ShadowRenderer::UniqueRendering([[maybe_unused]] ID3D12Device* device, ID3D
 		constMap1->alpha = material_.alpha_;
 		constBuffB1_->Unmap(0, nullptr);
 
+		cmdList->OMSetStencilRef(shadowStencil);
+
 		//定数バッファビュー(CBV)の設定コマンド
 		cmdList->SetGraphicsRootConstantBufferView(2, constBuffStencil_->GetGPUVirtualAddress());
 		// パイプラインステートの設定コマンド
@@ -52,12 +54,14 @@ void ShadowRenderer::UniqueRendering([[maybe_unused]] ID3D12Device* device, ID3D
 		// 描画コマンド
 		model_->Draw(GetGameObject()->transform_.constBuffTransform_.Get());
 
+		cmdList->OMSetStencilRef(ADXObject::clearStencil);
+
 		//定数バッファビュー(CBV)の設定コマンド
 		cmdList->SetGraphicsRootConstantBufferView(2, constBuffStencil_->GetGPUVirtualAddress());
-		//// パイプラインステートの設定コマンド
-		//cmdList->SetPipelineState(S_pipelineStateAntiStencil.Get());
-		//// 描画コマンド
-		//model_->Draw(GetGameObject()->transform_.constBuffTransform_.Get());
+		// パイプラインステートの設定コマンド
+		cmdList->SetPipelineState(S_pipelineStateAntiStencil.Get());
+		// 描画コマンド
+		model_->Draw(GetGameObject()->transform_.constBuffTransform_.Get());
 	}
 }
 
@@ -111,8 +115,8 @@ void ShadowRenderer::StaticInitialize()
 	depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO; //書き込み不可
 	depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL; //同じか小さければ合格
 	depthStencilDesc.StencilEnable = true; //ステンシルテストを行う
-	depthStencilDesc.StencilReadMask = shadowStencil;
-	depthStencilDesc.StencilWriteMask = shadowStencil;
+	depthStencilDesc.StencilReadMask = D3D12_DEFAULT_STENCIL_READ_MASK;
+	depthStencilDesc.StencilWriteMask = D3D12_DEFAULT_STENCIL_WRITE_MASK;
 	depthStencilDesc.FrontFace.StencilFailOp = D3D12_STENCIL_OP_KEEP;
 	depthStencilDesc.FrontFace.StencilDepthFailOp = D3D12_STENCIL_OP_KEEP;
 	depthStencilDesc.FrontFace.StencilPassOp = D3D12_STENCIL_OP_REPLACE;
@@ -123,6 +127,7 @@ void ShadowRenderer::StaticInitialize()
 	depthStencilDesc.BackFace.StencilFunc = depthStencilDesc.FrontFace.StencilFunc;
 
 	pipelineDesc.DepthStencilState = depthStencilDesc;
+	pipelineDesc.BlendState.AlphaToCoverageEnable = false; //アルファが低い所も描画する
 	CreateGraphicsPipelineState(&pipelineDesc, &S_pipelineStateStencil);
 
 	//影本体の描画
@@ -130,8 +135,8 @@ void ShadowRenderer::StaticInitialize()
 	depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO; //書き込み不可
 	depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_GREATER; //大きければ合格
 	depthStencilDesc.StencilEnable = true; //ステンシルテストを行う
-	depthStencilDesc.StencilReadMask = shadowStencil;
-	depthStencilDesc.StencilWriteMask = shadowStencil;
+	depthStencilDesc.StencilReadMask = D3D12_DEFAULT_STENCIL_READ_MASK;
+	depthStencilDesc.StencilWriteMask = D3D12_DEFAULT_STENCIL_WRITE_MASK;
 	depthStencilDesc.FrontFace.StencilFailOp = D3D12_STENCIL_OP_KEEP;
 	depthStencilDesc.FrontFace.StencilDepthFailOp = D3D12_STENCIL_OP_KEEP;
 	depthStencilDesc.FrontFace.StencilPassOp = D3D12_STENCIL_OP_KEEP;
@@ -146,15 +151,15 @@ void ShadowRenderer::StaticInitialize()
 	CreateGraphicsPipelineState(&pipelineDesc, &S_pipelineStateDraw);
 
 	//ステンシルを元に戻す描画
-	depthStencilDesc.DepthEnable = false; //深度テストを行わない
+	depthStencilDesc.DepthEnable = true; //深度テストを行う
 	depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO; //書き込み不可
 	depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_ALWAYS; //必ず合格
 	depthStencilDesc.StencilEnable = true; //ステンシルテストを行う
 	depthStencilDesc.StencilReadMask = D3D12_DEFAULT_STENCIL_READ_MASK;
-	depthStencilDesc.StencilWriteMask = ADXObject::clearStencil;
+	depthStencilDesc.StencilWriteMask = D3D12_DEFAULT_STENCIL_WRITE_MASK;
 	depthStencilDesc.FrontFace.StencilFailOp = D3D12_STENCIL_OP_KEEP;
 	depthStencilDesc.FrontFace.StencilDepthFailOp = D3D12_STENCIL_OP_KEEP;
-	depthStencilDesc.FrontFace.StencilPassOp = D3D12_STENCIL_OP_INCR;
+	depthStencilDesc.FrontFace.StencilPassOp = D3D12_STENCIL_OP_REPLACE;
 	depthStencilDesc.FrontFace.StencilFunc = D3D12_COMPARISON_FUNC_ALWAYS;
 	depthStencilDesc.BackFace.StencilFailOp = depthStencilDesc.FrontFace.StencilFailOp;
 	depthStencilDesc.BackFace.StencilDepthFailOp = depthStencilDesc.FrontFace.StencilDepthFailOp;
@@ -162,6 +167,7 @@ void ShadowRenderer::StaticInitialize()
 	depthStencilDesc.BackFace.StencilFunc = depthStencilDesc.FrontFace.StencilFunc;
 
 	pipelineDesc.DepthStencilState = depthStencilDesc;
+	pipelineDesc.BlendState.AlphaToCoverageEnable = false; //アルファが低い所も描画する
 	pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE; //カリングなし
 	CreateGraphicsPipelineState(&pipelineDesc, &S_pipelineStateAntiStencil);
 }

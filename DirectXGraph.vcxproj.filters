@@ -40,6 +40,18 @@
     <Filter Include="ヘッダー ファイル\GameScript\Scenes">
       <UniqueIdentifier>{e61b57e2-cade-4ef2-8561-6f902c72d4bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GameScript\Gimmicks">
+      <UniqueIdentifier>{e2567e19-1e63-4028-a3f0-6f3f52aef4ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GameScript\Gimmicks">
+      <UniqueIdentifier>{8588222f-d574-477f-938f-5f07bdf3ee47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameScript\NotComponent">
+      <UniqueIdentifier>{5ebe34d3-8ced-4ab7-a1c3-e69df7e3f521}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GameScript\NotComponent">
+      <UniqueIdentifier>{76dea5e7-5496-47c3-9483-c49a6e09b932}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ADXEngine\ADXAudioSource.cpp">
@@ -132,18 +144,6 @@
     <ClCompile Include="Scripts\Enemies\Projectile.cpp">
       <Filter>ソース ファイル\GameScript\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\BattleFieldBox.cpp">
-      <Filter>ソース ファイル\GameScript</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\EnemySpawnData.cpp">
-      <Filter>ソース ファイル\GameScript</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\FieldBox.cpp">
-      <Filter>ソース ファイル\GameScript</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\Goal.cpp">
-      <Filter>ソース ファイル\GameScript</Filter>
-    </ClCompile>
     <ClCompile Include="Scripts\LiveEntity.cpp">
       <Filter>ソース ファイル\GameScript</Filter>
     </ClCompile>
@@ -156,19 +156,7 @@
     <ClCompile Include="Scripts\PlayerMini.cpp">
       <Filter>ソース ファイル\GameScript</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\PushableObject.cpp">
-      <Filter>ソース ファイル\GameScript</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\SceneGate.cpp">
-      <Filter>ソース ファイル\GameScript</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\SceneManager.cpp">
-      <Filter>ソース ファイル\GameScript</Filter>
-    </ClCompile>
     <ClCompile Include="Scripts\SceneTransition.cpp">
-      <Filter>ソース ファイル\GameScript</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\TutorialArea.cpp">
       <Filter>ソース ファイル\GameScript</Filter>
     </ClCompile>
     <ClCompile Include="ADXEngine\ADXGamePadInput.cpp">
@@ -215,6 +203,30 @@
     </ClCompile>
     <ClCompile Include="Scripts\Scenes\TitleScene.cpp">
       <Filter>ソース ファイル\GameScript\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\BattleFieldBox.cpp">
+      <Filter>ソース ファイル\GameScript\Gimmicks</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\FieldBox.cpp">
+      <Filter>ソース ファイル\GameScript\Gimmicks</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Goal.cpp">
+      <Filter>ソース ファイル\GameScript\Gimmicks</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\PushableObject.cpp">
+      <Filter>ソース ファイル\GameScript\Gimmicks</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\SceneGate.cpp">
+      <Filter>ソース ファイル\GameScript\Gimmicks</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\TutorialArea.cpp">
+      <Filter>ソース ファイル\GameScript\Gimmicks</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\EnemySpawnData.cpp">
+      <Filter>ソース ファイル\GameScript\NotComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\SceneManager.cpp">
+      <Filter>ソース ファイル\GameScript\NotComponent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -314,18 +326,6 @@
     <ClInclude Include="Scripts\Enemies\Projectile.h">
       <Filter>ヘッダー ファイル\GameScript\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\BattleFieldBox.h">
-      <Filter>ヘッダー ファイル\GameScript</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\EnemySpawnData.h">
-      <Filter>ヘッダー ファイル\GameScript</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\FieldBox.h">
-      <Filter>ヘッダー ファイル\GameScript</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\Goal.h">
-      <Filter>ヘッダー ファイル\GameScript</Filter>
-    </ClInclude>
     <ClInclude Include="Scripts\LiveEntity.h">
       <Filter>ヘッダー ファイル\GameScript</Filter>
     </ClInclude>
@@ -335,19 +335,7 @@
     <ClInclude Include="Scripts\PlayerMini.h">
       <Filter>ヘッダー ファイル\GameScript</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\PushableObject.h">
-      <Filter>ヘッダー ファイル\GameScript</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\SceneGate.h">
-      <Filter>ヘッダー ファイル\GameScript</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\SceneManager.h">
-      <Filter>ヘッダー ファイル\GameScript</Filter>
-    </ClInclude>
     <ClInclude Include="Scripts\SceneTransition.h">
-      <Filter>ヘッダー ファイル\GameScript</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripts\TutorialArea.h">
       <Filter>ヘッダー ファイル\GameScript</Filter>
     </ClInclude>
     <ClInclude Include="ADXEngine\ADXGamePadInput.h">
@@ -394,6 +382,30 @@
     </ClInclude>
     <ClInclude Include="Scripts\Scenes\TitleScene.h">
       <Filter>ヘッダー ファイル\GameScript\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\BattleFieldBox.h">
+      <Filter>ヘッダー ファイル\GameScript\Gimmicks</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\FieldBox.h">
+      <Filter>ヘッダー ファイル\GameScript\Gimmicks</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\SceneGate.h">
+      <Filter>ヘッダー ファイル\GameScript\Gimmicks</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\TutorialArea.h">
+      <Filter>ヘッダー ファイル\GameScript\Gimmicks</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Goal.h">
+      <Filter>ヘッダー ファイル\GameScript\Gimmicks</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\PushableObject.h">
+      <Filter>ヘッダー ファイル\GameScript\Gimmicks</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\SceneManager.h">
+      <Filter>ヘッダー ファイル\GameScript\NotComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\EnemySpawnData.h">
+      <Filter>ヘッダー ファイル\GameScript\NotComponent</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
