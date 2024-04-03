@@ -126,7 +126,7 @@ D3D12_GRAPHICS_PIPELINE_STATE_DESC ADXRenderer::CreateDefaultPipelineDesc(ID3DBl
 	ret.DepthStencilState.DepthEnable = true; //深度テストを行う
 	ret.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL; //書き込み許可
 	ret.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL; //同じか小さければ合格
-	ret.DSVFormat = DXGI_FORMAT_D32_FLOAT;
+	ret.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	ret.BlendState.AlphaToCoverageEnable = true; //アルファが低い所は描画しない
 
 	//レンダーターゲットのブレンド設定

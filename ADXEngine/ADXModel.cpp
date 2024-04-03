@@ -125,8 +125,8 @@ ADXModel* ADXModel::LoadADXModel(const std::string& filePath)
 	}
 	file.close();
 
-	model.Initialize();
 	model.name_ = filePath;
+	model.Initialize();
 
 	ADXDataPool::SetModelDataPool(model);
 
