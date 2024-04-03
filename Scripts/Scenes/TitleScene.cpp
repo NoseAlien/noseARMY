@@ -70,7 +70,7 @@ void TitleScene::Initialize()
 	version_->GetComponent<ADXTextRenderer>()->fontAspect_ = 0.75f;
 	version_->GetComponent<ADXTextRenderer>()->fontExtend_ = 2;
 	version_->GetComponent<ADXTextRenderer>()->anchor_ = ADXTextRenderer::lowerRight;
-	version_->GetComponent<ADXTextRenderer>()->text_ = "ver 0.2";
+	version_->GetComponent<ADXTextRenderer>()->text_ = "ver 0.3";
 	version_->transform_.localPosition_ = { 0.9f,-0.9f,0 };
 	version_->transform_.localScale_.x_ /= ADXWindow::GetInstance()->GetAspect();
 	version_->transform_.localScale_ *= 0.05f;
