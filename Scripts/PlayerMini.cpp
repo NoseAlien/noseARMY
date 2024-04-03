@@ -51,13 +51,13 @@ void PlayerMini::UniqueInitialize()
 	nose_ = ADXObject::Create({ 0,0,0.7f }, ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi,0 }), { 0.42f,0.35f,0.35f });
 	nose_->transform_.parent_ = &GetGameObject()->transform_;
 	ADXModelRenderer* tempRenderer = nose_->AddComponent<ADXModelRenderer>();
-	tempRenderer->model_ = &rect_;
+	tempRenderer->model_ = rect_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/apEGnoSE.png");
 
 	body_ = ADXObject::Create();
 	body_->transform_.parent_ = &GetGameObject()->transform_;
 	tempRenderer = body_->AddComponent<ADXModelRenderer>();
-	tempRenderer->model_ = &rect_;
+	tempRenderer->model_ = rect_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/apEGopTIon_fur.png");
 
 	targetRot_ = GetGameObject()->transform_.localRotation_;

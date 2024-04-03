@@ -23,12 +23,8 @@ private:
 	static bool S_sceneChanging;
 	static int32_t S_sceneChangeFrame;
 	static int32_t S_nextSceneNum;
-	static ADXModel S_rect;
 
 public:
-	//このクラスの初期化処理
-	static void StaticInitialize();
-
 	//このクラスの更新処理
 	static void StaticUpdate();
 

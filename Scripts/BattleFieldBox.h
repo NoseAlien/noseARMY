@@ -24,7 +24,7 @@ private:
 	bool guarderSpawned_ = false;
 	int32_t battling_ = 10;
 	std::string team_ = "";
-	ADXModel boxModel_{};
+	ADXModel* boxModel_ = nullptr;
 	float animationProgress_ = 0;
 
 public:

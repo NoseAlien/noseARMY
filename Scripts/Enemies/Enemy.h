@@ -13,7 +13,7 @@ private:
 protected:
 	ADXRigidbody* rigidbody_;
 
-	ADXModel enemyModel_{};
+	ADXModel* enemyModel_ = nullptr;
 	uint32_t nutralTex_ = 0;
 	uint32_t deadTex_ = 0;
 

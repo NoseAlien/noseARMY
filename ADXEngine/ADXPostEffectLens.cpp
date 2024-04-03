@@ -23,7 +23,7 @@ void ADXPostEffectLens::UniqueInitialize()
 	rect_ = ADXModel::CreateRect();
 	GetGameObject()->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::CreateADXImage(ADXWindow::GetInstance()->window_width_, ADXWindow::GetInstance()->window_height_);
 	GetGameObject()->renderLayer_ = 100;
-	GetGameObject()->GetComponent<ADXModelRenderer>()->model_ = &rect_;
+	GetGameObject()->GetComponent<ADXModelRenderer>()->model_ = rect_;
 
 
 	HRESULT result;

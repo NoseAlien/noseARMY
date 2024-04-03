@@ -20,10 +20,10 @@ void ADXSprite::UniqueInitialize()
 
 void ADXSprite::UniqueUpdate()
 {
-	GetGameObject()->GetComponent<ADXModelRenderer>()->model_ = &rect_;
+	GetGameObject()->GetComponent<ADXModelRenderer>()->model_ = rect_;
 
 	//モデルのuv座標を設定
-	rect_.vertices_ = {
+	rect_->vertices_ = {
 	{{-1.0f,-1.0f,0.0f},{}, {rectLU_.x_,rectRD_.y_}},//左下
 	{{-1.0f,1.0f,0.0f},{},{rectLU_.x_,rectLU_.y_}},//左上
 	{{1.0f,-1.0f,0.0f},{},{rectRD_.x_,rectRD_.y_}},//右下

@@ -29,7 +29,7 @@ void UnownFoot::EnemyInitialize()
 
 	enemyModel_ = ADXModel::LoadADXModel("model/UnownFoot.obj");
 
-	visual_->GetComponent<ADXModelRenderer>()->model_ = &enemyModel_;
+	visual_->GetComponent<ADXModelRenderer>()->model_ = enemyModel_;
 }
 
 void UnownFoot::EnemyUpdate()

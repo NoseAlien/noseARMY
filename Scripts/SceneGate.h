@@ -14,8 +14,8 @@ private:
 	bool hitted_ = false;
 	ADXObject* keyUI_ = nullptr;
 	ADXObject* stageNameUI_ = nullptr;
-	ADXModel boxModel_{};
-	ADXModel rectModel_{};
+	ADXModel* boxModel_ = nullptr;
+	ADXModel* rectModel_ = nullptr;
 
 public:
 	//ワープ先のステージ名を設定

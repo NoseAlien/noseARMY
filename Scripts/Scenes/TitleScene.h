@@ -10,7 +10,7 @@ private:
 	uint32_t backGroundTex_ = 0;
 	uint32_t keyImg_ = 0;
 
-	ADXModel rect_{};
+	ADXModel* rect_ = nullptr;
 
 	ADXMaterial unlitMat_{};
 

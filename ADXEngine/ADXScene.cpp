@@ -34,7 +34,7 @@ void ADXScene::Initialize()
 	//マテリアル
 	unlitMat_ = ADXMaterial::LoadMaterial("material/unlit.mtl");
 
-	rect_ = ADXModel::CreateRect();
+	ADXModel* rect = ADXModel::CreateRect();
 
 	//オブジェクト
 
@@ -45,7 +45,7 @@ void ADXScene::Initialize()
 	title_->transform_.UpdateMatrix();
 	ADXModelRenderer* tempRenderer = title_->AddComponent<ADXModelRenderer>();
 	tempRenderer->texture_ = titleImg_;
-	tempRenderer->model_ = &rect_;
+	tempRenderer->model_ = rect;
 	tempRenderer->material_ = unlitMat_;
 	tempRenderer->material_.alpha_ = 0;
 	logoJingle_ = title_->AddComponent<ADXAudioSource>();
@@ -56,28 +56,28 @@ void ADXScene::Initialize()
 	logo_A_->transform_.localScale_ = { 1,logoTextAspect,1 };
 	tempRenderer = logo_A_->AddComponent<ADXModelRenderer>();
 	tempRenderer->texture_ = logoImg_A_;
-	tempRenderer->model_ = &rect_;
+	tempRenderer->model_ = rect;
 	tempRenderer->material_ = unlitMat_;
 	tempRenderer->material_.alpha_ = 0;
 
 	logo_D_ = ADXObject::Duplicate(*logo_A_);
 	tempRenderer = logo_D_->AddComponent<ADXModelRenderer>();
 	tempRenderer->texture_ = logoImg_D_;
-	tempRenderer->model_ = &rect_;
+	tempRenderer->model_ = rect;
 	tempRenderer->material_ = unlitMat_;
 	tempRenderer->material_.alpha_ = 0;
 
 	logo_X_ = ADXObject::Duplicate(*logo_A_);
 	tempRenderer = logo_X_->AddComponent<ADXModelRenderer>();
 	tempRenderer->texture_ = logoImg_X_;
-	tempRenderer->model_ = &rect_;
+	tempRenderer->model_ = rect;
 	tempRenderer->material_ = unlitMat_;
 	tempRenderer->material_.alpha_ = 0;
 
 	logo_Engine_ = ADXObject::Duplicate(*logo_A_);
 	tempRenderer = logo_Engine_->AddComponent<ADXModelRenderer>();
 	tempRenderer->texture_ = logoImg_Engine_;
-	tempRenderer->model_ = &rect_;
+	tempRenderer->model_ = rect;
 	tempRenderer->material_ = unlitMat_;
 	tempRenderer->material_.alpha_ = 0;
 

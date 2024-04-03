@@ -13,7 +13,7 @@ public:
     ADXVector3 rectRD_ = { 1,1,0 };
 
 private:
-    ADXModel rect_{};
+    ADXModel* rect_ = nullptr;
 
 public:
     //表示範囲を指定

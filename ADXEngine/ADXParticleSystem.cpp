@@ -14,7 +14,7 @@ void ADXParticleSystem::Emission()
 		temp->transform_.parent_ = parent_;
 		temp->transform_.UpdateMatrix();
 		ADXModelRenderer* tempRenderer = temp->AddComponent<ADXModelRenderer>();
-		tempRenderer->model_ = &particleModel_;
+		tempRenderer->model_ = particleModel_;
 		particle_->animation_ = animation_;
 		particle_->scale_ = scale_;
 		particle_->maxLifeTime_ = lifeTime_;

@@ -13,7 +13,7 @@ private:
 private:
 	ADXAudioSource* jumpSE_ = nullptr;
 
-	ADXModel rect_{};
+	ADXModel* rect_ = nullptr;
 	uint32_t preAttackTex_ = 0;
 	uint32_t attackTex_ = 0;
 	phase phase_{};

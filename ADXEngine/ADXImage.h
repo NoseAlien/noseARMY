@@ -38,7 +38,7 @@ public:
 	static ID3D12DescriptorHeap* GetSrvHeap() { return S_srvHeap.Get(); };
 
 	//画像データ読み込み
-	static uint32_t LoadADXImage(const std::string& imgName, bool generateMipMaps = false);
+	static uint32_t LoadADXImage(const std::string& filePath, bool generateMipMaps = false);
 
 	//画像データを新規作成
 	static uint32_t CreateADXImage(const uint64_t& width, const uint64_t& height, const std::string& imgName = "");

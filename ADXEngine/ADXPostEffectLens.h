@@ -5,7 +5,7 @@
 class ADXPostEffectLens : public ADXComponent
 {
 private:
-	ADXModel rect_{};
+	ADXModel* rect_ = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12Resource> depthBuff_ = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descHeapRTV_ = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descHeapDSV_ = nullptr;

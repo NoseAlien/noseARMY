@@ -11,10 +11,10 @@ public:
 private:
 	std::string team_ = "";
 	int32_t sceneTransitionCount_ = MaxSceneTransitionCount;
-	ADXObject *clearUI_ = nullptr;
-	ADXObject *keyUI_ = nullptr;
-	ADXModel boxModel_{};
-	ADXModel rectModel_{};
+	ADXObject* clearUI_ = nullptr;
+	ADXObject* keyUI_ = nullptr;
+	ADXModel* boxModel_ = nullptr;
+	ADXModel* rectModel_ = nullptr;
 
 public:
 	//初期化処理

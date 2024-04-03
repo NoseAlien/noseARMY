@@ -51,7 +51,7 @@ public:
 	anchor anchor_{};
 
 private:
-	ADXModel model_ = ADXModel::CreateRect();
+	ADXModel* model_ = ADXModel::CreateRect();
 	std::vector<ADXWorldTransform>fontWtfs_;
 
 	//文字からフォント画像を検索して追加

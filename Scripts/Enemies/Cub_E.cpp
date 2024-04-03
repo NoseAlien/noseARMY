@@ -33,7 +33,7 @@ void Cub_E::EnemyInitialize()
 	hair_ = ADXObject::Create();
 	hair_->transform_.parent_ = &visual_->transform_;
 	ADXModelRenderer* tempRenderer = hair_->AddComponent<ADXModelRenderer>();
-	tempRenderer->model_ = &rect_;
+	tempRenderer->model_ = rect_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/Cub_E_hair.png");
 	//体の一部として登録
 	bodyParts_.push_back(hair_);
@@ -46,7 +46,7 @@ void Cub_E::EnemyInitialize()
 	tail_ = ADXObject::Create();
 	tail_->transform_.parent_ = &tailRig_->transform_;
 	tempRenderer = tail_->AddComponent<ADXModelRenderer>();
-	tempRenderer->model_ = &rect_;
+	tempRenderer->model_ = rect_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/Cub_E_tail.png");
 	//体の一部として登録
 	bodyParts_.push_back(tail_);

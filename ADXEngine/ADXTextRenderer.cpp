@@ -79,7 +79,7 @@ void ADXTextRenderer::UniqueRendering([[maybe_unused]] ID3D12Device* device, ID3
 		fontWtfs_.back().UpdateConstBuffer();
 
 		// 描画コマンド
-		model_.Draw(fontWtfs_.back().constBuffTransform_.Get());
+		model_->Draw(fontWtfs_.back().constBuffTransform_.Get());
 	}
 }
 
