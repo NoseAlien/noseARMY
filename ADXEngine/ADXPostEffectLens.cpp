@@ -1,4 +1,4 @@
-﻿#include "d3dx12.h"
+#include "d3dx12.h"
 #include <d3dcompiler.h>
 #include "ADXPostEffectLens.h"
 #include "ADXWindow.h"
@@ -209,7 +209,7 @@ void ADXPostEffectLens::CreateGraphicsPipelineState()
 	pipelineDesc.BlendState.RenderTarget[0] = blenddesc;
 
 	//深度バッファのフォーマット
-	pipelineDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
+	pipelineDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	//頂点レイアウトの設定
 	pipelineDesc.InputLayout.pInputElementDescs = inputLayout;
