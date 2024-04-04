@@ -254,6 +254,7 @@ void ADXObject::StaticDraw()
 	//全オブジェクトの描画前処理
 	for (auto& itr : allObjPtr)
 	{
+		itr->drawed_ = false;
 		for (auto& comItr : itr->components_)
 		{
 			comItr->OnPreRender();
@@ -306,18 +307,18 @@ void ADXObject::StaticDraw()
 		//renderLayer_の値が最も小さいオブジェクトを取り出す
 		for (auto& itr : allObjPtr)
 		{
-			if (itr->renderLayer_ == nowLayer)
+			if (itr->renderLayer_ == nowLayer && itr->isVisible_ && itr->isActive_ && !itr->drawed_)
 			{
 				thisLayerObjPtr.push_back(itr);
 			}
 		}
 
-		for (int32_t nowSortingOrder = minLayer; nowSortingOrder <= maxLayer; nowSortingOrder++)
+		for (int32_t nowSortingOrder = minSortingOrder; nowSortingOrder <= maxSortingOrder; nowSortingOrder++)
 		{
 			//その中からsortingOrder_の値が最も小さいオブジェクトを取り出す
 			for (auto& itr : thisLayerObjPtr)
 			{
-				if (itr->renderLayer_ == nowSortingOrder)
+				if (itr->sortingOrder_ == nowSortingOrder && !itr->drawed_)
 				{
 					thisSortingOrderObjPtr.push_back(itr);
 				}
@@ -376,10 +377,8 @@ void ADXObject::StaticDraw()
 					}
 				}
 
-				if (thisSortingOrderObjPtr[target]->isVisible_ && thisSortingOrderObjPtr[target]->isActive_)
-				{
-					thisSortingOrderObjPtr[target]->Draw();
-				}
+				thisSortingOrderObjPtr[target]->Draw();
+				thisSortingOrderObjPtr[target]->drawed_ = true;
 				thisSortingOrderObjPtr.erase(thisSortingOrderObjPtr.begin() + target);
 			}
 		}

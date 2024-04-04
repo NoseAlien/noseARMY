@@ -39,7 +39,7 @@ void Pebble::UniqueInitialize()
 	billBoard_->sortingOrder_ = defaultSortingOrder;
 	//影のオブジェクトを作成
 	shadow_ = ADXObject::Create();
-	shadow_->transform_.localPosition_ = { 0,-6.9f,0 };
+	shadow_->transform_.localPosition_ = { 0,-6.5f,0 };
 	shadow_->transform_.localScale_ = { 1,6,1 };
 	shadow_->transform_.parent_ = &GetGameObject()->transform_;
 	ShadowRenderer* tempShadowRenderer = shadow_->AddComponent<ShadowRenderer>();

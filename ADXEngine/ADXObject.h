@@ -39,6 +39,7 @@ public:
 private:
 	std::list<std::unique_ptr<ADXComponent>> components_{};
 	bool deleteFlag_ = false;
+	bool drawed_ = false;
 
 public:
 	//このオブジェクトを描画
