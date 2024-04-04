@@ -40,6 +40,7 @@ int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int32_t)
 		ADXAudioSource::StaticInitialize();
 		ADXImage::StaticInitialize();
 		ADXObject::StaticInitialize();
+		SceneTransition::StaticInitialize();
 		ADXModelRenderer::StaticInitialize();
 		ADXTextRenderer::StaticInitialize();
 		ShadowRenderer::StaticInitialize();

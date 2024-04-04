@@ -43,22 +43,24 @@ void ADXImage::StaticInitialize()
 	S_incrementSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 }
 
-uint32_t ADXImage::LoadADXImage(const std::string& filePath, bool generateMipMaps)
+uint32_t ADXImage::LoadADXImage(const std::string& imgName, bool generateMipMaps)
 {
-	std::vector<ADXImage> imgDataPool = ADXDataPool::GetImgDataPool();
-	//既に読み込んだ画像ならそのハンドルを返して終わり
-	for (int32_t i = 0; i < imgDataPool.size(); i++)
-	{
-		if (imgDataPool[i].name_ == filePath)
-		{
-			return imgDataPool[i].Ghandle_;
-		}
-	}
-
 	HRESULT result;
 	ID3D12Device* device = ADXCommon::GetInstance()->GetDevice();
 
 	ADXImage image;
+
+	std::vector<ADXImage> imgDataPool = ADXDataPool::GetImgDataPool();
+
+	//既に読み込んだ画像ならそのハンドルを返して終わり
+	for (int32_t i = 0; i < imgDataPool.size(); i++)
+	{
+		if (imgDataPool[i].name_ == imgName)
+		{
+			image.Ghandle_ = imgDataPool[i].Ghandle_;
+			return image.Ghandle_;
+		}
+	}
 
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
@@ -71,19 +73,19 @@ uint32_t ADXImage::LoadADXImage(const std::string& filePath, bool generateMipMap
 	std::string fileExt = "";
 
 	//区切り文字'.'が出てくる一番最後の部分を検索
-	pos1 = filePath.rfind('.');
+	pos1 = imgName.rfind('.');
 	//検索がヒットしたら
 	if (pos1 != std::wstring::npos)
 	{
 		//区切り文字の後ろをファイル拡張子として保存
-		fileExt = filePath.substr(pos1 + 1, filePath.size() - pos1 - 1);
+		fileExt = imgName.substr(pos1 + 1, imgName.size() - pos1 - 1);
 	}
 
 	if (fileExt == "dds")
 	{
 		//DDSテクスチャのロード
 		result = LoadFromDDSFile(
-			ADXUtility::StringToWideChar("Resources/" + filePath),
+			ADXUtility::StringToWideChar("Resources/" + imgName),
 			DDS_FLAGS_NONE,
 			&metadata, scratchImg);
 	}
@@ -91,7 +93,7 @@ uint32_t ADXImage::LoadADXImage(const std::string& filePath, bool generateMipMap
 	{
 		//WICテクスチャのロード
 		result = LoadFromWICFile(
-			ADXUtility::StringToWideChar("Resources/" + filePath),
+			ADXUtility::StringToWideChar("Resources/" + imgName),
 			WIC_FLAGS_NONE,
 			&metadata, scratchImg);
 
@@ -164,7 +166,7 @@ uint32_t ADXImage::LoadADXImage(const std::string& filePath, bool generateMipMap
 
 	image.Ghandle_ = (int32_t)(S_srvHandle.ptr - S_CpuStartHandle);
 
-	image.name_ = filePath;
+	image.name_ = imgName;
 
 	//一つハンドルを進める
 	S_srvHandle.ptr += S_incrementSize;

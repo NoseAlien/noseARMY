@@ -41,8 +41,8 @@ private:
 	ADXObject* killCountIcon_ = nullptr;
 	ADXObject* killCountUI_ = nullptr;
 
-	ADXModel* rect_ = nullptr;
-	ADXModel* playerModel_ = nullptr;
+	ADXModel rect_{};
+	ADXModel playerModel_{};
 
 	ADXAudioSource* jumpSE_ = nullptr;
 	ADXAudioSource* splitSE_ = nullptr;

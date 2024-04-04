@@ -18,6 +18,10 @@ private:
 	uint32_t backGroundTex_{};
 	uint32_t groundImg_{};
 
+	//3Dモデル
+	ADXModel ground_{};
+	ADXModel rect_{};
+
 	//オブジェクト
 	SceneTransition* shutter_ = nullptr;
 	ADXObject* key_ = nullptr;

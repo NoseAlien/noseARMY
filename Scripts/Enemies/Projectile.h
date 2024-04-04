@@ -5,7 +5,7 @@
 class Projectile : public Enemy
 {
 private:
-	ADXModel* rect_;
+	ADXModel rect_{};
 	std::vector<uint32_t> texs_ = {};
 	float texIndex_ = 0;
 	float animProgressSpeed_ = 0;

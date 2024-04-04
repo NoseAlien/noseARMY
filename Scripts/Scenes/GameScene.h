@@ -42,8 +42,8 @@ private:
 	uint32_t constructionInfoImg = 0;
 
 	//3Dモデル
-	ADXModel* ground_;
-	ADXModel* rect_;
+	ADXModel ground_{};
+	ADXModel rect_{};
 
 	//オブジェクト
 	SceneTransition* shutter_ = nullptr;

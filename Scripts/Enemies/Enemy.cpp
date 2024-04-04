@@ -18,7 +18,7 @@ void Enemy::LiveEntitiesInitialize()
 
 	enemyModel_ = ADXModel::LoadADXModel("model/groundBlock.obj");
 
-	visual_->GetComponent<ADXModelRenderer>()->model_ = enemyModel_;
+	visual_->GetComponent<ADXModelRenderer>()->model_ = &enemyModel_;
 	visual_->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/battleField.png");
 
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();

@@ -34,7 +34,7 @@ void Pebble::UniqueInitialize()
 	billBoard_ = ADXObject::Create();
 	billBoard_->transform_.parent_ = &GetGameObject()->transform_;
 	ADXModelRenderer* tempRenderer = billBoard_->AddComponent<ADXModelRenderer>();
-	tempRenderer->model_ = rect_;
+	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = billBoardTex_;
 	billBoard_->sortingOrder_ = defaultSortingOrder;
 	//影のオブジェクトを作成
@@ -43,7 +43,7 @@ void Pebble::UniqueInitialize()
 	shadow_->transform_.localScale_ = { 1,6,1 };
 	shadow_->transform_.parent_ = &GetGameObject()->transform_;
 	ShadowRenderer* tempShadowRenderer = shadow_->AddComponent<ShadowRenderer>();
-	tempShadowRenderer->model_ = shadowModel_;
+	tempShadowRenderer->model_ = &shadowModel_;
 	tempShadowRenderer->texture_ = shadowTex_;
 	tempShadowRenderer->material_.ambient_ = { 0,0,0 };
 	tempShadowRenderer->material_.alpha_ = 0.6f;

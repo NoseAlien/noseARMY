@@ -26,18 +26,18 @@ void Goal::Initialize(const std::string& setTeam)
 	ADXModelRenderer* tempRenderer = GetGameObject()->AddComponent<ADXModelRenderer>();
 	GetGameObject()->sortingOrder_ = 3;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/goalField.png");
-	tempRenderer->model_ = boxModel_;
+	tempRenderer->model_ = &boxModel_;
 
 	clearUI_ = ADXObject::Create();
 	clearUI_->transform_.rectTransform_ = true;
 	tempRenderer = clearUI_->AddComponent<ADXModelRenderer>();
-	tempRenderer->model_ = rectModel_;
+	tempRenderer->model_ = &rectModel_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/clear.png");
 	clearUI_->renderLayer_ = 5;
 
 	keyUI_ = ADXObject::Duplicate(*clearUI_);
 	tempRenderer = keyUI_->AddComponent<ADXModelRenderer>();
-	tempRenderer->model_ = rectModel_;
+	tempRenderer->model_ = &rectModel_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
 }
 

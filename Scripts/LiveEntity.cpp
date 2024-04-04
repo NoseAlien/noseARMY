@@ -45,7 +45,7 @@ void LiveEntity::UniqueInitialize()
 	hpGaugeBG_->transform_.parent_ = &GetGameObject()->transform_;
 	hpGaugeBG_->transform_.UpdateMatrix();
 	ADXModelRenderer* tempRenderer = hpGaugeBG_->AddComponent<ADXModelRenderer>();
-	tempRenderer->model_ = rect_;
+	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = gaugeTex_;
 	hpGaugeBG_->renderLayer_ = 1;
 
@@ -53,7 +53,7 @@ void LiveEntity::UniqueInitialize()
 	hpGauge_->transform_.parent_ = &hpGaugeBG_->transform_;
 	hpGauge_->transform_.UpdateMatrix();
 	tempRenderer = hpGauge_->AddComponent<ADXModelRenderer>();
-	tempRenderer->model_ = rect_;
+	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = gaugeTex_;
 	hpGauge_->renderLayer_ = 2;
 
@@ -62,7 +62,7 @@ void LiveEntity::UniqueInitialize()
 	shadow_->transform_.localScale_ = { 1,6,1 };
 	shadow_->transform_.parent_ = &GetGameObject()->transform_;
 	ShadowRenderer* tempShadowRenderer = shadow_->AddComponent<ShadowRenderer>();
-	tempShadowRenderer->model_ = shadowModel_;
+	tempShadowRenderer->model_ = &shadowModel_;
 	tempShadowRenderer->texture_ = shadowTex_;
 	tempShadowRenderer->material_.ambient_ = { 0,0,0 };
 	tempShadowRenderer->material_.alpha_ = 0.6f;

@@ -20,7 +20,7 @@ void Projectile::EnemyInitialize()
 	billBoard_ = ADXObject::Create();
 	billBoard_->transform_.parent_ = &visual_->transform_;
 	ADXModelRenderer* tempRenderer = billBoard_->AddComponent<ADXModelRenderer>();
-	tempRenderer->model_ = rect_;
+	tempRenderer->model_ = &rect_;
 	//体の一部として登録
 	bodyParts_.push_back(billBoard_);
 }

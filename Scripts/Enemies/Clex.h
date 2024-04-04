@@ -11,7 +11,7 @@ private:
 	};
 
 private:
-	ADXModel* rect_ = nullptr;
+	ADXModel rect_{};
 	uint32_t attackTex_ = 0;
 	phase phase_{};
 

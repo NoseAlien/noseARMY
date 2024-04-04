@@ -1,4 +1,4 @@
-#include "StageSelectScene.h"
+﻿#include "StageSelectScene.h"
 #include "SceneTransition.h"
 #include "ADXModelRenderer.h"
 #include "ADXKeyConfig.h"
@@ -15,8 +15,8 @@ void StageSelectScene::Initialize()
 	backGroundTex_ = ADXImage::LoadADXImage("texture/skyBG.png");
 	groundImg_ = ADXImage::LoadADXImage("texture/GroundBlock.png");
 
-	ADXModel* rect = ADXModel::CreateRect();
-	ADXModel* ground = ADXModel::LoadADXModel("model/groundBlock.obj");
+	rect_ = ADXModel::CreateRect();
+	ground_ = ADXModel::LoadADXModel("model/groundBlock.obj");
 
 	ADXObject* temp = ADXObject::Create();
 	shutter_ = temp->AddComponent<SceneTransition>();
@@ -28,14 +28,14 @@ void StageSelectScene::Initialize()
 
 	floors_.push_back(ADXObject::Create({ 0,-1,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 2,2,2 }));
 	ADXModelRenderer* tempRenderer = floors_.back()->AddComponent<ADXModelRenderer>();
-	tempRenderer->model_ = ground;
+	tempRenderer->model_ = &ground_;
 	tempRenderer->texture_ = groundImg_;
 	ADXCollider* tempCol = floors_.back()->AddComponent<ADXCollider>();
 	tempCol->colType_ = ADXCollider::box;
 
 	floors_.push_back(ADXObject::Create({ 0,-2,0 }, ADXQuaternion::EulerToQuaternion({ 0,0,0 }), { 50,1,50 }));
 	tempRenderer = floors_.back()->AddComponent<ADXModelRenderer>();
-	tempRenderer->model_ = ground;
+	tempRenderer->model_ = &ground_;
 	tempRenderer->texture_ = groundImg_;
 	tempCol = floors_.back()->AddComponent<ADXCollider>();
 	tempCol->colType_ = ADXCollider::box;
@@ -78,7 +78,7 @@ void StageSelectScene::Initialize()
 	backGround_->transform_.rectTransform_ = true;
 	backGround_->transform_.UpdateMatrix();
 	tempRenderer = backGround_->AddComponent<ADXModelRenderer>();
-	tempRenderer->model_ = rect;
+	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = backGroundTex_;
 	backGround_->renderLayer_ = -1;
 
@@ -87,7 +87,7 @@ void StageSelectScene::Initialize()
 	key_->transform_.localScale_ = { 0.3f,0.45f,1 };
 	key_->transform_.UpdateMatrix();
 	tempRenderer = key_->AddComponent<ADXModelRenderer>();
-	tempRenderer->model_ = rect;
+	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = keyImg_;
 	key_->renderLayer_ = 1;
 }

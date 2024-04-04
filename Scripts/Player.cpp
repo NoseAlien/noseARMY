@@ -184,14 +184,14 @@ void Player::LiveEntitiesInitialize()
 
 	rigidbody_ = GetGameObject()->AddComponent<ADXRigidbody>();
 
-	visual_->GetComponent<ADXModelRenderer>()->model_ = playerModel_;
+	visual_->GetComponent<ADXModelRenderer>()->model_ = &playerModel_;
 	visual_->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/apEG_fur.png");
 
 	nose_ = ADXObject::Create({ 0,0,1.01f }, ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi,0 }), { 0.42f,0.35f,0.35f });
 	nose_->transform_.parent_ = &visual_->transform_;
 	nose_->transform_.UpdateMatrix();
 	ADXModelRenderer* tempRenderer = nose_->AddComponent<ADXModelRenderer>();
-	tempRenderer->model_ = rect_;
+	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/apEGnoSE.png");
 	tempRenderer->material_ = visual_->GetComponent<ADXModelRenderer>()->material_;
 	bodyParts_.push_back(nose_);
@@ -208,7 +208,7 @@ void Player::LiveEntitiesInitialize()
 	tutorialWindow_->transform_.rectTransform_ = true;
 	tutorialWindow_->transform_.UpdateMatrix();
 	tempRenderer = tutorialWindow_->AddComponent<ADXModelRenderer>();
-	tempRenderer->model_ = rect_;
+	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/WhiteDot.png");
 	tempRenderer->material_ = visual_->GetComponent<ADXModelRenderer>()->material_;
 	tutorialWindow_->renderLayer_ = 1;
@@ -217,7 +217,7 @@ void Player::LiveEntitiesInitialize()
 	outOfField_->transform_.rectTransform_ = true;
 	outOfField_->transform_.UpdateMatrix();
 	tempRenderer = outOfField_->AddComponent<ADXModelRenderer>();
-	tempRenderer->model_ = rect_;
+	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/outOfField.png");
 	tempRenderer->material_ = visual_->GetComponent<ADXModelRenderer>()->material_;
 	outOfField_->renderLayer_ = 1;
@@ -226,7 +226,7 @@ void Player::LiveEntitiesInitialize()
 	gameOverFilter_->transform_.rectTransform_ = true;
 	gameOverFilter_->transform_.UpdateMatrix();
 	tempRenderer = gameOverFilter_->AddComponent<ADXModelRenderer>();
-	tempRenderer->model_ = rect_;
+	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/WhiteDot.png");
 	tempRenderer->material_ = visual_->GetComponent<ADXModelRenderer>()->material_;
 	gameOverFilter_->renderLayer_ = 1;
@@ -237,7 +237,7 @@ void Player::LiveEntitiesInitialize()
 	dead_->transform_.parent_ = &GetGameObject()->transform_;
 	dead_->transform_.UpdateMatrix();
 	tempRenderer = dead_->AddComponent<ADXModelRenderer>();
-	tempRenderer->model_ = rect_;
+	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/apEG_dead.png");
 	tempRenderer->material_ = visual_->GetComponent<ADXModelRenderer>()->material_;
 	dead_->renderLayer_ = gameOverLayer;
@@ -245,7 +245,7 @@ void Player::LiveEntitiesInitialize()
 	keyUI_ = ADXObject::Create();
 	keyUI_->transform_.rectTransform_ = true;
 	tempRenderer = keyUI_->AddComponent<ADXModelRenderer>();
-	tempRenderer->model_ = rect_;
+	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/PRESS_SPACE.png");
 	keyUI_->renderLayer_ = uiLayer;
 
@@ -269,7 +269,7 @@ void Player::LiveEntitiesInitialize()
 	deathCountIcon_ = ADXObject::Create();
 	deathCountIcon_->transform_.rectTransform_ = true;
 	tempRenderer = deathCountIcon_->AddComponent<ADXModelRenderer>();
-	tempRenderer->model_ = rect_;
+	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/apEG_dead.png");
 	deathCountIcon_->renderLayer_ = uiLayer;
 	deathCountIcon_->transform_.localPosition_ = { 0.85f,0.5f,0 };
@@ -290,7 +290,7 @@ void Player::LiveEntitiesInitialize()
 	killCountIcon_ = ADXObject::Create();
 	killCountIcon_->transform_.rectTransform_ = true;
 	tempRenderer = killCountIcon_->AddComponent<ADXModelRenderer>();
-	killCountIcon_->GetComponent<ADXModelRenderer>()->model_ = rect_;
+	killCountIcon_->GetComponent<ADXModelRenderer>()->model_ = &rect_;
 	killCountIcon_->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::LoadADXImage("texture/Cub_E_dead.png");
 	killCountIcon_->renderLayer_ = uiLayer;
 	killCountIcon_->transform_.localPosition_ = { 0.85f,0.8f,0 };

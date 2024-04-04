@@ -6,8 +6,8 @@
 class Pebble : public ADXComponent
 {
 private:
-	ADXModel* rect_ = nullptr;
-	ADXModel* shadowModel_ = nullptr;
+	ADXModel rect_{};
+	ADXModel shadowModel_{};
 	uint32_t billBoardTex_ = 0;
 	uint32_t shadowTex_ = 0;
 

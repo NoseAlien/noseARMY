@@ -24,7 +24,7 @@ private:
 	ADXAudioSource* logoJingle_ = nullptr;
 
 	//3Dモデル
-	ADXModel* rect_ = nullptr;
+	ADXModel rect_{};
 
 	//マテリアル
 	ADXMaterial unlitMat_{};

@@ -1,6 +1,5 @@
 ﻿#include "ADXModel.h"
 #include "ADXCommon.h"
-#include "ADXDataPool.h"
 #include "ADXObject.h"
 #include <math.h>
 
@@ -8,22 +7,14 @@
 #include <sstream>
 
 using namespace DirectX;
-using namespace ADXEngine;
 
 ADXModel::ADXModel()
 {
 
 }
 
-ADXModel* ADXModel::LoadADXModel(const std::string& filePath)
+ADXModel ADXModel::LoadADXModel(const std::string& filePath)
 {
-	//既に読み込んだモデルならそのポインタを返して終わり
-	ADXModel* modelData = ADXDataPool::GetModelData(filePath);
-	if (modelData != nullptr)
-	{
-		return modelData;
-	}
-
 	ADXModel model;
 
 	std::ifstream file;
@@ -125,12 +116,9 @@ ADXModel* ADXModel::LoadADXModel(const std::string& filePath)
 	}
 	file.close();
 
-	model.name_ = filePath;
 	model.Initialize();
 
-	ADXDataPool::SetModelDataPool(model);
-
-	return ADXDataPool::GetModelData(filePath);
+	return model;
 }
 
 void ADXModel::SetNormal()
@@ -222,10 +210,15 @@ void ADXModel::CreateIndexBufferView()
 			D3D12_RESOURCE_STATE_GENERIC_READ,
 			nullptr,
 			IID_PPV_ARGS(&indexBuff_));
+
+	
 }
 
 void ADXModel::Initialize()
 {
+	//法線を自動設定
+	SetNormal();
+
 	//頂点バッファビュー作成
 	CreateVertexBufferView();
 
@@ -302,26 +295,17 @@ void ADXModel::Update()
 	ibView_.SizeInBytes = sizeIB;
 }
 
-ADXModel* ADXModel::CreateRect()
+ADXModel ADXModel::CreateRect()
 {
-	std::string name = "rect";
-
-	//既に読み込んだモデルならそのポインタを返して終わり
-	ADXModel* modelData = ADXDataPool::GetModelData(name);
-	if (modelData != nullptr)
-	{
-		return modelData;
-	}
-
-	ADXModel rect;
-	rect.vertices_ = {
+	ADXModel rect_;
+	rect_.vertices_ = {
 	{{-1.0f,-1.0f,0.0f},{}, {0.0f,1.0f}},//左下
 	{{-1.0f,1.0f,0.0f},{},{0.0f,0.0f}},//左上
 	{{1.0f,-1.0f,0.0f},{},{1.0f,1.0f}},//右下
 	{{1.0f,1.0f,0.0f},{},{1.0f,0.0f}},//右上
 	};
 	//インデックスデータ
-	rect.indices_ =
+	rect_.indices_ =
 	{
 		0,1,2,
 		2,1,3,
@@ -329,11 +313,6 @@ ADXModel* ADXModel::CreateRect()
 		1,0,2,
 		1,2,3,
 	};
-
-	rect.name_ = name;
-	rect.Initialize();
-
-	ADXDataPool::SetModelDataPool(rect);
-
-	return ADXDataPool::GetModelData(name);
+	rect_.Initialize();
+	return rect_;
 }

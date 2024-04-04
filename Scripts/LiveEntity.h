@@ -40,8 +40,8 @@ protected:
 	std::vector<ADXObject*> bodyParts_{};
 
 private:
-	ADXModel* rect_ = nullptr;
-	ADXModel* shadowModel_ = nullptr;
+	ADXModel rect_{};
+	ADXModel shadowModel_{};
 	uint32_t gaugeTex_ = 0;
 	uint32_t shadowTex_ = 0;
 	ADXParticleSystem* damageParticle_ = nullptr;

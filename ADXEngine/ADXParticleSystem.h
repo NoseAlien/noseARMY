@@ -16,7 +16,7 @@ public:
 	float scale_ = 1;
 	int32_t lifeTime_ = 10;
 	ADXTexAnimation animation_{};
-	ADXModel* particleModel_ = nullptr;
+	ADXModel particleModel_{};
 	std::list<ADXParticle*> particles_{};
 	bool billboard_ = true;
 

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <vector>
 #include <d3d12.h>
@@ -19,11 +19,10 @@ public:
 	};
 
 public:
+	std::string name_ = {};
+
 	std::vector<Vertex> vertices_{};
 	std::vector <uint16_t> indices_{};
-
-private:
-	std::string name_ = {};
 
 	D3D12_VERTEX_BUFFER_VIEW vbView_{};
 	D3D12_INDEX_BUFFER_VIEW ibView_{};
@@ -34,8 +33,6 @@ private:
 public:
 	//コンストラクタ
 	ADXModel();
-
-	std::string GetName() { return name_; }
 
 	//法線を自動設定
 	void SetNormal();
@@ -58,8 +55,8 @@ private:
 
 public:
 	//モデルデータ読み込み
-	static ADXModel* LoadADXModel(const std::string& filePath);
+	static ADXModel LoadADXModel(const std::string& filePath);
 
 	//画像表示用の正方形ポリゴンを作成
-	static ADXModel* CreateRect();
+	static ADXModel CreateRect();
 };
