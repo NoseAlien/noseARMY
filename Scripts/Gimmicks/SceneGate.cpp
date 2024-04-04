@@ -1,4 +1,4 @@
-﻿#include "SceneGate.h"
+﻿#include "Gimmicks/SceneGate.h"
 #include "LiveEntity.h"
 #include "SceneTransition.h"
 #include "ADXCollider.h"

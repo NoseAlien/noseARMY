@@ -12,9 +12,9 @@
 #include "SceneTransition.h"
 #include "Player.h"
 #include "Enemies/Enemy.h"
-#include "FieldBox.h"
-#include "BattleFieldBox.h"
-#include "Goal.h"
+#include "Gimmicks/FieldBox.h"
+#include "Gimmicks/BattleFieldBox.h"
+#include "Gimmicks/Goal.h"
 
 //プレイ画面のシーン
 class GameScene : public ADXScene

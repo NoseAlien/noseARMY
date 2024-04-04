@@ -9,7 +9,7 @@
 #include <list>
 #include "LiveEntity.h"
 #include "PlayerMini.h"
-#include "TutorialArea.h"
+#include "Gimmicks/TutorialArea.h"
 #include "ADXCamera.h"
 #include "ADXRigidbody.h"
 #include "ADXTextRenderer.h"

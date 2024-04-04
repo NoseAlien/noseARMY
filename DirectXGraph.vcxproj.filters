@@ -204,28 +204,28 @@
     <ClCompile Include="Scripts\Scenes\TitleScene.cpp">
       <Filter>ソース ファイル\GameScript\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\BattleFieldBox.cpp">
+    <ClCompile Include="Scripts\Gimmicks\BattleFieldBox.cpp">
       <Filter>ソース ファイル\GameScript\Gimmicks</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\FieldBox.cpp">
+    <ClCompile Include="Scripts\Gimmicks\FieldBox.cpp">
       <Filter>ソース ファイル\GameScript\Gimmicks</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\Goal.cpp">
+    <ClCompile Include="Scripts\Gimmicks\Goal.cpp">
       <Filter>ソース ファイル\GameScript\Gimmicks</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\PushableObject.cpp">
+    <ClCompile Include="Scripts\Gimmicks\PushableObject.cpp">
       <Filter>ソース ファイル\GameScript\Gimmicks</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\SceneGate.cpp">
+    <ClCompile Include="Scripts\Gimmicks\SceneGate.cpp">
       <Filter>ソース ファイル\GameScript\Gimmicks</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\TutorialArea.cpp">
+    <ClCompile Include="Scripts\Gimmicks\TutorialArea.cpp">
       <Filter>ソース ファイル\GameScript\Gimmicks</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\EnemySpawnData.cpp">
+    <ClCompile Include="Scripts\NotComponent\EnemySpawnData.cpp">
       <Filter>ソース ファイル\GameScript\NotComponent</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\SceneManager.cpp">
+    <ClCompile Include="Scripts\NotComponent\SceneManager.cpp">
       <Filter>ソース ファイル\GameScript\NotComponent</Filter>
     </ClCompile>
   </ItemGroup>
@@ -383,28 +383,28 @@
     <ClInclude Include="Scripts\Scenes\TitleScene.h">
       <Filter>ヘッダー ファイル\GameScript\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\BattleFieldBox.h">
+    <ClInclude Include="Scripts\Gimmicks\BattleFieldBox.h">
       <Filter>ヘッダー ファイル\GameScript\Gimmicks</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\FieldBox.h">
+    <ClInclude Include="Scripts\Gimmicks\FieldBox.h">
       <Filter>ヘッダー ファイル\GameScript\Gimmicks</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\SceneGate.h">
+    <ClInclude Include="Scripts\Gimmicks\SceneGate.h">
       <Filter>ヘッダー ファイル\GameScript\Gimmicks</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\TutorialArea.h">
+    <ClInclude Include="Scripts\Gimmicks\TutorialArea.h">
       <Filter>ヘッダー ファイル\GameScript\Gimmicks</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\Goal.h">
+    <ClInclude Include="Scripts\Gimmicks\Goal.h">
       <Filter>ヘッダー ファイル\GameScript\Gimmicks</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\PushableObject.h">
+    <ClInclude Include="Scripts\Gimmicks\PushableObject.h">
       <Filter>ヘッダー ファイル\GameScript\Gimmicks</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\SceneManager.h">
+    <ClInclude Include="Scripts\NotComponent\SceneManager.h">
       <Filter>ヘッダー ファイル\GameScript\NotComponent</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\EnemySpawnData.h">
+    <ClInclude Include="Scripts\NotComponent\EnemySpawnData.h">
       <Filter>ヘッダー ファイル\GameScript\NotComponent</Filter>
     </ClInclude>
   </ItemGroup>

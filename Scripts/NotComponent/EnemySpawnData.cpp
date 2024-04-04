@@ -1,4 +1,4 @@
-﻿#include "EnemySpawnData.h"
+﻿#include "NotComponent/EnemySpawnData.h"
 
 #include "Enemies/Cub_E.h"
 #include "Enemies/Clex.h"

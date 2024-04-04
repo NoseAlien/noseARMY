@@ -1,6 +1,6 @@
 ﻿#include "GameScene.h"
 #include "SceneTransition.h"
-#include "SceneGate.h"
+#include "Gimmicks/SceneGate.h"
 #include "Pebble.h"
 
 #include "ADXKeyConfig.h"

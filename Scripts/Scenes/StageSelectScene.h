@@ -4,9 +4,9 @@
 #include "ADXObject.h"
 #include "ADXCamera.h"
 #include "Player.h"
-#include "FieldBox.h"
+#include "Gimmicks/FieldBox.h"
 #include "ADXTexAnimation.h"
-#include "SceneGate.h"
+#include "Gimmicks/SceneGate.h"
 #include "SceneTransition.h"
 
 //ステージ選択シーン

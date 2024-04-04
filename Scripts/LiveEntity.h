@@ -4,7 +4,7 @@
 #include "ADXAudioSource.h"
 #include "ADXModelRenderer.h"
 #include "ADXParticleSystem.h"
-#include "FieldBox.h"
+#include "Gimmicks/FieldBox.h"
 #include <string>
 
 struct AttackObject;

@@ -1,8 +1,8 @@
 ﻿#pragma once
 
-#include "FieldBox.h"
+#include "Gimmicks/FieldBox.h"
 #include "Enemies/Enemy.h"
-#include "EnemySpawnData.h"
+#include "NotComponent/EnemySpawnData.h"
 
 //バトルしないと出られない部屋
 class BattleFieldBox : public FieldBox

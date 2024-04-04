@@ -1,4 +1,4 @@
-﻿#include "BattleFieldBox.h"
+﻿#include "Gimmicks/BattleFieldBox.h"
 #include "ADXModelRenderer.h"
 #include "LiveEntity.h"
 

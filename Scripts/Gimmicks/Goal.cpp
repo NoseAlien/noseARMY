@@ -1,4 +1,4 @@
-﻿#include "Goal.h"
+﻿#include "Gimmicks/Goal.h"
 #include "LiveEntity.h"
 #include "SceneTransition.h"
 #include "ADXKeyConfig.h"
