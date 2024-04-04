@@ -42,7 +42,6 @@ void ADXScene::Initialize()
 	camera_ = temp->AddComponent<ADXCamera>();
 
 	title_ = ADXObject::Create();
-	title_->transform_.UpdateMatrix();
 	ADXModelRenderer* tempRenderer = title_->AddComponent<ADXModelRenderer>();
 	tempRenderer->texture_ = titleImg_;
 	tempRenderer->model_ = &rect_;

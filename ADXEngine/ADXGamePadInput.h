@@ -9,7 +9,7 @@
 class ADXGamePadInput
 {
 public:
-	enum ControllerButton
+	enum controllerButton
 	{
 		A = XINPUT_GAMEPAD_A,
 		B = XINPUT_GAMEPAD_B,
@@ -23,7 +23,7 @@ public:
 		RT
 	};
 
-	enum ControllerStick
+	enum controllerStick
 	{
 		LEFT,
 		RIGHT
@@ -44,16 +44,16 @@ public:
 	void Update();
 
 	//引数のボタンが押されている時にtrueを返す
-	bool GetButton(const ControllerButton& buttonNum);
+	bool GetButton(const controllerButton& buttonNum);
 
 	//引数のボタンが押された瞬間にtrueを返す
-	bool GetButtonDown(const ControllerButton& buttonNum);
+	bool GetButtonDown(const controllerButton& buttonNum);
 
 	//引数のボタンを離した瞬間にtrueを返す
-	bool GetButtonUp(const ControllerButton& buttonNum);
+	bool GetButtonUp(const controllerButton& buttonNum);
 
 	//引数の方向入力の値を返す
-	ADXVector2 GetStickVec(const ControllerStick& stickNum);
+	ADXVector2 GetStickVec(const controllerStick& stickNum);
 
 private:
 	static ADXGamePadInput* S_current;

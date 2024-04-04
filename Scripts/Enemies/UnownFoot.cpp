@@ -57,7 +57,6 @@ void UnownFoot::EnemyUpdate()
 	else
 	{
 		GetGameObject()->transform_.SetWorldRotation(parent_->GetGameObject()->transform_.GetWorldRotation());
-		GetGameObject()->transform_.UpdateMatrix();
 
 		ADXVector3 parentRelativePos = parent_->GetGameObject()->transform_.GetWorldPosition();
 			parentRelativePos = GetGameObject()->transform_.InverseTransformPoint(parentRelativePos);

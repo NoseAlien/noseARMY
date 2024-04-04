@@ -130,8 +130,6 @@ void Player::Move(float walkSpeed, float jumpPower)
 
 void Player::ViewUpdate()
 {
-	GetGameObject()->transform_.UpdateMatrix();
-
 	cameraTiltVelocity_.x_ = ADXUtility::Lerp(cameraTiltVelocity_.x_, -GetCameraControlInput().x_ * maxCameraTiltVelocity, cameraTiltForce);
 	cameraTiltVelocity_.y_ = ADXUtility::Lerp(cameraTiltVelocity_.y_, GetCameraControlInput().y_ * maxCameraTiltVelocity, cameraTiltForce);
 
@@ -147,16 +145,13 @@ void Player::ViewUpdate()
 	cameraLocalPos.y_ = cameraHeight_;
 	camera_->GetGameObject()->transform_.SetWorldPosition(GetGameObject()->transform_.TransformPoint(cameraLocalPos * cameraDistance / scale_));
 
-	camera_->GetGameObject()->transform_.UpdateMatrix();
 
 	camera_->GetGameObject()->transform_.SetWorldRotation(GetGameObject()->transform_.GetWorldRotation());
-	camera_->GetGameObject()->transform_.UpdateMatrix();
 	cameraLocalPos = camera_->GetGameObject()->transform_.InverseTransformPoint(GetGameObject()->transform_.GetWorldPosition());
 	camera_->GetGameObject()->transform_.SetWorldRotation(
 		ADXQuaternion::MakeAxisAngle(camera_->GetGameObject()->transform_.TransformPointOnlyRotation({ 0,1,0 }), atan2(cameraLocalPos.x_, cameraLocalPos.z_))
 		* camera_->GetGameObject()->transform_.GetWorldRotation());
 
-	camera_->GetGameObject()->transform_.UpdateMatrix();
 	cameraLocalPos = camera_->GetGameObject()->transform_.InverseTransformPoint(GetGameObject()->transform_.GetWorldPosition());
 	camera_->GetGameObject()->transform_.SetWorldRotation(
 		ADXQuaternion::MakeAxisAngle(camera_->GetGameObject()->transform_.TransformPointOnlyRotation({ 1,0,0 }), atan2(-cameraLocalPos.y_, cameraLocalPos.z_))
@@ -189,7 +184,6 @@ void Player::LiveEntitiesInitialize()
 
 	nose_ = ADXObject::Create({ 0,0,1.01f }, ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi,0 }), { 0.42f,0.35f,0.35f });
 	nose_->transform_.parent_ = &visual_->transform_;
-	nose_->transform_.UpdateMatrix();
 	ADXModelRenderer* tempRenderer = nose_->AddComponent<ADXModelRenderer>();
 	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/apEGnoSE.png");
@@ -206,7 +200,6 @@ void Player::LiveEntitiesInitialize()
 
 	tutorialWindow_ = ADXObject::Create();
 	tutorialWindow_->transform_.rectTransform_ = true;
-	tutorialWindow_->transform_.UpdateMatrix();
 	tempRenderer = tutorialWindow_->AddComponent<ADXModelRenderer>();
 	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/WhiteDot.png");
@@ -215,7 +208,6 @@ void Player::LiveEntitiesInitialize()
 
 	outOfField_ = ADXObject::Create();
 	outOfField_->transform_.rectTransform_ = true;
-	outOfField_->transform_.UpdateMatrix();
 	tempRenderer = outOfField_->AddComponent<ADXModelRenderer>();
 	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/outOfField.png");
@@ -224,7 +216,6 @@ void Player::LiveEntitiesInitialize()
 
 	gameOverFilter_ = ADXObject::Create();
 	gameOverFilter_->transform_.rectTransform_ = true;
-	gameOverFilter_->transform_.UpdateMatrix();
 	tempRenderer = gameOverFilter_->AddComponent<ADXModelRenderer>();
 	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/WhiteDot.png");
@@ -235,7 +226,6 @@ void Player::LiveEntitiesInitialize()
 	dead_->transform_.localRotation_ = ADXQuaternion::EulerToQuaternion({ 0,ADXUtility::Pi,0 });
 	dead_->transform_.localScale_ = { 1.5f,1.5f,1.5f };
 	dead_->transform_.parent_ = &GetGameObject()->transform_;
-	dead_->transform_.UpdateMatrix();
 	tempRenderer = dead_->AddComponent<ADXModelRenderer>();
 	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/apEG_dead.png");
@@ -727,7 +717,6 @@ void Player::DeadUpdate()
 		), 1) * 50 });
 	dead_->transform_.localPosition_ = { 0,0,0 };
 	dead_->transform_.SetWorldRotation(camera_->GetGameObject()->transform_.GetWorldRotation());
-	dead_->transform_.UpdateMatrix();
 
 	visual_->isVisible_ = deadAnimationProgress_ < 0.3f;
 	nose_->isVisible_ = deadAnimationProgress_ < 0.8f;

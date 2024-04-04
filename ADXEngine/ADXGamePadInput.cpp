@@ -22,7 +22,7 @@ void ADXGamePadInput::Update()
 	}
 }
 
-bool ADXGamePadInput::GetButton(const ControllerButton& buttonNum)
+bool ADXGamePadInput::GetButton(const controllerButton& buttonNum)
 {
 	//LRトリガーだけ専用の方法で取り、他のボタンは通常の方法で取る
 	if (buttonNum == LT) {
@@ -36,7 +36,7 @@ bool ADXGamePadInput::GetButton(const ControllerButton& buttonNum)
 	}
 }
 
-bool ADXGamePadInput::GetButtonDown(const ControllerButton& buttonNum)
+bool ADXGamePadInput::GetButtonDown(const controllerButton& buttonNum)
 {
 	//LRトリガーだけ専用の方法で取り、他のボタンは通常の方法で取る
 	if (buttonNum == LT) {
@@ -50,7 +50,7 @@ bool ADXGamePadInput::GetButtonDown(const ControllerButton& buttonNum)
 	}
 }
 
-bool ADXGamePadInput::GetButtonUp(const ControllerButton& buttonNum)
+bool ADXGamePadInput::GetButtonUp(const controllerButton& buttonNum)
 {
 	//LRトリガーだけ専用の方法で取り、他のボタンは通常の方法で取る
 	if (buttonNum == LT) {
@@ -64,7 +64,7 @@ bool ADXGamePadInput::GetButtonUp(const ControllerButton& buttonNum)
 	}
 }
 
-ADXVector2 ADXGamePadInput::GetStickVec(const ControllerStick& stickNum)
+ADXVector2 ADXGamePadInput::GetStickVec(const controllerStick& stickNum)
 {
 	ADXVector2 ret{};
 

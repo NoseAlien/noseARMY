@@ -13,7 +13,7 @@ public:
 	{
 		std::string configCode = "";
 		std::vector<BYTE> keys{};
-		std::vector<ADXGamePadInput::ControllerButton> buttons{};
+		std::vector<ADXGamePadInput::controllerButton> buttons{};
 	};
 	struct vecConfigCell
 	{
@@ -22,11 +22,11 @@ public:
 		std::vector<BYTE> keysDown{};
 		std::vector<BYTE> keysRight{};
 		std::vector<BYTE> keysLeft{};
-		std::vector<ADXGamePadInput::ControllerButton> buttonsUp{};
-		std::vector<ADXGamePadInput::ControllerButton> buttonsDown{};
-		std::vector<ADXGamePadInput::ControllerButton> buttonsRight{};
-		std::vector<ADXGamePadInput::ControllerButton> buttonsLeft{};
-		std::vector<ADXGamePadInput::ControllerStick> sticks{};
+		std::vector<ADXGamePadInput::controllerButton> buttonsUp{};
+		std::vector<ADXGamePadInput::controllerButton> buttonsDown{};
+		std::vector<ADXGamePadInput::controllerButton> buttonsRight{};
+		std::vector<ADXGamePadInput::controllerButton> buttonsLeft{};
+		std::vector<ADXGamePadInput::controllerStick> sticks{};
 	};
 
 private:

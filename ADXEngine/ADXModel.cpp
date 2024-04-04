@@ -8,6 +8,11 @@
 
 using namespace DirectX;
 
+ADXModel* ADXModel::S_prevModel{};
+std::vector<ADXModel::Vertex> ADXModel::S_prevVertices{};
+std::vector<uint16_t> ADXModel::S_prevIndices{};
+
+
 ADXModel::ADXModel()
 {
 
@@ -241,7 +246,6 @@ void ADXModel::Draw(ID3D12Resource* constBuffTransform)
 
 	//定数バッファビュー(CBV)の設定コマンド
 	commandList->SetGraphicsRootConstantBufferView(0, constBuffTransform->GetGPUVirtualAddress());
-
 	// 描画コマンド
 	commandList->DrawIndexedInstanced((uint32_t)indices_.size(), 1, 0, 0, 0); // 全ての頂点を使って描画
 }

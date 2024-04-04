@@ -19,7 +19,6 @@ void ADXPostEffectLens::UniqueInitialize()
 {
 	GetGameObject()->transform_.rectTransform_ = true;
 	//GetGameObject()->transform.localScale_ = { 0.5f,0.5f,0.5f };
-	GetGameObject()->transform_.UpdateMatrix();
 	rect_ = ADXModel::CreateRect();
 	GetGameObject()->GetComponent<ADXModelRenderer>()->texture_ = ADXImage::CreateADXImage(ADXWindow::GetInstance()->window_width_, ADXWindow::GetInstance()->window_height_);
 	GetGameObject()->renderLayer_ = 100;

@@ -13,6 +13,12 @@ class ADXCamera;
 class ADXObject
 {
 public:
+	enum drawQuality
+	{
+		high,
+		middle,
+		low,
+	};
 	//定数バッファ用データ構造体（マテリアル）
 	struct ConstBufferDataB0 {
 		DirectX::XMMATRIX mat;
@@ -89,8 +95,8 @@ private: // 静的メンバ変数
 	static ADXVector3 S_limitPos1;
 	static ADXVector3 S_limitPos2;
 
-	//Zソートを詳細な方式で行うか
-	static bool S_highQualityZSort;
+	//描画（主にZソート）の精度
+	static drawQuality S_drawQuality;
 
 public: // 静的メンバ関数
 	//静的初期化

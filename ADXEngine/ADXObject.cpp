@@ -20,7 +20,7 @@ std::list<std::unique_ptr<ADXObject>> ADXObject::S_objs{};
 std::vector<ADXCamera*> ADXObject::S_allCameraPtr{};
 ADXVector3 ADXObject::S_limitPos1 = { -300,-300,-100 };
 ADXVector3 ADXObject::S_limitPos2 = { 300,300,300 };
-bool ADXObject::S_highQualityZSort = false;
+ADXObject::drawQuality ADXObject::S_drawQuality = low;
 
 
 void ADXObject::StaticInitialize()
@@ -298,10 +298,12 @@ void ADXObject::StaticDraw()
 	for (int32_t nowLayer = minLayer; nowLayer <= maxLayer; nowLayer++)
 	{
 		std::vector<ADXObject*> thisLayerObjPtr;
+		std::vector<ADXObject*> thisSortingOrderObjPtr;
 
 		//全ピクセルの深度バッファ値とステンシル値を初期化
 		S_cmdList->ClearDepthStencilView(*ADXCommon::GetInstance()->GetDsvHandle(), D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, clearDepth, clearStencil, 0, nullptr);
 
+		//renderLayer_の値が最も小さいオブジェクトを取り出す
 		for (auto& itr : allObjPtr)
 		{
 			if (itr->renderLayer_ == nowLayer)
@@ -310,55 +312,76 @@ void ADXObject::StaticDraw()
 			}
 		}
 
-		//ためたオブジェクトを深度の深い順に取り出しながら描画
-		for (int32_t i = 0; thisLayerObjPtr.size() > 0; i++)
+		for (int32_t nowSortingOrder = minLayer; nowSortingOrder <= maxLayer; nowSortingOrder++)
 		{
-			int32_t lowestSortingOrder = minSortingOrder;
-			float dist = 0;
-			int32_t target = 0;
-			for (int32_t j = 0; j < thisLayerObjPtr.size(); j++)
+			//その中からsortingOrder_の値が最も小さいオブジェクトを取り出す
+			for (auto& itr : thisLayerObjPtr)
 			{
-				thisLayerObjPtr[j]->transform_.UpdateMatrix();
-				float zDepth;
-
-				if (S_highQualityZSort)
+				if (itr->renderLayer_ == nowSortingOrder)
 				{
-					float nearestVertDepth = 999;
+					thisSortingOrderObjPtr.push_back(itr);
+				}
+			}
 
-					if (thisLayerObjPtr[j]->GetComponent<ADXModelRenderer>()->model_ != nullptr)
+			//ためたオブジェクトを深度の深い順に取り出しながら描画
+			while (true)
+			{
+				if (thisSortingOrderObjPtr.empty())
+				{
+					break;
+				}
+
+				int32_t target = 0;
+				if (S_drawQuality != low)
+				{
+					float dist = 0;
+					for (int32_t j = 0; j < thisSortingOrderObjPtr.size(); j++)
 					{
-						for (int32_t k = 0; k < thisLayerObjPtr[j]->GetComponent<ADXModelRenderer>()->model_->vertices_.size(); k++)
-						{
-							float VertDepth;
-							ADXVector3 vertLocalPos = { thisLayerObjPtr[j]->GetComponent<ADXModelRenderer>()->model_->vertices_[k].pos.x,thisLayerObjPtr[j]->GetComponent<ADXModelRenderer>()->model_->vertices_[k].pos.y,thisLayerObjPtr[j]->GetComponent<ADXModelRenderer>()->model_->vertices_[k].pos.z };
-							VertDepth = ADXMatrix4::Transform(ADXMatrix4::Transform(vertLocalPos, thisLayerObjPtr[j]->transform_.GetMatWorld()), ADXWorldTransform::GetViewProjection()).Length();
+						ADXObject* temp = thisSortingOrderObjPtr[j];
+						ADXModelRenderer* tempRenderer = temp->GetComponent<ADXModelRenderer>();
 
-							if (VertDepth <= nearestVertDepth)
+						float zDepth;
+
+						if (S_drawQuality == high)
+						{
+							float nearestVertDepth = 999;
+
+							if (tempRenderer->model_ != nullptr)
 							{
-								nearestVertDepth = VertDepth;
+								for (int32_t k = 0; k < tempRenderer->model_->vertices_.size(); k++)
+								{
+									float VertDepth;
+									ADXVector3 vertLocalPos = { tempRenderer->model_->vertices_[k].pos.x,tempRenderer->model_->vertices_[k].pos.y,tempRenderer->model_->vertices_[k].pos.z };
+									VertDepth = ADXMatrix4::Transform(ADXMatrix4::Transform(vertLocalPos, temp->transform_.GetMatWorld()), ADXWorldTransform::GetViewProjection()).Length();
+
+									if (VertDepth <= nearestVertDepth)
+									{
+										nearestVertDepth = VertDepth;
+									}
+								}
 							}
+
+							zDepth = nearestVertDepth;
+						}
+						else
+						{
+							zDepth = ADXMatrix4::Transform(temp->transform_.GetWorldPosition(), ADXWorldTransform::GetViewProjection()).Length();
+						}
+
+						if (zDepth >= dist)
+						{
+							dist = zDepth;
+							target = j;
 						}
 					}
-
-					zDepth = nearestVertDepth;
-				}
-				else
-				{
-					zDepth = ADXMatrix4::Transform(thisLayerObjPtr[j]->transform_.GetWorldPosition(), ADXWorldTransform::GetViewProjection()).Length();
 				}
 
-				if (thisLayerObjPtr[j]->sortingOrder_ < lowestSortingOrder || thisLayerObjPtr[j]->sortingOrder_ == lowestSortingOrder && zDepth >= dist)
+				if (thisSortingOrderObjPtr[target]->isVisible_ && thisSortingOrderObjPtr[target]->isActive_)
 				{
-					dist = zDepth;
-					target = j;
-					lowestSortingOrder = thisLayerObjPtr[j]->sortingOrder_;
+					thisSortingOrderObjPtr[target]->Draw();
 				}
+				thisSortingOrderObjPtr.erase(thisSortingOrderObjPtr.begin() + target);
 			}
-			if (thisLayerObjPtr[target]->isVisible_ && thisLayerObjPtr[target]->isActive_)
-			{
-				thisLayerObjPtr[target]->Draw();
-			}
-			thisLayerObjPtr.erase(thisLayerObjPtr.begin() + target);
 		}
 	}
 	PostDraw();

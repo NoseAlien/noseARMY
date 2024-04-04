@@ -56,6 +56,11 @@ private:
 	//更新処理
 	void Update();
 
+private:
+	static ADXModel* S_prevModel;
+	static std::vector<Vertex> S_prevVertices;
+	static std::vector<uint16_t> S_prevIndices;
+
 public:
 	//モデルデータ読み込み
 	static ADXModel LoadADXModel(const std::string& filePath);

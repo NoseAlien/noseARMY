@@ -48,7 +48,6 @@ std::list<Enemy*> EnemySpawnData::Spawn(const std::string& team, ADXWorldTransfo
 			temp->transform_.localPosition_ = ADXMatrix4::Transform(spawnItr.position, tf->GetMatWorld());
 			temp->transform_.localRotation_ = tf->TransformRotation(spawnItr.rotation);
 		}
-		temp->transform_.UpdateMatrix();
 		//引数に入れた配列に追加
 		ret.back()->SetTeam(team);
 	}

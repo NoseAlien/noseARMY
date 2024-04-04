@@ -56,7 +56,6 @@ void Goal::UniqueUpdate()
 	{
 		//「CLEAR」の文字を表示
 		clearUI_->transform_.localScale_.x_ += (clearUIScale / ADXWindow::GetInstance()->GetAspect() - clearUI_->transform_.localScale_.x_) * uiExpandSpeed;
-		clearUI_->transform_.UpdateMatrix();
 
 		sceneTransitionCount_--;
 		if (sceneTransitionCount_ <= 0)

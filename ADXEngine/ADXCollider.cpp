@@ -461,7 +461,6 @@ void ADXCollider::SendPushBack()
 	if (pushable_)
 	{
 		GetGameObject()->transform_.localPosition_ += pushBackVector_;
-		GetGameObject()->transform_.UpdateMatrix();
 	}
 	preTranslation_ = GetGameObject()->transform_.localPosition_;
 	preMatrix_ = GetGameObject()->transform_.GetMatWorld();
@@ -542,7 +541,6 @@ void ADXCollider::StaticUpdate()
 	for (auto& objItr : ADXObject::GetObjs())
 	{
 		objsPreTranslation.push_back(objItr->transform_.localPosition_);
-		objItr->transform_.UpdateMatrix();
 	}
 
 	//少しづつ移動させながら当たり判定と押し戻し処理を行う
@@ -553,10 +551,7 @@ void ADXCollider::StaticUpdate()
 		for (auto& itr : ADXObject::GetObjs())
 		{
 			ADXVector3 move = objsTranslation[index] - objsPreTranslation[index];
-
 			itr->transform_.localPosition_ += move / translateDivNumF;
-			itr->transform_.UpdateMatrix();
-
 			index++;
 		}
 

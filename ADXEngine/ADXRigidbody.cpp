@@ -2,7 +2,6 @@
 
 void ADXRigidbody::UniqueInitialize()
 {
-	GetGameObject()->transform_.UpdateMatrix();
 	prevPos_ = GetGameObject()->transform_.localPosition_;
 	//先に初期化処理が呼ばれたことが分かるようにする
 	initializedThisFrame_ = true;

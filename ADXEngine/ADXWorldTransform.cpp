@@ -142,8 +142,9 @@ void ADXWorldTransform::SetWorldPosition(const ADXVector3& worldPos)
 	}
 }
 
-ADXQuaternion ADXWorldTransform::GetWorldRotation() const
+ADXQuaternion ADXWorldTransform::GetWorldRotation()
 {
+	UpdateMatrix();
 	return TransformRotation(ADXQuaternion::IdentityQuaternion());
 }
 
@@ -159,8 +160,9 @@ void ADXWorldTransform::SetWorldRotation(const ADXQuaternion& worldRot)
 	}
 }
 
-ADXVector3 ADXWorldTransform::GetLossyScale() const
+ADXVector3 ADXWorldTransform::GetLossyScale()
 {
+	UpdateMatrix();
 	ADXVector3 ret = {
 		TransformPointWithoutTranslation({1,0,0}).Length(),
 		TransformPointWithoutTranslation({0,1,0}).Length(),
@@ -169,25 +171,25 @@ ADXVector3 ADXWorldTransform::GetLossyScale() const
 	return ret;
 }
 
-ADXVector3 ADXWorldTransform::TransformPoint(const ADXVector3& pos) const
+ADXVector3 ADXWorldTransform::TransformPoint(const ADXVector3& pos)
 {
 	ADXVector3 ret = ADXMatrix4::Transform(pos, GetMatWorld());
 	return ret;
 }
 
-ADXVector3 ADXWorldTransform::InverseTransformPoint(const ADXVector3& pos) const
+ADXVector3 ADXWorldTransform::InverseTransformPoint(const ADXVector3& pos)
 {
 	ADXVector3 ret = ADXMatrix4::Transform(pos, GetMatWorldInverse());
 	return ret;
 }
 
-ADXVector3 ADXWorldTransform::TransformPointWithoutTranslation(const ADXVector3& pos) const
+ADXVector3 ADXWorldTransform::TransformPointWithoutTranslation(const ADXVector3& pos)
 {
 	ADXVector3 ret = ADXMatrix4::Transform(pos, matScale_ * matRot_);
 	return ret;
 }
 
-ADXVector3 ADXWorldTransform::InverseTransformPointWithoutTranslation(const ADXVector3& pos) const
+ADXVector3 ADXWorldTransform::InverseTransformPointWithoutTranslation(const ADXVector3& pos)
 {
 	ADXVector3 ret = ADXMatrix4::Transform(pos, matRot_.Transpose() * matScale_.Inverse());
 	return ret;
@@ -245,9 +247,15 @@ ADXQuaternion ADXWorldTransform::InverseTransformRotation(const ADXQuaternion& r
 	return ret;
 }
 
-ADXMatrix4 ADXWorldTransform::GetMatWorldInverse() const
+ADXMatrix4 ADXWorldTransform::GetMatWorld()
 {
-	ADXMatrix4 ret = matWorld_.Inverse();
+	UpdateMatrix();
+	return matWorld_;
+}
+
+ADXMatrix4 ADXWorldTransform::GetMatWorldInverse()
+{
+	ADXMatrix4 ret = GetMatWorld().Inverse();
 	
 	if (std::isnan(ret.m_[0][0])
 	|| std::isnan(ret.m_[1][1])
@@ -257,4 +265,16 @@ ADXMatrix4 ADXWorldTransform::GetMatWorldInverse() const
 	}
 
 	return ret;
+}
+
+ADXMatrix4 ADXWorldTransform::GetMatRot()
+{
+	UpdateMatrix();
+	return matRot_;
+}
+
+ADXMatrix4 ADXWorldTransform::GetMatScale()
+{
+	UpdateMatrix();
+	return matScale_;
 }

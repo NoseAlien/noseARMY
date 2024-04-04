@@ -12,7 +12,6 @@ void ADXParticleSystem::Emission()
 		ADXParticle* particle_ = particles_.back();
 		//設定を反映
 		temp->transform_.parent_ = parent_;
-		temp->transform_.UpdateMatrix();
 		ADXModelRenderer* tempRenderer = temp->AddComponent<ADXModelRenderer>();
 		tempRenderer->model_ = &particleModel_;
 		particle_->animation_ = animation_;

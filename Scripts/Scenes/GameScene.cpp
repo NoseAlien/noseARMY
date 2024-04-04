@@ -242,7 +242,6 @@ void GameScene::Initialize()
 	//設定された情報を元に生成
 	//自機
 	temp = ADXObject::Create(PlayerStartTransform.localPosition, PlayerStartTransform.localRotation);
-	temp->transform_.UpdateMatrix();
 	Player* tempPlayer = temp->AddComponent<Player>();
 	tempPlayer->SetTeam("player");
 	//自機や敵が動き回れる範囲
@@ -302,7 +301,6 @@ void GameScene::Initialize()
 
 	ADXObject* backGround = ADXObject::Create();
 	backGround->transform_.rectTransform_ = true;
-	backGround->transform_.UpdateMatrix();
 	ADXModelRenderer* tempRenderer = backGround->AddComponent<ADXModelRenderer>();
 	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = backGroundTex;
@@ -311,7 +309,6 @@ void GameScene::Initialize()
 	key_ = ADXObject::Duplicate(*backGround);
 	key_->transform_.localPosition_ = { -0.65f,0.85f,0 };
 	key_->transform_.localScale_ = { 0.3f,0.45f,1 };
-	key_->transform_.UpdateMatrix();
 	tempRenderer = key_->AddComponent<ADXModelRenderer>();
 	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = keyImg;

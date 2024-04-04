@@ -29,9 +29,6 @@ void ADXCamera::UniqueUpdate()
 
 void ADXCamera::PrepareToRandering()
 {
-	//まずワールド行列を更新
-	GetGameObject()->transform_.UpdateMatrix();
-
 	//ビュー変換行列を生成するための情報をトランスフォームに合わせる
 	eye_ = ADXMatrix4::Transform({ 0,0,0 }, GetGameObject()->transform_.GetMatWorld()).ConvertToXMFloat3();
 	target_ = ADXMatrix4::Transform({ 0,0,1 }, GetGameObject()->transform_.GetMatWorld()).ConvertToXMFloat3();

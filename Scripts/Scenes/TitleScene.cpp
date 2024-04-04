@@ -25,7 +25,6 @@ void TitleScene::Initialize()
 	camera_ = temp->AddComponent<ADXCamera>();	camera_->GetGameObject()->transform_.localPosition_ = { 0,0,-2 };
 
 	title_ = ADXObject::Create();
-	title_->transform_.UpdateMatrix();
 	ADXModelRenderer* tempRenderer = title_->AddComponent<ADXModelRenderer>();
 	tempRenderer->texture_ = titleImg_;
 	tempRenderer->model_ = &rect_;
@@ -42,7 +41,6 @@ void TitleScene::Initialize()
 
 	backGround_ = ADXObject::Create();
 	backGround_->transform_.rectTransform_ = true;
-	backGround_->transform_.UpdateMatrix();
 	tempRenderer = backGround_->AddComponent<ADXModelRenderer>();
 	tempRenderer->texture_ = backGroundTex_;
 	tempRenderer->model_ = &rect_;
