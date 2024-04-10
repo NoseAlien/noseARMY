@@ -264,39 +264,42 @@ void ADXObject::StaticDraw()
 	//同じrenderLayer_、sortingOrder_のオブジェクトのグループに分ける
 	for (auto& itr : allObjPtr)
 	{
-		int64_t layerIndex = -1;
-		int64_t sortIndex = -1;
-		
-		for (uint32_t i = 0; i < renderChart.size(); i++)
+		if (itr->isVisible_ && itr->isActive_ && itr->GetComponent<ADXRenderer>() != nullptr)
 		{
-			if (renderChart[i].renderLayer_ == itr->renderLayer_)
-			{
-				layerIndex = i;
-				break;
-			}
-		}
-		if (layerIndex < 0)
-		{
-			renderChart.push_back({ itr->renderLayer_,{} });
-			layerIndex = renderChart.size() - 1;
-		}
+			int64_t layerIndex = -1;
+			int64_t sortIndex = -1;
 
-		std::vector<sortingOrderGroup>& sortChart = renderChart[layerIndex].groups_;
-		for (uint32_t i = 0; i < sortChart.size(); i++)
-		{
-			if (sortChart[i].sortingOrder_ == itr->sortingOrder_)
+			for (uint32_t i = 0; i < renderChart.size(); i++)
 			{
-				sortIndex = i;
-				break;
+				if (renderChart[i].renderLayer_ == itr->renderLayer_)
+				{
+					layerIndex = i;
+					break;
+				}
 			}
-		}
-		if (sortIndex < 0)
-		{
-			sortChart.push_back({ itr->sortingOrder_,{} });
-			sortIndex = sortChart.size() - 1;
-		}
+			if (layerIndex < 0)
+			{
+				renderChart.push_back({ itr->renderLayer_,{} });
+				layerIndex = renderChart.size() - 1;
+			}
 
-		renderChart[layerIndex].groups_[sortIndex].objs_.push_back(itr);
+			std::vector<sortingOrderGroup>& sortChart = renderChart[layerIndex].groups_;
+			for (uint32_t i = 0; i < sortChart.size(); i++)
+			{
+				if (sortChart[i].sortingOrder_ == itr->sortingOrder_)
+				{
+					sortIndex = i;
+					break;
+				}
+			}
+			if (sortIndex < 0)
+			{
+				sortChart.push_back({ itr->sortingOrder_,{} });
+				sortIndex = sortChart.size() - 1;
+			}
+
+			renderChart[layerIndex].groups_[sortIndex].objs_.push_back(itr);
+		}
 	}
 
 	//renderLayer_、sortingOrder_の小さいグループから順に描画
