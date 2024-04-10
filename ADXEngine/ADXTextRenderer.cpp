@@ -1,4 +1,4 @@
-﻿#include "ADXTextRenderer.h"
+#include "ADXTextRenderer.h"
 #include "ADXObject.h"
 
 Microsoft::WRL::ComPtr<ID3D12PipelineState> ADXTextRenderer::S_pipelineState = nullptr;
@@ -22,7 +22,6 @@ uint32_t ADXTextRenderer::GetFontTex(const char& character)
 
 void ADXTextRenderer::UniqueRendering([[maybe_unused]] ID3D12Device* device, ID3D12GraphicsCommandList* cmdList)
 {
-
 	// パイプラインステートの設定コマンド
 	cmdList->SetPipelineState(S_pipelineState.Get());
 
