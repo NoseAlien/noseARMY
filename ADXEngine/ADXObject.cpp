@@ -269,7 +269,7 @@ void ADXObject::StaticDraw()
 		
 		for (uint32_t i = 0; i < renderChart.size(); i++)
 		{
-			if (renderChart[i].renderLayer_ = itr->renderLayer_)
+			if (renderChart[i].renderLayer_ == itr->renderLayer_)
 			{
 				layerIndex = i;
 				break;
@@ -284,7 +284,7 @@ void ADXObject::StaticDraw()
 		std::vector<sortingOrderGroup>& sortChart = renderChart[layerIndex].groups_;
 		for (uint32_t i = 0; i < sortChart.size(); i++)
 		{
-			if (sortChart[i].sortingOrder_ = itr->sortingOrder_)
+			if (sortChart[i].sortingOrder_ == itr->sortingOrder_)
 			{
 				sortIndex = i;
 				break;
@@ -473,6 +473,12 @@ std::list<ADXObject*> ADXObject::GetObjs()
 
 void ADXObject::Draw()
 {
+	//表示されない状態ならスキップ
+	if (!isVisible_ || !isActive_)
+	{
+		return;
+	}
+
 	// nullptrチェック
 	[[maybe_unused]] ID3D12Device* device = ADXCommon::GetInstance()->GetDevice();
 	assert(device);
