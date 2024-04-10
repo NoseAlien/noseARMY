@@ -29,56 +29,59 @@ void ADXTextRenderer::UniqueRendering([[maybe_unused]] ID3D12Device* device, ID3
 
 	float fontWidth = fontSize_ * fontAspect_;
 
-	fontWtfs_.clear();
+	while (fontWtfs_.size() < text_.size())
+	{
+		//文字と同じ数だけトランスフォームを生成
+		fontWtfs_.push_back(ADXWorldTransform());
+		fontWtfs_.back().Initialize(GetGameObject());
+		fontWtfs_.back().parent_ = &GetGameObject()->transform_;
+		fontWtfs_.back().rectTransform_ = GetGameObject()->transform_.rectTransform_;
+	}
+
 	for (int i = 0;i < text_.size();i++)
 	{
 		D3D12_GPU_DESCRIPTOR_HANDLE S_gpuDescHandleSRV;
 		S_gpuDescHandleSRV.ptr = ADXObject::GetGpuStartHandle() + GetFontTex(text_[i]);
 		cmdList->SetGraphicsRootDescriptorTable(1, S_gpuDescHandleSRV);
 
-		//文字ごとにトランスフォームを生成
-		fontWtfs_.push_back(ADXWorldTransform());
-		fontWtfs_.back().Initialize(GetGameObject());
-		fontWtfs_.back().parent_ = &GetGameObject()->transform_;
-		fontWtfs_.back().rectTransform_ = GetGameObject()->transform_.rectTransform_;
 		//文字をずらす
 		switch (anchor_)
 		{
 		case upperLeft:
-			fontWtfs_.back().localPosition_ = { fontWidth * (i * 2 + 1),-fontSize_,0 };
+			fontWtfs_[i].localPosition_ = { fontWidth * (i * 2 + 1),-fontSize_,0 };
 			break;
 		case upperCenter:
-			fontWtfs_.back().localPosition_ = { fontWidth * (i * 2 + 1 - (float)text_.size()),-fontSize_,0 };
+			fontWtfs_[i].localPosition_ = { fontWidth * (i * 2 + 1 - (float)text_.size()),-fontSize_,0 };
 			break;
 		case upperRight:
-			fontWtfs_.back().localPosition_ = { fontWidth * ((i - (float)text_.size()) * 2 + 1),-fontSize_,0 };
+			fontWtfs_[i].localPosition_ = { fontWidth * ((i - (float)text_.size()) * 2 + 1),-fontSize_,0 };
 			break;
 		case middleLeft:
-			fontWtfs_.back().localPosition_ = { fontWidth * (i * 2 + 1),0,0 };
+			fontWtfs_[i].localPosition_ = { fontWidth * (i * 2 + 1),0,0 };
 			break;
 		case middleCenter:
-			fontWtfs_.back().localPosition_ = { fontWidth * (i * 2 + 1 - (float)text_.size()),0,0 };
+			fontWtfs_[i].localPosition_ = { fontWidth * (i * 2 + 1 - (float)text_.size()),0,0 };
 			break;
 		case middleRight:
-			fontWtfs_.back().localPosition_ = { fontWidth * ((i - (float)text_.size()) * 2 + 1),0,0 };
+			fontWtfs_[i].localPosition_ = { fontWidth * ((i - (float)text_.size()) * 2 + 1),0,0 };
 			break;
 		case lowerLeft:
-			fontWtfs_.back().localPosition_ = { fontWidth * (i * 2 + 1),fontSize_,0 };
+			fontWtfs_[i].localPosition_ = { fontWidth * (i * 2 + 1),fontSize_,0 };
 			break;
 		case lowerCenter:
-			fontWtfs_.back().localPosition_ = { fontWidth * (i * 2 + 1 - (float)text_.size()),fontSize_,0 };
+			fontWtfs_[i].localPosition_ = { fontWidth * (i * 2 + 1 - (float)text_.size()),fontSize_,0 };
 			break;
 		case lowerRight:
-			fontWtfs_.back().localPosition_ = { fontWidth * ((i - (float)text_.size()) * 2 + 1),fontSize_,0 };
+			fontWtfs_[i].localPosition_ = { fontWidth * ((i - (float)text_.size()) * 2 + 1),fontSize_,0 };
 			break;
 		}
 		//文字の拡大率を適用
-		fontWtfs_.back().localScale_ = { fontExtend_,fontExtend_,fontExtend_ };
-		fontWtfs_.back().UpdateMatrix();
-		fontWtfs_.back().UpdateConstBuffer();
+		fontWtfs_[i].localScale_ = { fontExtend_,fontExtend_,fontExtend_ };
+		fontWtfs_[i].UpdateMatrix();
+		fontWtfs_[i].UpdateConstBuffer();
 
 		// 描画コマンド
-		model_.Draw(fontWtfs_.back().constBuffTransform_.Get());
+		model_.Draw(fontWtfs_[i].constBuffTransform_.Get());
 	}
 }
 
