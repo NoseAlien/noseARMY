@@ -244,9 +244,10 @@ void ADXObject::StaticDraw()
 	PreDraw();
 
 	std::list<ADXObject*> allObjPtr = GetObjs();
+	std::vector<renderLayerGroup> renderChart{};
 
 	//カメラの描画前処理
-	for (int32_t i = 0; i < S_allCameraPtr.size(); i++)
+	for (uint32_t i = 0; i < S_allCameraPtr.size(); i++)
 	{
 		S_allCameraPtr[i]->PrepareToRandering();
 	}
@@ -254,91 +255,95 @@ void ADXObject::StaticDraw()
 	//全オブジェクトの描画前処理
 	for (auto& itr : allObjPtr)
 	{
-		itr->drawed_ = false;
 		for (auto& comItr : itr->components_)
 		{
 			comItr->OnPreRender();
 		}
 	}
 
-	int32_t minLayer = 0;
-	int32_t maxLayer = 0;
-	int32_t minSortingOrder = 0;
-	int32_t maxSortingOrder = 0;
-
-	if (allObjPtr.size() > 0)
-	{
-		minLayer = allObjPtr.front()->renderLayer_;
-		maxLayer = allObjPtr.front()->renderLayer_;
-		minSortingOrder = allObjPtr.front()->sortingOrder_;
-		maxSortingOrder = allObjPtr.front()->sortingOrder_;
-	}
-
-	//全オブジェクトのレイヤー、描画順の範囲を読み取る
+	//同じrenderLayer_、sortingOrder_のオブジェクトのグループに分ける
 	for (auto& itr : allObjPtr)
 	{
-		if (itr->renderLayer_ < minLayer)
+		int64_t layerIndex = -1;
+		int64_t sortIndex = -1;
+		
+		for (uint32_t i = 0; i < renderChart.size(); i++)
 		{
-			minLayer = itr->renderLayer_;
+			if (renderChart[i].renderLayer_ = itr->renderLayer_)
+			{
+				layerIndex = i;
+				break;
+			}
 		}
-		if (itr->renderLayer_ > maxLayer)
+		if (layerIndex < 0)
 		{
-			maxLayer = itr->renderLayer_;
+			renderChart.push_back({ itr->renderLayer_,{} });
+			layerIndex = renderChart.size() - 1;
 		}
 
-		if (itr->sortingOrder_ < minSortingOrder)
+		std::vector<sortingOrderGroup>& sortChart = renderChart[layerIndex].groups_;
+		for (uint32_t i = 0; i < sortChart.size(); i++)
 		{
-			minSortingOrder = itr->sortingOrder_;
+			if (sortChart[i].sortingOrder_ = itr->sortingOrder_)
+			{
+				sortIndex = i;
+				break;
+			}
 		}
-		if (itr->sortingOrder_ > maxSortingOrder)
+		if (sortIndex < 0)
 		{
-			maxSortingOrder = itr->sortingOrder_;
+			sortChart.push_back({ itr->sortingOrder_,{} });
+			sortIndex = sortChart.size() - 1;
 		}
+
+		renderChart[layerIndex].groups_[sortIndex].objs_.push_back(itr);
 	}
 
-	for (int32_t nowLayer = minLayer; nowLayer <= maxLayer; nowLayer++)
+	//renderLayer_、sortingOrder_の小さいグループから順に描画
+	while (!renderChart.empty())
 	{
-		std::vector<ADXObject*> thisLayerObjPtr;
-		std::vector<ADXObject*> thisSortingOrderObjPtr;
-
 		//全ピクセルの深度バッファ値とステンシル値を初期化
-		S_cmdList->ClearDepthStencilView(*ADXCommon::GetInstance()->GetDsvHandle(), D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, clearDepth, clearStencil, 0, nullptr);
+		S_cmdList->ClearDepthStencilView(*ADXCommon::GetInstance()->GetDsvHandle(),
+			D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, clearDepth, clearStencil, 0, nullptr);
 
-		//renderLayer_の値が最も小さいオブジェクトを取り出す
-		for (auto& itr : allObjPtr)
+		//renderLayer_が最も小さいグループを探す
+		uint32_t layerIndex = 0;
+		int32_t minLayer = 0;
+		for (int i = 0; i < renderChart.size(); i++)
 		{
-			if (itr->renderLayer_ == nowLayer && itr->isVisible_ && itr->isActive_ && !itr->drawed_)
+			if (i == 0 || (renderChart[i].renderLayer_ < minLayer))
 			{
-				thisLayerObjPtr.push_back(itr);
+				layerIndex = i;
+				minLayer = renderChart[i].renderLayer_;
 			}
 		}
 
-		for (int32_t nowSortingOrder = minSortingOrder; nowSortingOrder <= maxSortingOrder; nowSortingOrder++)
+		std::vector<sortingOrderGroup>& sortChart = renderChart[layerIndex].groups_;
+		while (!sortChart.empty())
 		{
-			//その中からsortingOrder_の値が最も小さいオブジェクトを取り出す
-			for (auto& itr : thisLayerObjPtr)
+			//sortingOrder_が最も小さいグループを探す
+			uint32_t sortIndex = 0;
+			int32_t minSort = 0;
+			for (int i = 0; i < sortChart.size(); i++)
 			{
-				if (itr->sortingOrder_ == nowSortingOrder && !itr->drawed_)
+				if (i == 0 || (sortChart[i].sortingOrder_ < minSort))
 				{
-					thisSortingOrderObjPtr.push_back(itr);
+					sortIndex = i;
+					minSort = sortChart[i].sortingOrder_;
 				}
 			}
 
-			//ためたオブジェクトを深度の深い順に取り出しながら描画
-			while (true)
+			std::vector<ADXObject*>& objs = sortChart[sortIndex].objs_;
+			while (!objs.empty())
 			{
-				if (thisSortingOrderObjPtr.empty())
-				{
-					break;
-				}
-
-				int32_t target = 0;
 				if (S_drawQuality != low)
 				{
+					//ためたオブジェクトを深度の深い順に取り出しながら描画
+					uint32_t target = 0;
 					float dist = 0;
-					for (int32_t j = 0; j < thisSortingOrderObjPtr.size(); j++)
+					for (uint32_t i = 0; i < objs.size(); i++)
 					{
-						ADXObject* temp = thisSortingOrderObjPtr[j];
+						ADXObject* temp = objs[i];
 						ADXModelRenderer* tempRenderer = temp->GetComponent<ADXModelRenderer>();
 
 						float zDepth;
@@ -349,11 +354,13 @@ void ADXObject::StaticDraw()
 
 							if (tempRenderer->model_ != nullptr)
 							{
-								for (int32_t k = 0; k < tempRenderer->model_->vertices_.size(); k++)
+								for (uint32_t j = 0; j < tempRenderer->model_->vertices_.size(); j++)
 								{
 									float VertDepth;
-									ADXVector3 vertLocalPos = { tempRenderer->model_->vertices_[k].pos.x,tempRenderer->model_->vertices_[k].pos.y,tempRenderer->model_->vertices_[k].pos.z };
-									VertDepth = ADXMatrix4::Transform(ADXMatrix4::Transform(vertLocalPos, temp->transform_.GetMatWorld()), ADXWorldTransform::GetViewProjection()).Length();
+									ADXVector3 vertLocalPos = { tempRenderer->model_->vertices_[j].pos.x,
+										tempRenderer->model_->vertices_[j].pos.y,tempRenderer->model_->vertices_[j].pos.z };
+									VertDepth = ADXMatrix4::Transform(ADXMatrix4::Transform(vertLocalPos, temp->transform_.GetMatWorld()),
+										ADXWorldTransform::GetViewProjection()).Length();
 
 									if (VertDepth <= nearestVertDepth)
 									{
@@ -372,17 +379,28 @@ void ADXObject::StaticDraw()
 						if (zDepth >= dist)
 						{
 							dist = zDepth;
-							target = j;
+							target = i;
 						}
 					}
-				}
 
-				thisSortingOrderObjPtr[target]->Draw();
-				thisSortingOrderObjPtr[target]->drawed_ = true;
-				thisSortingOrderObjPtr.erase(thisSortingOrderObjPtr.begin() + target);
+					objs[target]->Draw();
+					objs.erase(objs.begin() + target);
+				}
+				else
+				{
+					//Zソート無しで描画
+					for (auto& itr : objs)
+					{
+						itr->Draw();
+					}
+					objs.clear();
+				}
 			}
+			sortChart.erase(sortChart.begin() + sortIndex);
 		}
+		renderChart.erase(renderChart.begin() + layerIndex);
 	}
+
 	PostDraw();
 }
 

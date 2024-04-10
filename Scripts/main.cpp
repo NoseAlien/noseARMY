@@ -12,7 +12,7 @@
 #include "ADXAudioSource.h"
 #include "ADXImGuiManager.h"
 
-#include "SceneManager.h"
+#include "NotComponent/SceneManager.h"
 #include "SceneTransition.h"
 #include "LiveEntity.h"
 #include "ShadowRenderer.h"

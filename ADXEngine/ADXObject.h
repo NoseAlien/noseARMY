@@ -23,6 +23,17 @@ public:
 	struct ConstBufferDataB0 {
 		DirectX::XMMATRIX mat;
 	};
+	//ソート用
+	struct sortingOrderGroup
+	{
+		int32_t sortingOrder_ = 0;
+		std::vector<ADXObject*> objs_{};
+	};
+	struct renderLayerGroup
+	{
+		int32_t renderLayer_ = 0;
+		std::vector<sortingOrderGroup> groups_{};
+	};
 
 public:
 	static const FLOAT clearDepth;
@@ -39,7 +50,6 @@ public:
 private:
 	std::list<std::unique_ptr<ADXComponent>> components_{};
 	bool deleteFlag_ = false;
-	bool drawed_ = false;
 
 public:
 	//このオブジェクトを描画
