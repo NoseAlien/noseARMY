@@ -18,7 +18,7 @@ public:
 	ADXVector3(float x, float y, float z);
 
 	//XMFLOAT3に変換
-	DirectX::XMFLOAT3 ConvertToXMFloat3();
+	DirectX::XMFLOAT3 ConvertToXMFloat3() const;
 
 	//長さを返す
 	float Length() const;

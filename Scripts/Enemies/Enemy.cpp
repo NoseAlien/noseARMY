@@ -5,11 +5,10 @@ const float scarchRadius = 12;
 const float gravityScale = 0.015f;
 const float drag = 0.8f;
 const float grabbedSpeed = 0.1f;
-const int32_t lowCarcassLifeTimeDivNum = 4;
-const int32_t maxCarcassAnimationFrame = 1000;
-const int32_t maxCarcassAnimationFrame_lowLifeTime = 200;
+const int32_t lowCarcassLifeTimeDivNum = 3;
+const int32_t maxCarcassAnimationFrame = 700;
 const int32_t carcassBlackOutFrame = 100;
-const DirectX::XMFLOAT3 darkColor = { 0.2f,0.2f,0.2f };
+const ADXVector3 darkColor = { 0.1f,0.1f,0.1f };
 
 void Enemy::LiveEntitiesInitialize()
 {
@@ -66,14 +65,18 @@ void Enemy::DeadUpdate()
 
 	visual_->GetComponent<ADXModelRenderer>()->texture_ = deadTex_;
 
-	//死骸を点滅させる、消えそうなときは早く点滅
-	if (clock() % maxCarcassAnimationFrame < carcassBlackOutFrame
-		|| (carcassLifeTime_ <= (int32_t)maxCarcassLifeTime / lowCarcassLifeTimeDivNum
-			&& clock() % maxCarcassAnimationFrame_lowLifeTime < carcassBlackOutFrame))
+	for (auto& itr : bodyParts_)
+	{
+		itr->GetComponent<ADXModelRenderer>()->material_.ambient_ =
+			ADXUtility::Lerp(darkColor, { 1,1,1 }, ((float)carcassLifeTime_ / maxCarcassLifeTime * lowCarcassLifeTimeDivNum)).ConvertToXMFloat3();
+	}
+
+	//死骸を点滅させる
+	if (clock() % maxCarcassAnimationFrame < carcassBlackOutFrame)
 	{
 		for (auto& itr : bodyParts_)
 		{
-			itr->GetComponent<ADXModelRenderer>()->material_.ambient_ = darkColor;
+			itr->GetComponent<ADXModelRenderer>()->material_.ambient_ = darkColor.ConvertToXMFloat3();
 		}
 	}
 
