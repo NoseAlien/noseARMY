@@ -69,7 +69,7 @@ ADXVector2 ADXGamePadInput::GetStickVec(const controllerStick& stickNum)
 	ADXVector2 ret{};
 
 	//引数で指定されたスティックの入力値を取得
-	if (stickNum == LEFT)
+	if (stickNum == STICK_LEFT)
 	{
 		ret = ADXVector2{ static_cast<float>(inputState_.Gamepad.sThumbLX), static_cast<float>(inputState_.Gamepad.sThumbLY) } / MaxStickInput;
 	}
