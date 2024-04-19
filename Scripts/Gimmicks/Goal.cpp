@@ -62,7 +62,8 @@ void Goal::UniqueUpdate()
 		{
 			//「PRESS [SPACE]」の文字を表示
 			keyUI_->transform_.localScale_.x_ += (keyUIScale / ADXWindow::GetInstance()->GetAspect() - keyUI_->transform_.localScale_.x_) * uiExpandSpeed;
-			if (ADXKeyConfig::GetCurrentInstance()->GetInputDown("select"))
+			if (ADXKeyConfig::GetCurrentInstance()->GetInputDown("select")
+				|| ADXKeyConfig::GetCurrentInstance()->GetInputDown("back"))
 			{
 				SceneTransition::ChangeScene(2);
 			}

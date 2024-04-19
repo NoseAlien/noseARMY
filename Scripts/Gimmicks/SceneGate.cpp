@@ -58,7 +58,8 @@ void SceneGate::UniqueUpdate()
 	{
 		keyUI_->transform_.localScale_.x_ += (0.45f / ADXWindow::GetInstance()->GetAspect() - keyUI_->transform_.localScale_.x_) * 0.3f;
 		stageNameUI_->transform_.localScale_.x_ += (0.1f / ADXWindow::GetInstance()->GetAspect() - stageNameUI_->transform_.localScale_.x_) * 0.3f;
-		if (ADXKeyConfig::GetCurrentInstance()->GetInputDown("select"))
+		if (ADXKeyConfig::GetCurrentInstance()->GetInputDown("select")
+			|| ADXKeyConfig::GetCurrentInstance()->GetInputDown("back"))
 		{
 			S_nextStageName = stageName_;
 			SceneTransition::ChangeScene(3);
