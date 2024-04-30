@@ -30,6 +30,9 @@ private:
 	//更新処理
 	void UniqueUpdate();
 
+	//描画前処理
+	void OnPreRender() final;
+
 	//何かに触れた時に呼び出される
 	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol);
 

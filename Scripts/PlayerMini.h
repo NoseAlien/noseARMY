@@ -11,7 +11,10 @@ class PlayerMini : public ADXComponent
 private:
 	ADXObject* nose_ = nullptr;
 	ADXObject* body_ = nullptr;
+	ADXObject* shadow_ = nullptr;
 	ADXModel rect_{};
+	ADXModel shadowModel_{};
+	uint32_t shadowTex_ = 0;
 
 	Player* parent_ = nullptr;
 

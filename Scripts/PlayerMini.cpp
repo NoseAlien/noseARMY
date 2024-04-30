@@ -1,7 +1,10 @@
 ﻿#include "PlayerMini.h"
 #include "Player.h"
+#include "ShadowRenderer.h"
 
 const float aimSpeed = 0.3f;
+const int32_t defaultSortingOrder = 2;
+const int32_t shadowSortingOrder = 1;
 
 void PlayerMini::Initialize(Player* setParent)
 {
@@ -37,6 +40,8 @@ void PlayerMini::Move(float walkSpeed, float jumpPower)
 void PlayerMini::UniqueInitialize()
 {
 	rect_ = ADXModel::CreateRect();
+	shadowModel_ = ADXModel::LoadADXModel("model/cylinder.obj");
+	shadowTex_ = ADXImage::LoadADXImage("texture/whiteDot.png");
 
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
 	tempCol->pushable_ = true;
@@ -53,12 +58,25 @@ void PlayerMini::UniqueInitialize()
 	ADXModelRenderer* tempRenderer = nose_->AddComponent<ADXModelRenderer>();
 	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/apEGnoSE.png");
+	nose_->sortingOrder_ = defaultSortingOrder;
 
 	body_ = ADXObject::Create();
 	body_->transform_.parent_ = &GetGameObject()->transform_;
 	tempRenderer = body_->AddComponent<ADXModelRenderer>();
 	tempRenderer->model_ = &rect_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/apEGopTIon_fur.png");
+	body_->sortingOrder_ = defaultSortingOrder;
+
+	shadow_ = ADXObject::Create();
+	shadow_->transform_.localPosition_ = { 0,-6.5f,0 };
+	shadow_->transform_.localScale_ = { 1,6,1 };
+	shadow_->transform_.parent_ = &GetGameObject()->transform_;
+	ShadowRenderer* tempShadowRenderer = shadow_->AddComponent<ShadowRenderer>();
+	tempShadowRenderer->model_ = &shadowModel_;
+	tempShadowRenderer->texture_ = shadowTex_;
+	tempShadowRenderer->material_.ambient_ = { 0,0,0 };
+	tempShadowRenderer->material_.alpha_ = 0.6f;
+	shadow_->sortingOrder_ = shadowSortingOrder;
 
 	targetRot_ = GetGameObject()->transform_.localRotation_;
 }

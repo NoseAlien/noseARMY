@@ -5,6 +5,8 @@
 #include "ADXKeyConfig.h"
 #include "ADXTextRenderer.h"
 
+const float stageNameUIScale = 0.5f;
+
 std::string SceneGate::S_nextStageName = "";
 
 void SceneGate::Initialize(const std::string& team, const std::string& stageName)
@@ -33,8 +35,7 @@ void SceneGate::Initialize(const std::string& team, const std::string& stageName
 	keyUI_->transform_.localScale_ = { 0,0,0 };
 
 	stageNameUI_ = ADXObject::Create();
-	stageNameUI_->transform_.rectTransform_ = true;
-	stageNameUI_->renderLayer_ = 5;
+	stageNameUI_->transform_.parent_ = &GetGameObject()->transform_;
 	stageNameUI_->AddComponent<ADXTextRenderer>();
 	stageNameUI_->GetComponent<ADXTextRenderer>()->font_ = ADXTextRenderer::GetFont("texture/alphaNumber");
 	stageNameUI_->GetComponent<ADXTextRenderer>()->fontAspect_ = 0.75f;
@@ -50,14 +51,13 @@ void SceneGate::UniqueUpdate()
 	keyUI_->transform_.localPosition_ = { 0,-0.5f + sin(clock() * 0.001f - 1) * 0.02f,0 };
 	keyUI_->transform_.localScale_ = { keyUI_->transform_.localScale_.x_,0.45f,1 };
 
-	stageNameUI_->transform_.localPosition_ = { 0,0.5f + sin(clock() * 0.001f - 1) * 0.02f,0 };
-	stageNameUI_->transform_.localScale_ = { stageNameUI_->transform_.localScale_.x_,0.1f,1 };
+	stageNameUI_->transform_.localPosition_ = { 0,1.1f + stageNameUIScale + sin(clock() * 0.001f - 1) * 0.1f,0 };
+	stageNameUI_->transform_.localScale_ = { stageNameUIScale,stageNameUIScale,stageNameUIScale };
 	stageNameUI_->GetComponent<ADXTextRenderer>()->text_ = stageName_;
 
 	if (hitted_)
 	{
 		keyUI_->transform_.localScale_.x_ += (0.45f / ADXWindow::GetInstance()->GetAspect() - keyUI_->transform_.localScale_.x_) * 0.3f;
-		stageNameUI_->transform_.localScale_.x_ += (0.1f / ADXWindow::GetInstance()->GetAspect() - stageNameUI_->transform_.localScale_.x_) * 0.3f;
 		if (ADXKeyConfig::GetCurrentInstance()->GetInputDown("select")
 			|| ADXKeyConfig::GetCurrentInstance()->GetInputDown("back"))
 		{
@@ -70,8 +70,14 @@ void SceneGate::UniqueUpdate()
 	else
 	{
 		keyUI_->transform_.localScale_.x_ -= keyUI_->transform_.localScale_.x_ * 0.3f;
-		stageNameUI_->transform_.localScale_.x_ -= stageNameUI_->transform_.localScale_.x_ * 0.3f;
 	}
+}
+
+void SceneGate::OnPreRender()
+{
+	//ステージ名UIをビルボード表示にする
+	stageNameUI_->transform_.SetWorldRotation(ADXCamera::GetCurrentCamera()->GetGameObject()->transform_.GetWorldRotation());
+	stageNameUI_->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0 });
 }
 
 void SceneGate::OnCollisionHit(ADXCollider* col, [[maybe_unused]] ADXCollider* myCol)

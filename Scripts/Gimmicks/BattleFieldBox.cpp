@@ -18,7 +18,8 @@ void BattleFieldBox::FieldInitialize()
 	tempRenderer->model_ = &boxModel_;
 	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/battleField.png");
 
-	GetGameObject()->sortingOrder_ = 2;
+	GetGameObject()->sortingOrder_ = 3;
+
 
 	animationProgress_ = 0;
 }
