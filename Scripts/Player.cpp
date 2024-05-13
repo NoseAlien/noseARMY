@@ -1,5 +1,6 @@
 ﻿#include "Player.h"
 #include "SceneTransition.h"
+#include "Gimmicks/Goal.h"
 #include "ADXUtility.h"
 #include "ADXKeyConfig.h"
 #include "ADXAudioListener.h"
@@ -190,6 +191,14 @@ void Player::LiveEntitiesInitialize()
 	tempRenderer->material_ = visual_->GetComponent<ADXModelRenderer>()->material_;
 	bodyParts_.push_back(nose_);
 
+	smile_ = ADXObject::Create();
+	smile_->transform_.parent_ = &visual_->transform_;
+	tempRenderer = smile_->AddComponent<ADXModelRenderer>();
+	tempRenderer->model_ = &rect_;
+	tempRenderer->texture_ = ADXImage::LoadADXImage("texture/apEG_smile.png");
+	tempRenderer->material_ = visual_->GetComponent<ADXModelRenderer>()->material_;
+	bodyParts_.push_back(smile_);
+
 	ADXObject* temp = ADXObject::Create();
 	temp->AddComponent<ADXAudioListener>();
 	temp->GetComponent<ADXAudioListener>()->radius_ = listenerRadius;
@@ -359,13 +368,16 @@ void Player::LiveEntitiesUpdate()
 
 	visual_->renderLayer_ = 0;
 	nose_->renderLayer_ = 0;
+	smile_->renderLayer_ = 0;
 
 	gameOverFilter_->isVisible_ =
 		dead_->isVisible_ =
 		keyUI_->isVisible_ = false;
 
 	visual_->isVisible_ =
-		nose_->isVisible_ = true;
+		nose_->isVisible_ = !Goal::Goaled();
+
+	smile_->isVisible_ = Goal::Goaled();
 
 	deadAnimationProgress_ = 0;
 
@@ -624,6 +636,8 @@ void Player::LiveEntitiesUpdate()
 		itr->GetGameObject()->transform_.modelRotation_ = ADXQuaternion::EulerToQuaternion({ 0,0,0.2f }) * itr->GetGameObject()->transform_.modelRotation_;
 		itr->scaleRate_ = ADXUtility::EaseOut(sinf((float)itr->lifeTime_ / itr->maxLifeTime_ * ADXUtility::Pi),2);
 	}
+
+	smile_->transform_.SetWorldRotation(camera_->GetGameObject()->transform_.GetWorldRotation());
 }
 
 void Player::LiveEntitiesOnCollisionHit(ADXCollider* col, [[maybe_unused]]ADXCollider* myCol)

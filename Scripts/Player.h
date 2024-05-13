@@ -31,6 +31,7 @@ private:
 	ADXCamera* camera_ = nullptr;
 
 	ADXObject* nose_ = nullptr;
+	ADXObject* smile_ = nullptr;
 	ADXObject* outOfField_ = nullptr;
 	ADXObject* tutorialWindow_ = nullptr;
 	ADXObject* gameOverFilter_ = nullptr;

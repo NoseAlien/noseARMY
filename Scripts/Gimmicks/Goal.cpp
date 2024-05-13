@@ -91,3 +91,16 @@ void Goal::OnCollisionHit(ADXCollider* col, [[maybe_unused]] ADXCollider* myCol)
 		return;
 	}
 }
+
+bool Goal::Goaled()
+{
+	for (auto itr : ADXObject::GetObjs())
+	{
+		Goal* currentGoal = itr->GetComponent<Goal>();
+		if (currentGoal != nullptr && currentGoal->sceneTransitionCount_ != MaxSceneTransitionCount)
+		{
+			return true;
+		}
+	}
+	return false;
+}

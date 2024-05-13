@@ -6,7 +6,7 @@
 class Goal : public ADXComponent
 {
 public:
-	const int32_t MaxSceneTransitionCount = 60;
+	static const int32_t MaxSceneTransitionCount = 60;
 
 private:
 	std::string team_ = "";
@@ -30,4 +30,8 @@ private:
 	void OnCollisionHit(ADXCollider* col, ADXCollider* myCol);
 
 	//---以上の関数は必要な時に自動で呼び出される---
+
+public:
+	//ゴールしたか
+	static bool Goaled();
 };

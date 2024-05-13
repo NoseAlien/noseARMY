@@ -11,6 +11,8 @@ const uint32_t LiveEntity::basicGhostTimeFrame = 40;
 const uint32_t LiveEntity::reviveGhostTimeFrame = 60;
 const int32_t LiveEntity::liveEntitySortingOrder = 2;
 const int32_t LiveEntity::shadowSortingOrder = 1;
+const int32_t LiveEntity::liveCollideLayer = 1;
+const int32_t LiveEntity::deadCollideLayer = 2;
 
 std::vector<LiveEntity::AttackObject> LiveEntity::S_attackObjs = {};
 std::vector<LiveEntity::AttackObject> LiveEntity::S_allAttackObj = {};
@@ -189,6 +191,20 @@ void LiveEntity::UniqueUpdate()
 		for (auto& itr : bodyParts_)
 		{
 			itr->GetComponent<ADXModelRenderer>()->material_.ambient_ = { 1,0.2f,0.2f };
+		}
+	}
+	if (IsLive())
+	{
+		for (auto& itr : GetGameObject()->GetComponents<ADXCollider>())
+		{
+			itr->collideLayer_ = liveCollideLayer;
+		}
+	}
+	else
+	{
+		for (auto& itr : GetGameObject()->GetComponents<ADXCollider>())
+		{
+			itr->collideLayer_ = deadCollideLayer;
 		}
 	}
 

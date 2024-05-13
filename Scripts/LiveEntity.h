@@ -21,6 +21,8 @@ public:
 	static const uint32_t reviveGhostTimeFrame;
 	static const int32_t liveEntitySortingOrder;
 	static const int32_t shadowSortingOrder;
+	static const int32_t liveCollideLayer;
+	static const int32_t deadCollideLayer;
 
 public:
 	struct AttackObject

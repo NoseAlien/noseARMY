@@ -6,6 +6,8 @@ const float aimSpeed = 0.3f;
 const int32_t defaultSortingOrder = 2;
 const int32_t shadowSortingOrder = 1;
 
+const int32_t PlayerMini::minisCollideLayer = 3;
+
 void PlayerMini::Initialize(Player* setParent)
 {
 	parent_ = setParent;
@@ -46,6 +48,7 @@ void PlayerMini::UniqueInitialize()
 	ADXCollider* tempCol = GetGameObject()->AddComponent<ADXCollider>();
 	tempCol->pushable_ = true;
 	tempCol->pushBackPriority_ = -1;
+	tempCol->collideLayer_ = minisCollideLayer;
 
 	tempCol = GetGameObject()->AddComponent<ADXCollider>();
 	tempCol->isTrigger_ = true;

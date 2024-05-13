@@ -2,7 +2,7 @@
 #include "ADXObject.h"
 
 std::vector<ADXCollider::collidePattern> ADXCollider::S_ignoreCollidePatterns = {};
-std::vector<ADXCollider::collidePattern> ADXCollider::S_ignorePushBackPatterns = {};
+std::vector<ADXCollider::collidePattern> ADXCollider::S_ignorePushBackPatterns = { {1,1},{2,3} };
 
 /*
 【接触検知から押し戻しベクトル算出までの流れ】

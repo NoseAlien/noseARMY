@@ -8,6 +8,9 @@ class Player;
 //自機の分身のオブジェクトに入れるコンポーネント
 class PlayerMini : public ADXComponent
 {
+public:
+	static const int32_t minisCollideLayer;
+
 private:
 	ADXObject* nose_ = nullptr;
 	ADXObject* body_ = nullptr;
